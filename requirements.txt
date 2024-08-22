@@ -1,0 +1,8 @@
+pandas==2.1.1
+psycopg2-binary==2.9.7
+requests==2.31.0
+selenium==4.10.0
+webdriver-manager==4.0.0
+black
+flake8
+isort
