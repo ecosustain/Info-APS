@@ -11,7 +11,7 @@ clean:
 
 # Formatar código usando black
 format:
-	black .
+	black --line-length 79 .
 	isort . --profile black
 
 # Lint com flake8

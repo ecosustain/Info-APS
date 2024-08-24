@@ -82,7 +82,9 @@ def controle_download(arquivo="controle_validacao.txt"):
 
 def selecionar_municipios_dividido(driver, metade):
     """Seleciona os municípios para o estado de SP."""
-    municipios_button = driver.find_element(By.XPATH, '//*[@id="regioes"]/div/button')
+    municipios_button = driver.find_element(
+        By.XPATH, '//*[@id="regioes"]/div/button'
+    )
     driver.execute_script("arguments[0].click();", municipios_button)
     time.sleep(1)  # Esperar o dropdown ser exibido
 
@@ -91,25 +93,33 @@ def selecionar_municipios_dividido(driver, metade):
     )
     if metade:
         for checkbox in municipio_elements[:400]:
-            driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
+            driver.execute_script(
+                "arguments[0].scrollIntoView(true);", checkbox
+            )
             if not checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", checkbox)
     else:
         # Desmarcar todos os municípios
         for checkbox in municipio_elements[:400]:
-            driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
+            driver.execute_script(
+                "arguments[0].scrollIntoView(true);", checkbox
+            )
             if checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", checkbox)
         time.sleep(1)
         # Selecionar os municípios restantes
         for checkbox in municipio_elements[400:]:
-            driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
+            driver.execute_script(
+                "arguments[0].scrollIntoView(true);", checkbox
+            )
             if not checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", checkbox)
     time.sleep(1)
 
 
-def extrai_dividido(driver, estado, mes_text, controle_arquivo="controle_validacao.txt"):
+def extrai_dividido(
+    driver, estado, mes_text, controle_arquivo="controle_validacao.txt"
+):
     """Seleciona os municípios dos estados grandes."""
     # Primeira metade
     selecionar_municipios_dividido(driver, True)
@@ -134,7 +144,9 @@ def selecionar_municipios(driver, estado_text, mes_text):
     """Seleciona os municípios para o estado fornecido e lida com possíveis exceções."""
     try:
         municipios_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//*[@id="regioes"]/div/button'))
+            EC.element_to_be_clickable(
+                (By.XPATH, '//*[@id="regioes"]/div/button')
+            )
         )
         driver.execute_script("arguments[0].click();", municipios_button)
 
@@ -146,11 +158,15 @@ def selecionar_municipios(driver, estado_text, mes_text):
 
         print("MUNICIPIOS: ", len(municipio_elements))
         if len(municipio_elements) > 450:
-            logger.info(f"O estado {estado_text} possui mais de 450 municípios")
+            logger.info(
+                f"O estado {estado_text} possui mais de 450 municípios"
+            )
             return extrai_dividido(driver, estado_text, mes_text)
 
         for checkbox in municipio_elements:
-            driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
+            driver.execute_script(
+                "arguments[0].scrollIntoView(true);", checkbox
+            )
             if not checkbox.is_selected():
                 driver.execute_script("arguments[0].click();", checkbox)
         time.sleep(1)
@@ -243,7 +259,9 @@ def fazer_download(
                 return True
         elif time.time() - start_time > timeout:
             # Se o tempo de espera exceder o timeout, exibir uma mensagem de erro
-            print(f"Tempo limite excedido para download de {expected_filename}.")
+            print(
+                f"Tempo limite excedido para download de {expected_filename}."
+            )
             return False
         time.sleep(1)  # Esperar 1 segundo antes de verificar novamente
 
@@ -251,7 +269,9 @@ def fazer_download(
 def recarregar_pagina(driver, estado_index=1, mes_index=1):
     """Recarrega a página e reposiciona o dropdown no estado e mês corretos."""
     driver.refresh()
-    time.sleep(3)  # Espera para garantir que a página seja totalmente carregada
+    time.sleep(
+        3
+    )  # Espera para garantir que a página seja totalmente carregada
 
     # Selecionar "Municípios" no dropdown de unidades geográficas
     unid_geo = Select(driver.find_element(By.ID, "unidGeo"))
@@ -319,7 +339,9 @@ def executar_downloads():
     wait = WebDriverWait(driver, 10)
 
     # Selciona o dropdown de competência (mes/ano)
-    competencia_element = wait.until(EC.element_to_be_clickable((By.NAME, "j_idt70")))
+    competencia_element = wait.until(
+        EC.element_to_be_clickable((By.NAME, "j_idt70"))
+    )
     competencia = Select(competencia_element)
 
     for j in range(len(competencia.options)):
@@ -338,7 +360,9 @@ def executar_downloads():
         competencia.select_by_index(j)
 
         # Selecionar "Municípios" no dropdown de unidades geográficas
-        unid_geo_element = wait.until(EC.element_to_be_clickable((By.ID, "unidGeo")))
+        unid_geo_element = wait.until(
+            EC.element_to_be_clickable((By.ID, "unidGeo"))
+        )
         unid_geo = Select(unid_geo_element)
         unid_geo.select_by_visible_text("Municípios")
 
@@ -354,7 +378,9 @@ def executar_downloads():
             except StaleElementReferenceException:
                 estados = Select(
                     wait.until(
-                        EC.presence_of_element_located((By.ID, "estadoMunicipio"))
+                        EC.presence_of_element_located(
+                            (By.ID, "estadoMunicipio")
+                        )
                     )
                 )
                 estado = estados.options[i]

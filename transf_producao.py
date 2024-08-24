@@ -52,38 +52,53 @@ def concat_csv_files(files):
 
     # Colunas esperadas no DataFrame
     colunas = [
-        "Região",
         "Uf",
-        "IBGE",
+        "Ibge",
         "Municipio",
-        "CNES",
-        "Tipo Unidade",
-        "INE",
-        "Tipo Equipe",
-        "Validação",
-        "Total",
+        "Asma",
+        "Desnutrição",
+        "Diabetes",
+        "DPOC",
+        "Hipertensão arterial",
+        "Obesidade",
+        "Pré-natal",
+        "Puericultura",
+        "Puerpério (até 42 dias)",
+        "Saúde sexual e reprodutiva",
+        "Tabagismo",
+        "Usuário de álcool",
+        "Usuário de outras drogas",
+        "Saúde mental",
+        "Reabilitação",
+        "D.Transmissíveis - Dengue",
+        "Doenças transmissíveis - DST",
+        "D.Transmissíveis - Hanseníase",
+        "D.Transmissíveis - Tuberculose",
+        "Rast. câncer de mama",
+        "Rast. câncer do colo do útero",
+        "Rast. risco cardiovascular",
         "Mes",
         "Ano",
     ]
-
     # Iterar sobre os arquivos
     for i, file in enumerate(files):
         # Processar o arquivo
         temp_df = process_csv(file)
-
         # Pular arquivos que não possuem as colunas esperadas
         if temp_df.columns.tolist() != colunas:
             print(file, "não possui as colunas esperadas")
+            print("Colunas DF", temp_df.columns.tolist())
+            print()
             continue
         # Concatenar com o DataFrame principal
         df = pd.concat([df, temp_df])
 
         # Salvar a cada 100 arquivos
         if i % 100 == 0 and i > 0:
-            df.to_csv(f"data_{i}.csv", index=False)
+            df.to_csv(f"partial_{i}.csv", index=False)
             df = pd.DataFrame()
-
-    df.to_csv(f"data_{i}.csv", index=False)
+    # Salvar o restante
+    df.to_csv(f"partial_{i}.csv", index=False)
 
 
 # Função para listar os arquivos CSV
@@ -101,17 +116,21 @@ def list_files(directory="/home/daniel/Downloads"):
     return files
 
 
-def concat_final_csv(dir="."):
+def concat_final_csv(name, dir="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
     for file in list_files(dir):
+        print(file)
         df_temp = pd.read_csv(file)
+        print(df_temp.head())
         df = pd.concat([df, df_temp])
     # Remove duplicados
+    print(df.shape)
     df.drop_duplicates(inplace=True)
+    print(df.shape)
     # Salvar o arquivo final
-    df.to_csv("data.csv", index=False)
+    df.to_csv(f"{name}.csv", index=False)
     return df
 
 
@@ -153,7 +172,7 @@ def existentes(df):
 
 def atualiza_controle(combinacoes_existentes):
     """Função para atualizar o controle de combinações"""
-    with open("controle_validacao.txt", "w") as f:
+    with open("controle/producao.txt", "w") as f:
         for comb in combinacoes_existentes:
             if comb[1] < 10:
                 f.write(f"{comb[0]}_0{comb[1]}/{comb[2]}\n")
@@ -164,7 +183,7 @@ def atualiza_controle(combinacoes_existentes):
 def remove_temp_files(transformacao_dir):
     """Função para remover os arquivos temporários"""
     for file in os.listdir("."):
-        if file.startswith("data_"):
+        if file.startswith("partial_"):
             os.remove(file)
     for file in os.listdir(transformacao_dir):
         if file.endswith(".csv"):
@@ -180,9 +199,14 @@ if __name__ == "__main__":
     concat_csv_files(files)
     print("Concatenando o arquivo final")
     # Concatenar o arquivo final
-    df = concat_final_csv()
-    print("Gravando os arquivos existentes")
-    atualiza_controle(existentes(df))
+    df = concat_final_csv("procedimentos")
     print("Removendo os arquivos temporários")
-    remove_temp_files(transformacao_dir)
-    print("Transformação concluída")
+    if len(df) > 1000:
+        remove_temp_files(transformacao_dir)
+        os.rename(
+            "procedimentos.csv",
+            "data/consolidado/producao_municipio_problema.csv",
+        )
+        print("Transformação concluída")
+    else:
+        print("Erro na transformação")
