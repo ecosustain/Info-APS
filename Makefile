@@ -30,6 +30,10 @@ test:
 install:
 	pip install -r requirements.txt
 
+# Criar diretórios necessários para o projeto
+create_dirs:
+	mkdir -p etl/data/transformacao
+
 # Atualizar dependências do projeto
 update:
 	pip install --upgrade -r requirements.txt
