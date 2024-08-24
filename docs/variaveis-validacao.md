@@ -1,0 +1,43 @@
+### 1. **Variáveis do Contexto de Validação**
+
+- **UF (Unidade Federativa)**: Estados do Brasil.
+- **Região**: Regiões Administrativas.
+- **Município**: Cidades.
+- **Tipo de Equipe**: Tipos de equipes identificadas por números. Domínio: 1,2,3,4,5,6,7,8,10,16,17,19,22,23,24,33,36,37,45,46,47,52,54,70,71,72,73,74,75,76.
+- **Validação**: Tipo de validação dos dados enviados pelos munícípios. Domínio:
+
+  - Aprovado
+  - Data inválida
+  - Duplicado
+  - Não Aplicado
+  - Pendente
+  - Preliminar>Aprovado
+  - Preliminar>Reprovado(CNES)
+  - Preliminar>Reprovado(CNES+INE)
+  - Preliminar>Reprovado(CNES+INE+PROF)
+  - Preliminar>Reprovado(CNES+PROF)
+  - Preliminar>Reprovado(INE)
+  - Preliminar>Reprovado(INE+PROF)
+  - Preliminar>Reprovado(PROF)
+  - Reprovado(CBO)
+  - Reprovado(CNES)
+  - Reprovado(CNES+CBO)
+  - Reprovado(CNES+INE)
+  - Reprovado(CNES+INE+CBO)
+  - Reprovado(CNES+INE+PROF)
+  - Reprovado(CNES+INE+PROF+CBO)
+  - Reprovado(CNES+PROF)
+  - Reprovado(CNES+PROF+CBO)
+  - Reprovado(INE)
+  - Reprovado(INE+CBO)
+  - Reprovado(INE+PROF)
+  - Reprovado(INE+PROF+CBO)
+  - Reprovado(PROF)
+  - Reprovado(PROF+CBO)
+
+- **Ano**: Ano em que os procedimentos foram realizados.
+- **Total de Procedimentos**: Total de atendimentos/procedimentos.
+- **CNES (Cadastro Nacional de Estabelecimentos de Saúde)**: Espaço físico, edificado ou móvel, privado ou público, onde são realizados ações e serviços de saúde, por pessoa física ou jurídica, e que possua responsável técnico, pessoal e infraestrutura compatível com a sua finalidade. Domínio: mais de 70 mil códigos entre 0 e 9999999.
+- **Tipo de Unidade**: Tipo das unidades de saúde. Domínio: 1,2,4,5,7,15,20,21,22,32,36,39,40,42,43,50,61,62,68,70,71,72,73,74,75,77,79,80,81,82,83,84,85.
+- **INE**: Identificador Nacional de Equipe: Código de identificação individual da equipe na base nacional que tem por objetivo um acompanhamento histórico do movimento de cada equipe pelos estabelecimentos do munícipio e acompanhamento dos profissionais que nela atuam. Domínio: Mas de 100 mil códigos entre 0 e 9999999999.
+- **IBGE**: Código IBGE do munícipio. Dominio: Definido por estado.

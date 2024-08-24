@@ -2,3 +2,4 @@
 *.log
 extras/*
 config.ini
+.vscode
