@@ -51,39 +51,17 @@ def concat_csv_files(files):
     df = pd.DataFrame()
 
     # Colunas esperadas no DataFrame
-    colunas = [
-        "Uf",
-        "Ibge",
-        "Municipio",
-        "Asma",
-        "Desnutrição",
-        "Diabetes",
-        "DPOC",
-        "Hipertensão arterial",
-        "Obesidade",
-        "Pré-natal",
-        "Puericultura",
-        "Puerpério (até 42 dias)",
-        "Saúde sexual e reprodutiva",
-        "Tabagismo",
-        "Usuário de álcool",
-        "Usuário de outras drogas",
-        "Saúde mental",
-        "Reabilitação",
-        "D.Transmissíveis - Dengue",
-        "Doenças transmissíveis - DST",
-        "D.Transmissíveis - Hanseníase",
-        "D.Transmissíveis - Tuberculose",
-        "Rast. câncer de mama",
-        "Rast. câncer do colo do útero",
-        "Rast. risco cardiovascular",
-        "Mes",
-        "Ano",
-    ]
+    colunas = process_csv(files[0]).columns.tolist()
+
     # Iterar sobre os arquivos
     for i, file in enumerate(files):
         # Processar o arquivo
-        temp_df = process_csv(file)
+        try: 
+            temp_df = process_csv(file)
+        except Exception as e:
+            print('ERRO', file, e)
+            print()
+            continue
         # Pular arquivos que não possuem as colunas esperadas
         if temp_df.columns.tolist() != colunas:
             print(file, "não possui as colunas esperadas")
@@ -102,7 +80,7 @@ def concat_csv_files(files):
 
 
 # Função para listar os arquivos CSV
-def list_files(directory="/home/daniel/Downloads"):
+def list_files(directory='.'):
     """Função para listar os arquivos CSV em um diretório"""
     import os
 
@@ -114,21 +92,17 @@ def list_files(directory="/home/daniel/Downloads"):
     ]
 
     return files
-
+  
 
 def concat_final_csv(name, dir="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
     for file in list_files(dir):
-        print(file)
         df_temp = pd.read_csv(file)
-        print(df_temp.head())
         df = pd.concat([df, df_temp])
     # Remove duplicados
-    print(df.shape)
     df.drop_duplicates(inplace=True)
-    print(df.shape)
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df
@@ -194,18 +168,21 @@ if __name__ == "__main__":
     print("Iniciando a transformação dos dados")
     # Listar os arquivos
     files = list_files(transformacao_dir)
+    # Pega o nome do arquivo sem a data
+    nome_arq = files[0][:-13]
     print("Concatenando os arquivos")
     # Concatenar os arquivos
     concat_csv_files(files)
     print("Concatenando o arquivo final")
     # Concatenar o arquivo final
-    df = concat_final_csv("procedimentos")
+    nome_arq = nome_arq.split("/")[-1]
+    df = concat_final_csv(nome_arq)
     print("Removendo os arquivos temporários")
     if len(df) > 1000:
         remove_temp_files(transformacao_dir)
         os.rename(
-            "procedimentos.csv",
-            "data/consolidado/producao_municipio_problema.csv",
+            f"{nome_arq}.csv",
+            f"data/consolidado/{nome_arq}.csv",
         )
         print("Transformação concluída")
     else:

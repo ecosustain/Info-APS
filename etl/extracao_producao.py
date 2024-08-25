@@ -26,13 +26,13 @@ logger = logging.getLogger()
 config = configparser.ConfigParser()
 config.read("config.ini")
 
-# Diretório de download a partir do arquivo de configuração
+# Diretórios de destino e download
+transformacao_dir = config["Paths"]["transformacao_dir"]
 download_dir = config["Paths"]["download_dir"]
-destination_dir = config["Paths"]["transformacao_dir"]
 
 # Gerar o nome do arquivo esperado dinamicamente
 today = datetime.today().strftime("%Y-%m-%d")
-producao_filename = "RelatorioSaudeProducao.csv"
+PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 
 
 def configurar_driver():
@@ -119,7 +119,7 @@ def espera_download(
     mes,
     nome_arq,
     download_dir=download_dir,
-    expected_filename=producao_filename,
+    expected_filename=PRODUCAO_FILENAME,
 ):
     """Espera o download do arquivo."""
     # Caminho completo para o arquivo esperado
@@ -139,7 +139,7 @@ def espera_download(
                 # Mover o arquivo para diretório de dados
                 os.rename(
                     expected_file_path,
-                    f"{destination_dir}/{nome_arq}_{n_mes}.csv",
+                    f"{transformacao_dir}/{nome_arq}_{n_mes}.csv",
                 )
             return True
         elif time.time() - start_time > timeout:
@@ -156,7 +156,7 @@ def fazer_download(
     mes,
     nome_arq,
     download_dir=download_dir,
-    expected_filename=producao_filename,
+    expected_filename=PRODUCAO_FILENAME,
 ):
     """Faz o download do relatório em formato CSV e espera até que o download esteja completo."""
     logger.info(f"Fazendo download do relatório para {mes}")
@@ -255,18 +255,20 @@ linhas = {
 colunas = {
     "condicao": '//*[@id="selectcoluna"]/optgroup[2]/option[3]',
     "procedimento": '//*[@id="selectcoluna"]/optgroup[4]/option[1]',
-}
+    "conduta": '//*[@id="selectcoluna"]/optgroup[2]/option[5]',
+    }
 
 checkbox = {
     "condicao": '//*[@id="filtrosAtendIndividual"]/div/div/div[3]/div/button',
     "procedimento": '//*[@id="filtrosProcedimento"]/div/div[1]/div[1]/div/button',
+    'conduta': '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button',
 }
 
 
 if __name__ == "__main__":
     executar_downloads_mes(
         linhas["municipio"],
-        colunas["procedimento"],
-        checkbox["procedimento"],
-        "producao_procedimento",
+        colunas["conduta"],
+        checkbox["conduta"],
+        "producao_conduta",
     )

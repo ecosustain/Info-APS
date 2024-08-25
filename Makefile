@@ -28,11 +28,21 @@ test:
 
 # Instalar dependências do projeto
 install:
+	@echo "Instalando os requisitos do projeto"
 	pip install -r requirements.txt
-
-# Criar diretórios necessários para o projeto
-create_dirs:
+	@echo "Criando os diretórios necessários para o projeto"
 	mkdir -p etl/data/transformacao
+	mkdir -p etl/data/consolidado
+	@echo "Verificando se o arquivo config.ini existe..."
+	@if [ ! -f etl/config.ini ]; then \
+		echo "Arquivo config.ini não encontrado. Copiando config_example.ini para config.ini..."; \
+		cp etl/config_example.ini etl/config.ini; \
+	fi
+	@echo "Atualizando o arquivo de configuração com o diretório raiz do projeto"
+	@USER_HOME=$(shell echo ~); \
+	PROJECT_ROOT=$(shell pwd); \
+	sed -i 's|^home_dir = .*|home_dir = '"$$USER_HOME"'|' etl/config.ini; \
+	sed -i 's|^root_dir = .*|root_dir = '"$$PROJECT_ROOT"'|' etl/config.ini
 
 # Atualizar dependências do projeto
 update:
