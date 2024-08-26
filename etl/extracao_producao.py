@@ -4,13 +4,15 @@ import os
 import time
 from datetime import datetime
 
+import transf_producao
+from database import registrar_extracao
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select, WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Configura o logger
@@ -189,12 +191,20 @@ def seleciona_competencias(driver):
     return competencias
 
 
-def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
+def cria_driver():
+    """Cria o driver do Chrome."""
     driver = configurar_driver()
     logger.info("Iniciando o acesso a página de Producao do SISAB")
     driver.get(
         "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml"
     )
+    return driver
+
+
+def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
+    """Executa o download dos relatórios de produção para cada mês."""
+    # Inicializa o driver
+    driver = cria_driver()
     # Esperar a página carregar
     wait = WebDriverWait(driver, 10)
 
@@ -211,7 +221,7 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
             ("xpath", '//*[@id="competencia"]/div/ul')
         )
     )
-
+    falhas = 0
     for j in range(len(competencias.find_elements(By.TAG_NAME, "li"))):
         # recarregar competencias
         if j > 0:
@@ -221,6 +231,8 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
         ):
             if i == j:
                 mes = competencia.text
+                # pegar o horario de inicio em timestamp
+                start_time = datetime.now()
 
                 logger.info(f"Processando o mês {mes}")
                 # Clica no botão de de competência (mes/ano)
@@ -237,10 +249,37 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
                 selecionar_primeiro_item(driver, checkbox)
 
                 # Faz o download do relatório
-                fazer_download(driver, mes, nome_arq)
+                if fazer_download(driver, mes, nome_arq):
+                    # Recarregar a página para a próxima competência
+                    driver.refresh()
 
-                # Recarregar a página para a próxima competência
-                driver.refresh()
+                    # Registra a extração no banco de dados
+                    final_time = datetime.now()
+                    # Calcula o tempo de execução em segundos
+                    tempo_execucao = (final_time - start_time).total_seconds()
+                    # converte o tempo inicial e final para timestamp
+                    start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+                    final_time = final_time.strftime("%Y-%m-%d %H:%M:%S")
+
+                    """registrar_extracao(
+                        mes,
+                        mes.split("/")[1],
+                        "producao",
+                        "Municípios",
+                        nome_arq[9:],
+                        nome_arq,
+                        tempo_execucao,
+                        start_time,
+                        final_time,
+                    )"""
+                else:
+                    falhas += 1
+                    driver.quit()
+                    if falhas > 3:
+                        logger.error("Muitas falhas, abortando")
+                        return False
+                    driver = cria_driver()
+
 
     logger.info("Script Finalizado")
     # Fecha a janela do navegador
@@ -253,22 +292,57 @@ linhas = {
 }
 
 colunas = {
-    "condicao": '//*[@id="selectcoluna"]/optgroup[2]/option[3]',
-    "procedimento": '//*[@id="selectcoluna"]/optgroup[4]/option[1]',
-    "conduta": '//*[@id="selectcoluna"]/optgroup[2]/option[5]',
-    }
+    "producao_condicao": '//*[@id="selectcoluna"]/optgroup[2]/option[3]',
+    "producao_procedimento": '//*[@id="selectcoluna"]/optgroup[4]/option[1]',
+    "producao_conduta": '//*[@id="selectcoluna"]/optgroup[2]/option[5]',
+    "producao_aleitamento": '//*[@id="selectcoluna"]/optgroup[2]/option[1]',
+    "producao_acoes": '//*[@id="selectcoluna"]/optgroup[2]/option[2]',
+    "producao_vacinacao": '//*[@id="selectcoluna"]/optgroup[2]/option[4]',
+    "producao_racionalidade": '//*[@id="selectcoluna"]/optgroup[2]/option[6]',
+    "producao_consulta_odontologica": '//*[@id="selectcoluna"]/optgroup[3]/option[1]',
+    "producao_vigilancia_bucal": '//*[@id="selectcoluna"]/optgroup[3]/option[2]',
+    "producao_procedimentos_odontologicos": '//*[@id="selectcoluna"]/optgroup[3]/option[3]',
+    "producao_conduta_odontologica": '//*[@id="selectcoluna"]/optgroup[3]/option[4]',
+    "producao_procedimentos_pics": '//*[@id="selectcoluna"]/optgroup[4]/option[2]',
+    "producao_visita": '//*[@id="selectcoluna"]/optgroup[5]/option[1]',
+    "producao_desfecho_visita": '//*[@id="selectcoluna"]/optgroup[5]/option[2]',
+    "producao_imovel": '//*[@id="selectcoluna"]/optgroup[5]/option[3]',
+}
 
 checkbox = {
-    "condicao": '//*[@id="filtrosAtendIndividual"]/div/div/div[3]/div/button',
-    "procedimento": '//*[@id="filtrosProcedimento"]/div/div[1]/div[1]/div/button',
-    'conduta': '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button',
+    "producao_condicao": '//*[@id="filtrosAtendIndividual"]/div/div/div[3]/div/button',
+    "producao_procedimento": '//*[@id="filtrosProcedimento"]/div/div[1]/div[1]/div/button',
+    "producao_conduta": '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button',
+    "producao_aleitamento": '//*[@id="filtrosAtendIndividual"]/div/div/div[1]/div/button',
+    "producao_acoes": '//*[@id="filtrosAtendIndividual"]/div/div/div[2]/div/button',
+    "producao_vacinacao": '//*[@id="filtrosAtendIndividual"]/div/div/div[4]/div/button',
+    "producao_racionalidade": '//*[@id="filtrosAtendIndividual"]/div/div/div[6]/div/button',
+    "producao_consulta_odontologica": '//*[@id="filtrosAtendOdontologico"]/div/div/div[1]/div/button',
+    "producao_vigilancia_bucal": '//*[@id="filtrosAtendOdontologico"]/div/div/div[2]/div/button',
+    "producao_procedimentos_odontologicos": '//*[@id="filtrosAtendOdontologico"]/div/div/div[3]/div/button',
+    "producao_conduta_odontologica": '//*[@id="filtrosAtendOdontologico"]/div/div/div[4]/div/button',
+    "producao_procedimentos_pics": '//*[@id="filtrosProcedimento"]/div/div[1]/div[2]/div/button',
+    "producao_visita": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[1]/div/button',
+    "producao_desfecho_visita": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[2]/div/button',
+    "producao_imovel": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[3]/div/button',
 }
 
 
+lista = [
+    "producao_visita",
+    "producao_desfecho_visita",
+    "producao_imovel",
+]
+
+
 if __name__ == "__main__":
-    executar_downloads_mes(
-        linhas["municipio"],
-        colunas["conduta"],
-        checkbox["conduta"],
-        "producao_conduta",
-    )
+    for producao in lista:
+        logger.info(f" -- Processando a produção {producao}  -- ")
+        executar_downloads_mes(
+            linhas["municipio"],
+            colunas[producao],
+            checkbox[producao],
+            producao,
+        )
+        transf_producao.main()
+    logger.info("Script Finalizado")

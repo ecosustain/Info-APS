@@ -56,10 +56,10 @@ def concat_csv_files(files):
     # Iterar sobre os arquivos
     for i, file in enumerate(files):
         # Processar o arquivo
-        try: 
+        try:
             temp_df = process_csv(file)
         except Exception as e:
-            print('ERRO', file, e)
+            print("ERRO", file, e)
             print()
             continue
         # Pular arquivos que não possuem as colunas esperadas
@@ -80,7 +80,7 @@ def concat_csv_files(files):
 
 
 # Função para listar os arquivos CSV
-def list_files(directory='.'):
+def list_files(directory="."):
     """Função para listar os arquivos CSV em um diretório"""
     import os
 
@@ -92,7 +92,7 @@ def list_files(directory='.'):
     ]
 
     return files
-  
+
 
 def concat_final_csv(name, dir="."):
     """Função para concatenar os arquivos CSV"""
@@ -164,7 +164,7 @@ def remove_temp_files(transformacao_dir):
             os.remove(os.path.join(transformacao_dir, file))
 
 
-if __name__ == "__main__":
+def main():
     print("Iniciando a transformação dos dados")
     # Listar os arquivos
     files = list_files(transformacao_dir)
@@ -187,3 +187,7 @@ if __name__ == "__main__":
         print("Transformação concluída")
     else:
         print("Erro na transformação")
+
+
+if __name__ == "__main__":
+    main()
