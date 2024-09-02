@@ -280,7 +280,6 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
                         return False
                     driver = cria_driver()
 
-
     logger.info("Script Finalizado")
     # Fecha a janela do navegador
     driver.quit()

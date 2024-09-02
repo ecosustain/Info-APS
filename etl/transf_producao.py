@@ -16,9 +16,14 @@ transformacao_dir = config["Paths"]["transformacao_dir"]
 def process_csv(file_path):
     """Função para processar o arquivo CSV e retornar um DataFrame"""
     # Ler o arquivo CSV, extraindo as 10 primeiras linhas (para pegar a linha 4)
-    temp_df = pd.read_csv(
-        file_path, nrows=10, header=None, encoding="ISO-8859-1"
-    )
+
+    try:
+        temp_df = pd.read_csv(
+            file_path, nrows=10, header=None, encoding="ISO-8859-1"
+        )
+    except Exception as e:
+        print("ERRO", file_path, e)
+        raise e
 
     # Extrair o mês da linha 4 (index 3 porque indexação começa em 0)
     linha = (
@@ -165,6 +170,7 @@ def remove_temp_files(transformacao_dir):
 
 
 def main():
+    """Função principal"""
     print("Iniciando a transformação dos dados")
     # Listar os arquivos
     files = list_files(transformacao_dir)

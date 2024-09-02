@@ -1,29 +1,7 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:15
-    container_name: saude_basica_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: saude_basica_pwd
-      POSTGRES_DB: extracoes_db
+  painel:
+    build: ./painel
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - extracoes_network
-
-volumes:
-  postgres_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: postgresql/data:/var/lib/postgresql/data
-
-
-networks:
-  extracoes_network:
-    driver: bridge
+      - "8050:8050"

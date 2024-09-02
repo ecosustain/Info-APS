@@ -1,0 +1,93 @@
+/* Define uma fonte global para a aplicação */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estiliza o container principal */
+html, body {
+    height: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
+/* Ajusta o estilo do Dropdown */
+#dropdown-municipio, #dropdown-grupo {
+    margin-bottom: 1%;
+    margin-top: 1%;
+    width: 50%;
+    margin-left: 25%;
+}
+
+/* Estiliza o Slider */
+#slider-ano .rc-slider {
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
+
+/* Ajusta o layout do gráfico */
+#grafico-evolucao-problemas, #grafico-problemas-resumo{
+    padding: 20px;
+    margin-top: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+/* Estiliza as labels */
+label {
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Estilo do Slider */
+.rc-slider-rail {
+    background-color: #ddd;
+}
+
+.rc-slider-track {
+    background-color: #007bff;
+}
+
+.rc-slider-handle {
+    border: 2px solid #007bff;
+    width: 18px;
+    height: 18px;
+}
+
+.dash-core-components, .dash-html-components {
+    max-width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 100%) {
+    #dropdown-municipio{
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    #slider-ano {
+        width: 70%;
+        margin-left: 5%;
+    }
+
+    #grafico-evolucao-problemas {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
