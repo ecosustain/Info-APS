@@ -74,9 +74,33 @@ label {
     max-width: 100%;
 }
 
+/* Estiliza os links da página inicial como botões */
+.home-link {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px 5px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.home-link:hover {
+    background-color: #0056b3;
+}
+
+/* Centraliza o conteúdo da página inicial */
+.home-container {
+    text-align: center;
+    padding-top: 5%;
+}
+
 /* Responsividade */
 @media (max-width: 100%) {
-    #dropdown-municipio{
+    #dropdown-municipio {
         width: 90%;
         margin-left: 5%;
     }
@@ -89,5 +113,12 @@ label {
     #grafico-evolucao-problemas {
         margin-left: 5%;
         margin-right: 5%;
+    }
+
+    .home-link {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        padding: 15px 0;
     }
 }
