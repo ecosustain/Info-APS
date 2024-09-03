@@ -4,3 +4,16 @@ extras/*
 config.ini
 .vscode
 postgresql/*
+.idea/
+.DS_Store
+
+# Ignorar pastas de cache do Python
+__pycache__/
+*.py[cod]
+
+# Ignorar ambientes virtuais
+venv/
+env/
+
+# Ignorar arquivos de log
+*.log
