@@ -4,3 +4,5 @@ extras/*
 config.ini
 .vscode
 postgresql/*
+.idea/
+.DS_Store
