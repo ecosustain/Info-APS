@@ -1,10 +1,8 @@
-import pandas as pd
 from dash import dcc, html
-from funcoes import get_columns, normaliza_por_estado
+from funcoes import get_columns, normaliza_por_estado, populacao, producao
 
 # Ler o arquivo CSV
-df = pd.read_csv("data/producao.csv")
-populacao = pd.read_csv("data/populacao.csv")
+df = producao
 colunas = get_columns()
 
 # Normalizar os dados por estado

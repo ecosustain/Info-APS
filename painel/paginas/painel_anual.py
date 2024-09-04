@@ -1,9 +1,8 @@
-import pandas as pd
 from dash import dcc, html
-from funcoes import get_columns
+from funcoes import get_columns, producao
 
 # Ler o arquivo CSV
-df = pd.read_csv("data/producao.csv")
+df = producao
 colunas = get_columns()
 
 # Pegar a lista de municípios únicos

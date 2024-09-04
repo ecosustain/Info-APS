@@ -1,3 +1,4 @@
+"""Página principal da aplicação"""
 import dash
 from dash import dcc, html
 from flask import Flask
@@ -21,10 +22,13 @@ app.layout = html.Div(
     [dash.dependencies.Input("url", "pathname")],
 )
 def display_page(pathname):
+    """Função para redirecionar as páginas e apresentar a inicial"""
     if pathname == "/painel-anual":
         return painel_anual.layout
     elif pathname == "/mapa":
         return mapa.layout
+    elif pathname == "/comparativo":
+        return comparativo.layout
     elif pathname == "/":
         return html.Div(
             className="home-container",
@@ -35,17 +39,18 @@ def display_page(pathname):
                     "Painel Anual", href="/painel-anual", className="home-link"
                 ),
                 dcc.Link("Mapa", href="/mapa", className="home-link"),
+                dcc.Link(
+                    "Comparativo", href="/comparativo", className="home-link"
+                ),
             ],
         )
-    elif pathname == "/comparativo":
-        return comparativo.layout
-
     return html.H1("404 Página não encontrada")
 
 
 # Registrar callbacks
 painel_anual.init_callbacks(app)
 mapa.init_callbacks(app)
+comparativo.init_callbacks(app)
 
 
 if __name__ == "__main__":

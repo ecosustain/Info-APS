@@ -114,6 +114,34 @@ def get_columns():
     return colunas
 
 
+def normaliza(df, populacao):
+    """Agrupa os dados por município e normaliza os casos por 100.000 habitantes"""
+    # Mesclar o DataFrame original com o DataFrame de população
+    df = pd.merge(df, populacao[["Ibge", "populacao"]], on="Ibge")
+
+    # Selecionar colunas de casos (excluindo as colunas não numéricas e a população)
+    casos = df.drop(
+        columns=["Ano", "Mes", "Municipio", "Uf", "Data", "Ibge", "populacao"]
+    )
+
+    # Normalizar os casos pela população do município e multiplicar por 100.000
+    df_normalizado = casos.div(df["populacao"], axis=0) * 100000
+
+    # Re-adicionar as colunas que foram removidas
+    df_normalizado["Data"] = df["Data"]
+    df_normalizado["Municipio"] = df["Municipio"]
+    df_normalizado["Uf"] = df["Uf"]
+    df_normalizado["Ibge"] = df["Ibge"]
+    df_normalizado["populacao"] = df["populacao"]
+
+    # Reordenar as colunas para manter a mesma ordem que o DataFrame original
+    df_normalizado = df_normalizado[
+        ["Data", "Municipio", "Uf", "Ibge", "populacao"] + list(casos.columns)
+    ]
+
+    return df_normalizado
+
+
 def normaliza_por_estado(df, populacao):
     """Agrupa os dados por estado e normaliza os casos por 100.000 habitantes"""
     # renomear coluna 'UF' para 'Uf'
@@ -160,7 +188,7 @@ def normaliza_por_estado(df, populacao):
     return df_normalizado
 
 
-def cria_mapa(df_norm_uf, data_inicio, data_fim):
+def cria_mapa_uf(df_norm_uf, data_inicio, data_fim):
     """Cria um mapa com os dados normalizados por estado"""
     # Carregar o shapefile dos estados do Brasil (arquivo baixado shapefile do IBGE 2022)
     shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
@@ -185,6 +213,29 @@ def cria_mapa(df_norm_uf, data_inicio, data_fim):
     )
 
     # Simplificar a geometria (ajuste o parâmetro 'tolerance' conforme necessário)
-    mapa_uf['geometry'] = mapa_uf['geometry'].simplify(tolerance=0.01)
+    mapa_uf["geometry"] = mapa_uf["geometry"].simplify(tolerance=0.1)
 
     return mapa_uf
+
+
+def get_producao():
+    """Função para carregar o DataFrame de produção"""
+    # Carregar o arquivo CSV
+    df = pd.read_csv("data/producao.csv")
+
+    return df
+
+
+def get_populacao():
+    """Função para carregar o DataFrame de população"""
+    # Carregar o arquivo CSV
+    df = pd.read_csv("data/populacao.csv")
+
+    return df
+
+
+populacao = get_populacao()
+producao = get_producao()
+
+df_normalizado = normaliza(producao, populacao)
+df_norm_uf = normaliza_por_estado(producao, populacao)

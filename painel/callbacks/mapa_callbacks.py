@@ -1,6 +1,6 @@
 import dash.dependencies as dd
 import plotly.express as px
-from funcoes import cria_mapa
+from funcoes import cria_mapa_uf
 from paginas.mapa import df_normalizado
 
 
@@ -17,7 +17,7 @@ def register_callbacks(app):
     def update_map(coluna, ano):
         data_inicio = f"{ano}-01-01"
         data_fim = f"{ano}-12-31"
-        mapa_uf = cria_mapa(df_normalizado, data_inicio, data_fim)
+        mapa_uf = cria_mapa_uf(df_normalizado, data_inicio, data_fim)
 
         # Plotar o mapa para uma coluna específica, por exemplo, 'Asma'
         fig = px.choropleth(
