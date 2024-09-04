@@ -20,7 +20,7 @@ h1 {
 }
 
 /* Ajusta o estilo do Dropdown */
-#dropdown-municipio, #dropdown-grupo {
+#dropdown-municipio, #dropdown-grupo, #dropdown-coluna {
     margin-bottom: 1%;
     margin-top: 1%;
     width: 50%;
@@ -35,7 +35,7 @@ h1 {
 }
 
 /* Ajusta o layout do gráfico */
-#grafico-evolucao-problemas, #grafico-problemas-resumo{
+#grafico-evolucao-problemas, #grafico-problemas-resumo, #mapa-estado {
     padding: 20px;
     margin-top: 20px;
     background-color: rgb(255, 255, 255);

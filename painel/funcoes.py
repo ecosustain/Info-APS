@@ -1,5 +1,8 @@
 """Módulo com funções auxiliares para o painel"""
 
+import geopandas as gpd
+import pandas as pd
+
 
 def get_columns():
     """Função para retornar as colunas do DataFrame"""
@@ -109,3 +112,79 @@ def get_columns():
     }
 
     return colunas
+
+
+def normaliza_por_estado(df, populacao):
+    """Agrupa os dados por estado e normaliza os casos por 100.000 habitantes"""
+    # renomear coluna 'UF' para 'Uf'
+    populacao.rename(columns={"uf": "Uf"}, inplace=True)
+
+    df = pd.merge(df, populacao[["Ibge", "populacao"]], on="Ibge")
+
+    # Agrupar população por estado
+    populacao_estado = populacao.groupby("Uf")["populacao"].sum().reset_index()
+
+    # Mesclar o DataFrame original com o DataFrame de população por estado
+    df = pd.merge(df, populacao_estado, on="Uf", suffixes=("", "_estado"))
+
+    # Selecionar colunas de casos (excluindo as colunas não numéricas e a população)
+    casos = df.drop(
+        columns=[
+            "Ano",
+            "Mes",
+            "Municipio",
+            "Uf",
+            "Data",
+            "Ibge",
+            "populacao",
+            "populacao_estado",
+        ]
+    )
+
+    # Normalizar os casos pela população total do estado e multiplicar por 100.000
+    df_normalizado = casos.div(df["populacao_estado"], axis=0) * 100000
+
+    # Re-adicionar as colunas que foram removidas
+    df_normalizado["Data"] = df["Data"]
+    df_normalizado["Municipio"] = df["Municipio"]
+    df_normalizado["Uf"] = df["Uf"]
+    df_normalizado["Ibge"] = df["Ibge"]
+    df_normalizado["populacao_estado"] = df["populacao_estado"]
+
+    # Reordenar as colunas para manter a mesma ordem que o DataFrame original
+    df_normalizado = df_normalizado[
+        ["Data", "Municipio", "Uf", "Ibge", "populacao_estado"]
+        + list(casos.columns)
+    ]
+
+    return df_normalizado
+
+
+def cria_mapa(df_norm_uf, data_inicio, data_fim):
+    """Cria um mapa com os dados normalizados por estado"""
+    # Carregar o shapefile dos estados do Brasil (arquivo baixado shapefile do IBGE 2022)
+    shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
+    brasil_estados = gpd.read_file(shapefile_uf)
+
+    df_norm_uf = (
+        df_norm_uf[
+            (df_norm_uf["Data"] >= data_inicio)
+            & (df_norm_uf["Data"] <= data_fim)
+        ]
+        .groupby("Uf")
+        .sum()
+        .reset_index()
+    )
+    df_norm_uf.drop(
+        columns=["Data", "Municipio", "Ibge", "populacao_estado"], inplace=True
+    )
+
+    # Juntar os dados com o shapefile
+    mapa_uf = brasil_estados.merge(
+        df_norm_uf, left_on="SIGLA_UF", right_on="Uf"
+    )
+
+    # Simplificar a geometria (ajuste o parâmetro 'tolerance' conforme necessário)
+    mapa_uf['geometry'] = mapa_uf['geometry'].simplify(tolerance=0.01)
+
+    return mapa_uf

@@ -17,3 +17,6 @@ env/
 
 # Ignorar arquivos de log
 *.log
+
+# Ignorar shapefile
+*.shp

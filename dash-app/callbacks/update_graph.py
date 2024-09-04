@@ -3,45 +3,79 @@ import pandas as pd
 import plotly.express as px
 from dash.dependencies import Input, Output
 from data.database import Database
-from utils.queries import GET_DATA_BY_REGION, GET_DATA_BY_STATE, GET_DATA_BY_CITY, GET_DATA_BY_CATEGORY
 from sklearn.preprocessing import MinMaxScaler
+from utils.queries import (
+    GET_DATA_BY_CATEGORY,
+    GET_DATA_BY_CITY,
+    GET_DATA_BY_REGION,
+    GET_DATA_BY_STATE,
+)
+
+
 def register_callbacks(app):
     @app.callback(
-        Output('bar-chart', 'figure'),
+        Output("bar-chart", "figure"),
         [
-            Input('region-dropdown', 'value'),
-            Input('state-dropdown', 'value'),
-            Input('city-dropdown', 'value'),
-            Input('category-dropdown', 'value'),
-         ]
+            Input("region-dropdown", "value"),
+            Input("state-dropdown", "value"),
+            Input("city-dropdown", "value"),
+            Input("category-dropdown", "value"),
+        ],
     )
     def update_graph(region, state, city, category):
-
         db = Database()
         db.connect()
         data = None
 
-        if  region is not None and state is None and city is None and category is None:
+        if (
+            region is not None
+            and state is None
+            and city is None
+            and category is None
+        ):
             data = db.fetch_data(GET_DATA_BY_REGION, (region,))
 
-        if  region is not None and state is not None and city is None and category is None:
+        if (
+            region is not None
+            and state is not None
+            and city is None
+            and category is None
+        ):
             data = db.fetch_data(GET_DATA_BY_STATE, (state,))
 
-        if  region is not None and state is not None and city is not None and category is None:
+        if (
+            region is not None
+            and state is not None
+            and city is not None
+            and category is None
+        ):
             data = db.fetch_data(GET_DATA_BY_CITY, (city,))
 
-        if  region is not None and state is not None and city is not None and category is not None:
-            data = db.fetch_data(GET_DATA_BY_CATEGORY, (city, category, ))
+        if (
+            region is not None
+            and state is not None
+            and city is not None
+            and category is not None
+        ):
+            data = db.fetch_data(
+                GET_DATA_BY_CATEGORY,
+                (
+                    city,
+                    category,
+                ),
+            )
 
         db.close()
 
         # Check if data is not None and convert to DataFrame
         if data:
             # Assumindo que os dados retornados são tuplas e o banco retorna colunas 'name' e 'total'
-            df = pd.DataFrame(data, columns=['name', 'total', 'geo_unit', 'year'])
+            df = pd.DataFrame(
+                data, columns=["name", "total", "geo_unit", "year"]
+            )
         else:
             # Criando um DataFrame vazio se os dados forem None ou vazios
-            df = pd.DataFrame(columns=['name', 'total', 'geo_unit', 'year'])
+            df = pd.DataFrame(columns=["name", "total", "geo_unit", "year"])
 
         # # Inicializa o MinMaxScaler para normalizar os dados entre 0 e 1
         # scaler = MinMaxScaler()
@@ -52,9 +86,9 @@ def register_callbacks(app):
         # Criar o gráfico de barras com Plotly
         fig = px.bar(
             df,
-            x='year',
-            y='total',
-            color='name',
+            x="year",
+            y="total",
+            color="name",
             height=800,
         )
 
