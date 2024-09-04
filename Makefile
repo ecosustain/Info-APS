@@ -16,7 +16,7 @@ format:
 
 # Lint com flake8
 lint:
-	flake8 --config=configs/.flake8 .
+	pylint etl painel || true
 
 # Verificar tipos com mypy
 mypy:

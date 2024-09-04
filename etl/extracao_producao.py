@@ -260,18 +260,6 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
                     # converte o tempo inicial e final para timestamp
                     start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
                     final_time = final_time.strftime("%Y-%m-%d %H:%M:%S")
-
-                    """registrar_extracao(
-                        mes,
-                        mes.split("/")[1],
-                        "producao",
-                        "Municípios",
-                        nome_arq[9:],
-                        nome_arq,
-                        tempo_execucao,
-                        start_time,
-                        final_time,
-                    )"""
                 else:
                     falhas += 1
                     driver.quit()
@@ -327,6 +315,7 @@ checkbox = {
 }
 
 
+# Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
 lista = [
     "producao_visita",
     "producao_desfecho_visita",

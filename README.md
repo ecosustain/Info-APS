@@ -17,6 +17,56 @@ Para configurar o projeto, siga os passos abaixo:
 
 - Crie o arquivo de configuração config.ini a partir do arquivo de exemplo config.ini.example
 
+## Estrutura de diretórios
+```
+.
+├── Makefile # Arquivo de automação de tarefas
+├── README.md # Documentação do projeto
+├── analises # Análises de dados
+├── dash-app
+│   ├── README.md
+│   ├── app.py
+│   ├── callbacks
+│   ├── components
+│   ├── config
+│   ├── data
+│   ├── requirements.txt
+│   └── utils
+├── docker-compose.yml # Arquivo de configuração do Docker Compose
+├── docs # Documentação do projeto
+│   └── variaveis-validacao.md
+├── etl # Extração, transformação e carregamento dos dados
+│   ├── config_example.ini # Arquivo de configuração
+│   ├── data # Diretório de dados extraídos
+│   ├── database.py # Conexão com o banco de dados
+│   ├── extracao_CID.ipynb # Extração de dados de CID
+│   ├── extracao_codigos.py
+│   ├── extracao_producao.py # Extração de dados de produção
+│   ├── extracao_validacao.py # Extração de dados de validação
+│   ├── transf_producao.py # Transformação de dados de produção
+│   └── transf_validacao.py # Transformação de dados de validação
+├── mapas
+│   ├── BR_Municipios_2022 # Shapefiles dos municípios brasileiros
+│   ├── BR_UF_2022 # Shapefiles das unidades federativas brasileiras
+│   └── SP_Municipios_2022 # Shapefiles dos municípios de São Paulo
+├── modelos
+│   └── database
+├── painel # Aplicação Web com Dash para visualização dos dados
+│   ├── Dockerfile
+│   ├── app.py # Arquivo principal
+│   ├── assets # Diretório de arquivos estáticos
+│   ├── callbacks # Diretório de callbacks
+│   ├── data # Diretório de dados
+│   ├── funcoes.py # Funções auxiliares
+│   ├── paginas # Diretório de páginas
+│   ├── requirements.txt # Requisitos do projeto
+│   └── static # Diretório de arquivos estáticos
+├── postgresql # Diretório do banco de dados
+│   └── data:
+├── requirements.txt # Requisitos do projeto
+└── tests # Testes do projeto
+```
+
 ## Autores
  - Daniel Schulz
  - Elinilson Vital
