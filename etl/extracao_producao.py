@@ -40,7 +40,7 @@ PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 def configurar_driver():
     """Configura e retorna o driver do Chrome."""
     options = Options()
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_experimental_option(
@@ -66,6 +66,32 @@ def seleciona_xpath(driver, xpath):
             EC.presence_of_element_located(("xpath", xpath))
         )
         seleciona.click()
+        return True
+    except StaleElementReferenceException:
+        return False
+
+
+def verifica_grupo(driver, coluna, nome_arq):
+    """Verifica se a coluna pertence ao grupo 1."""
+    if '/optgroup[1]' not in coluna:
+        return False
+    try:
+        if nome_arq == "producao_profissionais_individual":
+            tipo_prod = '//*[@id="tpProducao"]/option[2]'
+        elif nome_arq == "producao_profissionais_odontologico":
+            tipo_prod = '//*[@id="tpProducao"]/option[3]'
+        elif nome_arq == "producao_profissionais_procedimentos":
+            tipo_prod = '//*[@id="tpProducao"]/option[4]'
+        elif nome_arq == "producao_profissionais_visita":
+            tipo_prod = '//*[@id="tpProducao"]/option[5]'
+
+        # Seleciona o tipo de produção
+        tipo_producao = WebDriverWait(driver, 3).until(
+            EC.presence_of_element_located(("xpath", tipo_prod))
+        )
+        # Clica no tipo de produção
+        tipo_producao.click()
+
         return True
     except StaleElementReferenceException:
         return False
@@ -242,10 +268,13 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
                 # Selecionar "Municípios" no dropdown de Linhas
                 seleciona_xpath(driver, linha)
 
-                # Selecionar "Condição Avaliada" no dropdown de Colunas
+                # Selecionar "Coluna" no dropdown de Colunas
                 seleciona_xpath(driver, coluna)
 
-                # Selecionar todos em Problema / Condição Avaliada
+                # Verifica grupo 1
+                verifica_grupo(driver, coluna, nome_arq)
+
+                # Selecionar todos no checkbox da coluna
                 selecionar_primeiro_item(driver, checkbox)
 
                 # Faz o download do relatório
@@ -294,6 +323,10 @@ colunas = {
     "producao_visita": '//*[@id="selectcoluna"]/optgroup[5]/option[1]',
     "producao_desfecho_visita": '//*[@id="selectcoluna"]/optgroup[5]/option[2]',
     "producao_imovel": '//*[@id="selectcoluna"]/optgroup[5]/option[3]',
+    "producao_profissionais_individual": '//*[@id="selectcoluna"]/optgroup[1]/option[4]',
+    "producao_profissionais_odontologico": '//*[@id="selectcoluna"]/optgroup[1]/option[4]',
+    "producao_profissionais_procedimentos": '//*[@id="selectcoluna"]/optgroup[1]/option[4]',
+    "producao_profissionais_visita": '//*[@id="selectcoluna"]/optgroup[1]/option[4]',
 }
 
 checkbox = {
@@ -312,14 +345,17 @@ checkbox = {
     "producao_visita": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[1]/div/button',
     "producao_desfecho_visita": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[2]/div/button',
     "producao_imovel": '//*[@id="filtrosCondutaDesfecho"]/div/div/div[3]/div/button',
+    "producao_profissionais_individual": '//*[@id="filtroEquipeProf"]/div[2]/button',
+    "producao_profissionais_odontologico": '//*[@id="filtroEquipeProf"]/div[2]/button',
+    "producao_profissionais_procedimentos": '//*[@id="filtroEquipeProf"]/div[2]/button',
+    "producao_profissionais_visita": '//*[@id="filtroEquipeProf"]/div[2]/button',
 }
 
 
 # Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
 lista = [
-    "producao_visita",
-    "producao_desfecho_visita",
-    "producao_imovel",
+    "producao_profissionais_procedimentos",
+    "producao_profissionais_visita",
 ]
 
 

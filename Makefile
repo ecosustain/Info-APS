@@ -26,6 +26,11 @@ mypy:
 test:
 	pytest --cov=app
 
+# Executar git add, status
+git:
+	git add .
+	git status
+
 # Instalar dependências do projeto
 install:
 	@echo "Instalando os requisitos do projeto"
