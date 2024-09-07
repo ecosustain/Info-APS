@@ -1,8 +1,6 @@
 # código para criar a leitura dos dados armazenados em csv
 import configparser
-import itertools
 import os
-from datetime import datetime
 
 import pandas as pd
 

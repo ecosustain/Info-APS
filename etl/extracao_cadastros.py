@@ -1,8 +1,5 @@
-import time
-
 import transformacao
-from selenium.webdriver.common.by import By
-from utils import (
+from extracao import (
     carregar_xpaths,
     cria_driver,
     fazer_download,
@@ -11,6 +8,7 @@ from utils import (
     seleciona_xpath,
     verifica_arquivo,
 )
+from selenium.webdriver.common.by import By
 
 logger = get_logger("cadastro.log")
 xpaths = carregar_xpaths()

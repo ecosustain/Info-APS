@@ -1,3 +1,4 @@
+"""Módulo com as principais funções de extração."""
 import configparser
 import logging
 import os
@@ -15,6 +16,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 def get_logger(nome_arq):
+    """Cria e retorna o logger."""
     # Configura o logger
     logging.basicConfig(
         level=logging.INFO,

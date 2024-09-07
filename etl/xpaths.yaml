@@ -78,9 +78,13 @@ producao_tipo:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[2]'
   checkbox: ''
 
-linhas:
+
+producao:
+  link: "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml"
+  nome_arq_download: "RelatorioSaudeProducao.csv"
   municipio: '//*[@id="selectLinha"]/optgroup[1]/option[5]'
   competencia: '//*[@id="selectLinha"]/optgroup[1]/option[6]'
+
 
 cadastro:
   link: "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/indicadores/indicadorCadastro.xhtml"

@@ -24,7 +24,7 @@ mypy:
 
 # Executar testes com pytest
 test:
-	pytest --cov=app
+	pytest --cov=etl --ignore=postgresql
 
 # Executar git add, status
 git:
