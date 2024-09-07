@@ -2,11 +2,8 @@ import configparser
 import logging
 import os
 import time
-from datetime import datetime
 
-import transf_producao
 import yaml
-from database import registrar_extracao
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.chrome.options import Options
@@ -16,14 +13,16 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Configura o logger
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("producao.log"), logging.StreamHandler()],
-)
 
-logger = logging.getLogger()
+def get_logger(nome_arq):
+    # Configura o logger
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[logging.FileHandler(nome_arq), logging.StreamHandler()],
+    )
+    logger = logging.getLogger()
+    return logger
 
 
 def carregar_xpaths():
@@ -32,9 +31,6 @@ def carregar_xpaths():
     with open("xpaths.yaml", "r") as file:
         xpaths = yaml.safe_load(file)
     return xpaths
-
-
-xpaths = carregar_xpaths()
 
 
 def carregar_configuracoes():
@@ -48,11 +44,14 @@ def carregar_configuracoes():
     return transformacao_dir, download_dir
 
 
+# Configurar o logger
+logger = get_logger("producao.log")
+
 # Carregar as configurações
 transformacao_dir, download_dir = carregar_configuracoes()
+xpaths = carregar_xpaths()
 
 # Gerar o nome do arquivo esperado dinamicamente
-today = datetime.today().strftime("%Y-%m-%d")
 PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 
 
@@ -141,13 +140,16 @@ def selecionar_primeiro_item(driver, butao_xpath):
         return False
 
 
-def clica_download(driver):
+def clica_download(
+    driver,
+    xpath='//*[@id="j_idt44"]/div/div[1]/div/div[2]/div[2]/div[5]/div/div/div[2]/button',
+):
     """Clica no botão de download."""
     try:
         # Iniciar o download
         download_button = driver.find_element(
             By.XPATH,
-            '//*[@id="j_idt44"]/div/div[1]/div/div[2]/div[2]/div[5]/div/div/div[2]/button',
+            xpath,
         )
         driver.execute_script("arguments[0].click();", download_button)
 
@@ -156,7 +158,7 @@ def clica_download(driver):
             EC.element_to_be_clickable(
                 (
                     By.XPATH,
-                    '//*[@id="j_idt44"]/div/div[1]/div/div[2]/div[2]/div[5]/div/div/div[2]/ul/li[2]/a',
+                    xpath[:-6] + "ul/li[2]/a",
                 )
             )
         )
@@ -208,12 +210,13 @@ def fazer_download(
     nome_arq,
     download_dir=download_dir,
     expected_filename=PRODUCAO_FILENAME,
+    xpath='//*[@id="j_idt44"]/div/div[1]/div/div[2]/div[2]/div[5]/div/div/div[2]/button',
 ):
     """Faz o download do relatório em formato CSV e espera até que o download esteja completo."""
     logger.info(f"Fazendo download do relatório para {mes}")
 
     # Inicia o download
-    clica_download(driver)
+    clica_download(driver, xpath)
 
     # Aguarda o arquivo ser baixado
     if not espera_download(mes, nome_arq, download_dir, expected_filename):
@@ -221,115 +224,32 @@ def fazer_download(
     return True
 
 
-def seleciona_competencias(driver):
+def seleciona_competencias(driver, xpath='//*[@id="competencia"]/div/button'):
     """Seleciona a competência (mes/ano)"""
 
     # Clica no botão de de competência (mes/ano)
     competencia_element = WebDriverWait(driver, 3).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, '//*[@id="competencia"]/div/button')
-        )
+        EC.element_to_be_clickable((By.XPATH, xpath))
     )
     competencia_element.click()
     # Aguarda a lista de competências aparecer
     competencias = WebDriverWait(driver, 3).until(
-        EC.presence_of_element_located(
-            ("xpath", '//*[@id="competencia"]/div/ul')
-        )
+        EC.presence_of_element_located(("xpath", xpath[:-6] + "ul"))
     )
     return competencias
 
 
-def cria_driver():
+def cria_driver(link):
     """Cria o driver do Chrome."""
     driver = configurar_driver()
     logger.info("Iniciando o acesso a página de Producao do SISAB")
-    driver.get(
-        "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml"
-    )
+    driver.get(link)
     return driver
 
 
-def executar_downloads_mes(linha, coluna, checkbox, nome_arq):
-    """Executa o download dos relatórios de produção para cada mês."""
-    # Inicializa o driver
-    driver = cria_driver()
-    # Esperar a página carregar
-    wait = WebDriverWait(driver, 10)
-
-    # Clica no botão de de competência (mes/ano)
-    competencia_element = wait.until(
-        EC.element_to_be_clickable(
-            (By.XPATH, '//*[@id="competencia"]/div/button')
-        )
-    )
-    driver.execute_script("arguments[0].click();", competencia_element)
-
-    competencias = wait.until(
-        EC.presence_of_element_located(
-            ("xpath", '//*[@id="competencia"]/div/ul')
-        )
-    )
-    falhas = 0
-
-            
-    for i, competencia in enumerate(
-        competencias.find_elements(By.TAG_NAME, "li")
-    ):      
-        if i > 0:
-            competencias = seleciona_competencias(driver)
-            competencia = competencias[i]
-        mes = competencia.text
-        logger.info(f"Processando o mês {mes}")
-        # Clica no botão de de competência (mes/ano)
-
-        competencia.click()
-
-        # Selecionar "Municípios" no dropdown de Linhas
-        seleciona_xpath(driver, linha)
-
-        # Selecionar "Coluna" no dropdown de Colunas
-        seleciona_xpath(driver, coluna)
-
-        # Verifica grupo 1
-        verifica_grupo(driver, coluna, nome_arq)
-
-        # Selecionar todos no checkbox da coluna
-        selecionar_primeiro_item(driver, checkbox)
-
-        # Faz o download do relatório
-        if fazer_download(driver, mes, nome_arq):
-            # Recarregar a página para a próxima competência
-            driver.refresh()
-        else:
-            falhas += 1
-            driver.quit()
-            if falhas > 3:
-                logger.error("Muitas falhas, abortando")
-                return False
-            driver = cria_driver()
-
-    logger.info("Script Finalizado")
-    # Fecha a janela do navegador
-    driver.quit()
-
-
-# Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
-lista = [
-    "producao_tipo",
-]
-
-
-if __name__ == "__main__":
-    for producao in lista:
-        logger.info(f" -- Processando a produção {producao}  -- ")
-        executar_downloads_mes(
-            xpaths["linhas"][
-                "municipio"
-            ],  # Acessa o XPath da linha (Município)
-            xpaths[producao]["coluna"],  # Acessa o XPath da coluna
-            xpaths[producao]["checkbox"],  # Acessa o XPath do checkbox
-            producao,
-        )
-        transf_producao.main()
-    logger.info("Script Finalizado")
+def verifica_arquivo(nome_arq):
+    """Verifica se o arquivo já foi baixado."""
+    if os.path.exists(f"{download_dir}/{nome_arq}"):
+        # Apagar o arquivo antigo
+        os.remove(f"{download_dir}/{nome_arq}")
+    return False

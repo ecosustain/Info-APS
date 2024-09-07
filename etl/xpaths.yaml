@@ -1,0 +1,91 @@
+producao_condicao:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[3]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[3]/div/button'
+
+producao_procedimento:
+  coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[1]'
+  checkbox: '//*[@id="filtrosProcedimento"]/div/div[1]/div[1]/div/button'
+
+producao_conduta:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[5]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button'
+
+producao_aleitamento:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[1]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[1]/div/button'
+
+producao_acoes:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[2]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[2]/div/button'
+
+producao_vacinacao:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[4]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[4]/div/button'
+
+producao_racionalidade:
+  coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[6]'
+  checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[6]/div/button'
+
+producao_consulta_odontologica:
+  coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[1]'
+  checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[1]/div/button'
+
+producao_vigilancia_bucal:
+  coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[2]'
+  checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[2]/div/button'
+
+producao_procedimentos_odontologicos:
+  coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[3]'
+  checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[3]/div/button'
+
+producao_conduta_odontologica:
+  coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[4]'
+  checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[4]/div/button'
+
+producao_procedimentos_pics:
+  coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[2]'
+  checkbox: '//*[@id="filtrosProcedimento"]/div/div[1]/div[2]/div/button'
+
+producao_visita:
+  coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[1]'
+  checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[1]/div/button'
+
+producao_desfecho_visita:
+  coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[2]'
+  checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[2]/div/button'
+
+producao_imovel:
+  coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[3]'
+  checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[3]/div/button'
+
+producao_profissionais_individual:
+  coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
+  checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+
+producao_profissionais_odontologico:
+  coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
+  checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+
+producao_profissionais_procedimentos:
+  coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
+  checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+
+producao_profissionais_visita:
+  coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
+  checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+
+producao_tipo:
+  coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[2]'
+  checkbox: ''
+
+linhas:
+  municipio: '//*[@id="selectLinha"]/optgroup[1]/option[5]'
+  competencia: '//*[@id="selectLinha"]/optgroup[1]/option[6]'
+
+cadastro:
+  link: "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/indicadores/indicadorCadastro.xhtml"
+  nome_arq: 'Cadastro'
+  nome_arq_download: 'cadastro-individual.csv'
+  municipio: '//*[@id="selectLinha"]/option[4]'
+  competencia: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[1]/div/div[3]/div/button'
+  download: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[2]/div/div/div/button'
