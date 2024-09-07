@@ -1,7 +1,23 @@
 version: '3.8'
 
 services:
-  painel:
-    build: ./painel
+  postgres:
+    image: postgres:14
+    container_name: sb-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: saude-basica
+      POSTGRES_DB: saude_basica
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "8050:8050"
+      - "5432:5432"
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
