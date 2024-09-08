@@ -9,6 +9,9 @@ producao_procedimento:
 producao_conduta:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[5]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button'
+  tipo_atendimento: 'Individual'
+  grupo: 'Conduta'
+
 
 producao_aleitamento:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[1]'
@@ -41,6 +44,8 @@ producao_procedimentos_odontologicos:
 producao_conduta_odontologica:
   coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[4]'
   checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[4]/div/button'
+  tipo_atendimento: 'Odontológico'
+  grupo: 'Conduta'
 
 producao_procedimentos_pics:
   coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[2]'
@@ -53,6 +58,8 @@ producao_visita:
 producao_desfecho_visita:
   coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[2]'
   checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[2]/div/button'
+  tipo_atendimento: 'Visita'
+  grupo: 'Desfecho'
 
 producao_imovel:
   coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[3]'
@@ -61,22 +68,33 @@ producao_imovel:
 producao_profissionais_individual:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+  tipo_atendimento: 'Individual'
+  grupo: 'Profissional'
 
 producao_profissionais_odontologico:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+  tipo_atendimento: 'Odontológico'
+  grupo: 'Profissional'
 
 producao_profissionais_procedimentos:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+  tipo_atendimento: 'Procedimento'
+  grupo: 'Profissional'
+
 
 producao_profissionais_visita:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
+  tipo_atendimento: 'Visita'
+  grupo: 'Profissional'
 
 producao_tipo:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[2]'
   checkbox: ''
+  tipo_atendimento: 'Todos'
+  grupo: 'Total'
 
 
 producao:
