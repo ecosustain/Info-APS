@@ -1,0 +1,52 @@
+<!-- Em website/templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Saúde Básica{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'style/bootstrap.min.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">SAÚDE BÁSICA</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Documentacão Técnica
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="/er_model">Modelo de Entidade de Relacionamento - ER</a>
+                    <a class="dropdown-item" href="/database/">Modelo de Físico de Dados</a>
+                    <a class="dropdown-item" href="/automacao/">Processo de Automação</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <a class="btn btn-primary" href="/admin">Site Admin</a>
+</nav>
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

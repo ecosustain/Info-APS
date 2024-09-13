@@ -1,0 +1,104 @@
+{
+  "data_import_profile": {
+    "Database files import": {
+      "description": "Carrega os arquivos coletados por webscraping para a base de dados",
+      "params": [
+        {
+          "file_name": "~/sisab-data/landing/racionalidade_por_municipio.csv",
+          "group_param": "Racionalidade",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/problemas_por_municipio.csv",
+          "group_param": "Problemas",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/producao_profissionais_odontologico.csv",
+          "group_param": "Produção Profissionais Odontológico",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/producao_profissionais_individual.csv",
+          "group_param": "Produção Profissionais Individual",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/producao_profissionais_procedimentos.csv",
+          "group_param": "Produção Profissionais Procedimentos",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/producao_profissionais_visita.csv",
+          "group_param": "Produção Profissionais Visita",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/producao_tipo.csv",
+          "group_param": "Tipo Produção",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/acoes_por_municipio.csv",
+          "group_param": "Ações",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/aleitamento_por_municipio.csv",
+          "group_param": "Aleitamento",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/conduta_odontologica_por_municipio.csv",
+          "group_param": "Conduta Odontologica",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/consulta_odontologica_por_municipio.csv",
+          "group_param": "Consulta Odontologica",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/desfecho_visita_por_municipio.csv",
+          "group_param": "Desfecho Visita",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/imovel_por_municipio.csv",
+          "group_param": "Tipo de Imovel",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/procedimentos_odontologicos_por_municipio.csv",
+          "group_param": "Procedimentos Odontologicos",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/procedimentos_pics_por_municipio.csv",
+          "group_param": "Procedimentos Pics",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/procedimentos_por_municipio.csv",
+          "group_param": "Procedimentos",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/vacinacao_por_municipio.csv",
+          "group_param": "Vacinação",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/vigilancia_bucal_por_municipio.csv",
+          "group_param": "Vigilancia Bucal",
+          "class_param": "Município"
+        },
+        {
+          "file_name": "~/sisab-data/landing/visita_por_municipio.csv",
+          "group_param": "Visita",
+          "class_param": "Município"
+        }
+      ]
+    }
+  }
+}
