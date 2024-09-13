@@ -3,7 +3,6 @@
 import psycopg2
 from config.settings import DATABASE_CONFIG
 
-
 class Database:
     def __init__(self):
         self.connection = None
