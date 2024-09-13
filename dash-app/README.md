@@ -38,7 +38,7 @@ project_name/
 │
 ├── callbacks/                 # Callbacks que gerenciam a interatividade
 │   ├── update_dropdown.py     # Callbacks para atualizar os dropdows
-│   └── update_bar_graph.py        # Callback para atualizar os gráficos
+│   └── update_graph.py        # Callback para atualizar os gráficos
 │
 ├── config/                    # Configurações do projeto
 │   └── settings.py            # Configurações de conexão com o banco de dados
@@ -100,3 +100,16 @@ python app.py
 
 O aplicativo estará disponível em [http://127.0.0.1:8050](http://127.0.0.1:8050).
 
+## 📊 Funcionalidades
+
+- **Seleção de Estados e Regiões**: Filtra dados com base na seleção do estado e região.
+- **Sumário de Atendimento Hospitalares**: Tabela que exibe os atendimentos máximos e mínimos dos municipios selecionados.
+- **Sumário de Procedimentos**: Tabela que exibe o total agregado dos procedimentos selecionados.
+
+## 📝 Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests para melhorias no projeto.
+
+## 📄 Licença
+
+Este projeto é licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
