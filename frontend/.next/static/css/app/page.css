@@ -1,7 +1,7 @@
-/*!***************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./app/page.module.css ***!
-  \***************************************************************************************************************************************************************************************************************************************************************/
-.page_page__556_G {
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[7].use[3]!./styles/page.module.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
+.page_page__FVvy6 {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
   --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
@@ -21,7 +21,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .page_page__556_G {
+  .page_page__FVvy6 {
     --gray-rgb: 255, 255, 255;
     --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
     --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
@@ -31,14 +31,14 @@
   }
 }
 
-.page_main__nw1Wk {
+.page_main__51ksU {
   display: flex;
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
 }
 
-.page_main__nw1Wk ol {
+.page_main__51ksU ol {
   font-family: var(--font-geist-mono);
   padding-left: 0;
   margin: 0;
@@ -48,11 +48,11 @@
   list-style-position: inside;
 }
 
-.page_main__nw1Wk li:not(:last-of-type) {
+.page_main__51ksU li:not(:last-of-type) {
   margin-bottom: 8px;
 }
 
-.page_main__nw1Wk code {
+.page_main__51ksU code {
   font-family: inherit;
   background: var(--gray-alpha-100);
   padding: 2px 4px;
@@ -60,12 +60,12 @@
   font-weight: 600;
 }
 
-.page_ctas__rfsth {
+.page_ctas__wbCD0 {
   display: flex;
   gap: 16px;
 }
 
-.page_ctas__rfsth a {
+.page_ctas__wbCD0 a {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -84,80 +84,80 @@
   font-weight: 500;
 }
 
-a.page_primary__2CBMe {
+a.page_primary__5lPEq {
   background: var(--foreground);
   color: var(--background);
   gap: 8px;
 }
 
-a.page_secondary__jzhTV {
+a.page_secondary__2RyZx {
   border-color: var(--gray-alpha-200);
   min-width: 180px;
 }
 
-.page_footer__F3MD0 {
+.page_footer__ledLT {
   grid-row-start: 3;
   display: flex;
   gap: 24px;
 }
 
-.page_footer__F3MD0 a {
+.page_footer__ledLT a {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.page_footer__F3MD0 img {
+.page_footer__ledLT img {
   flex-shrink: 0;
 }
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-  a.page_primary__2CBMe:hover {
+  a.page_primary__5lPEq:hover {
     background: var(--button-primary-hover);
     border-color: transparent;
   }
 
-  a.page_secondary__jzhTV:hover {
+  a.page_secondary__2RyZx:hover {
     background: var(--button-secondary-hover);
     border-color: transparent;
   }
 
-  .page_footer__F3MD0 a:hover {
+  .page_footer__ledLT a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
   }
 }
 
 @media (max-width: 600px) {
-  .page_page__556_G {
+  .page_page__FVvy6 {
     padding: 32px;
     padding-bottom: 80px;
   }
 
-  .page_main__nw1Wk {
+  .page_main__51ksU {
     align-items: center;
   }
 
-  .page_main__nw1Wk ol {
+  .page_main__51ksU ol {
     text-align: center;
   }
 
-  .page_ctas__rfsth {
+  .page_ctas__wbCD0 {
     flex-direction: column;
   }
 
-  .page_ctas__rfsth a {
+  .page_ctas__wbCD0 a {
     font-size: 14px;
     height: 40px;
     padding: 0 16px;
   }
 
-  a.page_secondary__jzhTV {
+  a.page_secondary__2RyZx {
     min-width: auto;
   }
 
-  .page_footer__F3MD0 {
+  .page_footer__ledLT {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
@@ -165,7 +165,7 @@ a.page_secondary__jzhTV {
 }
 
 @media (prefers-color-scheme: dark) {
-  .page_logo__ikIZE {
+  .page_logo__5OXWz {
     filter: invert();
   }
 }
