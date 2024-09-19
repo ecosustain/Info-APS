@@ -1,20 +1,30 @@
+'use client'
+import React from "react";
 import Image from "next/image";
+
+import BrazilMap from "./components/BrazilMap"
+
 import styles from "@/styles/page.module.css";
 
 export default function Home() {
+  const handleHover = (e: any) => {
+    const { target: { offsetLeft } } = e;
+    console.log(offsetLeft);
+  }
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
+      <BrazilMap/>
+        {/* <img
           className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
+          src={Brazil}
           alt="Next.js logo"
           width={180}
           height={38}
-          priority
-        />
+        /> */}
         <ol>
-          <li>
+          <li onMouseOver={() => console.log("leo")}>
             Get started by editing <code>app/page.tsx</code>.
           </li>
           <li>Save and see your changes instantly.</li>
