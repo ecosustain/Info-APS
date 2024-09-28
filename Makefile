@@ -31,6 +31,12 @@ git:
 	git add .
 	git status
 
+# Executar criacao db
+create_db:
+	python backend/manage.py makemigrations
+	python backend/manage.py migrate
+	python backend/manage.py seed
+
 # Instalar dependências do projeto
 install:
 	@echo "Instalando os requisitos do projeto"

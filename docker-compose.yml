@@ -5,8 +5,8 @@ services:
     image: postgres:14
     container_name: sb-postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: saude-basica
+      POSTGRES_USER: saude_basica
+      POSTGRES_PASSWORD: saude_basica
       POSTGRES_DB: saude_basica
     volumes:
       - postgres_data:/var/lib/postgresql/data

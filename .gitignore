@@ -20,3 +20,6 @@ env/
 
 # Ignorar shapefile
 *.shp
+
+backend/saude_basica_env/
+backend/saude_basica_v1.psql
