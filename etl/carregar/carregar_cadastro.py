@@ -1,6 +1,7 @@
 import pandas as pd
-from carregar import transform_data
 from database import conectar_db
+
+from etl.carregar.carregar import transform_data
 
 
 # Função para validar os dados do CSV

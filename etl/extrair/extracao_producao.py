@@ -1,8 +1,12 @@
+"""Extração dos relatórios de produção do SISAB."""
+
 import configparser
 from datetime import datetime
 
-import transf_producao
-from extracao import (
+from selenium.webdriver.common.by import By
+
+import etl.transformar.transf_producao as transf_producao
+from etl.extrair.extracao import (
     carregar_xpaths,
     cria_driver,
     fazer_download,
@@ -13,7 +17,6 @@ from extracao import (
     verifica_arquivo,
     verifica_grupo,
 )
-from selenium.webdriver.common.by import By
 
 logger = get_logger("producao.log")
 
@@ -41,17 +44,28 @@ today = datetime.today().strftime("%Y-%m-%d")
 PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 
 
-def executar_downloads_mes(linha, coluna, checkbox, nome_arq, meses=1000):
+def seleciona_producao(driver, linha, coluna, checkbox, nome_arq):
+    """Seleciona a produção a ser extraída."""
+    # Selecionar "Municípios" no dropdown de Linhas
+    seleciona_xpath(driver, linha)
+    # Selecionar "Coluna" no dropdown de Colunas
+    seleciona_xpath(driver, coluna)
+    # Verifica grupo 1
+    verifica_grupo(driver, coluna, nome_arq)
+    # Selecionar todos no checkbox da coluna
+    selecionar_primeiro_item(driver, checkbox)
+
+
+def executar_downloads_mes(linha, coluna, checkbox, nome_arq, num_meses=1000):
     """Executa o download dos relatórios de produção para cada mês."""
     verifica_arquivo(PRODUCAO_FILENAME)
-    # Inicializa o driver
     driver = cria_driver(LINK)
     competencias = seleciona_competencias(driver)
     falhas = 0
     for i, competencia in enumerate(
         competencias.find_elements(By.TAG_NAME, "li")
     ):
-        if i == meses:
+        if i == num_meses:
             break
         if i > 0:
             competencias = seleciona_competencias(driver).find_elements(
@@ -60,24 +74,9 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, meses=1000):
             competencia = competencias[i]
         mes = competencia.text
         logger.info("Processando o mês %s", mes)
-        # Clica no botão de de competência (mes/ano)
         competencia.click()
-
-        # Selecionar "Municípios" no dropdown de Linhas
-        seleciona_xpath(driver, linha)
-
-        # Selecionar "Coluna" no dropdown de Colunas
-        seleciona_xpath(driver, coluna)
-
-        # Verifica grupo 1
-        verifica_grupo(driver, coluna, nome_arq)
-
-        # Selecionar todos no checkbox da coluna
-        selecionar_primeiro_item(driver, checkbox)
-
-        # Faz o download do relatório
+        seleciona_producao(driver, linha, coluna, checkbox, nome_arq)
         if fazer_download(driver, mes, nome_arq):
-            # Recarregar a página para a próxima competência
             driver.refresh()
         else:
             falhas += 1
@@ -86,9 +85,7 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, meses=1000):
                 logger.error("Muitas falhas, abortando")
                 return False
             driver = cria_driver(LINK)
-
     logger.info("Script Finalizado")
-    # Fecha a janela do navegador
     driver.quit()
 
 

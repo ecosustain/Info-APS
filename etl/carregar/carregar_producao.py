@@ -1,6 +1,6 @@
 """Módulo para carregar os dados de produção no banco de dados."""
 import pandas as pd
-from carregar import (
+from carregar.carregar import (
     ajusta_producao,
     carrega_banco,
     ler_producao,
@@ -11,7 +11,7 @@ from carregar import (
     valida_producao,
     valida_tipo_atendimento_bd,
 )
-from extracao import carregar_xpaths
+from extrair.extracao import carregar_xpaths
 
 
 def main(arquivo):

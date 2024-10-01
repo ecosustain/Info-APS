@@ -1,9 +1,10 @@
+import os
+
 import markdown
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from django.conf import settings
-import os
 
 
 class ErModelView(View):
@@ -22,4 +23,4 @@ class ErModelView(View):
         #   context = {
         #       'markdown_content': html_content,
         #   }
-        return render(request, 'er_model.html')
+        return render(request, "er_model.html")

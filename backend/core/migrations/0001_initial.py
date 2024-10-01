@@ -22,11 +22,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 (
                     "name",
-                    models.CharField(max_length=50, primary_key=True, serialize=False),
+                    models.CharField(
+                        max_length=50, primary_key=True, serialize=False
+                    ),
                 ),
                 ("description", models.TextField()),
             ],
@@ -45,11 +49,15 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 (
                     "name",
-                    models.CharField(max_length=50, primary_key=True, serialize=False),
+                    models.CharField(
+                        max_length=50, primary_key=True, serialize=False
+                    ),
                 ),
                 ("description", models.TextField()),
             ],
@@ -77,7 +85,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 ("name", models.CharField(max_length=100)),
                 ("description", models.TextField()),
@@ -114,7 +124,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 ("name", models.CharField(max_length=100)),
                 (
@@ -192,7 +204,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 ("name", models.CharField(max_length=100)),
                 ("description", models.TextField()),
@@ -243,7 +257,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 ("group_param", models.CharField(max_length=255)),
                 ("class_param", models.CharField(max_length=255)),
@@ -253,7 +269,8 @@ class Migration(migrations.Migration):
                 (
                     "geo_unit",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="core.geounit"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.geounit",
                     ),
                 ),
             ],
@@ -281,13 +298,17 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now=True, verbose_name="Update date"),
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="Update date"
+                    ),
                 ),
                 ("name", models.CharField(max_length=255, unique=True)),
             ],
             options={
                 "db_table": "individual_category",
-                "indexes": [models.Index(fields=["name"], name="category_name_index")],
+                "indexes": [
+                    models.Index(fields=["name"], name="category_name_index")
+                ],
             },
         ),
         migrations.CreateModel(
@@ -326,7 +347,8 @@ class Migration(migrations.Migration):
             model_name="individualcare",
             name="individual_category",
             field=models.ManyToManyField(
-                through="core.IndividualCareCategory", to="core.individualcategory"
+                through="core.IndividualCareCategory",
+                to="core.individualcategory",
             ),
         ),
         migrations.AddIndex(
@@ -350,6 +372,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name="individualcare",
-            index=models.Index(fields=["year", "month"], name="index_year_month"),
+            index=models.Index(
+                fields=["year", "month"], name="index_year_month"
+            ),
         ),
     ]

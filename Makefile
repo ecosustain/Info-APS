@@ -36,6 +36,10 @@ create_db:
 	python backend/manage.py makemigrations
 	python backend/manage.py migrate
 	python backend/manage.py seed
+	wget-P backend/ https://dlab-public-files.s3.us-east-2.amazonaws.com/saude_basica_v1.psql.zip
+	unzip backend/saude_basica_v1.psql.zip -d backend/
+	rm backend/saude_basica_v1.psql.zip
+	PGPASSWORD=saude_basica psql -f saude_basica_v1.psql --host localhost --port 5432 --username saude_basica --dbname saude_basica_development
 
 # Instalar dependências do projeto
 install:

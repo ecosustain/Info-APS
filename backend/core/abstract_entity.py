@@ -12,8 +12,13 @@ class AuditableEntity(models.Model):
         - abstract (boolean): Indicates that this model should not be created as a separate table in the database.
 
     """
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Creation date")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Update date")
+
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name="Creation date"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Update date"
+    )
 
     class Meta:
         abstract = True  # não crie uma tabela no banco de dados.
@@ -26,7 +31,7 @@ class Category(AuditableEntity):
         abstract = True
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class HealthCore(AuditableEntity):
@@ -40,7 +45,7 @@ class HealthCore(AuditableEntity):
         abstract = True  # não crie uma tabela no banco de dados
 
     def __str__(self):
-        return f'{self.group_param} - {self.class_param}'
+        return f"{self.group_param} - {self.class_param}"
 
 
 class HealthCoreCategory(models.Model):
@@ -50,4 +55,4 @@ class HealthCoreCategory(models.Model):
         abstract = True
 
     def __str__(self):
-        return f'{self.value}'
+        return f"{self.value}"

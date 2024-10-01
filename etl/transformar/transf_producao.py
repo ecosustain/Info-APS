@@ -108,6 +108,14 @@ def concat_final_csv(name, dir="."):
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
+    # Ajustar as colunas para inteiros
+    try:
+        for col in df.columns.difference(["Uf", "Municipio", "Mes"]):
+            df[col] = (
+                pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
+            )
+    except Exception as e:
+        print(f"Erro ao converter a coluna {col} para inteiro: {e}")
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df

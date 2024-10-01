@@ -19,13 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-d_v)d(#qkv*y4ux@hcjc4ysq@ohmj08vqf6((w-d(m3tdd$q!7"
+SECRET_KEY = (
+    "django-insecure-d_v)d(#qkv*y4ux@hcjc4ysq@ohmj08vqf6((w-d(m3tdd$q!7"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dash-saude-admin.elsvital.dev', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://dash-saude-admin.elsvital.dev']
+ALLOWED_HOSTS = ["dash-saude-admin.elsvital.dev", "localhost", "127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["https://dash-saude-admin.elsvital.dev"]
 
 # Application definition
 
@@ -54,14 +56,16 @@ MIDDLEWARE = [
 
 CSRF_COOKIE_SECURE = True  # Se estiver usando HTTPS
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = 'Lax'  # ou 'Strict', dependendo das necessidades de segurança
+CSRF_COOKIE_SAMESITE = (
+    "Lax"  # ou 'Strict', dependendo das necessidades de segurança
+)
 
 ROOT_URLCONF = "saude_basica_backend.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -82,11 +86,11 @@ WSGI_APPLICATION = "saude_basica_backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        'NAME': 'saude_basica_full',
-        'USER': 'saude_basica',
-        'PASSWORD': 'saude_basica',
-        'HOST': 'localhost',
-        'PORT': '5432',  # A porta padrão do PostgreSQL é 5432
+        "NAME": "saude_basica_full",
+        "USER": "saude_basica",
+        "PASSWORD": "saude_basica",
+        "HOST": "localhost",
+        "PORT": "5432",  # A porta padrão do PostgreSQL é 5432
     }
 }
 
@@ -132,11 +136,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Usado em produção, normalmente vazio em desenvolvimento
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(
+    BASE_DIR, "static"
+)  # Usado em produção, normalmente vazio em desenvolvimento
 STATICFILES_DIRS = [  # Adicione seus diretórios de arquivos estáticos aqui
-    os.path.join(BASE_DIR, 'website/static'),  # Arquivos estáticos durante desenvolvimento
+    os.path.join(
+        BASE_DIR, "website/static"
+    ),  # Arquivos estáticos durante desenvolvimento
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

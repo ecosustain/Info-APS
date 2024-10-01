@@ -1,5 +1,5 @@
-from django.db import models
 from core.abstract_entity import AuditableEntity
+from django.db import models
 
 
 class GeoUnitType(AuditableEntity):
@@ -7,7 +7,7 @@ class GeoUnitType(AuditableEntity):
     description = models.TextField()
 
     class Meta:
-        db_table = 'geo_unit_type'
+        db_table = "geo_unit_type"
 
     def __str__(self):
         return self.name
@@ -16,7 +16,13 @@ class GeoUnitType(AuditableEntity):
 class GeoUnit(AuditableEntity):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey(
+        "self",
+        related_name="children",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     type = models.ForeignKey(GeoUnitType, on_delete=models.CASCADE)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
@@ -25,11 +31,13 @@ class GeoUnit(AuditableEntity):
     cnes = models.IntegerField(null=True, blank=True)
 
     class Meta:
-        db_table = 'geo_unit'
+        db_table = "geo_unit"
         indexes = [
-            models.Index(fields=['name'], name='geo_unit_name_index'),
+            models.Index(fields=["name"], name="geo_unit_name_index"),
         ]
-        unique_together = (('name', 'parent'),)  # Define a combinação única de name e parent
+        unique_together = (
+            ("name", "parent"),
+        )  # Define a combinação única de name e parent
 
     def __str__(self):
         return self.name

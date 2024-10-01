@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 # Importe o módulo que contém suas funções
-from etl import extracao
+from etl.extrair import extracao
 
 
 class TestExtracao(unittest.TestCase):
