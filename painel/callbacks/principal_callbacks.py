@@ -3,9 +3,11 @@ import json
 
 import dash
 import dash.dependencies as dd
+import dash_core_components as dcc
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
+import requests
+from dash import ALL, Input, Output, State
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -83,6 +85,32 @@ def get_df_atendimentos(json_data):
 
 
 def get_df_altas(json_data):
+    # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
+    #    json_data -> json que contem os dados de atendimento
+    # retorna o df
+    dados = []
+
+    # Iterar sobre os anos (2013, 2014, etc.)
+    for ano, meses in json_data.items():
+        # Iterar sobre os meses e seus valores
+        for mes, valor in meses.items():
+            # Adicionar uma linha para cada entrada
+            dados.append([int(ano), trimestre_map[mes], mes_map[mes], valor])
+
+    # Criar o DataFrame com as colunas: tipo, ano, mês, valor
+    df = pd.DataFrame(dados, columns=["ano", "trimestre", "mes", "valor"])
+    # df['trimestre'] = df['mes'].apply(calcular_trimestre)
+    df["ano_mes"] = df["mes"].astype(str) + "/" + df["ano"].astype(str)
+    df["ano_trimestre"] = (
+        df["trimestre"].astype(str) + "/" + df["ano"].astype(str)
+    )
+
+    # TODO normalizar valores pelo total da população (1000 habitantes)
+
+    return df
+
+
+def get_df_encaminhamentos(json_data):
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
     #    json_data -> json que contem os dados de atendimento
     # retorna o df
@@ -306,68 +334,208 @@ def get_chart_by_quarter(df, title, type):
     return chart
 
 
+def get_cities(estado):
+    url = f"https://dash-saude-mongo.elsvital.dev/api/v1/cities/{estado}"
+    headers = {"accept": "application/json"}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        cities = response.json()
+        return cities
+    else:
+        print(response.status_code)
+        print(response.text)
+        return None
+
+
+def get_ibge_code(estado, municipio):
+    """Função para obter o código IBGE de um município a partir do nome e do estado"""
+    with open("data/municipios.json", "r", encoding="utf-8") as file:
+        municipios = json.load(file)
+
+    for item in municipios:
+        if item["estado"] == estado and item["municipio"] == municipio:
+            return item["ibge"]
+
+    return None
+
+
+def get_atendimentos(estado, cidade):
+    """Função para obter os dados de atendimentos"""
+    url = "https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos"
+    if estado is not None:
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/states/{estado}"
+    if cidade is not None:
+        ibge_code = get_ibge_code(estado, cidade)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/cities/{ibge_code}"
+
+    print("Fazendo request para:", url)
+
+    headers = {"accept": "application/json"}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(response.status_code)
+        print(response.text)
+        return None
+
+
+def get_altas(estado, cidade):
+    """Função para obter os dados de altas"""
+    url = "https://dash-saude-mongo.elsvital.dev/api/v1/altas"
+    if estado is not None:
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/states/{estado}"
+    if cidade is not None:
+        ibge_code = get_ibge_code(estado, cidade)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/cities/{ibge_code}"
+    print("Fazendo request para:", url)
+    headers = {"accept": "application/json"}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(response.status_code)
+        print(response.text)
+        return None
+
+
+def get_encaminhamentos(estado, cidade):
+    """Função para obter os dados de encaminhamentos"""
+    url = "https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos"
+    if estado is not None:
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/states/{estado}"
+    if cidade is not None:
+        ibge_code = get_ibge_code(estado, cidade)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/cities/{ibge_code}"
+
+    headers = {"accept": "application/json"}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(response.status_code)
+        print(response.text)
+        return None
+
+
 df_atendimentos = get_df_atendimentos(json_data)
 # df_altas = get_df_altas(json_data)
 anos = [2024, 2023, 2022, 2021, 2020, 2019]
 
 
 def register_callbacks(app):
-    # Callback para atualizar o número de atendimentos
+    @app.callback(
+        dd.Output("dropdown-cidade", "options"),
+        dd.Input("dropdown-estado", "value"),
+    )
+    def update_dropdown_cidades(estado):
+        # Função para atualizar as opções do dropdown de cidades
+        if estado is None:
+            raise dash.exceptions.PreventUpdate
+
+        # Filtrar as cidades do estado selecionado
+        cidades = get_cities(estado)
+
+        # Transformar em um formato aceito pelo dropdown
+        options = [{"label": cidade, "value": cidade} for cidade in cidades]
+
+        return options
+
+    # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
-            dd.Output("total-atendimentos", "children"),
-            dd.Output("big-medicos", "children"),
-            dd.Output("big-enfermeiros", "children"),
-            dd.Output("big-outros", "children"),
+            dd.Output("store-data", "data"),
+            dd.Output("store-data-altas", "data"),
+            dd.Output("store-data-enc", "data"),
         ],
         [
-            dd.Input(f"btn-{ano}", "n_clicks") for ano in anos
-        ],  # Um input para cada botão de ano
-        [
-            dd.State(f"btn-{ano}", "id") for ano in anos
-        ],  # Para pegar o ID do botão clicado
+            dd.Input("dropdown-cidade", "value"),
+            dd.Input("dropdown-estado", "value"),
+        ],
     )
-    def update_big_numbers(*args):
-        # Função para atualizar os números grandes
+    def fetch_data(cidade, estado):
+        """Função para fazer a requisição à API e armazenar os dados no dcc.Store"""
+        data_atendimentos = get_atendimentos(estado, cidade)
+        data_altas = get_altas(estado, cidade)
+        data_encaminhamentos = get_encaminhamentos(estado, cidade)
+
+        return data_atendimentos, data_altas, data_encaminhamentos
+
+    @app.callback(
+        [
+            Output("total-atendimentos", "children"),
+            Output("big-medicos", "children"),
+            Output("big-enfermeiros", "children"),
+            Output("big-outros", "children"),
+        ],
+        [
+            Input("store-data", "data"),
+            *[Input(f"btn-{ano}", "n_clicks") for ano in anos],
+        ],
+        [
+            State("store-data", "data"),
+            *[State(f"btn-{ano}", "n_clicks") for ano in anos],
+        ],
+    )
+    def update_big_numbers(data, *args):
         ctx = dash.callback_context
-        if not ctx.triggered or ctx.triggered[0]["prop_id"] == ".":
-            ano = anos[0]  # Define o primeiro ano como padrão
-        else:
-            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-            ano = int(button_id.split("-")[1])  # Extrai o ano do ID do botão
 
-        # Pegar os números grandes
-        big_numbers = get_big_numbers_atendimentos(df_atendimentos, ano)
+        # Identificar o ano selecionado
+        ano = anos[0]  # Define o primeiro ano como padrão
+        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+            prop_id = ctx.triggered[0]["prop_id"]
+            if "btn-ano" in prop_id:
+                ano = int(
+                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
+                )  # Extrai o ano do ID do botão
 
-        # dividir cada big number por 1000 para facilitar a leitura
-        big_numbers = [int(num / 100000) for num in big_numbers]
+        df = get_df_atendimentos(data)
+        big_numbers = get_big_numbers_atendimentos(df, ano)
+
+        # Dividir cada big number por 1000 para facilitar a leitura
+        big_numbers = [int(num / 1000) for num in big_numbers]
 
         return big_numbers
 
-    get_chart_by_quarter, get_chart_by_year_profissionais, get_chart_by_year
-
-    # Callback para atualizar os gráficos de atendimentos
+    # Callback para atualiza os totais de altas
     @app.callback(
         [
-            dd.Output("chart_by_year", "figure"),
-            dd.Output("chart_by_year_profissionais", "figure"),
-            dd.Output("chart_by_quarter", "figure"),
+            Output("total-altas", "children"),
+            Output("total-encaminhamentos", "children"),
         ],
         [
-            dd.Input(f"btn-{ano}", "n_clicks") for ano in anos
-        ],  # Um input para cada botão de ano
-        [
-            dd.State(f"btn-{ano}", "id") for ano in anos
-        ],  # Para pegar o ID do botão clicado
+            Input("store-data-altas", "data"),
+            Input("store-data-enc", "data"),
+        ],
     )
-    def update_charts(*args):
-        # Função para atualizar os gráficos
-        ctx = dash.callback_context
-        if not ctx.triggered or ctx.triggered[0]["prop_id"] == ".":
-            ano = anos[0]  # Define o primeiro ano como padrão
-        else:
-            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-            ano = int(button_id.split("-")[1])  # Extrai o ano do ID do botão
+    def update_totals(data_altas, data_encaminhamentos):
+        df_altas = get_df_altas(data_altas)
+        df_encaminhamentos = get_df_encaminhamentos(data_encaminhamentos)
+
+        total_altas = int(df_altas["valor"].sum() / 1000)
+        total_encaminhamentos = int(df_encaminhamentos["valor"].sum() / 1000)
+
+        return total_altas, total_encaminhamentos
+
+    # Callback para atualizar os gráficos de atendimentos com base nos dados armazenados
+    @app.callback(
+        [
+            Output("chart_by_year", "figure"),
+            Output("chart_by_year_profissionais", "figure"),
+            Output("chart_by_quarter", "figure"),
+        ],
+        Input("store-data", "data"),
+    )
+    def update_charts(data):
+        df_atendimentos = get_df_atendimentos(data)
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
@@ -381,3 +549,28 @@ def register_callbacks(app):
         )
 
         return chart_by_year, chart_by_year_profissionais, chart_by_quarter
+
+    @app.callback(
+        Output("chart_altas", "figure"), Input("store-data-altas", "data")
+    )
+    def update_chart_altas(data):
+        df_altas = get_df_altas(data)
+
+        # Gerar o gráfico
+        chart_altas = get_chart_by_year(df_altas, "altas", "brasil")
+
+        return chart_altas
+
+    @app.callback(
+        Output("chart_encaminhamentos", "figure"),
+        Input("store-data-enc", "data"),
+    )
+    def update_chart_encaminhamentos(data):
+        df_encaminhamentos = get_df_encaminhamentos(data)
+
+        # Gerar o gráfico
+        chart_encaminhamentos = get_chart_by_year(
+            df_encaminhamentos, "encaminhamentos", "brasil"
+        )
+
+        return chart_encaminhamentos

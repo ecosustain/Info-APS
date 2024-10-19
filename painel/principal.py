@@ -1,29 +1,82 @@
 import dash
 import dash_bootstrap_components as dbc
-import plotly.graph_objects as go
 from callbacks.principal_callbacks import anos, register_callbacks
 from dash import dcc, html
 
 # Inicializa a aplicação Dash
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+estados_brasileiros = [
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
+]
+
+# Dicionário de cidades por estado (exemplo)
+cidades_por_estado = {
+    "SP": ["SÃO PAULO", "CAMPINAS", "Santos"],
+    "RJ": ["Rio de Janeiro", "Niterói", "Petrópolis"],
+    "MG": ["Belo Horizonte", "Uberlândia", "Contagem"],
+    # Adicione mais estados e cidades conforme necessário
+}
+
 # Layout da aplicação
 app.layout = dbc.Container(
     [  # Add dropdown of states here
         dbc.Row(
-            dbc.Col(
-                dbc.DropdownMenu(
-                    label="Selecione o Estado",
-                    children=[
-                        dbc.DropdownMenuItem("São Paulo", id="dropdown-sp"),
-                        dbc.DropdownMenuItem(
-                            "Rio de Janeiro", id="dropdown-rj"
-                        ),
-                        dbc.DropdownMenuItem("Minas Gerais", id="dropdown-mg"),
-                    ],
+            [
+                dbc.Col(
+                    dcc.Dropdown(
+                        id="dropdown-estado",
+                        options=[
+                            {"label": estado, "value": estado}
+                            for estado in estados_brasileiros
+                        ],
+                        placeholder="Selecione o Estado",
+                        searchable=True,
+                        clearable=True,  # Permite limpar a seleção
+                    ),
+                    width=3,
                 ),
-                width=3,
-            )
+                dbc.Col(
+                    dcc.Dropdown(
+                        id="dropdown-cidade",
+                        options=[],
+                        placeholder="Selecione o Municipio",
+                        searchable=True,
+                        clearable=True,  # Permite limpar a seleção
+                    ),
+                    width=3,
+                ),
+            ]
+        ),
+        dbc.Row(
+            # breakline
+            html.Br(),
         ),
         dbc.Row(
             dbc.Col(
@@ -56,9 +109,16 @@ app.layout = dbc.Container(
             ),
             className="mb-4",
         ),
-        dbc.Row(html.H1("Atendimentos", className="text-start ms-0, mb-4")),
+        dcc.Store(id="store-data"),
         dbc.Row(
-            [  # 2 colunas. Cada coluna com o número grande em cima e embaixo a descrição
+            html.H1(
+                "Atendimentos",
+                className="text-start ms-0, mb-4",
+                id="section-atendimentos",
+            )
+        ),
+        dbc.Row(
+            [
                 dbc.Col(
                     [
                         html.H1(
@@ -66,7 +126,8 @@ app.layout = dbc.Container(
                             className="display-6 text-start fw-bold",
                         ),
                         html.H4(
-                            "Número de atendimentos individuais já registrados",
+                            "Número de atendimentos individuais \
+                                já registrados",
                             className="fs-6",
                         ),
                     ],
@@ -107,7 +168,7 @@ app.layout = dbc.Container(
                                 ),
                                 width="auto",
                             ),
-                            # Coluna do texto, com ajuste de tamanho e alinhamento
+                            # Coluna do texto, com ajuste de tamanho
                             dbc.Col(
                                 html.P(
                                     [
@@ -151,7 +212,7 @@ app.layout = dbc.Container(
                                 ),
                                 width="auto",
                             ),
-                            # Coluna do texto, com ajuste de tamanho e alinhamento
+                            # Coluna do texto, com ajuste de tamanho
                             dbc.Col(
                                 html.P(
                                     [
@@ -194,7 +255,7 @@ app.layout = dbc.Container(
                                 ),
                                 width="auto",
                             ),
-                            # Coluna do texto, com ajuste de tamanho e alinhamento
+                            # Coluna do texto, com ajuste de tamanho
                             dbc.Col(
                                 html.P(
                                     [
@@ -237,7 +298,81 @@ app.layout = dbc.Container(
         dbc.Row(
             [
                 # Atendimento poe população por trimestre
-                dbc.Col(dcc.Graph(id="chart_by_quarter"), width=10),
+                dbc.Col(dcc.Graph(id="chart_by_quarter"), width=12),
+            ],
+            className="mb-4",
+        ),
+        dcc.Store(id="store-data-altas"),
+        dbc.Row(
+            html.H1(
+                "Altas", className="text-start ms-0, mb-4", id="section-altas"
+            )
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        html.H1(
+                            id="total-altas",
+                            className="display-6 text-start fw-bold",
+                        ),
+                        html.H4(
+                            "Número total de altas \
+                                registradas",
+                            className="fs-6",
+                        ),
+                    ],
+                    width=3,
+                ),
+            ],
+            className="mb-5",
+        ),
+        dbc.Row(
+            [
+                # Atendimento por população por ano
+                dbc.Col(
+                    dcc.Graph(id="chart_altas"), width=6
+                ),  # Primeira coluna com o gráfico
+                # Atendimento por profissional de saúde
+                dbc.Col(),  # Segunda coluna com o gráfico
+            ],
+            className="mb-4",
+        ),
+        dcc.Store(id="store-data-enc"),
+        dbc.Row(
+            html.H1(
+                "Encaminhamentos",
+                className="text-start ms-0, mb-4",
+                id="section-encaminhamentos",
+            )
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        html.H1(
+                            id="total-encaminhamentos",
+                            className="display-6 text-start fw-bold",
+                        ),
+                        html.H4(
+                            "Número total de encaminhamentos \
+                                registrados",
+                            className="fs-6",
+                        ),
+                    ],
+                    width=3,
+                ),
+            ],
+            className="mb-5",
+        ),
+        dbc.Row(
+            [
+                # Atendimento por população por ano
+                dbc.Col(
+                    dcc.Graph(id="chart_encaminhamentos"), width=6
+                ),  # Primeira coluna com o gráfico
+                # Atendimento por profissional de saúde
+                dbc.Col(),  # Segunda coluna com o gráfico
             ],
             className="mb-4",
         ),
@@ -252,4 +387,10 @@ register_callbacks(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(
+        debug=True,
+        dev_tools_hot_reload=False,
+        dev_tools_silence_routes_logging=False,
+        dev_tools_ui=True,
+        dev_tools_prune_errors=True,
+    )
