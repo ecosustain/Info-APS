@@ -526,11 +526,11 @@ def register_callbacks(app):
         [
             Input("store-data", "data"),
             Input("store-populacao", "value"),
-            *[Input(f"btn-{ano}", "n_clicks") for ano in anos],
+            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
         [
             State("store-data", "data"),
-            *[State(f"btn-{ano}", "n_clicks") for ano in anos],
+            *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
     def update_big_numbers(data, populacao, *args):
@@ -552,8 +552,6 @@ def register_callbacks(app):
         big_numbers = get_big_numbers_atendimentos(df, ano)
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
-        print("Big numbers:", big_numbers)
-        print("População:", total_populacao)
         total_atendimentos = big_numbers[0]
 
         # Dividir cada big number por 1000 para facilitar a leitura
@@ -694,3 +692,38 @@ def register_callbacks(app):
             "location"
         ]  # Extrai a sigla do estado clicado
         return f"Você clicou no estado: {state_clicked}"
+
+    @app.callback(
+        [Output(f"btn-ano-{ano}", "style") for ano in anos],
+        [Input(f"btn-ano-{ano}", "n_clicks") for ano in anos]
+    )
+    def update_button_styles(*n_clicks):
+        ctx = dash.callback_context
+
+        # Identificar o ano selecionado
+        ano_selecionado = anos[0]  # Define o primeiro ano como padrão
+        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+            prop_id = ctx.triggered[0]["prop_id"]
+            if "btn-ano" in prop_id:
+                ano_selecionado = int(prop_id.split(".")[0].split("-")[-1])  # Extrai o ano do ID do botão
+
+
+        # Atualizar o estilo dos botões com base no ano selecionado
+        estilos = []
+        for ano in anos:
+            if ano == ano_selecionado:
+                estilo = {
+                    "background-color": "#000000",  # Fundo preto
+                    "border-color": "#A5A5A5",  # Cor da borda
+                    "color": "#fff",  # Cor do texto
+                    "padding": "0px 12px",
+                }
+            else:
+                estilo = {
+                    "background-color": "#A5A5A5",  # Fundo cinza claro
+                    "border-color": "#A5A5A5",  # Cor da borda
+                    "color": "#fff",  # Cor do texto
+                    "padding": "0px 12px",
+                }
+            estilos.append(estilo)
+        return estilos

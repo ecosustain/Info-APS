@@ -84,7 +84,7 @@ app.layout = dbc.Container(
                     [
                         dbc.Button(
                             str(ano),
-                            id=f"btn-{ano}",
+                            id=f"btn-ano-{ano}",
                             color="primary",
                             outline=True,
                             active=(
