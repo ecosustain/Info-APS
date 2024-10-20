@@ -19,7 +19,7 @@ env/
 *.log
 
 # Ignorar shapefile
-*.shp
+*BR_Municipios_2022.shp
 
 backend/saude_basica_env/
 backend/saude_basica_v1.psql
