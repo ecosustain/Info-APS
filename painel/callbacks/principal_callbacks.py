@@ -1,5 +1,6 @@
 """Módulo com os callbacks da página Principal"""
 import json
+import os
 
 import dash
 import dash.dependencies as dd
@@ -443,6 +444,16 @@ def get_encaminhamentos(estado, cidade):
         return None
 
 
+def get_type(estado, cidade):
+    if estado is None and cidade is None:
+        return "brasil"
+    elif estado is not None and cidade is None:
+        return "estado"
+    elif estado is not None and cidade is not None:
+        return "municipio"
+    return None
+
+
 def get_population(estado, municipio):
     """Função para obter a população de um município, estado ou do Brasil"""
     with open("data/cadastros.json", "r", encoding="utf-8") as file:
@@ -468,6 +479,126 @@ def get_population(estado, municipio):
             return item["Cadastros"]
 
     return None
+
+
+def get_mapa_brasil():
+    """Função para criar o mapa do Brasil"""
+    shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
+    brasil_estados = gpd.read_file(shapefile_uf)
+    mapa_uf = brasil_estados[["SIGLA_UF", "geometry"]]
+    mapa_uf["geometry"] = brasil_estados["geometry"].simplify(tolerance=0.01)
+    mapa_uf["value"] = 1
+    fig = px.choropleth(
+        mapa_uf,
+        geojson=mapa_uf.geometry,  # Usar a geometria do shapefile
+        locations=mapa_uf.index,  # Nome da coluna do DataFrame
+        hover_name="SIGLA_UF",
+        hover_data={"SIGLA_UF": False, "value": False},
+        color="value",
+        color_continuous_scale=[
+            "#B36CA3",
+            "#B36CA3",
+            "#B36CA3",
+        ],
+    )
+
+    # Ajustar as configurações do mapa
+    fig.update_geos(
+        fitbounds="locations",
+        visible=False,
+    )
+    fig.update_layout(
+        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+    )
+
+    return fig
+
+
+def mapa_estado(estado):
+    """Função para criar o mapa de um estado"""
+    arquivos = os.listdir(f"../mapas/Estados/{estado}")
+    shapefile = [arquivo for arquivo in arquivos if arquivo.endswith(".shp")][
+        0
+    ]
+    shapefile = f"../mapas/Estados/{estado}/{shapefile}"
+
+    mapa_mun = gpd.read_file(shapefile)
+    mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
+    mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.01)
+    mapa_mun["value"] = 1
+
+    fig = px.choropleth(
+        mapa_mun,
+        geojson=mapa_mun.geometry,  # Usar a geometria do shapefile
+        locations=mapa_mun.index,  # Nome da coluna do DataFrame
+        hover_name="NM_MUN",
+        hover_data={
+            "SIGLA_UF": False,
+            "value": False,
+        },
+        color="value",
+        color_continuous_scale=[
+            "#80B0DC",
+            "#80B0DC",
+            "#80B0DC",
+        ],
+    )
+
+    # Ajustar as configurações do mapa
+    fig.update_geos(
+        fitbounds="locations",
+        visible=False,
+    )
+    fig.update_layout(
+        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+    )
+
+    return fig
+
+
+def mapa_municipio(estado, municipio):
+    """Função para criar o mapa de um município"""
+    arquivos = os.listdir(f"../mapas/Estados/{estado}")
+    shapefile = [arquivo for arquivo in arquivos if arquivo.endswith(".shp")][
+        0
+    ]
+    shapefile = f"../mapas/Estados/{estado}/{shapefile}"
+
+    mapa_mun = gpd.read_file(shapefile)
+    # Transformar nome do município em maiúsculas
+    mapa_mun["NM_MUN"] = mapa_mun["NM_MUN"].str.upper()
+    mapa_mun = mapa_mun[mapa_mun["NM_MUN"] == municipio]
+    mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
+    mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.01)
+    mapa_mun["value"] = 1
+
+    fig = px.choropleth(
+        mapa_mun,
+        geojson=mapa_mun.geometry,  # Usar a geometria do shapefile
+        locations=mapa_mun.index,  # Nome da coluna do DataFrame
+        hover_name="NM_MUN",
+        hover_data={
+            "SIGLA_UF": False,
+            "value": False,
+        },
+        color="value",
+        color_continuous_scale=[
+            "#FFC20D",
+            "#FFC20D",
+            "#FFC20D",
+        ],
+    )
+
+    # Ajustar as configurações do mapa
+    fig.update_geos(
+        fitbounds="locations",
+        visible=False,
+    )
+    fig.update_layout(
+        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+    )
+
+    return fig
 
 
 df_atendimentos = get_df_atendimentos(json_data)
@@ -596,33 +727,49 @@ def register_callbacks(app):
         ],
         Input("store-data", "data"),
         Input("store-populacao", "value"),
+        Input("dropdown-estado", "value"),
+        Input("dropdown-cidade", "value"),
     )
-    def update_charts(data, populacao):
+    def update_charts(data, populacao, estado, cidade):
         df_atendimentos = get_df_atendimentos(data, populacao)
+
+        if estado is None and cidade is None:
+            type = "brasil"
+        elif estado is not None and cidade is None:
+            type = "estado"
+        elif estado is not None and cidade is not None:
+            type = "municipio"
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
-            df_atendimentos, "Atendimentos totais", "brasil"
+            df_atendimentos, "Atendimentos totais", type
         )
         chart_by_year_profissionais = get_chart_by_year_profissionais(
-            df_atendimentos, "Atendimentos por profissionais", "brasil"
+            df_atendimentos, "Atendimentos por profissionais", type
         )
         chart_by_quarter = get_chart_by_quarter(
-            df_atendimentos, "Atendimentos totais", "brasil"
+            df_atendimentos, "Atendimentos totais", type
         )
 
         return chart_by_year, chart_by_year_profissionais, chart_by_quarter
 
     @app.callback(
         Output("chart_altas", "figure"),
-        [Input("store-data-altas", "data"), Input("store-populacao", "value")],
+        [
+            Input("store-data-altas", "data"),
+            Input("store-populacao", "value"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-cidade", "value"),
+        ],
     )
-    def update_chart_altas(data, populacao):
+    def update_chart_altas(data, populacao, estado, cidade):
         df_altas = get_df_altas(data, populacao)
+
+        type = get_type(estado, cidade)
 
         # Gerar o gráfico
         chart_altas = get_chart_by_year(
-            df_altas, "Altas totais registradas", "brasil"
+            df_altas, "Altas totais registradas", type
         )
 
         return chart_altas
@@ -632,100 +779,51 @@ def register_callbacks(app):
         [
             Input("store-data-enc", "data"),
             Input("store-populacao", "value"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-cidade", "value"),
         ],
     )
-    def update_chart_encaminhamentos(data, populacao):
+    def update_chart_encaminhamentos(data, populacao, estado, cidade):
         df_encaminhamentos = get_df_encaminhamentos(data, populacao)
-
+        type = get_type(estado, cidade)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_by_year(
-            df_encaminhamentos, "Encaminhamentos totais registrados", "brasil"
+            df_encaminhamentos, "Encaminhamentos totais registrados", type
         )
 
         return chart_encaminhamentos
 
+    # Callback para atualizar o mapa com base nos dropdowns
     @app.callback(
-        dd.Output("mapa-estado", "figure"), [Input("mapa-estado", "clickData")]
+        dd.Output("mapa", "figure"),
+        [
+            dd.Input("dropdown-estado", "value"),
+            dd.Input("dropdown-cidade", "value"),
+        ],
     )
-    def update_map(mapa):
-        shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
-        brasil_estados = gpd.read_file(shapefile_uf)
+    def update_mapa(estado, cidade):
+        if estado is None and cidade is None:
+            return get_mapa_brasil()
+        elif estado is not None and cidade is None:
+            return mapa_estado(estado)
+        elif estado is not None and cidade is not None:
+            return mapa_municipio(estado, cidade)
+        return get_mapa_brasil()
 
-        mapa_uf = brasil_estados[["SIGLA_UF", "geometry"]]
-
-        mapa_uf["geometry"] = brasil_estados["geometry"].simplify(
-            tolerance=0.01
-        )
-
-        mapa_uf["value"] = 1
-
-        fig = px.choropleth(
-            mapa_uf,
-            geojson=mapa_uf.geometry,  # Usar a geometria do shapefile
-            locations=mapa_uf.index,  # Nome da coluna do DataFrame
-            hover_name="SIGLA_UF",
-            hover_data={"SIGLA_UF": False, "value": False},
-            color="value",
-            color_continuous_scale=[
-                "#B36CA3",
-                "#B36CA3",
-                "#B36CA3",
-            ],
-        )
-
-        # Ajustar as configurações do mapa
-        fig.update_geos(
-            fitbounds="locations",
-            visible=False,
-        )
-        fig.update_layout(
-            margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
-        )
-
-        return fig
-
-    # Callback para capturar o clique no estado
+    # Callback para atualizar os dropdowns com base na seleção no mapa
     @app.callback(
-        Output("dropdown-estado", "value"), [Input("mapa-estado", "clickData")]
+        Output("dropdown-estado", "value"),
+        [
+            Input("mapa", "clickData"),
+        ],
     )
-    def display_click_data(clickData):
+    def update_dropdowns(clickData):
         if clickData is None:
             raise dash.exceptions.PreventUpdate
-        state_clicked = clickData["points"][0][
-            "location"
-        ]  # Extrai a sigla do estado clicado
-
-        estados_indices = {
-            0: "AC",
-            1: "AM",
-            2: "PA",
-            3: "AP",
-            4: "TO",
-            5: "MA",
-            6: "PI",
-            7: "CE",
-            8: "RN",
-            9: "PB",
-            10: "PE",
-            11: "AL",
-            12: "SE",
-            13: "BA",
-            14: "MG",
-            15: "ES",
-            16: "RJ",
-            17: "SP",
-            18: "PR",
-            19: "SC",
-            20: "RS",
-            21: "MS",
-            22: "MT",
-            23: "GO",
-            24: "DF",
-            25: "RO",
-            26: "RR",
-        }
-        print("Estado:", estados_indices[state_clicked])
-        return estados_indices[state_clicked]
+        location = clickData["points"][0]["hovertext"]
+        if len(location) == 2:  # Estado selecionado
+            return location
+        return dash.exceptions.PreventUpdate
 
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],
