@@ -7,8 +7,10 @@ import dash.dependencies as dd
 import geopandas as gpd
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import requests
 from dash import ALL, Input, Output, State, dcc
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -39,6 +41,21 @@ trimestre_map = {
     "OUT": "T4",
     "NOV": "T4",
     "DEZ": "T4",
+}
+
+trimestre_map_num = {
+    1: "T1",
+    2: "T1",
+    3: "T1",
+    4: "T2",
+    5: "T2",
+    6: "T2",
+    7: "T3",
+    8: "T3",
+    9: "T3",
+    10: "T4",
+    11: "T4",
+    12: "T4",
 }
 
 file_path = "data/atendimentos.json"
@@ -316,14 +333,7 @@ def get_chart_by_year(df, title, type):
     return chart
 
 
-def get_chart_by_quarter(df, title, type):
-    # Retorna o gráfico de barras com o total acumulado dos últimos 6 trimestres de dados
-    #    df -> dados para gerar o gráfico que deve conter ['ano_trimestre', 'ano', 'trimestre', 'valor']
-    #    title -> string com o nome que deve aparecer no label do gráfico
-    #    type -> string para saber em qual agregação estamos ['brasil', 'estado', 'regiao_saude', 'municipio']
-    # retorna o gráfico gerado
-
-    # Agrupar os dados por ano e quarter somando os valores
+def preprocess_data(df):
     df_grouped = (
         df.groupby(["ano_trimestre", "ano", "trimestre"], observed=True)[
             "valor"
@@ -335,9 +345,10 @@ def get_chart_by_quarter(df, title, type):
         "trimestre"
     ].astype(str).str.replace("T", "")
     df_grouped = df_grouped.sort_values("ano_order")
-    df_filtered = df_grouped.tail(6)
+    return df_grouped.tail(11)
 
-    # Criar gráfico de barras
+
+def create_bar_chart(df_filtered, title, type):
     chart = px.bar(
         df_filtered,
         x="ano_trimestre",
@@ -345,10 +356,98 @@ def get_chart_by_quarter(df, title, type):
         text_auto=".2s",
         title=f"{title.capitalize()} por Trimestre",
     )
-
-    # Atualizar para o layout padrão
     chart = update_layout_chart(chart, title, type)
+    return chart
 
+
+def preprocess_sarima_data(df):
+    df_grouped_mes = (
+        df.groupby(
+            ["ano_trimestre", "ano", "trimestre", "mes"], observed=True
+        )["valor"]
+        .sum()
+        .reset_index()
+        .sort_values(["ano", "mes"])
+    )
+    df_grouped_mes.reset_index(drop=True, inplace=True)
+    return df_grouped_mes[:-1]  # Desconsiderar o último mês
+
+
+def fit_sarima_model(df_sarima):
+    model = SARIMAX(
+        df_sarima["valor"], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)
+    )
+    results = model.fit()
+    return results.get_forecast(steps=6)
+
+
+def generate_forecast_dates(df_sarima):
+    last_year = df_sarima["ano"].max()
+    last_month = df_sarima[df_sarima["ano"] == last_year]["mes"].max()
+
+    forecast_month = []
+    forecast_year = []
+    for i in range(1, 7):
+        if last_month == 12:
+            last_month = 1
+            last_year += 1
+        else:
+            last_month += 1
+        forecast_month.append(last_month)
+        forecast_year.append(last_year)
+
+    forecast_trimestre = [trimestre_map_num[m] for m in forecast_month]
+    forecast_index = [
+        f"{t}/{y}" for t, y in zip(forecast_trimestre, forecast_year)
+    ]
+    return forecast_index
+
+
+def create_forecast_df(forecast_index, forecast_values):
+    forecast_df = pd.DataFrame(
+        {"ano_trimestre": forecast_index, "valor": forecast_values}
+    )
+    forecast_df = (
+        forecast_df.groupby("ano_trimestre")["valor"].sum().reset_index()
+    )
+    forecast_df["valor"] = forecast_df["valor"].astype(str)
+    return forecast_df
+
+
+def forecast_sarima(df):
+    df_sarima = preprocess_sarima_data(df)
+    forecast = fit_sarima_model(df_sarima)
+    forecast_index = generate_forecast_dates(df_sarima)
+    forecast_values = forecast.predicted_mean
+    return create_forecast_df(forecast_index, forecast_values)
+
+
+def add_forecast_to_chart(chart, forecast_df, type):
+    chart.add_trace(
+        go.Scatter(
+            x=forecast_df["ano_trimestre"],
+            y=forecast_df["valor"],
+            mode="lines+markers+text",
+            text=[f"{y:.3s}" for y in forecast_df["valor"]],
+            textposition="top center",
+            name="Previsão",
+            line=dict(
+                color=type_color_map.get(type, [None])[1], width=2, dash="dash"
+            ),
+            hovertemplate=f"<b>%{{y:,.0f}}</b><br>Previsão para o %{{x}}<extra></extra>",
+            hoverlabel=dict(
+                bgcolor="#FFFFFF", font_color="#343A40", font_size=12
+            ),
+        )
+    )
+    return chart
+
+
+def get_chart_by_quarter(df, title, type):
+    df_filtered = preprocess_data(df)
+    chart = create_bar_chart(df_filtered, title, type)
+    forecast_df = forecast_sarima(df)
+    chart = add_forecast_to_chart(chart, forecast_df, type)
     return chart
 
 
@@ -510,6 +609,7 @@ def get_mapa_brasil():
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
 
@@ -524,7 +624,7 @@ def mapa_estado(estado):
 
     mapa_mun = gpd.read_file(shapefile)
     mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
-    mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.01)
+    mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.001)
     mapa_mun["value"] = 1
 
     fig = px.choropleth(
@@ -552,6 +652,7 @@ def mapa_estado(estado):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
 
@@ -569,7 +670,7 @@ def mapa_municipio(estado, municipio):
     mapa_mun["NM_MUN"] = mapa_mun["NM_MUN"].str.upper()
     mapa_mun = mapa_mun[mapa_mun["NM_MUN"] == municipio]
     mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
-    mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.01)
+    # mapa_mun["geometry"] = mapa_mun["geometry"].simplify(tolerance=0.001)
     mapa_mun["value"] = 1
 
     fig = px.choropleth(
@@ -597,8 +698,20 @@ def mapa_municipio(estado, municipio):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
+
+
+# Função para formatar números grandes
+def formatar_numero(numero):
+    if numero >= 1_000_000_000:
+        return f"{numero / 1_000_000_000:.1f}B"
+    elif numero >= 1_000_000:
+        return f"{numero / 1_000_000:.1f}M"
+    elif numero >= 1_000:
+        return f"{numero / 1_000:.1f}K"
+    return str(numero)
 
 
 df_atendimentos = get_df_atendimentos(json_data)
@@ -665,8 +778,8 @@ def register_callbacks(app):
         ],
     )
     def update_big_numbers(data, populacao, *args):
+        """Função para atualizar os big numbers com base nos dados armazenados"""
         ctx = dash.callback_context
-
         # Identificar o ano selecionado
         ano = anos[0]  # Define o primeiro ano como padrão
         if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
@@ -684,6 +797,7 @@ def register_callbacks(app):
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
         total_atendimentos = big_numbers[0]
+        total_atendimentos = formatar_numero(total_atendimentos)
 
         # Dividir cada big number por 1000 para facilitar a leitura
         big_numbers = [int(num / total_populacao) for num in big_numbers]
@@ -703,16 +817,33 @@ def register_callbacks(app):
             Input("store-data-altas", "data"),
             Input("store-data-enc", "data"),
             Input("store-populacao", "value"),
+            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
-    def update_totals(data_altas, data_encaminhamentos, populacao):
+    def update_totals(data_altas, data_encaminhamentos, populacao, *args):
+        ctx = dash.callback_context
+        # Identificar o ano selecionado
+        ano = anos[0]  # Define o primeiro ano como padrão
+        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+            prop_id = ctx.triggered[0]["prop_id"]
+            if "btn-ano" in prop_id:
+                ano = int(
+                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
+                )  # Extrai o ano do ID do botão
+
         df_altas = get_df_altas(data_altas)
         df_encaminhamentos = get_df_encaminhamentos(data_encaminhamentos)
-        populacao = populacao / 1000
-        total_altas = int(df_altas["valor"].sum() / populacao)
-        total_encaminhamentos = int(
-            df_encaminhamentos["valor"].sum() / populacao
+        # populacao = populacao / 1000
+        # total_altas = int(df_altas["valor"].sum() / populacao)
+        df_altas = df_altas[df_altas["ano"] == ano]
+        df_encaminhamentos = df_encaminhamentos[
+            df_encaminhamentos["ano"] == ano
+        ]
+        total_altas = formatar_numero(df_altas["valor"].sum())
+        total_encaminhamentos = formatar_numero(
+            df_encaminhamentos["valor"].sum()
         )
+        # int(df_encaminhamentos["valor"].sum() / populacao)
 
         return total_altas, total_encaminhamentos
 
@@ -767,7 +898,7 @@ def register_callbacks(app):
 
         # Gerar o gráfico
         chart_altas = get_chart_by_year(
-            df_altas, "Altas totais registradas", type
+            df_altas, "Altas por mil habitantes registradas", type
         )
 
         return chart_altas
@@ -786,7 +917,9 @@ def register_callbacks(app):
         type = get_type(estado, cidade)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_by_year(
-            df_encaminhamentos, "Encaminhamentos totais registrados", type
+            df_encaminhamentos,
+            "Encaminhamentos por mil habitantes registrados",
+            type,
         )
 
         return chart_encaminhamentos

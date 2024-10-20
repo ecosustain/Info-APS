@@ -150,7 +150,7 @@ app.layout = dbc.Container(
                             className="display-6 text-start fw-bold",
                         ),
                         html.H4(
-                            "Número de atendimentos por pessoa no ano",
+                            "Número de atendimentos por mil habitantes no ano",
                             className="fs-6",
                         ),
                     ],
