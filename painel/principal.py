@@ -109,7 +109,16 @@ app.layout = dbc.Container(
             ),
             className="mb-4",
         ),
+        dbc.Row(
+            [
+                dcc.Graph(id="mapa-estado"),
+                html.Div(
+                    id="output-state"
+                ),  # Div para mostrar o estado clicado
+            ]
+        ),
         dcc.Store(id="store-data"),
+        dcc.Store(id="store-populacao"),
         dbc.Row(
             html.H1(
                 "Atendimentos",
@@ -136,9 +145,12 @@ app.layout = dbc.Container(
                 dbc.Col(width=1),  # Coluna vazia para espaçamento
                 dbc.Col(
                     [
-                        html.H1("4", className="display-6 text-start fw-bold"),
+                        html.H1(
+                            id="normalizado-atendimentos",
+                            className="display-6 text-start fw-bold",
+                        ),
                         html.H4(
-                            "Número de atendimentos por pessoa no ano de 2023",
+                            "Número de atendimentos por pessoa no ano",
                             className="fs-6",
                         ),
                     ],
@@ -286,11 +298,16 @@ app.layout = dbc.Container(
             [
                 # Atendimento por população por ano
                 dbc.Col(
-                    dcc.Graph(id="chart_by_year"), width=6
+                    dcc.Graph(id="chart_by_year", style={"height": "400px"}),
+                    width=6,
                 ),  # Primeira coluna com o gráfico
                 # Atendimento por profissional de saúde
                 dbc.Col(
-                    dcc.Graph(id="chart_by_year_profissionais"), width=6
+                    dcc.Graph(
+                        id="chart_by_year_profissionais",
+                        style={"height": "400px"},
+                    ),
+                    width=6,
                 ),  # Segunda coluna com o gráfico
             ],
             className="mb-4",
@@ -298,7 +315,12 @@ app.layout = dbc.Container(
         dbc.Row(
             [
                 # Atendimento poe população por trimestre
-                dbc.Col(dcc.Graph(id="chart_by_quarter"), width=12),
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_by_quarter", style={"height": "400px"}
+                    ),
+                    width=12,
+                ),
             ],
             className="mb-4",
         ),
@@ -331,7 +353,8 @@ app.layout = dbc.Container(
             [
                 # Atendimento por população por ano
                 dbc.Col(
-                    dcc.Graph(id="chart_altas"), width=6
+                    dcc.Graph(id="chart_altas", style={"height": "400px"}),
+                    width=6,
                 ),  # Primeira coluna com o gráfico
                 # Atendimento por profissional de saúde
                 dbc.Col(),  # Segunda coluna com o gráfico
@@ -369,7 +392,10 @@ app.layout = dbc.Container(
             [
                 # Atendimento por população por ano
                 dbc.Col(
-                    dcc.Graph(id="chart_encaminhamentos"), width=6
+                    dcc.Graph(
+                        id="chart_encaminhamentos", style={"height": "400px"}
+                    ),
+                    width=6,
                 ),  # Primeira coluna com o gráfico
                 # Atendimento por profissional de saúde
                 dbc.Col(),  # Segunda coluna com o gráfico
@@ -387,10 +413,4 @@ register_callbacks(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run(
-        debug=True,
-        dev_tools_hot_reload=False,
-        dev_tools_silence_routes_logging=False,
-        dev_tools_ui=True,
-        dev_tools_prune_errors=True,
-    )
+    app.run()
