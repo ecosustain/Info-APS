@@ -871,13 +871,13 @@ def register_callbacks(app):
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
-            df_atendimentos, "Atendimentos totais", type
+            df_atendimentos, "Atendimentos por mil habitantes", type
         )
         chart_by_year_profissionais = get_chart_by_year_profissionais(
             df_atendimentos, "Atendimentos por profissionais", type
         )
         chart_by_quarter = get_chart_by_quarter(
-            df_atendimentos, "Atendimentos totais", type
+            df_atendimentos, "Atendimentos por mil habitantes", type
         )
 
         return chart_by_year, chart_by_year_profissionais, chart_by_quarter
