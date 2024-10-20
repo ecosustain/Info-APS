@@ -708,13 +708,11 @@ def register_callbacks(app):
     def update_totals(data_altas, data_encaminhamentos, populacao):
         df_altas = get_df_altas(data_altas)
         df_encaminhamentos = get_df_encaminhamentos(data_encaminhamentos)
-
-        total_altas = df_altas[
-            "valor"
-        ].sum()  # int(df_altas["valor"].sum() / populacao)
-        total_encaminhamentos = df_encaminhamentos[
-            "valor"
-        ].sum()  # int(df_encaminhamentos["valor"].sum() / populacao)
+        populacao = populacao / 1000
+        total_altas = int(df_altas["valor"].sum() / populacao)
+        total_encaminhamentos = int(
+            df_encaminhamentos["valor"].sum() / populacao
+        )
 
         return total_altas, total_encaminhamentos
 
@@ -795,7 +793,7 @@ def register_callbacks(app):
 
     # Callback para atualizar o mapa com base nos dropdowns
     @app.callback(
-        dd.Output("mapa", "figure"),
+        Output("mapa", "figure"),
         [
             dd.Input("dropdown-estado", "value"),
             dd.Input("dropdown-cidade", "value"),
@@ -817,10 +815,12 @@ def register_callbacks(app):
             Input("mapa", "clickData"),
         ],
     )
-    def update_dropdowns(clickData):
+    def update_estado(clickData):
         if clickData is None:
             raise dash.exceptions.PreventUpdate
         location = clickData["points"][0]["hovertext"]
+        if type(location) != str:
+            raise dash.exceptions.PreventUpdate
         if len(location) == 2:  # Estado selecionado
             return location
         return dash.exceptions.PreventUpdate
