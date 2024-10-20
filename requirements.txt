@@ -6,3 +6,4 @@ webdriver-manager==4.0.0
 black
 flake8
 isort
+statsmodels
