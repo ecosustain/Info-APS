@@ -375,7 +375,7 @@ def preprocess_sarima_data(df):
 
 def fit_sarima_model(df_sarima):
     model = SARIMAX(
-        df_sarima["valor"], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12)
+        df_sarima["valor"], order=(2, 0, 3), seasonal_order=(1, 1, 2, 12)
     )
     results = model.fit()
     return results.get_forecast(steps=6)
