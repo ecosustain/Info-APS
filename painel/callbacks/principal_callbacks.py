@@ -654,48 +654,82 @@ def register_callbacks(app):
         mapa_uf = brasil_estados[["SIGLA_UF", "geometry"]]
 
         mapa_uf["geometry"] = brasil_estados["geometry"].simplify(
-            tolerance=0.1
+            tolerance=0.01
         )
 
-        # gerar um valor aleatório para cada estado
-        import random
-
-        mapa_uf["value"] = [
-            random.randint(0, 100) for _ in range(len(mapa_uf))
-        ]
-
-        # Converte para GeoJSON
-        gdf_json = mapa_uf.to_json()
+        mapa_uf["value"] = 1
 
         fig = px.choropleth(
             mapa_uf,
             geojson=mapa_uf.geometry,  # Usar a geometria do shapefile
-            locations=mapa_uf.index,
+            locations=mapa_uf.index,  # Nome da coluna do DataFrame
             hover_name="SIGLA_UF",
-            title=f"Atendimentos de por Estado no Brasil - 2023",
+            hover_data={"SIGLA_UF": False, "value": False},
+            color="value",
+            color_continuous_scale=[
+                "#B36CA3",
+                "#B36CA3",
+                "#B36CA3",
+            ],
         )
 
         # Ajustar as configurações do mapa
-        fig.update_geos(fitbounds="locations", visible=False)
-        fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
+        fig.update_geos(
+            fitbounds="locations",
+            visible=False,
+        )
+        fig.update_layout(
+            margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+        )
 
         return fig
 
     # Callback para capturar o clique no estado
     @app.callback(
-        Output("output-state", "children"), [Input("mapa-estado", "clickData")]
+        Output("dropdown-estado", "value"), [Input("mapa-estado", "clickData")]
     )
     def display_click_data(clickData):
         if clickData is None:
-            return "Clique em um estado para ver os detalhes."
+            raise dash.exceptions.PreventUpdate
         state_clicked = clickData["points"][0][
             "location"
         ]  # Extrai a sigla do estado clicado
-        return f"Você clicou no estado: {state_clicked}"
+
+        estados_indices = {
+            0: "AC",
+            1: "AM",
+            2: "PA",
+            3: "AP",
+            4: "TO",
+            5: "MA",
+            6: "PI",
+            7: "CE",
+            8: "RN",
+            9: "PB",
+            10: "PE",
+            11: "AL",
+            12: "SE",
+            13: "BA",
+            14: "MG",
+            15: "ES",
+            16: "RJ",
+            17: "SP",
+            18: "PR",
+            19: "SC",
+            20: "RS",
+            21: "MS",
+            22: "MT",
+            23: "GO",
+            24: "DF",
+            25: "RO",
+            26: "RR",
+        }
+        print("Estado:", estados_indices[state_clicked])
+        return estados_indices[state_clicked]
 
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],
-        [Input(f"btn-ano-{ano}", "n_clicks") for ano in anos]
+        [Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
     )
     def update_button_styles(*n_clicks):
         ctx = dash.callback_context
@@ -705,8 +739,9 @@ def register_callbacks(app):
         if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
             prop_id = ctx.triggered[0]["prop_id"]
             if "btn-ano" in prop_id:
-                ano_selecionado = int(prop_id.split(".")[0].split("-")[-1])  # Extrai o ano do ID do botão
-
+                ano_selecionado = int(
+                    prop_id.split(".")[0].split("-")[-1]
+                )  # Extrai o ano do ID do botão
 
         # Atualizar o estilo dos botões com base no ano selecionado
         estilos = []
