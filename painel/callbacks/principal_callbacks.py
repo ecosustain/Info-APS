@@ -624,13 +624,9 @@ def get_mapa_brasil():
     return fig
 
 
-def mapa_estado(estado):
+def get_mapa_estado(estado):
     """Função para criar o mapa de um estado"""
-    arquivos = os.listdir(f"../mapas/Estados/{estado}")
-    shapefile = [arquivo for arquivo in arquivos if arquivo.endswith(".shp")][
-        0
-    ]
-    shapefile = f"../mapas/Estados/{estado}/{shapefile}"
+    shapefile = f"../mapas/Estados/{estado}/{estado}_Municipios_2022.shp"
 
     mapa_mun = gpd.read_file(shapefile)
     mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
@@ -667,13 +663,9 @@ def mapa_estado(estado):
     return fig
 
 
-def mapa_municipio(estado, municipio):
+def get_mapa_municipio(estado, municipio):
     """Função para criar o mapa de um município"""
-    arquivos = os.listdir(f"../mapas/Estados/{estado}")
-    shapefile = [arquivo for arquivo in arquivos if arquivo.endswith(".shp")][
-        0
-    ]
-    shapefile = f"../mapas/Estados/{estado}/{shapefile}"
+    shapefile = f"../mapas/Estados/{estado}/{estado}_Municipios_2022.shp"
 
     mapa_mun = gpd.read_file(shapefile)
     # Transformar nome do município em maiúsculas
@@ -954,9 +946,9 @@ def register_callbacks(app):
         if estado is None and cidade is None:
             return get_mapa_brasil()
         elif estado is not None and cidade is None:
-            return mapa_estado(estado)
+            return get_mapa_estado(estado)
         elif estado is not None and cidade is not None:
-            return mapa_municipio(estado, cidade)
+            return get_mapa_municipio(estado, cidade)
         return get_mapa_brasil()
 
     # Callback para atualizar os dropdowns com base na seleção no mapa
