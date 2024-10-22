@@ -963,10 +963,7 @@ def register_callbacks(app):
         ],
     )
     def update_estado(clickData, estado):
-        print("Entrou no update_estado")
-        print(clickData)
-        print(estado)
-        print(ctx.triggered[0]["prop_id"].split(".")[0])
+        """Função para atualizar os dropdowns com base na seleção no mapa"""
 
         if not ctx.triggered:
             raise dash.exceptions.PreventUpdate
