@@ -721,16 +721,10 @@ anos = [2024, 2023, 2022, 2021, 2020, 2019]
 
 def register_callbacks(app):
     @app.callback(
-        [
-            Output("dropdown-cidade", "options"),
-            Output("dropdown-cidade", "value"),
-        ],
-        [
-            Input("dropdown-estado", "value"),
-            Input("mapa", "clickData"),
-        ],
+        Output("dropdown-cidade", "options"),
+        Input("dropdown-estado", "value"),
     )
-    def update_dropdown_cidades(estado, clickData):
+    def update_dropdown_cidades(estado):
         # Função para atualizar as opções do dropdown de cidades
         if estado is None:
             raise dash.exceptions.PreventUpdate
@@ -741,13 +735,8 @@ def register_callbacks(app):
         # Transformar em um formato aceito pelo dropdown
         options = [{"label": cidade, "value": cidade} for cidade in cidades]
 
-        # Verificar se o clickData é válido
-        if clickData is not None:
-            if "location" in clickData["points"][0]:
-                cidade = clickData["points"][0]["hovertext"]
-                return options, cidade.upper()
-
         return options
+
 
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
@@ -964,16 +953,24 @@ def register_callbacks(app):
     # Callback para atualizar os dropdowns com base na seleção no mapa
     @app.callback(
         Output("dropdown-estado", "value"),
+        Output("dropdown-cidade", "value"),
         [
             Input("mapa", "clickData"),
+            Input("dropdown-estado", "value"),
         ],
     )
-    def update_estado(clickData):
+    def update_estado(clickData, estado):
+        print("Clicou no mapa")
+        print(clickData)
         if clickData is None:
             raise dash.exceptions.PreventUpdate
         location = clickData["points"][0]["hovertext"]
         if len(location) == 2:  # Estado selecionado
-            return location
+            print("Estado selecionado:", location)
+            return location, None
+        else:
+            print("Município selecionado:", location.upper())
+            return estado, location.upper()
         raise dash.exceptions.PreventUpdate
 
     @app.callback(
