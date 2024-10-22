@@ -1,6 +1,7 @@
 """Módulo com os callbacks da página Principal"""
 import json
 import os
+import warnings
 
 import dash
 import dash.dependencies as dd
@@ -10,7 +11,16 @@ import plotly.express as px
 import plotly.graph_objects as go
 import requests
 from dash import ALL, Input, Output, State, dcc
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+warnings.filterwarnings(
+    "ignore",
+    category=UserWarning,
+    message="Non-invertible starting seasonal moving average",
+)
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
+
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -378,7 +388,7 @@ def fit_sarima_model(df_sarima):
     model = SARIMAX(
         df_sarima["valor"], order=(2, 0, 3), seasonal_order=(1, 1, 2, 12)
     )
-    results = model.fit()
+    results = model.fit(disp=False)
     return results.get_forecast(steps=6)
 
 
@@ -737,7 +747,6 @@ def register_callbacks(app):
 
         return options
 
-
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
@@ -960,18 +969,13 @@ def register_callbacks(app):
         ],
     )
     def update_estado(clickData, estado):
-        print("Clicou no mapa")
-        print(clickData)
         if clickData is None:
             raise dash.exceptions.PreventUpdate
         location = clickData["points"][0]["hovertext"]
         if len(location) == 2:  # Estado selecionado
-            print("Estado selecionado:", location)
             return location, None
         else:
-            print("Município selecionado:", location.upper())
             return estado, location.upper()
-        raise dash.exceptions.PreventUpdate
 
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],
