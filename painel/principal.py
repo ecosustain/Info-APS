@@ -92,13 +92,13 @@ app.layout = dbc.Container(
                             ),  # Define o primeiro ano como ativo
                             className="me-4 rounded",  # Adiciona margem à direita e borda arredondada
                             style={
-                                "background-color": "#A5A5A5"
-                                if ano != anos[0]
-                                else "#000000",  # Fundo cinza claro ou escuro
+                                "background-color": (
+                                    "#A5A5A5" if ano != anos[0] else "#000000"
+                                ),  # Fundo cinza claro ou escuro
                                 "border-color": "#A5A5A5",  # Cor da borda
-                                "color": "#fff"
-                                if ano != anos[0]
-                                else "#00000",  # Cor do texto
+                                "color": (
+                                    "#fff" if ano != anos[0] else "#00000"
+                                ),  # Cor do texto
                                 "padding": "0px 12px",
                             },
                         )

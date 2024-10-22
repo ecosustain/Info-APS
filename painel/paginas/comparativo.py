@@ -1,4 +1,5 @@
 """Página em dash que apresenta um compartivo entre um município e o seu estado."""
+
 from dash import dcc, html
 from funcoes import get_columns, producao
 

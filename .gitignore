@@ -14,6 +14,7 @@ __pycache__/
 # Ignorar ambientes virtuais
 venv/
 env/
+sbenv/
 
 # Ignorar arquivos de log
 *.log

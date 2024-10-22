@@ -1,4 +1,5 @@
 """Módulo com as principais funções de extração."""
+
 import configparser
 import logging
 import os

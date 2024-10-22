@@ -1,4 +1,5 @@
 """Página principal da aplicação"""
+
 import dash
 from dash import dcc, html
 from flask import Flask
