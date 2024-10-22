@@ -1,4 +1,5 @@
 """Módulo para carregar os dados de produção no banco de dados."""
+
 import pandas as pd
 from carregar.carregar import (
     ajusta_producao,

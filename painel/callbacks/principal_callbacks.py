@@ -1,4 +1,5 @@
 """Módulo com os callbacks da página Principal"""
+
 import json
 import os
 import warnings
@@ -13,6 +14,7 @@ import requests
 from dash import ALL, Input, Output, State, dcc
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+from dash import callback_context as ctx
 
 warnings.filterwarnings(
     "ignore",
@@ -494,7 +496,7 @@ def get_atendimentos(estado, cidade):
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/states/{estado}"
-    if cidade is not None:
+    if cidade is not None and estado is not None:
         ibge_code = get_ibge_code(estado, cidade)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/cities/{ibge_code}"
     print("Fazendo request para:", url)
@@ -516,7 +518,7 @@ def get_altas(estado, cidade):
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/altas"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/states/{estado}"
-    if cidade is not None:
+    if cidade is not None and estado is not None:
         ibge_code = get_ibge_code(estado, cidade)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/cities/{ibge_code}"
     print("Fazendo request para:", url)
@@ -537,7 +539,7 @@ def get_encaminhamentos(estado, cidade):
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/states/{estado}"
-    if cidade is not None:
+    if cidade is not None and estado is not None:
         ibge_code = get_ibge_code(estado, cidade)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/cities/{ibge_code}"
 
@@ -867,7 +869,7 @@ def register_callbacks(app):
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
 
-        if estado is None and cidade is None:
+        if estado is None:
             type = "brasil"
         elif estado is not None and cidade is None:
             type = "estado"
@@ -961,6 +963,16 @@ def register_callbacks(app):
         ],
     )
     def update_estado(clickData, estado):
+        """Função para atualizar os dropdowns com base na seleção no mapa"""
+
+        if not ctx.triggered:
+            raise dash.exceptions.PreventUpdate
+
+        input_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        if input_id == "dropdown-estado":
+            if estado is None:
+                return None, None
+
         if clickData is None:
             raise dash.exceptions.PreventUpdate
         location = clickData["points"][0]["hovertext"]

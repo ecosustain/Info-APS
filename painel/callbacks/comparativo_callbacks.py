@@ -1,4 +1,5 @@
 """Módulo com os callbacks da página Comparativa"""
+
 import dash.dependencies as dd
 import pandas as pd
 import plotly.graph_objects as go

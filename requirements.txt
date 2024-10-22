@@ -7,3 +7,6 @@ black
 flake8
 isort
 statsmodels
+dash
+dash_bootstrap_components
+geopandas
