@@ -113,7 +113,8 @@ def get_df_altas(json_data, populacao=None):
     #    json_data -> json que contem os dados de atendimento
     # retorna o df
     dados = []
-
+    if json_data is None:
+        raise dash.exceptions.PreventUpdate
     # Iterar sobre os anos (2013, 2014, etc.)
     for ano, meses in json_data.items():
         # Iterar sobre os meses e seus valores
@@ -486,7 +487,6 @@ def get_atendimentos(estado, cidade):
     if cidade is not None:
         ibge_code = get_ibge_code(estado, cidade)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/cities/{ibge_code}"
-
     print("Fazendo request para:", url)
 
     headers = {"accept": "application/json"}
@@ -721,10 +721,16 @@ anos = [2024, 2023, 2022, 2021, 2020, 2019]
 
 def register_callbacks(app):
     @app.callback(
-        dd.Output("dropdown-cidade", "options"),
-        dd.Input("dropdown-estado", "value"),
+        [
+            Output("dropdown-cidade", "options"),
+            Output("dropdown-cidade", "value"),
+        ],
+        [
+            Input("dropdown-estado", "value"),
+            Input("mapa", "clickData"),
+        ],
     )
-    def update_dropdown_cidades(estado):
+    def update_dropdown_cidades(estado, clickData):
         # Função para atualizar as opções do dropdown de cidades
         if estado is None:
             raise dash.exceptions.PreventUpdate
@@ -735,6 +741,12 @@ def register_callbacks(app):
         # Transformar em um formato aceito pelo dropdown
         options = [{"label": cidade, "value": cidade} for cidade in cidades]
 
+        # Verificar se o clickData é válido
+        if clickData is not None:
+            if "location" in clickData["points"][0]:
+                cidade = clickData["points"][0]["hovertext"]
+                return options, cidade.upper()
+
         return options
 
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
@@ -743,15 +755,16 @@ def register_callbacks(app):
             Output("store-data", "data"),
             Output("store-data-altas", "data"),
             Output("store-data-enc", "data"),
-            Output("store-populacao", "value"),
+            Output("store-populacao", "data"),
         ],
         [
+            Input("dummy-div", "children"),
             Input("dropdown-cidade", "value"),
             Input("dropdown-estado", "value"),
         ],
     )
-    def fetch_data(cidade, estado):
-        """Função para fazer a requisição à API e armazenar os dados no dcc.Store"""
+    def fetch_data(dummy, cidade, estado):
+        """Função para fazer a requisição à API e armazenar os dados no Store"""
         data_atendimentos = get_atendimentos(estado, cidade)
         data_altas = get_altas(estado, cidade)
         data_encaminhamentos = get_encaminhamentos(estado, cidade)
@@ -769,7 +782,7 @@ def register_callbacks(app):
         ],
         [
             Input("store-data", "data"),
-            Input("store-populacao", "value"),
+            Input("store-populacao", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
         [
@@ -816,7 +829,7 @@ def register_callbacks(app):
         [
             Input("store-data-altas", "data"),
             Input("store-data-enc", "data"),
-            Input("store-populacao", "value"),
+            Input("store-populacao", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
@@ -855,11 +868,13 @@ def register_callbacks(app):
             Output("chart_by_quarter", "figure"),
         ],
         Input("store-data", "data"),
-        Input("store-populacao", "value"),
+        Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-cidade", "value"),
     )
     def update_charts(data, populacao, estado, cidade):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
 
         if estado is None and cidade is None:
@@ -886,12 +901,14 @@ def register_callbacks(app):
         Output("chart_altas", "figure"),
         [
             Input("store-data-altas", "data"),
-            Input("store-populacao", "value"),
+            Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-cidade", "value"),
         ],
     )
     def update_chart_altas(data, populacao, estado, cidade):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
         df_altas = get_df_altas(data, populacao)
 
         type = get_type(estado, cidade)
@@ -907,12 +924,14 @@ def register_callbacks(app):
         Output("chart_encaminhamentos", "figure"),
         [
             Input("store-data-enc", "data"),
-            Input("store-populacao", "value"),
+            Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-cidade", "value"),
         ],
     )
     def update_chart_encaminhamentos(data, populacao, estado, cidade):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
         df_encaminhamentos = get_df_encaminhamentos(data, populacao)
         type = get_type(estado, cidade)
         # Gerar o gráfico
@@ -928,11 +947,12 @@ def register_callbacks(app):
     @app.callback(
         Output("mapa", "figure"),
         [
-            dd.Input("dropdown-estado", "value"),
-            dd.Input("dropdown-cidade", "value"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-cidade", "value"),
+            Input("dummy-div", "children"),
         ],
     )
-    def update_mapa(estado, cidade):
+    def update_mapa(estado, cidade, dummy):
         if estado is None and cidade is None:
             return get_mapa_brasil()
         elif estado is not None and cidade is None:
@@ -952,11 +972,9 @@ def register_callbacks(app):
         if clickData is None:
             raise dash.exceptions.PreventUpdate
         location = clickData["points"][0]["hovertext"]
-        if type(location) != str:
-            raise dash.exceptions.PreventUpdate
         if len(location) == 2:  # Estado selecionado
             return location
-        return dash.exceptions.PreventUpdate
+        raise dash.exceptions.PreventUpdate
 
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],

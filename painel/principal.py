@@ -119,6 +119,7 @@ app.layout = dbc.Container(
         ),
         dcc.Store(id="store-data"),
         dcc.Store(id="store-populacao"),
+        html.Div(id="dummy-div", children=[], style={"display": "none"}),
         dbc.Row(
             html.H1(
                 "Atendimentos",
@@ -413,4 +414,4 @@ register_callbacks(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run()  # debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False)
+    app.run()  # debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False, dev_tools_hot_reload=False)
