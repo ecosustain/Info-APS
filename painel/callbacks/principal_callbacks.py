@@ -70,10 +70,8 @@ trimestre_map_num = {
     12: "T4",
 }
 
-file_path = "data/atendimentos.json"
-
-with open(file_path, "r", encoding="utf-8") as f:
-    json_data = json.load(f)
+file_path = 'data/reg_mun.json'
+municipios = pd.read_json(file_path)
 
 
 def get_df_atendimentos(json_data, populacao=None):
@@ -479,16 +477,15 @@ def get_cities(estado):
         return None
 
 
-def get_ibge_code(estado, municipio):
+def get_ibge_code(estado, mun):
     """Função para obter o código IBGE de um município a partir do nome e do estado"""
-    with open("data/municipios.json", "r", encoding="utf-8") as file:
-        municipios = json.load(file)
-
-    for item in municipios:
-        if item["estado"] == estado and item["municipio"] == municipio:
-            return item["ibge"]
-
-    return None
+    
+    # verificar se o municipio está no dataframe
+    cod = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['ibge']
+    if len(cod) != 1:
+        print(f"Erro ao obter o código do município {mun} no estado {estado}")
+        return None
+    return cod.values[0]
 
 
 def get_atendimentos(estado, cidade):
@@ -565,31 +562,21 @@ def get_type(estado, cidade):
     return None
 
 
-def get_population(estado, municipio):
+def get_population(estado, mun):
     """Função para obter a população de um município, estado ou do Brasil"""
-    with open("data/cadastros.json", "r", encoding="utf-8") as file:
-        cadastros = json.load(file)
-
-    if municipio is None and estado is None:
+    if mun is None and estado is None:
         # soma de todas as populações
-        total = 0
-        for item in cadastros:
-            total += item["Cadastros"]
+        total = municipios['cadastros'].sum()
         return total
 
-    if municipio is None:
+    if mun is None:
         # soma da população do estado
-        total = 0
-        for item in cadastros:
-            if item["Uf"] == estado:
-                total += item["Cadastros"]
+        total = municipios[municipios['uf'] == estado]['cadastros'].sum()
         return total
 
-    for item in cadastros:
-        if item["Uf"] == estado and item["Municipio"] == municipio:
-            return item["Cadastros"]
-
-    return None
+    # população do município específico
+    total = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['cadastros'].sum()
+    return total
 
 
 def get_mapa_brasil():
@@ -718,9 +705,24 @@ def formatar_numero(numero):
     return str(numero)
 
 
-df_atendimentos = get_df_atendimentos(json_data)
-# df_altas = get_df_altas(json_data)
-anos = [2024, 2023, 2022, 2021, 2020, 2019]
+def get_anos(num):
+    """Retorna uma lista com os anos a serem utilizados"""
+    url = f"https://dash-saude-mongo.elsvital.dev/api/v1/years"
+    headers = {"accept": "application/json"}
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        anos = response.json()
+        anos = anos[-num:]
+        anos.sort(reverse=True)        
+        return anos
+    else:
+        print(response.status_code)
+        print(response.text)
+        return None
+
+
+anos = get_anos(6)
 
 
 def register_callbacks(app):
