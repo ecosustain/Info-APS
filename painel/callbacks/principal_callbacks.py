@@ -490,7 +490,8 @@ def get_regioes(estado):
 
 def get_municipios_regiao(regiao):
     """Função para obter um dicionario dos ibge e municipios de uma região"""
-    municipios_regiao = municipios[municipios['regiao'] == regiao][['ibge', 'municipio']].drop_duplicates()
+    # TODO implementar via API
+    municipios_regiao = municipios[municipios['no_regiao'] == regiao][['ibge', 'municipio']].drop_duplicates()
     municipios_dict = dict(zip(municipios_regiao['ibge'], municipios_regiao['municipio']))
     return municipios_dict
 
@@ -832,19 +833,20 @@ def register_callbacks(app):
 
     @app.callback(
         Output("dropdown-cidade", "options"),
-        Input("dropdown-estado", "value"),
+        [
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+        ],
     )
-    def update_dropdown_cidades(estado):
+    def update_dropdown_cidades(estado, regiao):
         # Função para atualizar as opções do dropdown de cidades
         if estado is None:
             raise dash.exceptions.PreventUpdate
-
-        # Filtrar as cidades do estado selecionado
         cidades = get_cities(estado)
-
-        # Transformar em um formato aceito pelo dropdown
         options = [{"label": cidade, "value": cidade} for cidade in cidades]
-
+        if regiao is not None:
+            cidades_regiao = get_municipios_regiao(regiao)
+            options = [{"label": cidade, "value": cidade} for cidade in cidades_regiao.values()]
         return options
     
 
@@ -1058,7 +1060,6 @@ def register_callbacks(app):
         elif estado is not None and regiao is None and cidade is None:
             return get_mapa_estado(estado)
         elif estado is not None and regiao is not None and cidade is None:
-            print("Entrou no mapa regiao")
             return get_mapa_regiao(estado, regiao)
         elif estado is not None and cidade is not None:
             return get_mapa_municipio(estado, cidade)
