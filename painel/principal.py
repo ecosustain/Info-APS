@@ -54,7 +54,7 @@ app.layout = dbc.Container(
                         searchable=True,
                         clearable=True,  # Permite limpar a seleção
                     ),
-                    width=3,
+                    width=2,
                 ),
                 dbc.Col(
                     dcc.Dropdown(
@@ -64,7 +64,7 @@ app.layout = dbc.Container(
                         searchable=True,
                         clearable=True,  # Permite limpar a seleção
                     ),
-                    width=3,
+                    width=4,
                 ),
                 dbc.Col(
                     dcc.Dropdown(
@@ -74,7 +74,7 @@ app.layout = dbc.Container(
                         searchable=True,
                         clearable=True,  # Permite limpar a seleção
                     ),
-                    width=3,
+                    width=4,
                 ),
             ]
         ),
@@ -418,4 +418,4 @@ register_callbacks(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run(port=8050, debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False, dev_tools_hot_reload=False)
+    app.run() # port=8050, debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False, dev_tools_hot_reload=False)

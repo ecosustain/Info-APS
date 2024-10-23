@@ -483,6 +483,8 @@ def get_regioes(estado):
     regioes_dict = dict(zip(regioes_estado['regiao'], regioes_estado['no_regiao']))
     # Remover o primeiro caractere de cada valor caso seja um espaço
     regioes_dict = {k: v[1:] if v[0] == ' ' else v for k, v in regioes_dict.items()}
+    # ordenar o dicionário pelo valor
+    regioes_dict = dict(sorted(regioes_dict.items(), key=lambda item: item[1]))
     return regioes_dict
 
 
@@ -669,6 +671,9 @@ def get_mapa_estado(estado):
     combined_df = gpd.GeoDataFrame(pd.concat(dataframes, ignore_index=True))
     combined_df['value'] = 1
 
+    # simplificar a geometria
+    combined_df["geometry"] = combined_df["geometry"].simplify(tolerance=0.01)
+
     # Criar o gráfico
     fig = px.choropleth(
         combined_df,
@@ -690,8 +695,6 @@ def get_mapa_estado(estado):
 
 def get_mapa_regiao(estado, regiao):
     """Função para criar o mapa de um estado"""
-    
-    # Verificar se a região é numerica
     if type(regiao) is not int and not regiao.isnumeric():
         regioes = get_regioes(estado)
         # get the key by value
@@ -732,10 +735,6 @@ def get_mapa_regiao(estado, regiao):
     fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
-
-fig = get_mapa_regiao('SP', '35091')
-
-fig.show()
 
 
 def get_mapa_municipio(estado, municipio):
@@ -825,12 +824,12 @@ def register_callbacks(app):
         # Filtrar as cidades do estado selecionado
         regioes = get_regioes(estado)
 
-        # Transformar em um formato aceito pelo dropdown
-        options = [{"label": regiao, "value": regiao} for regiao in regioes]
+        # Transformar em um formato aceito pelo dropdown a partir de um dicionário
+        options = [{"label": regiao, "value": regiao} for regiao in regioes.values()]
 
         return options
 
-    
+
     @app.callback(
         Output("dropdown-cidade", "options"),
         Input("dropdown-estado", "value"),
@@ -1048,15 +1047,19 @@ def register_callbacks(app):
         Output("mapa", "figure"),
         [
             Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
             Input("dropdown-cidade", "value"),
             Input("dummy-div", "children"),
         ],
     )
-    def update_mapa(estado, cidade, dummy):
-        if estado is None and cidade is None:
+    def update_mapa(estado, regiao, cidade, dummy):
+        if estado is None and cidade is None and regiao is None:
             return get_mapa_brasil()
-        elif estado is not None and cidade is None:
+        elif estado is not None and regiao is None and cidade is None:
             return get_mapa_estado(estado)
+        elif estado is not None and regiao is not None and cidade is None:
+            print("Entrou no mapa regiao")
+            return get_mapa_regiao(estado, regiao)
         elif estado is not None and cidade is not None:
             return get_mapa_municipio(estado, cidade)
         return get_mapa_brasil()
