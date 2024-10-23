@@ -203,7 +203,7 @@ def get_big_numbers_atendimentos(df, ano):
 type_color_map = {
     "brasil": ["#B36CA3", "#632956", "#3B032F"],
     "estado": ["#80B0DC", "#34679A", "#11173F"],
-    "regiao_saude": ["#97C471", "#2B7B6F", "#11302B"],
+    "regiao": ["#97C471", "#2B7B6F", "#11302B"],
     "municipio": ["#FFC20D", "#F7941C", "#A7620E"],
 }
 
@@ -519,11 +519,26 @@ def get_ibge_code(estado, mun):
     return cod.values[0]
 
 
-def get_atendimentos(estado, municipio):
+def get_code_regiao(estado, regiao):
+    """Função para obter o código da região de um estado"""
+    # verificar se a regiao está no dataframe
+    cod = municipios[
+        (municipios["uf"] == estado) & (municipios["no_regiao"] == regiao)
+    ]["regiao"]
+    if len(cod) == 0:
+        print(f"Erro ao obter o código da região {regiao} no estado {estado}")
+        return None
+    return cod.values[0]
+
+
+def get_atendimentos(estado, regiao, municipio):
     """Função para obter os dados de atendimentos"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/states/{estado}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/regions/{regiao_code}"
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/cities/{ibge_code}"
@@ -541,11 +556,14 @@ def get_atendimentos(estado, municipio):
         return None
 
 
-def get_altas(estado, municipio):
+def get_altas(estado, regiao, municipio):
     """Função para obter os dados de altas"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/altas"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/states/{estado}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/regions/{regiao_code}"
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/cities/{ibge_code}"
@@ -562,11 +580,14 @@ def get_altas(estado, municipio):
         return None
 
 
-def get_encaminhamentos(estado, municipio):
+def get_encaminhamentos(estado, regiao, municipio):
     """Função para obter os dados de encaminhamentos"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/states/{estado}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/regions/{regiao_code}"
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/cities/{ibge_code}"
@@ -583,26 +604,33 @@ def get_encaminhamentos(estado, municipio):
         return None
 
 
-def get_type(estado, municipio):
-    if estado is None and municipio is None:
+def get_type(estado, regiao, municipio):
+    if estado is None and regiao is None and municipio is None:
         return "brasil"
-    elif estado is not None and municipio is None:
+    elif estado is not None and regiao is None and municipio is None:
         return "estado"
+    elif estado is not None and regiao is not None and municipio is None:
+        return "regiao"
     elif estado is not None and municipio is not None:
         return "municipio"
     return None
 
 
-def get_population(estado, mun):
+def get_population(estado, regiao, mun):
     """Função para obter a população de um município, estado ou do Brasil"""
-    if mun is None and estado is None:
+    if estado is None and regiao is None and mun is None:
         # soma de todas as populações
         total = municipios["cadastros"].sum()
         return total
-
-    if mun is None:
-        # soma da população do estado
+    if regiao is None and mun is None:
+        # soma da população da estado
         total = municipios[municipios["uf"] == estado]["cadastros"].sum()
+        return total
+    if mun is None:
+        # soma da população do regiao
+        total = municipios[municipios["no_regiao"] == regiao][
+            "cadastros"
+        ].sum()
         return total
 
     # população do município específico
@@ -890,16 +918,17 @@ def register_callbacks(app):
         ],
         [
             Input("dummy-div", "children"),
-            Input("dropdown-municipio", "value"),
             Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
         ],
     )
-    def fetch_data(dummy, municipio, estado):
+    def fetch_data(dummy, estado, regiao, municipio):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
-        data_atendimentos = get_atendimentos(estado, municipio)
-        data_altas = get_altas(estado, municipio)
-        data_encaminhamentos = get_encaminhamentos(estado, municipio)
-        populacao = get_population(estado, municipio)
+        data_atendimentos = get_atendimentos(estado, regiao, municipio)
+        data_altas = get_altas(estado, regiao, municipio)
+        data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
+        populacao = get_population(estado, regiao, municipio)
 
         return data_atendimentos, data_altas, data_encaminhamentos, populacao
 
@@ -1001,19 +1030,15 @@ def register_callbacks(app):
         Input("store-data", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
+        Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
     )
-    def update_charts(data, populacao, estado, municipio):
+    def update_charts(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
 
-        if estado is None:
-            type = "brasil"
-        elif estado is not None and municipio is None:
-            type = "estado"
-        elif estado is not None and municipio is not None:
-            type = "municipio"
+        type = get_type(estado, regiao, municipio)
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
@@ -1034,15 +1059,16 @@ def register_callbacks(app):
             Input("store-data-altas", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ],
     )
-    def update_chart_altas(data, populacao, estado, municipio):
+    def update_chart_altas(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_altas = get_df_altas(data, populacao)
 
-        type = get_type(estado, municipio)
+        type = get_type(estado, regiao, municipio)
 
         # Gerar o gráfico
         chart_altas = get_chart_by_year(
@@ -1057,14 +1083,17 @@ def register_callbacks(app):
             Input("store-data-enc", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ],
     )
-    def update_chart_encaminhamentos(data, populacao, estado, municipio):
+    def update_chart_encaminhamentos(
+        data, populacao, estado, regiao, municipio
+    ):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_encaminhamentos = get_df_encaminhamentos(data, populacao)
-        type = get_type(estado, municipio)
+        type = get_type(estado, regiao, municipio)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_by_year(
             df_encaminhamentos,
