@@ -11,10 +11,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
-from dash import ALL, Input, Output, State, dcc
+from dash import ALL, Input, Output, State
+from dash import callback_context as ctx
+from dash import dcc
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from dash import callback_context as ctx
 
 warnings.filterwarnings(
     "ignore",
@@ -70,7 +71,7 @@ trimestre_map_num = {
     12: "T4",
 }
 
-file_path = 'data/reg_mun.json'
+file_path = "data/reg_mun.json"
 municipios = pd.read_json(file_path)
 
 
@@ -479,10 +480,16 @@ def get_cities(estado):
 
 def get_regioes(estado):
     """Função para obter um dicionário com as regiões e os no_regiao de um estado"""
-    regioes_estado = municipios[municipios['uf'] == estado][['regiao', 'no_regiao']].drop_duplicates()
-    regioes_dict = dict(zip(regioes_estado['regiao'], regioes_estado['no_regiao']))
+    regioes_estado = municipios[municipios["uf"] == estado][
+        ["regiao", "no_regiao"]
+    ].drop_duplicates()
+    regioes_dict = dict(
+        zip(regioes_estado["regiao"], regioes_estado["no_regiao"])
+    )
     # Remover o primeiro caractere de cada valor caso seja um espaço
-    regioes_dict = {k: v[1:] if v[0] == ' ' else v for k, v in regioes_dict.items()}
+    regioes_dict = {
+        k: v[1:] if v[0] == " " else v for k, v in regioes_dict.items()
+    }
     # ordenar o dicionário pelo valor
     regioes_dict = dict(sorted(regioes_dict.items(), key=lambda item: item[1]))
     return regioes_dict
@@ -491,29 +498,34 @@ def get_regioes(estado):
 def get_municipios_regiao(regiao):
     """Função para obter um dicionario dos ibge e municipios de uma região"""
     # TODO implementar via API
-    municipios_regiao = municipios[municipios['no_regiao'] == regiao][['ibge', 'municipio']].drop_duplicates()
-    municipios_dict = dict(zip(municipios_regiao['ibge'], municipios_regiao['municipio']))
+    municipios_regiao = municipios[municipios["no_regiao"] == regiao][
+        ["ibge", "municipio"]
+    ].drop_duplicates()
+    municipios_dict = dict(
+        zip(municipios_regiao["ibge"], municipios_regiao["municipio"])
+    )
     return municipios_dict
 
 
 def get_ibge_code(estado, mun):
     """Função para obter o código IBGE de um município a partir do nome e do estado"""
-    
     # verificar se o municipio está no dataframe
-    cod = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['ibge']
+    cod = municipios[
+        (municipios["uf"] == estado) & (municipios["municipio"] == mun)
+    ]["ibge"]
     if len(cod) != 1:
         print(f"Erro ao obter o código do município {mun} no estado {estado}")
         return None
     return cod.values[0]
 
 
-def get_atendimentos(estado, cidade):
+def get_atendimentos(estado, municipio):
     """Função para obter os dados de atendimentos"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/states/{estado}"
-    if cidade is not None and estado is not None:
-        ibge_code = get_ibge_code(estado, cidade)
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/atendimentos/cities/{ibge_code}"
     print("Fazendo request para:", url)
 
@@ -529,13 +541,13 @@ def get_atendimentos(estado, cidade):
         return None
 
 
-def get_altas(estado, cidade):
+def get_altas(estado, municipio):
     """Função para obter os dados de altas"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/altas"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/states/{estado}"
-    if cidade is not None and estado is not None:
-        ibge_code = get_ibge_code(estado, cidade)
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/altas/cities/{ibge_code}"
     print("Fazendo request para:", url)
     headers = {"accept": "application/json"}
@@ -550,13 +562,13 @@ def get_altas(estado, cidade):
         return None
 
 
-def get_encaminhamentos(estado, cidade):
+def get_encaminhamentos(estado, municipio):
     """Função para obter os dados de encaminhamentos"""
     url = "https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos"
     if estado is not None:
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/states/{estado}"
-    if cidade is not None and estado is not None:
-        ibge_code = get_ibge_code(estado, cidade)
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
         url = f"https://dash-saude-mongo.elsvital.dev/api/v1/encaminhamentos/cities/{ibge_code}"
 
     headers = {"accept": "application/json"}
@@ -571,12 +583,12 @@ def get_encaminhamentos(estado, cidade):
         return None
 
 
-def get_type(estado, cidade):
-    if estado is None and cidade is None:
+def get_type(estado, municipio):
+    if estado is None and municipio is None:
         return "brasil"
-    elif estado is not None and cidade is None:
+    elif estado is not None and municipio is None:
         return "estado"
-    elif estado is not None and cidade is not None:
+    elif estado is not None and municipio is not None:
         return "municipio"
     return None
 
@@ -585,32 +597,38 @@ def get_population(estado, mun):
     """Função para obter a população de um município, estado ou do Brasil"""
     if mun is None and estado is None:
         # soma de todas as populações
-        total = municipios['cadastros'].sum()
+        total = municipios["cadastros"].sum()
         return total
 
     if mun is None:
         # soma da população do estado
-        total = municipios[municipios['uf'] == estado]['cadastros'].sum()
+        total = municipios[municipios["uf"] == estado]["cadastros"].sum()
         return total
 
     # população do município específico
-    total = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['cadastros'].sum()
+    total = municipios[
+        (municipios["uf"] == estado) & (municipios["municipio"] == mun)
+    ]["cadastros"].sum()
     return total
 
 
 def remove_internal_polygons(gdf, estado):
     """Função para remover polígonos internos e manter apenas as bordas"""
     # Adiciona a regiao e o no_regiao
-    mun = gdf['NM_MUN'][0].upper()
+    mun = gdf["NM_MUN"][0].upper()
 
-    regiao = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['regiao'].values[0]
-    no_regiao = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['no_regiao'].values[0]
-    
+    regiao = municipios[
+        (municipios["uf"] == estado) & (municipios["municipio"] == mun)
+    ]["regiao"].values[0]
+    no_regiao = municipios[
+        (municipios["uf"] == estado) & (municipios["municipio"] == mun)
+    ]["no_regiao"].values[0]
+
     polygon = gdf.geometry.union_all()
 
     gdf2 = gpd.GeoDataFrame(geometry=[polygon], crs=gdf.crs)
-    gdf2['regiao'] = regiao
-    gdf2['no_regiao'] = no_regiao
+    gdf2["regiao"] = regiao
+    gdf2["no_regiao"] = no_regiao
 
     return gdf2
 
@@ -620,8 +638,11 @@ def get_shapefile_regiao(estado):
     regioes = get_regioes(estado)
     # regioes unicas
     regioes = list(set(regioes.keys()))
-    
-    return [f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp" for regiao in regioes]
+
+    return [
+        f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp"
+        for regiao in regioes
+    ]
 
 
 def get_mapa_brasil():
@@ -670,7 +691,7 @@ def get_mapa_estado(estado):
 
     # Combinar os DataFrames em um único DataFrame
     combined_df = gpd.GeoDataFrame(pd.concat(dataframes, ignore_index=True))
-    combined_df['value'] = 1
+    combined_df["value"] = 1
 
     # simplificar a geometria
     combined_df["geometry"] = combined_df["geometry"].simplify(tolerance=0.01)
@@ -688,7 +709,9 @@ def get_mapa_estado(estado):
 
     # Ajustar as configurações do mapa
     fig.update_geos(fitbounds="locations", visible=False)
-    fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False)
+    fig.update_layout(
+        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+    )
     fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
@@ -800,7 +823,7 @@ def get_anos(num):
     if response.status_code == 200:
         anos = response.json()
         anos = anos[-num:]
-        anos.sort(reverse=True)        
+        anos.sort(reverse=True)
         return anos
     else:
         print(response.status_code)
@@ -813,42 +836,49 @@ anos = get_anos(6)
 
 def register_callbacks(app):
     """Função para registrar os callbacks do painel principal"""
+
     @app.callback(
         Output("dropdown-regiao", "options"),
         Input("dropdown-estado", "value"),
     )
     def update_dropdown_regiao(estado):
-        # Função para atualizar as opções do dropdown de cidades
+        # Função para atualizar as opções do dropdown de municipios
         if estado is None:
             raise dash.exceptions.PreventUpdate
 
-        # Filtrar as cidades do estado selecionado
+        # Filtrar as municipios do estado selecionado
         regioes = get_regioes(estado)
 
         # Transformar em um formato aceito pelo dropdown a partir de um dicionário
-        options = [{"label": regiao, "value": regiao} for regiao in regioes.values()]
+        options = [
+            {"label": regiao, "value": regiao} for regiao in regioes.values()
+        ]
 
         return options
 
-
     @app.callback(
-        Output("dropdown-cidade", "options"),
+        Output("dropdown-municipio", "options"),
         [
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
         ],
     )
-    def update_dropdown_cidades(estado, regiao):
-        # Função para atualizar as opções do dropdown de cidades
+    def update_dropdown_municipios(estado, regiao):
+        # Função para atualizar as opções do dropdown de municipios
         if estado is None:
             raise dash.exceptions.PreventUpdate
-        cidades = get_cities(estado)
-        options = [{"label": cidade, "value": cidade} for cidade in cidades]
+        municipios = get_cities(estado)
+        options = [
+            {"label": municipio, "value": municipio}
+            for municipio in municipios
+        ]
         if regiao is not None:
-            cidades_regiao = get_municipios_regiao(regiao)
-            options = [{"label": cidade, "value": cidade} for cidade in cidades_regiao.values()]
+            municipios_regiao = get_municipios_regiao(regiao)
+            options = [
+                {"label": municipio, "value": municipio}
+                for municipio in municipios_regiao.values()
+            ]
         return options
-    
 
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
@@ -860,16 +890,16 @@ def register_callbacks(app):
         ],
         [
             Input("dummy-div", "children"),
-            Input("dropdown-cidade", "value"),
+            Input("dropdown-municipio", "value"),
             Input("dropdown-estado", "value"),
         ],
     )
-    def fetch_data(dummy, cidade, estado):
+    def fetch_data(dummy, municipio, estado):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
-        data_atendimentos = get_atendimentos(estado, cidade)
-        data_altas = get_altas(estado, cidade)
-        data_encaminhamentos = get_encaminhamentos(estado, cidade)
-        populacao = get_population(estado, cidade)
+        data_atendimentos = get_atendimentos(estado, municipio)
+        data_altas = get_altas(estado, municipio)
+        data_encaminhamentos = get_encaminhamentos(estado, municipio)
+        populacao = get_population(estado, municipio)
 
         return data_atendimentos, data_altas, data_encaminhamentos, populacao
 
@@ -971,18 +1001,18 @@ def register_callbacks(app):
         Input("store-data", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
-        Input("dropdown-cidade", "value"),
+        Input("dropdown-municipio", "value"),
     )
-    def update_charts(data, populacao, estado, cidade):
+    def update_charts(data, populacao, estado, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
 
         if estado is None:
             type = "brasil"
-        elif estado is not None and cidade is None:
+        elif estado is not None and municipio is None:
             type = "estado"
-        elif estado is not None and cidade is not None:
+        elif estado is not None and municipio is not None:
             type = "municipio"
 
         # Gerar os gráficos
@@ -1004,15 +1034,15 @@ def register_callbacks(app):
             Input("store-data-altas", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
-            Input("dropdown-cidade", "value"),
+            Input("dropdown-municipio", "value"),
         ],
     )
-    def update_chart_altas(data, populacao, estado, cidade):
+    def update_chart_altas(data, populacao, estado, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_altas = get_df_altas(data, populacao)
 
-        type = get_type(estado, cidade)
+        type = get_type(estado, municipio)
 
         # Gerar o gráfico
         chart_altas = get_chart_by_year(
@@ -1027,14 +1057,14 @@ def register_callbacks(app):
             Input("store-data-enc", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
-            Input("dropdown-cidade", "value"),
+            Input("dropdown-municipio", "value"),
         ],
     )
-    def update_chart_encaminhamentos(data, populacao, estado, cidade):
+    def update_chart_encaminhamentos(data, populacao, estado, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_encaminhamentos = get_df_encaminhamentos(data, populacao)
-        type = get_type(estado, cidade)
+        type = get_type(estado, municipio)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_by_year(
             df_encaminhamentos,
@@ -1050,48 +1080,62 @@ def register_callbacks(app):
         [
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
-            Input("dropdown-cidade", "value"),
+            Input("dropdown-municipio", "value"),
             Input("dummy-div", "children"),
         ],
     )
-    def update_mapa(estado, regiao, cidade, dummy):
-        if estado is None and cidade is None and regiao is None:
+    def update_mapa(estado, regiao, municipio, dummy):
+        if estado is None and municipio is None and regiao is None:
             return get_mapa_brasil()
-        elif estado is not None and regiao is None and cidade is None:
+        elif estado is not None and regiao is None and municipio is None:
             return get_mapa_estado(estado)
-        elif estado is not None and regiao is not None and cidade is None:
+        elif estado is not None and regiao is not None and municipio is None:
             return get_mapa_regiao(estado, regiao)
-        elif estado is not None and cidade is not None:
-            return get_mapa_municipio(estado, cidade)
+        elif estado is not None and municipio is not None:
+            return get_mapa_municipio(estado, municipio)
         return get_mapa_brasil()
 
     # Callback para atualizar os dropdowns com base na seleção no mapa
     @app.callback(
         Output("dropdown-estado", "value"),
-        Output("dropdown-cidade", "value"),
+        Output("dropdown-regiao", "value"),
+        Output("dropdown-municipio", "value"),
         [
             Input("mapa", "clickData"),
             Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
         ],
     )
-    def update_estado(clickData, estado):
+    def update_dropdowns(clickData, estado, regiao, municipio):
         """Função para atualizar os dropdowns com base na seleção no mapa"""
-
         if not ctx.triggered:
             raise dash.exceptions.PreventUpdate
 
         input_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if input_id == "dropdown-estado":
             if estado is None:
-                return None, None
+                return None, None, None
+        if input_id == "dropdown-regiao":
+            if regiao is None:
+                return estado, None, None
+        if input_id == "dropdown-municipio":
+            if municipio is None:
+                return estado, regiao, None
 
         if clickData is None:
             raise dash.exceptions.PreventUpdate
+
         location = clickData["points"][0]["hovertext"]
-        if len(location) == 2:  # Estado selecionado
-            return location, None
+
+        if estado is None and len(location) == 2:
+            return location, None, None
+        elif estado is not None and regiao is None:
+            return estado, location.upper(), None
+        elif estado is not None and municipio is None:
+            return estado, regiao, location.upper()
         else:
-            return estado, location.upper()
+            print("Erro no callback de atualização dos dropdowns")
 
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],

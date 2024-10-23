@@ -19,13 +19,6 @@ h1 {
     margin-top: 2%;
 }
 
-/* Ajusta o estilo do Dropdown */
-#dropdown-municipio, #dropdown-grupo, #dropdown-coluna {
-    margin-bottom: 1%;
-    margin-top: 1%;
-    width: 50%;
-    margin-left: 25%;
-}
 
 /* Estiliza o Slider */
 #slider-ano .rc-slider {
@@ -100,10 +93,6 @@ label {
 
 /* Responsividade */
 @media (max-width: 100%) {
-    #dropdown-municipio {
-        width: 90%;
-        margin-left: 5%;
-    }
 
     #slider-ano {
         width: 70%;
