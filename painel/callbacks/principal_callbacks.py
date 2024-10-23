@@ -477,6 +477,22 @@ def get_cities(estado):
         return None
 
 
+def get_regioes(estado):
+    """Função para obter um dicionário com as regiões e os no_regiao de um estado"""
+    regioes_estado = municipios[municipios['uf'] == estado][['regiao', 'no_regiao']].drop_duplicates()
+    regioes_dict = dict(zip(regioes_estado['regiao'], regioes_estado['no_regiao']))
+    # Remover o primeiro caractere de cada valor caso seja um espaço
+    regioes_dict = {k: v[1:] if v[0] == ' ' else v for k, v in regioes_dict.items()}
+    return regioes_dict
+
+
+def get_municipios_regiao(regiao):
+    """Função para obter um dicionario dos ibge e municipios de uma região"""
+    municipios_regiao = municipios[municipios['regiao'] == regiao][['ibge', 'municipio']].drop_duplicates()
+    municipios_dict = dict(zip(municipios_regiao['ibge'], municipios_regiao['municipio']))
+    return municipios_dict
+
+
 def get_ibge_code(estado, mun):
     """Função para obter o código IBGE de um município a partir do nome e do estado"""
     
@@ -579,6 +595,32 @@ def get_population(estado, mun):
     return total
 
 
+def remove_internal_polygons(gdf, estado):
+    """Função para remover polígonos internos e manter apenas as bordas"""
+    # Adiciona a regiao e o no_regiao
+    mun = gdf['NM_MUN'][0].upper()
+
+    regiao = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['regiao'].values[0]
+    no_regiao = municipios[(municipios['uf'] == estado) & (municipios['municipio'] == mun)]['no_regiao'].values[0]
+    
+    polygon = gdf.geometry.union_all()
+
+    gdf2 = gpd.GeoDataFrame(geometry=[polygon], crs=gdf.crs)
+    gdf2['regiao'] = regiao
+    gdf2['no_regiao'] = no_regiao
+
+    return gdf2
+
+
+def get_shapefile_regiao(estado):
+    """Função para obter o shapefile de um estado"""
+    regioes = get_regioes(estado)
+    # regioes unicas
+    regioes = list(set(regioes.keys()))
+    
+    return [f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp" for regiao in regioes]
+
+
 def get_mapa_brasil():
     """Função para criar o mapa do Brasil"""
     shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
@@ -614,8 +656,48 @@ def get_mapa_brasil():
 
 
 def get_mapa_estado(estado):
+    """Função para plotar os shapefiles de um estado"""
+    shapefiles = get_shapefile_regiao(estado)
+
+    # Carregar múltiplos shapefiles
+    dataframes = [gpd.read_file(path) for path in shapefiles]
+
+    # remove internal polygons with list comprehension
+    dataframes = [remove_internal_polygons(df, estado) for df in dataframes]
+
+    # Combinar os DataFrames em um único DataFrame
+    combined_df = gpd.GeoDataFrame(pd.concat(dataframes, ignore_index=True))
+    combined_df['value'] = 1
+
+    # Criar o gráfico
+    fig = px.choropleth(
+        combined_df,
+        geojson=combined_df.geometry,
+        locations=combined_df.index,
+        hover_name="no_regiao",  # Supondo que todos os shapefiles têm essa coluna
+        hover_data={"value": False},
+        color="value",
+        color_continuous_scale=["#80B0DC", "#80B0DC", "#80B0DC"],
+    )
+
+    # Ajustar as configurações do mapa
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False)
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
+
+    return fig
+
+
+def get_mapa_regiao(estado, regiao):
     """Função para criar o mapa de um estado"""
-    shapefile = f"../mapas/Estados/{estado}/{estado}_Municipios_2022.shp"
+    
+    # Verificar se a região é numerica
+    if type(regiao) is not int and not regiao.isnumeric():
+        regioes = get_regioes(estado)
+        # get the key by value
+        regiao = list(regioes.keys())[list(regioes.values()).index(regiao)]
+
+    shapefile = f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp"
 
     mapa_mun = gpd.read_file(shapefile)
     mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
@@ -633,9 +715,9 @@ def get_mapa_estado(estado):
         },
         color="value",
         color_continuous_scale=[
-            "#80B0DC",
-            "#80B0DC",
-            "#80B0DC",
+            "#2B7B6F",
+            "#2B7B6F",
+            "#2B7B6F",
         ],
     )
 
@@ -650,6 +732,10 @@ def get_mapa_estado(estado):
     fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
 
     return fig
+
+fig = get_mapa_regiao('SP', '35091')
+
+fig.show()
 
 
 def get_mapa_municipio(estado, municipio):
@@ -726,6 +812,25 @@ anos = get_anos(6)
 
 
 def register_callbacks(app):
+    """Função para registrar os callbacks do painel principal"""
+    @app.callback(
+        Output("dropdown-regiao", "options"),
+        Input("dropdown-estado", "value"),
+    )
+    def update_dropdown_regiao(estado):
+        # Função para atualizar as opções do dropdown de cidades
+        if estado is None:
+            raise dash.exceptions.PreventUpdate
+
+        # Filtrar as cidades do estado selecionado
+        regioes = get_regioes(estado)
+
+        # Transformar em um formato aceito pelo dropdown
+        options = [{"label": regiao, "value": regiao} for regiao in regioes]
+
+        return options
+
+    
     @app.callback(
         Output("dropdown-cidade", "options"),
         Input("dropdown-estado", "value"),
@@ -742,6 +847,7 @@ def register_callbacks(app):
         options = [{"label": cidade, "value": cidade} for cidade in cidades]
 
         return options
+    
 
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(

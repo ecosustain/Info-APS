@@ -36,13 +36,7 @@ estados_brasileiros = [
     "TO",
 ]
 
-# Dicionário de cidades por estado (exemplo)
-cidades_por_estado = {
-    "SP": ["SÃO PAULO", "CAMPINAS", "Santos"],
-    "RJ": ["Rio de Janeiro", "Niterói", "Petrópolis"],
-    "MG": ["Belo Horizonte", "Uberlândia", "Contagem"],
-    # Adicione mais estados e cidades conforme necessário
-}
+
 
 # Layout da aplicação
 app.layout = dbc.Container(
@@ -57,6 +51,16 @@ app.layout = dbc.Container(
                             for estado in estados_brasileiros
                         ],
                         placeholder="Selecione o Estado",
+                        searchable=True,
+                        clearable=True,  # Permite limpar a seleção
+                    ),
+                    width=3,
+                ),
+                dbc.Col(
+                    dcc.Dropdown(
+                        id="dropdown-regiao",
+                        options=[],
+                        placeholder="Selecione a Região",
                         searchable=True,
                         clearable=True,  # Permite limpar a seleção
                     ),
@@ -414,4 +418,4 @@ register_callbacks(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run()  # debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False, dev_tools_hot_reload=False)
+    app.run(port=8050, debug=True, dev_tools_silence_routes_logging=False, dev_tools_prune_errors=False, dev_tools_hot_reload=False)

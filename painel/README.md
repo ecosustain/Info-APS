@@ -13,3 +13,14 @@
 - Adicionar Regiões de Saúde
 - Adicionar slider para página
 - Adicionar botão para download
+
+
+Requisitos API
+
+- Retornar as regiões de um estado
+- Retornar os municipios de uma região
+- Retornar os cadastros
+    - Total Brasil
+    - Estado
+    - Região
+    - Municipio
