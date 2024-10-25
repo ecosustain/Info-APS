@@ -79,7 +79,6 @@ def get_mapa_estado(estado):
 
     # Carregar múltiplos shapefiles
     dataframes = [gpd.read_file(path) for path in shapefiles]
-
     # remove internal polygons with list comprehension
     dataframes = [remove_internal_polygons(df, estado) for df in dataframes]
 

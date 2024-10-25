@@ -6,6 +6,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 
 def preprocess_sarima_data(df):
+    """Função para pré-processar os dados para o modelo SARIMA."""
     df_grouped_mes = (
         df.groupby(
             ["ano_trimestre", "ano", "trimestre", "mes"], observed=True
@@ -19,6 +20,7 @@ def preprocess_sarima_data(df):
 
 
 def fit_sarima_model(df_sarima):
+    """Função para treinar o modelo SARIMA."""
     model = SARIMAX(
         df_sarima["valor"], order=(2, 0, 3), seasonal_order=(1, 1, 2, 12)
     )

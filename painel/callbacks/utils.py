@@ -43,7 +43,8 @@ municipios = get_json_municipios()
 
 
 def get_regioes(estado):
-    """Função para obter um dicionário com as regiões e os no_regiao de um estado"""
+    """Função para obter um dicionário com as regiões de um estado"""
+    # TODO implementar via API
     regioes_estado = municipios[municipios["uf"] == estado][
         ["regiao", "no_regiao"]
     ].drop_duplicates()
@@ -72,8 +73,9 @@ def get_municipios_regiao(regiao):
 
 
 def get_ibge_code(estado, mun):
-    """Função para obter o código IBGE de um município a partir do nome e do estado"""
-    # verificar se o municipio está no dataframe
+    """Função para obter o cód IBGE de um município a partir
+    do nome e do estado"""
+    # TODO implementar via API
     cod = municipios[
         (municipios["uf"] == estado) & (municipios["municipio"] == mun)
     ]["ibge"]
@@ -85,7 +87,7 @@ def get_ibge_code(estado, mun):
 
 def get_code_regiao(estado, regiao):
     """Função para obter o código da região de um estado"""
-    # verificar se a regiao está no dataframe
+    # TODO implementar via API
     cod = municipios[
         (municipios["uf"] == estado) & (municipios["no_regiao"] == regiao)
     ]["regiao"]
@@ -110,6 +112,7 @@ def get_type(estado, regiao, municipio):
 
 def get_population(estado, regiao, mun):
     """Função para obter a população de um município, estado ou do Brasil"""
+    # TODO implementar via API
     if estado is None and regiao is None and mun is None:
         # soma de todas as populações
         total = municipios["cadastros"].sum()
