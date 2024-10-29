@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block title %}Download{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <h2>Download de Coleção de Dados</h2>
+        <h3>Filtro de Dados</h3>
+
+        <div class="row">
+            <!-- Listbox de Coleções -->
+            <div class="col-md-12">
+                <label for="collections">Coleções:</label>
+                <select id="collections" class="form-select" onchange="loadAttributes()" required>
+                    <option value="">Selecione uma coleção</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Atributos (Múltipla escolha) -->
+            <div class="col-md-6">
+                <label for="attributes">Atributos:</label>
+                <select id="attributes" class="form-select" multiple>
+                    <option value="">Selecione o(s) atributo(s)</option>
+                </select>
+            </div>
+
+            <!-- Listbox de Anos (Múltipla escolha) -->
+            <div class="col-md-6">
+                <label for="years">Ano:</label>
+                <select id="years" class="form-select" multiple>
+                    <option value="">Selecione o(s) ano(s)</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Estados (UF) (Múltipla escolha) -->
+            <div class="col-md-12">
+                <label for="states">Estado (UF):</label>
+                <select id="states" class="form-select" onchange="loadCities()">
+                    <option value="">Selecione o estado</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Municípios (Múltipla escolha) -->
+            <div class="col-md-12">
+                <label for="cities">Municípios:</label>
+                <select id="cities" class="form-select" multiple>
+                    <option value="">Selecione o(s) municípios</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <label for="format">Formato de Exportação:</label>
+            <select id="format" class="form-select">
+                <option value="csv">CSV</option>
+                <option value="parquet">Parquet</option>
+                <option value="json">JSON</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="btn_download">** Filtros não selecionados retornam todos os registros **</label>
+            <div class="btn-block">
+                <button id="btn_download" class="btn btn-primary" onclick="downloadData()">Download</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-3"></div>
+    <script>
+        const apiServer = "{{ api_server }}";
+        // Função que carrega coleções ao carregar a página
+        window.onload = function () {
+            loadCollections();
+            loadYears();
+            loadStates();
+        };
+
+        // Carregar coleções
+        function loadCollections() {
+            fetch(`${apiServer}/collections`)
+                .then(response => response.json())
+                .then(data => {
+                    const collectionsSelect = document.getElementById("collections");
+                    data.forEach(collection => {
+                        collectionsSelect.innerHTML += `<option value="${collection}">${collection}</option>`;
+                    });
+                });
+        }
+
+        // Carregar atributos quando uma coleção for selecionada
+        function loadAttributes() {
+            const collection = document.getElementById("collections").value;
+            if (collection) {
+                fetch(`${apiServer}/collections/${collection}/attributes`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const attributesSelect = document.getElementById("attributes");
+                        attributesSelect.innerHTML = "";
+                        data.forEach(attribute => {
+                            attributesSelect.innerHTML += `<option value="${attribute}">${attribute}</option>`;
+                        });
+                    });
+            } else {
+                document.getElementById("attributes").innerHTML = '<option value="">Selecione os atributos</option>';
+            }
+        }
+
+        // Carregar anos ao carregar a página
+        function loadYears() {
+            fetch(`${apiServer}/years`)
+                .then(response => response.json())
+                .then(data => {
+                    const yearsSelect = document.getElementById("years");
+                    data.forEach(year => {
+                        yearsSelect.innerHTML += `<option value="${year}">${year}</option>`;
+                    });
+                });
+        }
+
+        // Carregar estados ao carregar a página
+        function loadStates() {
+            fetch(`${apiServer}/states`)
+                .then(response => response.json())
+                .then(data => {
+                    const statesSelect = document.getElementById("states");
+                    data.forEach(state => {
+                        statesSelect.innerHTML += `<option value="${state}">${state}</option>`;
+                    });
+                });
+        }
+
+        // Carregar municípios com base no estado selecionado
+        function loadCities() {
+            const states = Array.from(document.getElementById("states").selectedOptions).map(option => option.value);
+            const citiesSelect = document.getElementById("cities");
+            if (states.length > 0) {
+                citiesSelect.innerHTML = ""
+                states.forEach(state => {
+                    fetch(`${apiServer}/cities/${state}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(city => {
+                                citiesSelect.innerHTML += `<option value="${city}">${city}</option>`;
+                            });
+                        });
+                });
+            }
+        }
+
+        function downloadData() {
+            // Coletar os valores dos filtros
+            const collectionName = document.getElementById("collections").value;
+            const selectedYears = Array.from(document.getElementById("years").selectedOptions).map(option => option.value);
+            const selectedState = document.getElementById("states").value;
+            const selectedCities = Array.from(document.getElementById("cities").selectedOptions).map(option => option.value);
+            const selectedAttributes = Array.from(document.getElementById("attributes").selectedOptions).map(option => option.value);
+            const format = document.getElementById("format").value;
+
+            // Construir o corpo da requisição
+            const data = {
+                collection_name: collectionName,
+                years: selectedYears,
+                state: selectedState,
+                cities: selectedCities,
+                attributes: selectedAttributes,
+                format: format
+            };
+
+            // Fazer a requisição via fetch para o endpoint /download_data
+            fetch(`${apiServer}/files/download_data`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao baixar os dados.');
+                    }
+
+                    // Determinar o tipo de arquivo com base no formato de exportação
+                    let contentType = '';
+                    let fileExtension = '';
+
+                    if (format === 'csv') {
+                        contentType = 'text/csv';
+                        fileExtension = 'csv';
+                    } else if (format === 'parquet') {
+                        contentType = 'application/octet-stream';
+                        fileExtension = 'parquet';
+                    } else if (format === 'json') {
+                        contentType = 'application/json';
+                        fileExtension = 'json';
+                    }
+
+                    // Converter a resposta para Blob para fazer o download
+                    return response.blob().then(blob => {
+                        // Criar uma URL para o blob
+                        const url = window.URL.createObjectURL(new Blob([blob], {type: contentType}));
+
+                        // Criar um elemento <a> invisível para disparar o download
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `dados_exportados.${fileExtension}`;
+                        document.body.appendChild(a);
+                        a.click();
+
+                        // Remover o elemento <a> e liberar o URL
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao baixar os dados.');
+                });
+        }
+    </script>
+{% endblock %}

@@ -6,6 +6,7 @@ config.ini
 postgresql/*
 .idea/
 .DS_Store
+*.$*.bkp
 
 # Ignorar pastas de cache do Python
 __pycache__/
@@ -24,3 +25,9 @@ sbenv/
 
 backend/saude_basica_env/
 backend/saude_basica_v1.psql
+
+backend-mongo/__pycache__/*
+backend-mongo/.pytest_cache/*
+backend-mongo/uploads/*
+
+.venv/*

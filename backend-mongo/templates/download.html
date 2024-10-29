@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% block title %}Download{% endblock %}
+{% block content %}
+    <style>
+        .progress-bar {
+            width: 0;
+            height: 25px;
+            background-color: green;
+        }
+    </style>
+    <div class="container mt-4">
+        <h2>Download de Coleção de Dados</h2>
+        <!-- Div para exibir mensagens de erro ou sucesso -->
+        <div id="alert-container" class="mt-3"></div>
+
+        <h3>Filtro de Dados</h3>
+
+        <div class="row">
+            <!-- Listbox de Coleções -->
+            <div class="col-md-12">
+                <label for="collections">Coleções:</label>
+                <select id="collections" class="form-select" onchange="loadAttributes()" required>
+                    <option value="">Selecione uma coleção</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Atributos (Múltipla escolha) -->
+            <div class="col-md-6">
+                <label for="attributes">Atributos:</label>
+                <select id="attributes" class="form-select" multiple>
+                    <option value="">Selecione o(s) atributo(s)</option>
+                </select>
+            </div>
+
+            <!-- Listbox de Anos (Múltipla escolha) -->
+            <div class="col-md-6">
+                <label for="years">Ano:</label>
+                <select id="years" class="form-select" multiple>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Estados (UF) (Múltipla escolha) -->
+            <div class="col-md-12">
+                <label for="states">Estado (UF):</label>
+                <select id="states" class="form-select" onchange="loadCities()">
+                    <option value="">Selecione o estado</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <!-- Listbox de Municípios (Múltipla escolha) -->
+            <div class="col-md-12">
+                <label for="cities">Municípios:</label>
+                <select id="cities" class="form-select" multiple>
+                    <option value="">Selecione o(s) municípios</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <label for="format">Formato de Exportação:</label>
+                <select id="format" class="form-select">
+                    <option value="csv">CSV</option>
+                    <option value="parquet">Parquet</option>
+                    <option value="json">JSON</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="btn_download">** Filtros não selecionados retornam todos os registros **</label>
+                <div class="d-grid gap-2"> <!-- Alteração para o botão ocupar toda a coluna -->
+                    <button id="btn_download" class="btn btn-primary" onclick="downloadData()">Download</button>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div style="width: 100%; background-color: #ddd;">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <br>
+        <div id="progressStatus"></div>
+        <br><br>
+    </div>
+
+    <script>
+        const apiServer = "{{ api_server }}";
+
+        window.onload = function () {
+            loadCollections();
+            loadYears();
+            loadStates();
+        };
+
+        function loadCollections() {
+            fetch(`${apiServer}/collections`)
+                .then(response => response.json())
+                .then(data => {
+                    const collectionsSelect = document.getElementById("collections");
+                    data.forEach(collection => {
+                        collectionsSelect.innerHTML += `<option value="${collection}">${collection}</option>`;
+                    });
+                });
+        }
+
+        function loadAttributes() {
+            const collection = document.getElementById("collections").value;
+            if (collection) {
+                fetch(`${apiServer}/collections/${collection}/attributes`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const attributesSelect = document.getElementById("attributes");
+                        attributesSelect.innerHTML = "";
+                        data.forEach(attribute => {
+                            attributesSelect.innerHTML += `<option value="${attribute}">${attribute}</option>`;
+                        });
+                    });
+            } else {
+                document.getElementById("attributes").innerHTML = '<option value="">Selecione os atributos</option>';
+            }
+        }
+
+        function loadYears() {
+            fetch(`${apiServer}/years`)
+                .then(response => response.json())
+                .then(data => {
+                    const yearsSelect = document.getElementById("years");
+                    data.forEach(year => {
+                        yearsSelect.innerHTML += `<option value="${year}">${year}</option>`;
+                    });
+                });
+        }
+
+        function loadStates() {
+            fetch(`${apiServer}/states`)
+                .then(response => response.json())
+                .then(data => {
+                    const statesSelect = document.getElementById("states");
+                    data.forEach(state => {
+                        statesSelect.innerHTML += `<option value="${state}">${state}</option>`;
+                    });
+                });
+        }
+
+        function loadCities() {
+            const states = Array.from(document.getElementById("states").selectedOptions).map(option => option.value);
+            const citiesSelect = document.getElementById("cities");
+            if (states.length > 0) {
+                citiesSelect.innerHTML = "";
+                states.forEach(state => {
+                    fetch(`${apiServer}/cities/${state}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(city => {
+                                citiesSelect.innerHTML += `<option value="${city}">${city}</option>`;
+                            });
+                        });
+                });
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById("alert-container");
+            alertContainer.innerHTML = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+        }
+
+        function downloadData() {
+            const collectionName = document.getElementById("collections").value;
+            const selectedYears = Array.from(document.getElementById("years").selectedOptions).map(option => option.value);
+            const selectedState = document.getElementById("states").value;
+            const selectedCities = Array.from(document.getElementById("cities").selectedOptions).map(option => option.value);
+            const selectedAttributes = Array.from(document.getElementById("attributes").selectedOptions).map(option => option.value);
+            const format = document.getElementById("format").value;
+
+            if (!collectionName) {
+                showAlert("Por favor, selecione uma coleção.", "danger");
+                return;
+            }
+
+            const data = {
+                collection_name: collectionName,
+                years: selectedYears,
+                state: selectedState,
+                cities: selectedCities,
+                attributes: selectedAttributes,
+                format: format
+            };
+
+            // Inicia a verificação do progresso (se necessário, pode ser implementado)
+            checkProgress();
+
+            fetch(`${apiServer}/files/download_data`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    // Verifica se a resposta não foi bem-sucedida (status code >= 400)
+                    if (!response.ok) {
+                        // Se a resposta for 404 ou outro erro, tenta extrair a mensagem de erro do JSON
+                        return response.json().then(err => {
+                            throw new Error(err.error || 'Erro desconhecido');
+                        });
+                    }
+
+                    let contentType = '';
+                    let fileExtension = '';
+
+                    if (format === 'csv') {
+                        contentType = 'text/csv';
+                        fileExtension = 'csv';
+                    } else if (format === 'parquet') {
+                        contentType = 'application/octet-stream';
+                        fileExtension = 'parquet';
+                    } else if (format === 'json') {
+                        contentType = 'application/json';
+                        fileExtension = 'json';
+                    }
+
+                    return response.blob().then(blob => {
+                        const url = window.URL.createObjectURL(new Blob([blob], {type: contentType}));
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${collectionName}_${format}.zip`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+
+                        showAlert("Download realizado com sucesso!", "success");
+                    });
+                })
+                .catch(error => {
+                    // Exibir a mensagem de erro retornada pelo sistema, ou mensagem padrão caso não haja erro específico
+                    console.error('Erro:', error.message);
+                    showAlert(error.message, 'danger');
+                });
+        }
+
+        function checkProgress() {
+            const interval = setInterval(() => {
+                fetch(`${apiServer}/progress`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const progressBar = document.getElementById('progressBar');
+                        progressBar.style.width = data.progress + '%';
+                        document.getElementById('progressStatus').innerText = 'Progresso: ' + data.progress + '%';
+
+                        // Se o progresso chegar a 100%, parar de verificar
+                        if (data.progress >= 100) {
+                            clearInterval(interval);
+                        }
+                    });
+            }, 1000); // Verifica o progresso a cada 1 segundo
+        }
+
+    </script>
+{% endblock %}

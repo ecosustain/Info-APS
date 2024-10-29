@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Collection{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Criar Nova Coleção no MongoDB</h1>
+
+        <!-- Mensagens de Sucesso ou Erro -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-{{ messages[0][0] }}" role="alert">
+                    {{ messages[0][1] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulário para criar nova coleção -->
+        <div class="mb-3">
+            <label for="collectionName" class="form-label">Coleções disponíveis:</label>
+            <ul>
+                {% for collection in collections %}
+                    <li>{{ collection }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <form action="/create_collection" method="post">
+            <div class="mb-3">
+                <label for="collectionName" class="form-label">Nome da Coleção:</label>
+                <input type="text" id="collectionName" name="collection_name" class="form-control"
+                       placeholder="Insira o nome da nova coleção" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Criar Coleção</button>
+        </form>
+    </div>
+
+{% endblock %}

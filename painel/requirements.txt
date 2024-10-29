@@ -1,3 +1,6 @@
 dash
 plotly
-flask
+flask~=2.3.2
+
+pandas~=2.2.3
+pymongo~=4.5.0
