@@ -61,7 +61,7 @@ PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 def configurar_driver():
     """Configura e retorna o driver do Chrome."""
     options = Options()
-    options.add_argument("--headless")
+    # options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_experimental_option(
