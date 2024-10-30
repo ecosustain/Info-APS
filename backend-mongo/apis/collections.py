@@ -1,12 +1,11 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify
-
 from config.global_vars import IGNORE_KEYS
 from database.collections import get_collection_attributes
 from database.connection import db
-from database.states import get_state, get_collection_sum_states
-from helpers.collections import get_all_collections
+from database.states import get_collection_sum_states, get_state
+from flask import jsonify, make_response
+from flask_restx import Namespace, Resource
 from helpers.aggregation import aggregation_by
+from helpers.collections import get_all_collections
 
 ns_collection = Namespace(
     "Coleções Gerais",

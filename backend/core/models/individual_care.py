@@ -1,6 +1,6 @@
-from django.db import models
-from core.abstract_entity import HealthCore, Category, HealthCoreCategory
+from core.abstract_entity import Category, HealthCore, HealthCoreCategory
 from core.models.geo_unit import GeoUnit
+from django.db import models
 
 
 class IndividualCategory(Category):

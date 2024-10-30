@@ -1,12 +1,13 @@
 import unittest
 from unittest.mock import patch
-from flask import Flask
-from flask_restx import Api
-from apis.states import (
+
+from apis.states import (  # Módulo 'api'
     State,
     StateSumByCollection,
     StateSumByCollectionYear,
-)  # Módulo 'api'
+)
+from flask import Flask
+from flask_restx import Api
 
 
 class StateTestCase(unittest.TestCase):

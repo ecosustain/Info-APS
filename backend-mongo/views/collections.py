@@ -1,14 +1,6 @@
-from flask import (
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-    make_response,
-)
-from flask_restx import Resource
-
 from database.collections import create_mongo_collection
+from flask import flash, make_response, redirect, render_template, request, url_for
+from flask_restx import Resource
 from helpers.collections import get_all_collections
 
 

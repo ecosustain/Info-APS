@@ -1,10 +1,11 @@
-import pytest
 from unittest.mock import Mock, patch
-from flask import Flask, jsonify
-from werkzeug.exceptions import NotFound, InternalServerError
+
+import pytest
 
 # Import the Collection class from the correct module
 from apis.collections import Collection
+from flask import Flask, jsonify
+from werkzeug.exceptions import InternalServerError, NotFound
 
 app = Flask(__name__)
 

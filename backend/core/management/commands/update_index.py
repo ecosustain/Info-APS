@@ -1,11 +1,10 @@
 import pandas as pd
+from core.models.geo_unit import GeoUnit
+from core.models.individual_care import IndividualCare
+from django.core.management.base import BaseCommand
 from django.db import transaction
 from pip._vendor.rich.region import Region
-from core.models.individual_care import IndividualCare
-
-from core.models.geo_unit import GeoUnit
 from unidecode import unidecode
-from django.core.management.base import BaseCommand
 
 
 # Função para formatar o nome do município e UF

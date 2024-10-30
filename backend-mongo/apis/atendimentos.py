@@ -1,8 +1,7 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify
-
 from config.global_vars import IGNORE_KEYS
 from database.collections import get_collection_attributes
+from flask import jsonify, make_response
+from flask_restx import Namespace, Resource
 from helpers.aggregation import aggregation_by
 
 ns_atendimentos_hospitalares = Namespace(

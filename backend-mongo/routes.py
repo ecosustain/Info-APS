@@ -1,20 +1,19 @@
-from flask import Blueprint
-from flask_restx import Api
-
+from apis.altas import ns_altas
 from apis.atendimento_individual import ns_atendimentos_individuais
 from apis.atendimento_odontologico import ns_atendimentos_odontologicos
 from apis.atendimentos import ns_atendimentos_hospitalares
-from apis.encaminhamentos import ns_encaminhamentos
-from apis.altas import ns_altas
 from apis.cities import ns_cidades
+from apis.collections import ns_collection
+from apis.encaminhamentos import ns_encaminhamentos
 from apis.files import ns_default
 from apis.states import ns_estados
-from apis.collections import ns_collection
 from apis.visitas_domiciliar import ns_atendimentos_domiciliar
-from views.home import home
-from views.file_manager import UploadCSV, DownloadFile
+from flask import Blueprint
+from flask_restx import Api
 from views.collections import CreateCollection
 from views.er_model_views import ErModelView
+from views.file_manager import DownloadFile, UploadCSV
+from views.home import home
 
 # Inicializar o Blueprint para as rotas das views
 views_bp = Blueprint("views", __name__)

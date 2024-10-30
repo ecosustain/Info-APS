@@ -1,12 +1,12 @@
 import pandas as pd
-from django.core.management.base import BaseCommand
-from django.db import transaction
+from core.models.geo_unit import GeoUnit, GeoUnitType
 from core.models.individual_care import (
     IndividualCare,
     IndividualCareCategory,
     IndividualCategory,
 )
-from core.models.geo_unit import GeoUnit, GeoUnitType
+from django.core.management.base import BaseCommand
+from django.db import transaction
 
 
 def mes_para_numero(mes_sigla):

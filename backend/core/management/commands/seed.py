@@ -1,10 +1,11 @@
-from django.core.management.base import BaseCommand
-from core.models.data_import import DataImportProfile, DataImportLog
 import os
 import shutil
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+
+from core.models.data_import import DataImportLog, DataImportProfile
 from django.core.management import call_command
+from django.core.management.base import BaseCommand
 
 
 def move_and_rename_file(file_name):

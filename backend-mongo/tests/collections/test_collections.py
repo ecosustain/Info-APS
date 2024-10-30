@@ -1,12 +1,13 @@
 import unittest
 from unittest.mock import patch
-from flask import Flask
-from flask_restx import Api
-from apis.collections import (
+
+from apis.collections import (  # Módulo 'api'
     Collection,
     CollectionSum,
     CollectionSumByKey,
-)  # Módulo 'api'
+)
+from flask import Flask
+from flask_restx import Api
 
 
 class CollectionTestCase(unittest.TestCase):

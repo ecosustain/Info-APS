@@ -1,17 +1,13 @@
+import os
+import tempfile
+import zipfile
 from datetime import datetime
 
 import pandas as pd
-
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify, request
-
 from database.collections import get_collection_attributes
 from database.connection import db
-
-import os
-import zipfile
-import tempfile
-from flask import send_file
+from flask import jsonify, make_response, request, send_file
+from flask_restx import Namespace, Resource
 
 # Variável global para acompanhar o progresso
 progress_bar = {

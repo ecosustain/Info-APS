@@ -1,11 +1,10 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify
-
 from database.states import (
-    get_state,
     get_collection_sum_states,
     get_collection_sum_states_year,
+    get_state,
 )
+from flask import jsonify, make_response
+from flask_restx import Namespace, Resource
 
 ns_estados = Namespace(
     "Estados", description="Operações sobre os atributos dos estados"

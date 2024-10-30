@@ -1,14 +1,13 @@
-from flask import render_template, request, flash, make_response, jsonify
+from apis.files import reset_progress
+from config.global_vars import API_SERVER
+from flask import flash, jsonify, make_response, render_template, request
 from flask_restx import Resource
-
 from helpers.collections import get_all_collections
-from helpers.utils import (
+from helpers.utils import (  # Importando funções utilitárias
+    is_collection_empty,
     process_csv_file,
     update_collections_attributes,
-    is_collection_empty,
-)  # Importando funções utilitárias
-from config.global_vars import API_SERVER
-from apis.files import reset_progress
+)
 
 
 class DownloadFile(Resource):

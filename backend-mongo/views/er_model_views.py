@@ -1,12 +1,5 @@
+from flask import flash, make_response, redirect, render_template, request, url_for
 from flask_restx import Resource
-from flask import (
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-    make_response,
-)
 
 
 class ErModelView(Resource):

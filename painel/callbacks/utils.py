@@ -60,6 +60,19 @@ def get_regioes(estado):
     return regioes_dict
 
 
+def get_regiao_municipio(estado, municipio):
+    """Função para obter a região de um município"""
+    regiao = municipios[
+        (municipios["uf"] == estado)
+        & (municipios["municipio"] == municipio.upper())
+    ]["no_regiao"].values[0]
+    print("------ Regiao: ", regiao)
+    if len(regiao) < 3:
+        print(f"Erro ao obter a região do município {municipio}")
+        return None
+    return regiao
+
+
 def get_municipios_regiao(regiao):
     """Função para obter um dicionario dos ibge e municipios de uma região"""
     # TODO implementar via API

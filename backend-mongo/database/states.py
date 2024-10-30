@@ -1,6 +1,7 @@
-from helpers.collections import get_all_collections
-from .connection import db
 from helpers.aggregation import aggregation_collections
+from helpers.collections import get_all_collections
+
+from .connection import db
 
 
 def get_collection_sum_states(states):

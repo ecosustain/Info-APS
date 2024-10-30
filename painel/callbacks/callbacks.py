@@ -32,6 +32,7 @@ from callbacks.utils import (
     formatar_numero,
     get_municipios_regiao,
     get_population,
+    get_regiao_municipio,
     get_regioes,
     get_type,
 )
@@ -85,7 +86,7 @@ def register_callbacks(app):
             raise dash.exceptions.PreventUpdate
         municipios = get_municipios(estado)
         options = [
-            {"label": municipio, "value": municipio}
+            {"label": municipio.upper(), "value": municipio.upper()}
             for municipio in municipios
         ]
         if regiao is not None:
@@ -339,6 +340,9 @@ def register_callbacks(app):
         if input_id == "dropdown-municipio":
             if municipio is None:
                 return estado, regiao, None
+            if municipio is not None and regiao is None:
+                regiao = get_regiao_municipio(estado, municipio)
+                return estado, regiao, municipio
 
         if clickData is None:
             raise dash.exceptions.PreventUpdate

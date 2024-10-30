@@ -1,9 +1,9 @@
 import json
 
+import geopandas as gpd
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import geopandas as gpd
 
 cadastro = pd.read_csv("../etl/data/consolidado/Cadastro.csv")
 condicao = pd.read_csv("../etl/data/consolidado/producao_problema.csv")

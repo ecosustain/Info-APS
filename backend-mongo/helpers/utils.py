@@ -1,9 +1,9 @@
 import csv
 import os
-from database.connection import db
-from helpers.collections import get_all_collections
 
 from apis.files import set_progress, start_progress
+from database.connection import db
+from helpers.collections import get_all_collections
 
 
 def count_csv_records(file_path):

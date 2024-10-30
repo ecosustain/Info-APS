@@ -1,7 +1,6 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify
-
 from database.cities import get_cities_by_state
+from flask import jsonify, make_response
+from flask_restx import Namespace, Resource
 
 ns_cidades = Namespace(
     "Cidades", description="Operações sobre os atributos dos municípios"
