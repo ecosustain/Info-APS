@@ -21,12 +21,15 @@ class Migration(migrations.Migration):
         migrations.AddIndex(
             model_name="individualcare",
             index=models.Index(
-                fields=["geo_unit_macro_region"], name="index_geo_unit_macro_region"
+                fields=["geo_unit_macro_region"],
+                name="index_geo_unit_macro_region",
             ),
         ),
         migrations.AddIndex(
             model_name="individualcare",
-            index=models.Index(fields=["geo_unit_state"], name="index_geo_unit_state"),
+            index=models.Index(
+                fields=["geo_unit_state"], name="index_geo_unit_state"
+            ),
         ),
         migrations.AddIndex(
             model_name="individualcare",

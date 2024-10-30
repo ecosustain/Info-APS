@@ -111,3 +111,11 @@ cadastro:
   municipio: '//*[@id="selectLinha"]/option[4]'
   competencia: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[1]/div/div[3]/div/button'
   download: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[2]/div/div/div/button'
+
+gravidas:
+  link: 'https://sisab.saude.gov.br/paginas/acessoPublico/relatorio/indicadores/IndicadorPrenatal.xhtml'
+  nome_arq: 'gravidas'
+  nome_arq_download: 'gravidas.csv'
+  municipio: '//*[@id="selectLinha"]/optgroup/option[5]'
+  coluna: '//*[@id="selectcoluna"]/optgroup/option[4]'
+  competencia: '//*[@id="competencia"]/div/button'

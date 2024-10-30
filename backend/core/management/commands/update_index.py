@@ -13,18 +13,18 @@ def format_name(name):
     if pd.notnull(name):
         # Remove acentos e transforma em lowercase
         return unidecode(str(name)).strip().lower()
-    return ''
+    return ""
 
 
 # Função para normalizar o nome removendo acentos e convertendo para lowercase
 def normalize_name(name):
     if pd.notnull(name):
         return unidecode(str(name)).strip().lower()
-    return ''
+    return ""
 
 
 class Command(BaseCommand):
-    help = 'Seeds Actions.'
+    help = "Seeds Actions."
 
     def handle(self, *args, **options):
         individual_cares = IndividualCare.objects.all()
@@ -33,8 +33,7 @@ class Command(BaseCommand):
         for reg in individual_cares:
             print(reg.geo_unit.name)
             count += 1
-            print(f'{count} of {total_count}')
+            print(f"{count} of {total_count}")
             reg.geo_unit_state = reg.geo_unit.parent
             reg.geo_unit_macro_region = reg.geo_unit.parent.parent
             reg.save()
-

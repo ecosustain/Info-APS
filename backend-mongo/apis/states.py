@@ -1,9 +1,15 @@
 from flask_restx import Resource, Namespace
 from flask import make_response, jsonify
 
-from database.states import get_state, get_collection_sum_states, get_collection_sum_states_year
+from database.states import (
+    get_state,
+    get_collection_sum_states,
+    get_collection_sum_states_year,
+)
 
-ns_estados = Namespace("Estados", description="Operações sobre os atributos dos estados")
+ns_estados = Namespace(
+    "Estados", description="Operações sobre os atributos dos estados"
+)
 
 
 @ns_estados.route("/states", strict_slashes=False)
@@ -34,7 +40,9 @@ class StateSumByCollection(Resource):
             if collections:
                 return jsonify(collections)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
@@ -53,6 +61,8 @@ class StateSumByCollectionYear(Resource):
             if collections:
                 return jsonify(collections)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)

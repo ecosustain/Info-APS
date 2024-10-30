@@ -16,7 +16,6 @@ from etl.extrair.extracao import (
     seleciona_competencias,
     get_logger,
     seleciona_xpath,
-    
 )
 
 
@@ -51,7 +50,9 @@ def seleciona_busca(busca, driver):
     """Função para selecionar a busca."""
     # Seleciona a barra de busca
     barra_busca = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="dtBasicExample_filter"]/label/input'))
+        EC.element_to_be_clickable(
+            (By.XPATH, '//*[@id="dtBasicExample_filter"]/label/input')
+        )
     )
     for j, b in enumerate(busca):
         barra_busca.click()
@@ -92,12 +93,11 @@ def seleciona_codigos(driver):
     # Seleciona "Coluna" no dropdown de Colunas
     seleciona_xpath(driver, '//*[@id="selectcoluna"]/optgroup[2]/option[7]')
     # Seleciona o botão cid e ciap
-    clica_botao_cid(driver) 
+    clica_botao_cid(driver)
     # Mostra 100 itens por página
     expande_itens_por_pagina(driver)
     # Busca por febre
-    seleciona_busca(['febre', 'CIAP N01', 'CIAP R05'], driver)
-
+    seleciona_busca(["febre", "CIAP N01", "CIAP R05"], driver)
 
 
 # Função para extrair os cids e ciaps do site do sisab
@@ -123,7 +123,7 @@ def extrair_codigos(num_meses=100):
         # seleciona cids e ciaps
         seleciona_codigos(driver)
         # Faz o download
-        if fazer_download(driver, mes, 'producao_codigos'):
+        if fazer_download(driver, mes, "producao_codigos"):
             driver.refresh()
         else:
             falhas += 1

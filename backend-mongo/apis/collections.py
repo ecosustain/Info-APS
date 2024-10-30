@@ -8,14 +8,17 @@ from database.states import get_state, get_collection_sum_states
 from helpers.collections import get_all_collections
 from helpers.aggregation import aggregation_by
 
-ns_collection = Namespace("Coleções Gerais", description="Operações sobre todas as coleções disponíveis")
+ns_collection = Namespace(
+    "Coleções Gerais",
+    description="Operações sobre todas as coleções disponíveis",
+)
 
 
 def sum_values(value, key, total_sum):
     if isinstance(value, (int, float)):
         total_sum[key] = total_sum.get(key, 0) + value
     elif isinstance(value, str):
-        value_without_dots = value.replace('.', '')
+        value_without_dots = value.replace(".", "")
         if value_without_dots.isdigit():
             total_sum[key] = total_sum.get(key, 0) + int(value_without_dots)
 
@@ -41,7 +44,7 @@ def get_collection_sum(collection_name, ignore_keys=None):
     return total_sum
 
 
-@ns_collection.route('/collections/sum', strict_slashes=False)
+@ns_collection.route("/collections/sum", strict_slashes=False)
 class CollectionSumStates(Resource):
 
     def get(self):
@@ -55,12 +58,14 @@ class CollectionSumStates(Resource):
             if collections:
                 return jsonify(collections)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_collection.route('/collections', strict_slashes=False)
+@ns_collection.route("/collections", strict_slashes=False)
 class Collection(Resource):
     def get(self):
         """
@@ -72,12 +77,14 @@ class Collection(Resource):
             if collections:
                 return jsonify(collections)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_collection.route('/collections/<collection>/sum', strict_slashes=False)
+@ns_collection.route("/collections/<collection>/sum", strict_slashes=False)
 class CollectionSum(Resource):
 
     def get(self, collection):
@@ -93,7 +100,9 @@ class CollectionSum(Resource):
             return jsonify({"error": str(e)}), 500
 
 
-@ns_collection.route('/collections/<collection>/<attribute>', strict_slashes=False)
+@ns_collection.route(
+    "/collections/<collection>/<attribute>", strict_slashes=False
+)
 class CollectionSumByKey(Resource):
     def get(self, collection, attribute):
         """
@@ -107,12 +116,21 @@ class CollectionSumByKey(Resource):
             if attribute in soma_total:
                 return jsonify({attribute: soma_total[attribute]})
             else:
-                return jsonify({"error": f"Chave '{attribute}' não encontrada na coleção {collection}."}), 404
+                return (
+                    jsonify(
+                        {
+                            "error": f"Chave '{attribute}' não encontrada na coleção {collection}."
+                        }
+                    ),
+                    404,
+                )
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
 
-@ns_collection.route('/collections/<collection>/attributes', strict_slashes=False)
+@ns_collection.route(
+    "/collections/<collection>/attributes", strict_slashes=False
+)
 class CollectionAttributes(Resource):
     def get(self, collection):
         """
@@ -132,9 +150,12 @@ def agregacao_por_collection(collection, rows, user_attributes):
     data = {}
 
     for row in rows:
-        year, month = row['_id']['Ano'], row['_id']['Mes']
+        year, month = row["_id"]["Ano"], row["_id"]["Mes"]
         producao_total = sum(
-            int(row[attribute]) for attribute in collection_attributes if attribute in user_attributes)
+            int(row[attribute])
+            for attribute in collection_attributes
+            if attribute in user_attributes
+        )
 
         data_year = data.get(year, {})
         data_year[month] = data_year.get(month, 0) + producao_total
@@ -160,12 +181,16 @@ class Colecao(Resource):
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_collection.route("/<collection>/regions/<region>/<attributes>", strict_slashes=False)
+@ns_collection.route(
+    "/<collection>/regions/<region>/<attributes>", strict_slashes=False
+)
 class ColecaoPorRegiao(Resource):
     def get(self, collection, region, attributes):
         """
@@ -183,12 +208,16 @@ class ColecaoPorRegiao(Resource):
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_collection.route("/<collection>/states/<state>/<attributes>", strict_slashes=False)
+@ns_collection.route(
+    "/<collection>/states/<state>/<attributes>", strict_slashes=False
+)
 class ColecaoPorEstado(Resource):
     def get(self, collection, state, attributes):
         """
@@ -206,12 +235,16 @@ class ColecaoPorEstado(Resource):
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_collection.route("/<collection>/cities/<ibge>/<attributes>", strict_slashes=False)
+@ns_collection.route(
+    "/<collection>/cities/<ibge>/<attributes>", strict_slashes=False
+)
 class ColecaoPorCidade(Resource):
     def get(self, collection, ibge, attributes):
         """
@@ -223,12 +256,16 @@ class ColecaoPorCidade(Resource):
         """
         try:
             user_attributes = attributes.split(",")
-            rows = aggregation_by(collection, ["Ano", "Mes"], None, None, [int(ibge)])
+            rows = aggregation_by(
+                collection, ["Ano", "Mes"], None, None, [int(ibge)]
+            )
             data = agregacao_por_collection(collection, rows, user_attributes)
 
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)

@@ -7,7 +7,7 @@ from apis.files import set_progress, start_progress
 
 
 def count_csv_records(file_path):
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
+    with open(file_path, newline="", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
         # Converter em uma lista e contar os elementos
         records = list(reader)
@@ -31,7 +31,7 @@ def process_csv_file(file, collection_name):
     # Atualizar o total de registros no progresso
     start_progress(total_records)
 
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
+    with open(file_path, newline="", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
         collection = db[collection_name]
         # cities = db['cities']
@@ -41,19 +41,23 @@ def process_csv_file(file, collection_name):
             for key, value in row.items():
                 if value is not None:
                     value = value.strip()  # Remove espaços extras
-                key = key.strip().replace('.', '')
+                key = key.strip().replace(".", "")
                 # Verifica se o valor termina com .0 (como 2024.0) e remove o .0
-                if value.endswith('.0'):
-                    value = value[:-2]  # Remove os últimos dois caracteres (".0")
+                if value.endswith(".0"):
+                    value = value[
+                        :-2
+                    ]  # Remove os últimos dois caracteres (".0")
 
                 if value is not None:
-                    value = value.strip().replace('.', '')  # Remove espaços extras
+                    value = value.strip().replace(
+                        ".", ""
+                    )  # Remove espaços extras
 
                 # Verificar se o valor é uma string com números e remover pontos
-                if value.replace('.', '', 1).isdigit():
+                if value.replace(".", "", 1).isdigit():
                     try:
                         # Converte para inteiro após remover pontos de milhar
-                        int_value = int(value.replace('.', ''))
+                        int_value = int(value.replace(".", ""))
                         # Ignora valores zero
                         if int_value != 0:
                             document[key] = int_value
@@ -68,7 +72,9 @@ def process_csv_file(file, collection_name):
             step += 1
 
             # Se houver algum valor no documento, insere no MongoDB
-            if document:  # Certifica que não estamos inserindo um documento vazio
+            if (
+                document
+            ):  # Certifica que não estamos inserindo um documento vazio
                 collection.insert_one(document)
 
     set_progress(step + 1, 100)
@@ -96,10 +102,12 @@ def update_collection_attributes(collection_name, based_on_first=None):
     attributes_list = sorted(list(attributes_set))
 
     # Inserir ou atualizar os atributos na coleção 'collection_attributes'
-    db['collection_attributes'].update_one(
-        {'collection': collection_name},  # Filtro para a coleção específica
-        {'$set': {'attributes': attributes_list}},  # Atualização da lista de atributos
-        upsert=True  # Insere um novo documento se não encontrar a coleção
+    db["collection_attributes"].update_one(
+        {"collection": collection_name},  # Filtro para a coleção específica
+        {
+            "$set": {"attributes": attributes_list}
+        },  # Atualização da lista de atributos
+        upsert=True,  # Insere um novo documento se não encontrar a coleção
     )
 
     return attributes_list
@@ -108,13 +116,17 @@ def update_collection_attributes(collection_name, based_on_first=None):
 def update_collections_attributes(collection_name=None, based_on_first=None):
     if collection_name:
         print(collection_name)
-        attributes_list = update_collection_attributes(collection_name, based_on_first)
+        attributes_list = update_collection_attributes(
+            collection_name, based_on_first
+        )
         print(attributes_list)
     else:
         collections = get_all_collections()
         for collection_name in collections:
             print(collection_name)
-            attributes_list = update_collection_attributes(collection_name, based_on_first)
+            attributes_list = update_collection_attributes(
+                collection_name, based_on_first
+            )
             print(attributes_list)
 
 
@@ -122,4 +134,6 @@ def is_collection_empty(collection_name):
     collection = db[collection_name]
     # Tenta encontrar um documento
     document = collection.find_one()
-    return document is None  # Retorna True se não encontrar documento, indicando que está vazia
+    return (
+        document is None
+    )  # Retorna True se não encontrar documento, indicando que está vazia

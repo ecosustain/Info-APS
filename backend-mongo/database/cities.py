@@ -9,5 +9,5 @@ def get_cities_by_state(state):
     :return: Lista de municípios pertencentes à UF.
     """
     collection = db["cities"]  # Nome da sua coleção
-    cities = collection.distinct('cidade', {'uf': state})  # Filtra pela UF
+    cities = collection.distinct("cidade", {"uf": state})  # Filtra pela UF
     return list(cities)

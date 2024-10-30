@@ -30,6 +30,10 @@ def process_csv(file_path):
         temp_df.iloc[3].dropna().values[0]
     )  # Supondo que o mês esteja na primeira coluna não vazia
 
+    # Se o filepath cotains gravidas, o mês está na linha 4
+    if "gravidas" in file_path:
+        linha = temp_df.iloc[4].dropna().values[0]
+
     # Extrair o mês da linha
     mes = linha.split(" ")[1].split("/")[0]
     ano = linha.split(" ")[1].split("/")[1]

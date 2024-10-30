@@ -20,14 +20,21 @@ procedimentos = pd.read_csv(
 )
 
 # Convertendo as colunas numéricas para inteiros
-colunas_numerica = [col for col in procedimentos.columns if procedimentos[col].dtype == 'float64']
+colunas_numerica = [
+    col
+    for col in procedimentos.columns
+    if procedimentos[col].dtype == "float64"
+]
 procedimentos[colunas_numerica] = procedimentos[colunas_numerica].astype(int)
-colunas_numerica = [col for col in condicao.columns if condicao[col].dtype == 'float64']
+colunas_numerica = [
+    col for col in condicao.columns if condicao[col].dtype == "float64"
+]
 condicao[colunas_numerica] = condicao[colunas_numerica].astype(int)
 
 # Carregar o shapefile do Brasil
-brasil = gpd.read_file('../mapas/BR_UF_2022/BR_UF_2022.shp')
-brasil['geometry'] = brasil['geometry'].simplify(0.1)
+brasil = gpd.read_file("../mapas/BR_UF_2022/BR_UF_2022.shp")
+brasil["geometry"] = brasil["geometry"].simplify(0.1)
+
 
 def get_condicao_normalizada(coluna, ano):
     """Função que retorna a condição normalizada por 100 mil habitantes"""

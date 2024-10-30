@@ -4,8 +4,10 @@ from flask import make_response, jsonify
 from database.collections import get_collection_attributes
 from helpers.aggregation import aggregation_by
 
-ns_atendimentos_odontologicos = Namespace("Atendimentos Odontológicos",
-                                          description="Operações sobre o atributo 'Atendimento Odontológico' da coleção 'Tipo Produção'")
+ns_atendimentos_odontologicos = Namespace(
+    "Atendimentos Odontológicos",
+    description="Operações sobre o atributo 'Atendimento Odontológico' da coleção 'Tipo Produção'",
+)
 
 
 def agregacao_por_atendimento_odontologico(collection, rows):
@@ -13,9 +15,12 @@ def agregacao_por_atendimento_odontologico(collection, rows):
     data = {}
 
     for row in rows:
-        year, month = row['_id']['Ano'], row['_id']['Mes']
+        year, month = row["_id"]["Ano"], row["_id"]["Mes"]
         producao_total = sum(
-            int(row[attribute]) for attribute in collection_attributes if attribute == "Atendimento Odontológico")
+            int(row[attribute])
+            for attribute in collection_attributes
+            if attribute == "Atendimento Odontológico"
+        )
 
         data_year = data.get(year, {})
         data_year[month] = data_year.get(month, 0) + producao_total
@@ -24,7 +29,9 @@ def agregacao_por_atendimento_odontologico(collection, rows):
     return data
 
 
-@ns_atendimentos_odontologicos.route("/atendimentos_odontologicos", strict_slashes=False)
+@ns_atendimentos_odontologicos.route(
+    "/atendimentos_odontologicos", strict_slashes=False
+)
 class AtendimentoOdontologico(Resource):
     def get(self):
         """
@@ -32,19 +39,23 @@ class AtendimentoOdontologico(Resource):
         :return: Resposta JSON com coleções para a região e ano especificados ou resposta de erro se as coleções não forem encontradas ou ocorrer um erro desconhecido
         """
         try:
-            collection = 'Tipo Produção'
+            collection = "Tipo Produção"
             rows = aggregation_by(collection, ["Ano", "Mes"])
             data = agregacao_por_atendimento_odontologico(collection, rows)
 
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_atendimentos_odontologicos.route("/atendimentos_odontologicos/regions/<region>", strict_slashes=False)
+@ns_atendimentos_odontologicos.route(
+    "/atendimentos_odontologicos/regions/<region>", strict_slashes=False
+)
 class AtendimentoOdontologicoPorRegiao(Resource):
     def get(self, region):
         """
@@ -53,19 +64,23 @@ class AtendimentoOdontologicoPorRegiao(Resource):
         :return: Retorna um JSON da colecão agregada por ANO, MES
         """
         try:
-            collection = 'Tipo Produção'
+            collection = "Tipo Produção"
             rows = aggregation_by(collection, ["Ano", "Mes"], [int(region)])
             data = agregacao_por_atendimento_odontologico(collection, rows)
 
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_atendimentos_odontologicos.route("/atendimentos_odontologicos/states/<state>", strict_slashes=False)
+@ns_atendimentos_odontologicos.route(
+    "/atendimentos_odontologicos/states/<state>", strict_slashes=False
+)
 class AtendimentoOdontologicoPorEstado(Resource):
     def get(self, state):
         """
@@ -74,19 +89,23 @@ class AtendimentoOdontologicoPorEstado(Resource):
         :return: Retorna um JSON da colecão agregada por ANO, MES
         """
         try:
-            collection = 'Tipo Produção'
+            collection = "Tipo Produção"
             rows = aggregation_by(collection, ["Ano", "Mes"], None, [state])
             data = agregacao_por_atendimento_odontologico(collection, rows)
 
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)
 
 
-@ns_atendimentos_odontologicos.route("/atendimentos_odontologicos/cities/<ibge>", strict_slashes=False)
+@ns_atendimentos_odontologicos.route(
+    "/atendimentos_odontologicos/cities/<ibge>", strict_slashes=False
+)
 class AtendimentoOdontologicoPorCidade(Resource):
     def get(self, ibge):
         """
@@ -95,13 +114,17 @@ class AtendimentoOdontologicoPorCidade(Resource):
         :return: Retorna um JSON da colecão agregada por ANO, MES
         """
         try:
-            collection = 'Tipo Produção'
-            rows = aggregation_by(collection, ["Ano", "Mes"], None, None, [int(ibge)])
+            collection = "Tipo Produção"
+            rows = aggregation_by(
+                collection, ["Ano", "Mes"], None, None, [int(ibge)]
+            )
             data = agregacao_por_atendimento_odontologico(collection, rows)
 
             if data:
                 return jsonify(data)
             else:
-                return make_response(jsonify({"error": "Coleções não encontradas"}), 404)
+                return make_response(
+                    jsonify({"error": "Coleções não encontradas"}), 404
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)

@@ -15,13 +15,16 @@ from flask import send_file
 
 # Variável global para acompanhar o progresso
 progress_bar = {
-    'total': 0,  # Total de registros
-    'processed': 0,  # Quantidade de registros processados
-    'progress': 0,  # Progresso percentual
-    'timestamp': 0  # Progresso percentual
+    "total": 0,  # Total de registros
+    "processed": 0,  # Quantidade de registros processados
+    "progress": 0,  # Progresso percentual
+    "timestamp": 0,  # Progresso percentual
 }
 
-ns_default = Namespace("Sistema e Arquivos", description="Operações de apoio a operação do sistema")
+ns_default = Namespace(
+    "Sistema e Arquivos",
+    description="Operações de apoio a operação do sistema",
+)
 
 
 def get_progress():
@@ -31,25 +34,25 @@ def get_progress():
 
 def start_progress(total, processed, progress):
     global progress_bar
-    progress_bar['total'] = total
-    progress_bar['processed'] = processed
-    progress_bar['progress'] = progress
-    progress_bar['timestamp'] = datetime.now().timestamp()
+    progress_bar["total"] = total
+    progress_bar["processed"] = processed
+    progress_bar["progress"] = progress
+    progress_bar["timestamp"] = datetime.now().timestamp()
 
 
 def set_progress(processed, progress):
     global progress_bar
-    progress_bar['processed'] = processed
-    progress_bar['progress'] = progress
-    progress_bar['timestamp'] = datetime.now().timestamp()
+    progress_bar["processed"] = processed
+    progress_bar["progress"] = progress
+    progress_bar["timestamp"] = datetime.now().timestamp()
 
 
 def reset_progress():
     global progress_bar
-    progress_bar['total'] = 0
-    progress_bar['processed'] = 0
-    progress_bar['progress'] = 0
-    progress_bar['timestamp'] = 0
+    progress_bar["total"] = 0
+    progress_bar["processed"] = 0
+    progress_bar["progress"] = 0
+    progress_bar["timestamp"] = 0
 
 
 @ns_default.route("/progress", strict_slashes=False)
@@ -60,7 +63,9 @@ class ProgressBarStatus(Resource):
         """
         try:
             response = make_response(jsonify(get_progress()), 200)
-            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Cache-Control"] = (
+                "no-cache, no-store, must-revalidate"
+            )
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -78,7 +83,9 @@ class ProgressBarReset(Resource):
         try:
             reset_progress()
             response = make_response(jsonify(get_progress()), 200)
-            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Cache-Control"] = (
+                "no-cache, no-store, must-revalidate"
+            )
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -90,19 +97,20 @@ def export_data(df, file_format, file_path, zip_path):
     chunk_size = 10000  # Define o tamanho do chunk para exportar (ajuste conforme necessário)
 
     # Exportar os dados para um arquivo no disco em chunks
-    if file_format == 'csv':
+    if file_format == "csv":
         # Criar o CSV diretamente no disco em chunks
-        with open(file_path, mode='w', newline='', encoding='utf-8') as file:
+        with open(file_path, mode="w", newline="", encoding="utf-8") as file:
             # Exportar o DataFrame em chunks
             for i, chunk in enumerate(range(0, len(df), chunk_size)):
-                df.iloc[chunk:chunk + chunk_size].to_csv(file, index=False,
-                                                         header=i == 0)  # Cabeçalho apenas no primeiro chunk
+                df.iloc[chunk : chunk + chunk_size].to_csv(
+                    file, index=False, header=i == 0
+                )  # Cabeçalho apenas no primeiro chunk
 
-    elif file_format == 'parquet':
+    elif file_format == "parquet":
         # Criar o Parquet diretamente no disco em chunks
         df.to_parquet(file_path, index=False)
 
-    elif file_format == 'json':
+    elif file_format == "json":
         # Criar o JSON diretamente no disco
         df.to_json(file_path, orient="records", lines=False)
 
@@ -110,26 +118,28 @@ def export_data(df, file_format, file_path, zip_path):
         return jsonify({"error": "Formato de exportação não suportado"}), 400
 
     # Zipar o arquivo criado
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zip_file:
         zip_file.write(file_path, os.path.basename(file_path))
 
     # Enviar o arquivo zipado como resposta
     return zip_path
 
 
-@ns_default.route("/files/download_data", strict_slashes=False, methods=["POST"])
+@ns_default.route(
+    "/files/download_data", strict_slashes=False, methods=["POST"]
+)
 class Files(Resource):
     def get(self):
-        return make_response(jsonify({'files': os.listdir(os.getcwd())}), 200)
+        return make_response(jsonify({"files": os.listdir(os.getcwd())}), 200)
 
     def post(self):
         # Extrair os parâmetros da requisição
-        collection_name = request.json.get('collection_name')
-        years = request.json.get('years', [])
-        state = request.json.get('state', '')
-        cities = request.json.get('cities', [])
-        attributes = request.json.get('attributes', [])
-        file_format = request.json.get('format', 'csv')
+        collection_name = request.json.get("collection_name")
+        years = request.json.get("years", [])
+        state = request.json.get("state", "")
+        cities = request.json.get("cities", [])
+        attributes = request.json.get("attributes", [])
+        file_format = request.json.get("format", "csv")
         total_records = 4
         step = 0
 
@@ -144,13 +154,17 @@ class Files(Resource):
         # Filtro para Anos
         if years:
             years = list(map(int, years))  # converts all
-            query['Ano'] = {"$in": years}  # Se a lista de anos não estiver vazia
+            query["Ano"] = {
+                "$in": years
+            }  # Se a lista de anos não estiver vazia
         # Filtro para Estado
         if state:
-            query['Uf'] = state  # Se o estado for fornecido
+            query["Uf"] = state  # Se o estado for fornecido
         # Filtro para Municípios
         if cities:
-            query['Municipio'] = {"$in": cities}  # Se a lista de municípios não estiver vazia
+            query["Municipio"] = {
+                "$in": cities
+            }  # Se a lista de municípios não estiver vazia
 
         set_progress(step + 1, int(((step + 1) / total_records) * 100))
         step += 1
@@ -162,7 +176,14 @@ class Files(Resource):
         if not documents:
             set_progress(total_records, 100)
 
-            return make_response(jsonify({"error": "Nenhum dado encontrado para os filtros fornecidos"}), 404)
+            return make_response(
+                jsonify(
+                    {
+                        "error": "Nenhum dado encontrado para os filtros fornecidos"
+                    }
+                ),
+                404,
+            )
 
         # Filtrar os atributos desejados (se a lista de atributos estiver vazia, selecionar todos)
         if not attributes:
@@ -173,7 +194,9 @@ class Files(Resource):
         else:
             # Manter somente os atributos selecionados
             collection_attributes = get_collection_attributes(collection_name)
-            attributes = [attr for attr in attributes if attr in collection_attributes]
+            attributes = [
+                attr for attr in attributes if attr in collection_attributes
+            ]
 
         set_progress(step + 1, int(((step + 1) / total_records) * 100))
         step += 1
@@ -190,20 +213,28 @@ class Files(Resource):
         # Geração de um nome de arquivo aleatório e temporário
         with tempfile.TemporaryDirectory() as tmpdirname:
             # Nome do arquivo exportado (antes de compactar)
-            file_path = os.path.join(tmpdirname, f"{collection_name}.{file_format}")
+            file_path = os.path.join(
+                tmpdirname, f"{collection_name}.{file_format}"
+            )
             zip_path = os.path.join(tmpdirname, f"{collection_name}.zip")
             export_data(df, file_format, file_path, zip_path)
 
             set_progress(step + 1, int(((step + 1) / total_records) * 100))
             step += 1
 
-            return send_file(zip_path, as_attachment=True, download_name=f"{collection_name}.zip",
-                             mimetype='application/zip')
+            return send_file(
+                zip_path,
+                as_attachment=True,
+                download_name=f"{collection_name}.zip",
+                mimetype="application/zip",
+            )
 
-        return make_response(jsonify({"Não foi possível enviar o arquivo"}), 500)
+        return make_response(
+            jsonify({"Não foi possível enviar o arquivo"}), 500
+        )
 
 
-@ns_default.route('/years', strict_slashes=False)
+@ns_default.route("/years", strict_slashes=False)
 class YearInterval(Resource):
     def get(self):
         """
