@@ -162,7 +162,7 @@ def preprocess_data(df):
         "trimestre"
     ].astype(str).str.replace("T", "")
     df_grouped = df_grouped.sort_values("ano_order")
-    return df_grouped.tail(11)
+    return df_grouped.tail(20)
 
 
 def create_bar_chart(df_filtered, title, tipo):
