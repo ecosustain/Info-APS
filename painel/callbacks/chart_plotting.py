@@ -32,9 +32,7 @@ def update_layout_chart(chart, title, tipo):
         xaxis_title=None,
         yaxis_title=None,
         plot_bgcolor="#FFFFFF",
-        yaxis=dict(
-            showticklabels=False, range=[0, chart.data[0].y.max() * 1.1]
-        ),
+        yaxis=dict(showticklabels=False, range=[0, chart.data[0].y.max()*1.1]),
         margin=dict(l=35, r=35, t=60, b=40),
     )
 
@@ -63,7 +61,7 @@ def update_layout_chart_profissionais(chart, title, tipo):
         yaxis_title=None,
         legend_title=None,
         plot_bgcolor="#FFFFFF",
-        yaxis=dict(showticklabels=False),
+        yaxis=dict(showticklabels=False, range=[0, (chart.data[0].y.max()+chart.data[1].y.max()) * 1.1]),
         margin=dict(l=35, r=35, t=60, b=40),
         legend=dict(
             orientation="h",
