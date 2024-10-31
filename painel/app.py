@@ -88,7 +88,10 @@ app.layout = dbc.Container(
         ),
         dbc.Row(
             [
-                dcc.Graph(id="mapa"),
+                dcc.Graph(
+                    id="mapa",
+                    style={"height": "40vh"},
+                ),
                 html.Div(
                     id="output-state"
                 ),  # Div para mostrar o estado clicado
@@ -98,7 +101,7 @@ app.layout = dbc.Container(
         dcc.Store(id="store-populacao"),
         html.Div(id="dummy-div", children=[], style={"display": "none"}),
         dbc.Row(
-            html.H1(
+            html.H2(
                 "Atendimentos",
                 className="text-start ms-0, mb-4",
                 id="section-atendimentos",
@@ -108,9 +111,9 @@ app.layout = dbc.Container(
             [
                 dbc.Col(
                     [
-                        html.H1(
+                        html.H3(
                             id="total-atendimentos",
-                            className="display-6 text-start fw-bold",
+                            className="display-8 text-start fw-bold",
                         ),
                         html.H4(
                             "Número de atendimentos individuais \
@@ -123,9 +126,9 @@ app.layout = dbc.Container(
                 dbc.Col(width=1),  # Coluna vazia para espaçamento
                 dbc.Col(
                     [
-                        html.H1(
+                        html.H3(
                             id="normalizado-atendimentos",
-                            className="display-6 text-start fw-bold",
+                            className="display-8 text-start fw-bold",
                         ),
                         html.H4(
                             "Número de atendimentos por mil habitantes no ano",
@@ -145,6 +148,93 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
+                                    src="assets/odonto-icon.png", height="25px"
+                                ),
+                                width="auto",
+                            ),
+                            # Coluna do número
+                            dbc.Col(
+                                html.H3(
+                                    id="big-odonto",
+                                    className="display-8 fw-bold",
+                                ),
+                                width="auto",
+                            ),
+                            # Coluna do texto, com ajuste de tamanho
+                            dbc.Col(
+                                html.P(
+                                    [
+                                        "Atendimentos",
+                                        html.Br(),
+                                        "odontológicos",
+                                    ],
+                                    style={
+                                        "font-size": "12px",
+                                        "margin-bottom": "0",
+                                        "align-self": "flex-end",
+                                    },
+                                ),
+                                width="auto",
+                                style={
+                                    "display": "flex",
+                                    "align-items": "flex-end",
+                                },  # Para alinhar o texto ao final do número
+                            ),
+                        ],
+                        align="center",
+                    ),
+                    width=2,
+                ),
+                dbc.Col(
+                    dbc.Row(
+                        [
+                            # Coluna do ícone
+                            dbc.Col(
+                                html.Img(
+                                    src="assets/domiciliar-icon.png",
+                                    height="25px",
+                                ),
+                                width="auto",
+                            ),
+                            # Coluna do número
+                            dbc.Col(
+                                html.H3(
+                                    id="big-domiciliar",
+                                    className="display-8 fw-bold",
+                                ),
+                                width="auto",
+                            ),
+                            # Coluna do texto, com ajuste de tamanho
+                            dbc.Col(
+                                html.P(
+                                    [
+                                        "Atendimentos feitos",
+                                        html.Br(),
+                                        "em visita domiciliar",
+                                    ],
+                                    style={
+                                        "font-size": "12px",
+                                        "margin-bottom": "0",
+                                        "align-self": "flex-end",
+                                    },
+                                ),
+                                width="auto",
+                                style={
+                                    "display": "flex",
+                                    "align-items": "flex-end",
+                                },  # Para alinhar o texto ao final do número
+                            ),
+                        ],
+                        align="center",
+                    ),
+                    width=2,
+                ),
+                dbc.Col(
+                    dbc.Row(
+                        [
+                            # Coluna do ícone
+                            dbc.Col(
+                                html.Img(
                                     src=dash.get_asset_url("medico-icon.png"),
                                     height="25px",
                                 ),
@@ -154,7 +244,7 @@ app.layout = dbc.Container(
                             dbc.Col(
                                 html.H3(
                                     id="big-medicos",
-                                    className="display-6 fw-bold",
+                                    className="display-8 fw-bold",
                                 ),
                                 width="auto",
                             ),
@@ -181,7 +271,7 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=4,
+                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -196,9 +286,9 @@ app.layout = dbc.Container(
                             ),
                             # Coluna do número
                             dbc.Col(
-                                html.H1(
+                                html.H3(
                                     id="big-enfermeiros",
-                                    className="display-6 fw-bold",
+                                    className="display-8 fw-bold",
                                 ),
                                 width="auto",
                             ),
@@ -225,7 +315,7 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=4,
+                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -239,9 +329,9 @@ app.layout = dbc.Container(
                             ),
                             # Coluna do número
                             dbc.Col(
-                                html.H1(
+                                html.H3(
                                     id="big-outros",
-                                    className="display-6 fw-bold",
+                                    className="display-8 fw-bold",
                                 ),
                                 width="auto",
                             ),
@@ -268,7 +358,7 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=4,
+                    width=2,
                 ),
             ]
         ),
@@ -276,14 +366,14 @@ app.layout = dbc.Container(
             [
                 # Atendimento por população por ano
                 dbc.Col(
-                    dcc.Graph(id="chart_by_year", style={"height": "400px"}),
+                    dcc.Graph(id="chart_by_year", style={"height": "40vh"}),
                     width=6,
                 ),  # Primeira coluna com o gráfico
                 # Atendimento por profissional de saúde
                 dbc.Col(
                     dcc.Graph(
                         id="chart_by_year_profissionais",
-                        style={"height": "400px"},
+                        style={"height": "40vh"},
                     ),
                     width=6,
                 ),  # Segunda coluna com o gráfico
@@ -294,9 +384,7 @@ app.layout = dbc.Container(
             [
                 # Atendimento poe população por trimestre
                 dbc.Col(
-                    dcc.Graph(
-                        id="chart_by_quarter", style={"height": "400px"}
-                    ),
+                    dcc.Graph(id="chart_by_quarter", style={"height": "40vh"}),
                     width=12,
                 ),
             ],
