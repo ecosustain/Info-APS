@@ -161,7 +161,8 @@ def get_chart_percentage_by_year(df, title, tipo):
         df.groupby("ano", observed=True).apply(lambda x: (x["valor_1"].sum() / x["valor_2"].sum())*100).reset_index(name="valor")
     )
 
-    return get_chart_by_year(df_grouped, title, tipo)
+    chart = get_chart_by_year(df_grouped, title, tipo)
+    return chart.update_traces(texttemplate="%{y:.0f}%")
 
 
 def preprocess_data(df):
