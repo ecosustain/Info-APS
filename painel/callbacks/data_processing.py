@@ -92,10 +92,12 @@ def get_df_atendimentos(json_data, populacao=None):
     return df
 
 
-def get_df_encaminhamentos(json_data, populacao=None):
+def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
     """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
-    #    json_data -> json que contem os dados de atendimento
+    #    json_data -> json que contem os dados de encaminhamento
+    #    json_atendimentos -> json que contem os dados de atendimento
+    #    populacao -> valor da população caso exista 
     # retorna o df
     dados = []
 
@@ -113,6 +115,11 @@ def get_df_encaminhamentos(json_data, populacao=None):
     df["ano_trimestre"] = (
         df["trimestre"].astype(str) + "/" + df["ano"].astype(str)
     )
+
+    if json_atendimentos is not None:
+        atendimento = get_df_atendimentos(json_atendimentos)
+        df = pd.merge(df, atendimento, on=["ano", "trimestre", "mes", "ano_mes"], suffixes=('_1', '_2'))
+        df["valor"] = df["valor_1"]
 
     # normalizar valores pelo total da população (1000 habitantes)
     if populacao is not None:

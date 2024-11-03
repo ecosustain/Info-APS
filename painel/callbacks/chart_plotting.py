@@ -149,6 +149,21 @@ def get_chart_by_year(df, title, tipo):
     return chart
 
 
+def get_chart_percentage_by_year(df, title, tipo):
+    """Retorna o gráfico de barras com o percentual entre os dois valores acumulado dos últimos 6 anos de dados
+    #    df -> dados para gerar o gráfico que deve conter ['ano', 'valor1', 'valor2']
+    #    title -> string com o nome que deve aparecer no label do gráfico
+    #    type -> string para saber em qual agregação estamos ['brasil', 'estado', 'regiao_saude', 'municipio']
+    # retorna o gráfico gerado."""
+
+    # Gera as porcentagens antes de gerar o gráfico
+    df_grouped = (
+        df.groupby("ano", observed=True).apply(lambda x: (x["valor_1"].sum() / x["valor_2"].sum())*100).reset_index(name="valor")
+    )
+
+    return get_chart_by_year(df_grouped, title, tipo)
+
+
 def preprocess_data(df):
     """Pré-processamento dos dados para gerar o modelo de previsão."""
     df_grouped = (

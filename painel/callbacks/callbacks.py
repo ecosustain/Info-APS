@@ -13,6 +13,7 @@ from callbacks.api_requests import (
 from callbacks.chart_plotting import (
     get_chart_by_quarter,
     get_chart_by_year,
+    get_chart_percentage_by_year,
     get_chart_by_year_profissionais,
 )
 from callbacks.data_processing import (
@@ -167,16 +168,15 @@ def register_callbacks(app):
 
     # Callback para atualiza os totais de encaminhamentos
     @app.callback(
-        [
-            Output("total-encaminhamentos", "children"),
-        ],
+        Output("total-encaminhamentos", "children"),
         [
             Input("store-data-enc", "data"),
+            Input("store-data", "data"),
             Input("store-populacao", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
-    def update_totals(data_encaminhamentos, populacao, *args):
+    def update_totals(data_encaminhamentos, data, populacao, *args):
         ctx = dash.callback_context
         # Identificar o ano selecionado
         ano = anos[0]  # Define o primeiro ano como padrão
@@ -186,17 +186,15 @@ def register_callbacks(app):
                 ano = int(
                     ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
                 )  # Extrai o ano do ID do botão
+        df_enc = get_df_encaminhamentos(data_encaminhamentos, data, populacao)
 
-        df_encaminhamentos = get_df_encaminhamentos(data_encaminhamentos)
-        # populacao = populacao / 1000
-        # total_altas = int(df_altas["valor"].sum() / populacao)
-        df_encaminhamentos = df_encaminhamentos[
-            df_encaminhamentos["ano"] == ano
+        #filtrar o ano selecionado
+        df_enc = df_enc[
+            df_enc["ano"] == ano
         ]
         total_encaminhamentos = formatar_numero(
-            df_encaminhamentos["valor"].sum()
+            df_enc["valor"].sum()
         )
-        # int(df_encaminhamentos["valor"].sum() / populacao)
 
         return total_encaminhamentos
 
@@ -245,14 +243,14 @@ def register_callbacks(app):
         ],
     )
     def update_chart_encaminhamentos(
-        data, atendimentos, estado, regiao, municipio
+        data, atendimentos, populacao, estado, regiao, municipio
     ):
         if data is None:
             raise dash.exceptions.PreventUpdate
-        df_encaminhamentos = get_df_encaminhamentos(data, atendimentos)
+        df_encaminhamentos = get_df_encaminhamentos(data, atendimentos, populacao)
         tipo = get_type(estado, regiao, municipio)
         # Gerar o gráfico
-        chart_encaminhamentos = get_chart_by_year(
+        chart_encaminhamentos = get_chart_percentage_by_year(
             df_encaminhamentos,
             "% Encaminhamentos registrados",
             tipo,
