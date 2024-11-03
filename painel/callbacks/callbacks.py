@@ -5,7 +5,6 @@ import warnings
 import dash
 import pandas as pd
 from callbacks.api_requests import (
-    get_altas,
     get_anos,
     get_atendimentos,
     get_encaminhamentos,
@@ -18,7 +17,6 @@ from callbacks.chart_plotting import (
 )
 from callbacks.data_processing import (
     get_big_numbers_atendimentos,
-    get_df_altas,
     get_df_atendimentos,
     get_df_encaminhamentos,
 )
@@ -101,7 +99,6 @@ def register_callbacks(app):
     @app.callback(
         [
             Output("store-data", "data"),
-            Output("store-data-altas", "data"),
             Output("store-data-enc", "data"),
             Output("store-populacao", "data"),
         ],
@@ -115,11 +112,10 @@ def register_callbacks(app):
     def fetch_data(dummy, estado, regiao, municipio):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
         data_atendimentos = get_atendimentos(estado, regiao, municipio)
-        data_altas = get_altas(estado, regiao, municipio)
         data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
         populacao = get_population(estado, regiao, municipio)
 
-        return data_atendimentos, data_altas, data_encaminhamentos, populacao
+        return data_atendimentos, data_encaminhamentos, populacao
 
     @app.callback(
         [
@@ -169,20 +165,18 @@ def register_callbacks(app):
 
         return big_numbers
 
-    # Callback para atualiza os totais de altas
+    # Callback para atualiza os totais de encaminhamentos
     @app.callback(
         [
-            Output("total-altas", "children"),
             Output("total-encaminhamentos", "children"),
         ],
         [
-            Input("store-data-altas", "data"),
             Input("store-data-enc", "data"),
             Input("store-populacao", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
-    def update_totals(data_altas, data_encaminhamentos, populacao, *args):
+    def update_totals(data_encaminhamentos, populacao, *args):
         ctx = dash.callback_context
         # Identificar o ano selecionado
         ano = anos[0]  # Define o primeiro ano como padrão
@@ -193,21 +187,18 @@ def register_callbacks(app):
                     ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
                 )  # Extrai o ano do ID do botão
 
-        df_altas = get_df_altas(data_altas)
         df_encaminhamentos = get_df_encaminhamentos(data_encaminhamentos)
         # populacao = populacao / 1000
         # total_altas = int(df_altas["valor"].sum() / populacao)
-        df_altas = df_altas[df_altas["ano"] == ano]
         df_encaminhamentos = df_encaminhamentos[
             df_encaminhamentos["ano"] == ano
         ]
-        total_altas = formatar_numero(df_altas["valor"].sum())
         total_encaminhamentos = formatar_numero(
             df_encaminhamentos["valor"].sum()
         )
         # int(df_encaminhamentos["valor"].sum() / populacao)
 
-        return total_altas, total_encaminhamentos
+        return total_encaminhamentos
 
     # Callback para atualizar os gráficos de atendimentos com base nos dados armazenados
     @app.callback(
@@ -243,33 +234,10 @@ def register_callbacks(app):
         return chart_by_year, chart_by_year_profissionais, chart_by_quarter
 
     @app.callback(
-        Output("chart_altas", "figure"),
-        [
-            Input("store-data-altas", "data"),
-            Input("store-populacao", "data"),
-            Input("dropdown-estado", "value"),
-            Input("dropdown-regiao", "value"),
-            Input("dropdown-municipio", "value"),
-        ],
-    )
-    def update_chart_altas(data, populacao, estado, regiao, municipio):
-        if data is None:
-            raise dash.exceptions.PreventUpdate
-        df_altas = get_df_altas(data, populacao)
-
-        tipo = get_type(estado, regiao, municipio)
-
-        # Gerar o gráfico
-        chart_altas = get_chart_by_year(
-            df_altas, "Altas por mil habitantes registradas", tipo
-        )
-
-        return chart_altas
-
-    @app.callback(
         Output("chart_encaminhamentos", "figure"),
         [
             Input("store-data-enc", "data"),
+            Input("store-data", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
@@ -277,16 +245,16 @@ def register_callbacks(app):
         ],
     )
     def update_chart_encaminhamentos(
-        data, populacao, estado, regiao, municipio
+        data, atendimentos, estado, regiao, municipio
     ):
         if data is None:
             raise dash.exceptions.PreventUpdate
-        df_encaminhamentos = get_df_encaminhamentos(data, populacao)
+        df_encaminhamentos = get_df_encaminhamentos(data, atendimentos)
         tipo = get_type(estado, regiao, municipio)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_by_year(
             df_encaminhamentos,
-            "Encaminhamentos por mil habitantes registrados",
+            "% Encaminhamentos registrados",
             tipo,
         )
 

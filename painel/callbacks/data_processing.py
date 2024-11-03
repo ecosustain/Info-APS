@@ -92,38 +92,6 @@ def get_df_atendimentos(json_data, populacao=None):
     return df
 
 
-def get_df_altas(json_data, populacao=None):
-    """Função para transformar um json de altas em um df que será utilizado para gerar os gráficos"""
-    # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
-    #    json_data -> json que contem os dados de atendimento
-    # retorna o df
-    dados = []
-    if json_data is None:
-        raise dash.exceptions.PreventUpdate
-    # Iterar sobre os anos (2013, 2014, etc.)
-    for ano, meses in json_data.items():
-        # Iterar sobre os meses e seus valores
-        for mes, valor in meses.items():
-            # Adicionar uma linha para cada entrada
-            dados.append([int(ano), trimestre_map[mes], mes_map[mes], valor])
-
-    # Criar o DataFrame com as colunas: tipo, ano, mês, valor
-    df = pd.DataFrame(dados, columns=["ano", "trimestre", "mes", "valor"])
-    # df['trimestre'] = df['mes'].apply(calcular_trimestre)
-    df["ano_mes"] = df["mes"].astype(str) + "/" + df["ano"].astype(str)
-    df["ano_trimestre"] = (
-        df["trimestre"].astype(str) + "/" + df["ano"].astype(str)
-    )
-
-    # normalizar valores pelo total da população (1000 habitantes)
-    if populacao is not None:
-        populacao = populacao / 1000
-        df["valor"] = df["valor"] / populacao
-        df["valor"] = df["valor"].astype(int)
-
-    return df
-
-
 def get_df_encaminhamentos(json_data, populacao=None):
     """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
@@ -151,6 +119,23 @@ def get_df_encaminhamentos(json_data, populacao=None):
         populacao = populacao / 1000
         df["valor"] = df["valor"] / populacao
         df["valor"] = df["valor"].astype(int)
+
+    return df
+
+def get_df_percentual(data, total):
+    """Função para transformar um df em porcentagem"""
+    # Para transformar dois df em % de atendimento que será utilizado para gerar os gráficos
+    #    data -> df que contem os dados de parte do atendimento
+    #    total -> df que contem os dados de total atendimento
+    # retorna o df
+    
+    df_merged = pd.merge(data, total, on=["ano", "trimestre", "mes", "ano_mes"], suffixes=('_df1', '_df2'))
+
+    # Calculando a porcentagem
+    df_merged["valor"] = (df_merged["valor_df1"] / df_merged["valor_df2"]) * 100
+
+    # Selecionando as colunas para o df_final
+    df = df_merged[["ano", "trimestre", "mes", "ano_mes", "valor"]]
 
     return df
 

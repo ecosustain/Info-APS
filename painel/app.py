@@ -390,43 +390,6 @@ app.layout = dbc.Container(
             ],
             className="mb-4",
         ),
-        dcc.Store(id="store-data-altas"),
-        dbc.Row(
-            html.H1(
-                "Altas", className="text-start ms-0, mb-4", id="section-altas"
-            )
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
-                    [
-                        html.H1(
-                            id="total-altas",
-                            className="display-6 text-start fw-bold",
-                        ),
-                        html.H4(
-                            "Número total de altas \
-                                registradas",
-                            className="fs-6",
-                        ),
-                    ],
-                    width=3,
-                ),
-            ],
-            className="mb-5",
-        ),
-        dbc.Row(
-            [
-                # Atendimento por população por ano
-                dbc.Col(
-                    dcc.Graph(id="chart_altas", style={"height": "400px"}),
-                    width=6,
-                ),  # Primeira coluna com o gráfico
-                # Atendimento por profissional de saúde
-                dbc.Col(),  # Segunda coluna com o gráfico
-            ],
-            className="mb-4",
-        ),
         dcc.Store(id="store-data-enc"),
         dbc.Row(
             html.H1(

@@ -44,22 +44,6 @@ def get_atendimentos(estado, regiao, municipio):
     return make_request(url)
 
 
-def get_altas(estado, regiao, municipio):
-    """Função para obter os dados de altas"""
-    url = f"{API_URL}/altas"
-    if estado is not None:
-        url = f"{API_URL}/altas/states/{estado}"
-    if regiao is not None and estado is not None and municipio is None:
-        regiao_code = get_code_regiao(estado, regiao)
-        url = f"{API_URL}/altas/regions/{regiao_code}"
-    if municipio is not None and estado is not None:
-        ibge_code = get_ibge_code(estado, municipio)
-        url = f"{API_URL}/altas/cities/{ibge_code}"
-    print("Fazendo request para:", url)
-
-    return make_request(url)
-
-
 def get_encaminhamentos(estado, regiao, municipio):
     """Função para obter os dados de encaminhamentos"""
     url = f"{API_URL}/encaminhamentos"
