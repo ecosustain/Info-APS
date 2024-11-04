@@ -7,6 +7,8 @@ import pandas as pd
 from callbacks.api_requests import (
     get_anos,
     get_atendimentos,
+    get_visitas_domiciliar,
+    get_atendimentos_odontologicos,
     get_encaminhamentos,
     get_municipios,
 )
@@ -19,6 +21,7 @@ from callbacks.chart_plotting import (
 from callbacks.data_processing import (
     get_big_numbers_atendimentos,
     get_df_atendimentos,
+    get_df_from_json,
     get_df_encaminhamentos,
 )
 from callbacks.map_plotting import (
@@ -100,6 +103,8 @@ def register_callbacks(app):
     @app.callback(
         [
             Output("store-data", "data"),
+            Output("store-data-visita", "data"),
+            Output("store-data-odonto", "data"),
             Output("store-data-enc", "data"),
             Output("store-populacao", "data"),
         ],
@@ -113,10 +118,12 @@ def register_callbacks(app):
     def fetch_data(dummy, estado, regiao, municipio):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
         data_atendimentos = get_atendimentos(estado, regiao, municipio)
+        data_visitas_domiciliar = get_visitas_domiciliar(estado, regiao, municipio)
+        data_atendimentos_odontologicos = get_atendimentos_odontologicos(estado, regiao, municipio)
         data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
         populacao = get_population(estado, regiao, municipio)
 
-        return data_atendimentos, data_encaminhamentos, populacao
+        return data_atendimentos, data_visitas_domiciliar, data_atendimentos_odontologicos, data_encaminhamentos, populacao
 
     @app.callback(
         [
@@ -124,10 +131,15 @@ def register_callbacks(app):
             Output("normalizado-atendimentos", "children"),
             Output("big-medicos", "children"),
             Output("big-enfermeiros", "children"),
-            Output("big-outros", "children"),
+            Output("big-encaminhamentos", "children"),
+            Output("big-visitas", "children"),
+            Output("big-odontologicos", "children"),
         ],
         [
             Input("store-data", "data"),
+            Input("store-data-enc", "data"),
+            Input("store-data-visita", "data"),
+            Input("store-data-odonto", "data"),
             Input("store-populacao", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
@@ -136,7 +148,7 @@ def register_callbacks(app):
             *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
     )
-    def update_big_numbers(data, populacao, *args):
+    def update_big_numbers(data, data_enc, data_visita, data_odonto, populacao, *args):
         """Função para atualizar os big numbers com base nos dados armazenados"""
         ctx = dash.callback_context
         # Identificar o ano selecionado
@@ -153,6 +165,22 @@ def register_callbacks(app):
 
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
+        
+        #Add encaminhamento
+        df_enc = get_df_from_json(data_enc)
+        total_enc_ano = df_enc[df_enc["ano"] == ano]["valor"].sum()
+        big_numbers.append(total_enc_ano)
+        
+        #Add visitas domiciliar
+        df_visita = get_df_from_json(data_visita)
+        total_visita_ano = df_visita[df_visita["ano"] == ano]["valor"].sum()
+        big_numbers.append(total_visita_ano)
+
+        #Add atendimentos odontologicos
+        df_odonto = get_df_from_json(data_odonto)
+        total_odonto_ano = df_odonto[df_odonto["ano"] == ano]["valor"].sum()
+        big_numbers.append(total_odonto_ano)
+        
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
         total_atendimentos = big_numbers[0]
@@ -166,55 +194,29 @@ def register_callbacks(app):
 
         return big_numbers
 
-    # Callback para atualiza os totais de encaminhamentos
-    @app.callback(
-        Output("total-encaminhamentos", "children"),
-        [
-            Input("store-data-enc", "data"),
-            Input("store-data", "data"),
-            Input("store-populacao", "data"),
-            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
-    )
-    def update_totals(data_encaminhamentos, data, populacao, *args):
-        ctx = dash.callback_context
-        # Identificar o ano selecionado
-        ano = anos[0]  # Define o primeiro ano como padrão
-        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
-            prop_id = ctx.triggered[0]["prop_id"]
-            if "btn-ano" in prop_id:
-                ano = int(
-                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
-                )  # Extrai o ano do ID do botão
-        df_enc = get_df_encaminhamentos(data_encaminhamentos, data, populacao)
-
-        #filtrar o ano selecionado
-        df_enc = df_enc[
-            df_enc["ano"] == ano
-        ]
-        total_encaminhamentos = formatar_numero(
-            df_enc["valor"].sum()
-        )
-
-        return total_encaminhamentos
-
     # Callback para atualizar os gráficos de atendimentos com base nos dados armazenados
     @app.callback(
         [
             Output("chart_by_year", "figure"),
             Output("chart_by_year_profissionais", "figure"),
             Output("chart_by_quarter", "figure"),
+            Output("chart_visitas_by_quarter", "figure"),
+            Output("chart_odonto_by_quarter", "figure"),
         ],
         Input("store-data", "data"),
+        Input("store-data-visita", "data"),
+        Input("store-data-odonto", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
     )
-    def update_charts(data, populacao, estado, regiao, municipio):
+    def update_charts(data, data_visita, data_odonto, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
+        df_visita = get_df_from_json(data_visita, populacao)
+        df_odonto = get_df_from_json(data_odonto, populacao)
 
         type = get_type(estado, regiao, municipio)
 
@@ -228,8 +230,14 @@ def register_callbacks(app):
         chart_by_quarter = get_chart_by_quarter(
             df_atendimentos, "Atendimentos por mil habitantes", type
         )
+        chart_visitas_by_quarter = get_chart_by_quarter(
+            df_visita, "Atendimentos por mil habitantes", type
+        )
+        chart_odonto_by_quarter = get_chart_by_quarter(
+            df_odonto, "Atendimentos por mil habitantes", type
+        )
 
-        return chart_by_year, chart_by_year_profissionais, chart_by_quarter
+        return chart_by_year, chart_by_year_profissionais, chart_by_quarter, chart_visitas_by_quarter, chart_odonto_by_quarter
 
     @app.callback(
         Output("chart_encaminhamentos", "figure"),

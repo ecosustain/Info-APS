@@ -92,11 +92,10 @@ def get_df_atendimentos(json_data, populacao=None):
     return df
 
 
-def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
-    """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
+def get_df_from_json(json_data, populacao=None):
+    """Função para transformar um json (ex: visitas, atendimentos odontologicos) em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
-    #    json_data -> json que contem os dados de encaminhamento
-    #    json_atendimentos -> json que contem os dados de atendimento
+    #    json_data -> json que contem os dados de atendimento
     #    populacao -> valor da população caso exista 
     # retorna o df
     dados = []
@@ -106,15 +105,40 @@ def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
         # Iterar sobre os meses e seus valores
         for mes, valor in meses.items():
             # Adicionar uma linha para cada entrada
-            dados.append([int(ano), trimestre_map[mes], mes_map[mes], valor])
-
-    # Criar o DataFrame com as colunas: tipo, ano, mês, valor
-    df = pd.DataFrame(dados, columns=["ano", "trimestre", "mes", "valor"])
+            dados.append(
+                [
+                    int(ano),
+                    trimestre_map[mes],
+                    mes_map[mes],
+                    valor,
+                ]
+            )
+    # Criar o DataFrame com as colunas: profissional, ano, mês, valor
+    df = pd.DataFrame(
+        dados, columns=["ano", "trimestre", "mes", "valor"]
+    )
     # df['trimestre'] = df['mes'].apply(calcular_trimestre)
     df["ano_mes"] = df["mes"].astype(str) + "/" + df["ano"].astype(str)
     df["ano_trimestre"] = (
         df["trimestre"].astype(str) + "/" + df["ano"].astype(str)
     )
+
+    # normalizar valores pelo total da população (1000 habitantes)
+    if populacao is not None:
+        populacao = populacao / 1000
+        df["valor"] = df["valor"] / populacao
+        df["valor"] = df["valor"].astype(int)
+
+    return df
+
+def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
+    """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
+    # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
+    #    json_data -> json que contem os dados de encaminhamento
+    #    json_atendimentos -> json que contem os dados de atendimento
+    #    populacao -> valor da população caso exista 
+    # retorna o df
+    df = get_df_from_json(json_data)
 
     if json_atendimentos is not None:
         atendimento = get_df_atendimentos(json_atendimentos)
@@ -126,23 +150,6 @@ def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
         populacao = populacao / 1000
         df["valor"] = df["valor"] / populacao
         df["valor"] = df["valor"].astype(int)
-
-    return df
-
-def get_df_percentual(data, total):
-    """Função para transformar um df em porcentagem"""
-    # Para transformar dois df em % de atendimento que será utilizado para gerar os gráficos
-    #    data -> df que contem os dados de parte do atendimento
-    #    total -> df que contem os dados de total atendimento
-    # retorna o df
-    
-    df_merged = pd.merge(data, total, on=["ano", "trimestre", "mes", "ano_mes"], suffixes=('_df1', '_df2'))
-
-    # Calculando a porcentagem
-    df_merged["valor"] = (df_merged["valor_df1"] / df_merged["valor_df2"]) * 100
-
-    # Selecionando as colunas para o df_final
-    df = df_merged[["ano", "trimestre", "mes", "ano_mes", "valor"]]
 
     return df
 
@@ -160,8 +167,4 @@ def get_big_numbers_atendimentos(df, ano):
     enfermeiro = df[(df["profissional"] == "enfermeiro") & (df["ano"] == ano)][
         "valor"
     ].sum()
-    outros = df[(df["profissional"] == "outros") & (df["ano"] == ano)][
-        "valor"
-    ].sum()
-
-    return [total_ano, medico, enfermeiro, outros]
+    return [total_ano, medico, enfermeiro]
