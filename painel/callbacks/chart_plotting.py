@@ -213,6 +213,10 @@ def add_forecast_to_chart(chart, forecast_df, tipo):
             ),
         )
     )
+    #Mudando a legenda da previsão
+    chart.update_layout(
+        legend=dict(x=1, y=1, xanchor="right", yanchor="bottom"))
+    
     return chart
 
 

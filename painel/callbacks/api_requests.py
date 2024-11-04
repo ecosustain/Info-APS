@@ -43,6 +43,36 @@ def get_atendimentos(estado, regiao, municipio):
 
     return make_request(url)
 
+def get_visitas_domiciliar(estado, regiao, municipio):
+    """Função para obter os dados de visitas_domiciliar"""
+    url = f"{API_URL}/visitas_domiciliar"
+    if estado is not None:
+        url = f"{API_URL}/visitas_domiciliar/states/{estado}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"{API_URL}/visitas_domiciliar/regions/{regiao_code}"
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
+        url = f"{API_URL}/visitas_domiciliar/cities/{ibge_code}"
+    print("Fazendo request para:", url)
+
+    return make_request(url)
+
+def get_atendimentos_odontologicos(estado, regiao, municipio):
+    """Função para obter os dados de atendimentos_odontologicos"""
+    url = f"{API_URL}/atendimentos_odontologicos"
+    if estado is not None:
+        url = f"{API_URL}/atendimentos_odontologicos/states/{estado}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"{API_URL}/atendimentos_odontologicos/regions/{regiao_code}"
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
+        url = f"{API_URL}/atendimentos_odontologicos/cities/{ibge_code}"
+    print("Fazendo request para:", url)
+
+    return make_request(url)
+
 
 def get_encaminhamentos(estado, regiao, municipio):
     """Função para obter os dados de encaminhamentos"""

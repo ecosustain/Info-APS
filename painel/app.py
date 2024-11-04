@@ -98,6 +98,9 @@ app.layout = dbc.Container(
             ]
         ),
         dcc.Store(id="store-data"),
+        dcc.Store(id="store-data-enc"),
+        dcc.Store(id="store-data-visita"),
+        dcc.Store(id="store-data-odonto"),
         dcc.Store(id="store-populacao"),
         html.Div(id="dummy-div", children=[], style={"display": "none"}),
         dbc.Row(
@@ -155,7 +158,7 @@ app.layout = dbc.Container(
                             # Coluna do número
                             dbc.Col(
                                 html.H3(
-                                    id="big-odonto",
+                                    id="big-odontologicos",
                                     className="display-8 fw-bold",
                                 ),
                                 width="auto",
@@ -199,7 +202,7 @@ app.layout = dbc.Container(
                             # Coluna do número
                             dbc.Col(
                                 html.H3(
-                                    id="big-domiciliar",
+                                    id="big-visitas",
                                     className="display-8 fw-bold",
                                 ),
                                 width="auto",
@@ -323,14 +326,14 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src="assets/outros-icon.png", height="25px"
+                                    src="assets/encaminhamento-icon.png", height="25px"
                                 ),
                                 width="auto",
                             ),
                             # Coluna do número
                             dbc.Col(
                                 html.H3(
-                                    id="big-outros",
+                                    id="big-encaminhamentos",
                                     className="display-8 fw-bold",
                                 ),
                                 width="auto",
@@ -339,9 +342,9 @@ app.layout = dbc.Container(
                             dbc.Col(
                                 html.P(
                                     [
-                                        "Atendimentos feitos",
+                                        "Atendimentos finalizados",
                                         html.Br(),
-                                        "por outros profissionais",
+                                        "com encaminhamento",
                                     ],
                                     style={
                                         "font-size": "12px",
@@ -370,13 +373,14 @@ app.layout = dbc.Container(
                     width=6,
                 ),  # Primeira coluna com o gráfico
                 # Atendimento por profissional de saúde
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_by_year_profissionais",
-                        style={"height": "40vh"},
-                    ),
-                    width=6,
-                ),  # Segunda coluna com o gráfico
+                # dbc.Col(
+                #     dcc.Graph(
+                #         id="chart_by_year_profissionais",
+                #         style={"height": "40vh"},
+                #     ),
+                #     width=6,
+                # ),  # Segunda coluna com o gráfico
+                dbc.Col()
             ],
             className="mb-4",
         ),
@@ -390,44 +394,44 @@ app.layout = dbc.Container(
             ],
             className="mb-4",
         ),
-        dcc.Store(id="store-data-enc"),
-        dbc.Row(
-            html.H1(
-                "Encaminhamentos",
-                className="text-start ms-0, mb-4",
-                id="section-encaminhamentos",
-            )
-        ),
         dbc.Row(
             [
                 dbc.Col(
-                    [
-                        html.H1(
-                            id="total-encaminhamentos",
-                            className="display-6 text-start fw-bold",
-                        ),
-                        html.H4(
-                            "Número total de encaminhamentos \
-                                registrados",
-                            className="fs-6",
-                        ),
-                    ],
-                    width=3,
-                ),
+                    html.H3(
+                        "Profissionais",
+                        className="text-start ms-0, mb-4",
+                        id="section-profissionais",
+                        )
+                    ),
+                dbc.Col(
+                    html.H3(
+                        "Encaminhamentos",
+                        className="text-start ms-0, mb-4",
+                        id="section-encaminhamentos",
+                        )
+                    ),
             ],
-            className="mb-5",
+            className="mb-4",
+            
         ),
         dbc.Row(
             [
-                # Atendimento por população por ano
+                # Atendimento por profissional de saúde
                 dbc.Col(
                     dcc.Graph(
-                        id="chart_encaminhamentos", style={"height": "400px"}
+                        id="chart_by_year_profissionais",
+                        style={"height": "40vh"},
                     ),
                     width=6,
                 ),  # Primeira coluna com o gráfico
-                # Atendimento por profissional de saúde
-                dbc.Col(),  # Segunda coluna com o gráfico
+                # Atendimento por encaminhamento
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_encaminhamentos", 
+                        style={"height": "40vh"}
+                    ),
+                    width=6,
+                ),  # Segunda coluna com o gráfico
             ],
             className="mb-4",
         ),
