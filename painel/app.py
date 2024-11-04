@@ -89,13 +89,15 @@ app.layout = dbc.Container(
         dbc.Row(
             [
                 dcc.Graph(
+                    config={'displayModeBar': False},
                     id="mapa",
                     style={"height": "40vh"},
                 ),
                 html.Div(
                     id="output-state"
                 ),  # Div para mostrar o estado clicado
-            ]
+            ],
+            className="mb-5",
         ),
         dcc.Store(id="store-data"),
         dcc.Store(id="store-populacao"),
@@ -111,14 +113,14 @@ app.layout = dbc.Container(
             [
                 dbc.Col(
                     [
-                        html.H3(
+                        html.H2(
                             id="total-atendimentos",
                             className="display-8 text-start fw-bold",
                         ),
                         html.H4(
                             "Número de atendimentos individuais \
                                 já registrados",
-                            className="fs-6",
+                            className="fs-6 text-muted",
                         ),
                     ],
                     width=3,
@@ -126,13 +128,13 @@ app.layout = dbc.Container(
                 dbc.Col(width=1),  # Coluna vazia para espaçamento
                 dbc.Col(
                     [
-                        html.H3(
+                        html.H2(
                             id="normalizado-atendimentos",
                             className="display-8 text-start fw-bold",
                         ),
                         html.H4(
                             "Número de atendimentos por mil habitantes no ano",
-                            className="fs-6",
+                            className="fs-6 text-muted",
                         ),
                     ],
                     width=3,
@@ -148,15 +150,16 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src="assets/odonto-icon.png", height="25px"
+                                    src="assets/tooth-solid.svg", height="25px"
                                 ),
                                 width="auto",
                             ),
                             # Coluna do número
                             dbc.Col(
                                 html.H3(
-                                    id="big-odonto",
-                                    className="display-8 fw-bold",
+                                    "000",
+                                    # id="big-odonto",
+                                    className="display-8 fw-bold mb-0",
                                 ),
                                 width="auto",
                             ),
@@ -168,8 +171,9 @@ app.layout = dbc.Container(
                                         html.Br(),
                                         "odontológicos",
                                     ],
+                                    className="text-muted",
                                     style={
-                                        "font-size": "12px",
+                                        "font-size": "14px",
                                         "margin-bottom": "0",
                                         "align-self": "flex-end",
                                     },
@@ -183,7 +187,6 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -191,7 +194,7 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src="assets/domiciliar-icon.png",
+                                    src="assets/house-solid.svg",
                                     height="25px",
                                 ),
                                 width="auto",
@@ -199,8 +202,9 @@ app.layout = dbc.Container(
                             # Coluna do número
                             dbc.Col(
                                 html.H3(
-                                    id="big-domiciliar",
-                                    className="display-8 fw-bold",
+                                    "000",
+                                    # id="big-domiciliar",
+                                    className="display-8 fw-bold mb-0",
                                 ),
                                 width="auto",
                             ),
@@ -212,8 +216,9 @@ app.layout = dbc.Container(
                                         html.Br(),
                                         "em visita domiciliar",
                                     ],
+                                    className="text-muted",
                                     style={
-                                        "font-size": "12px",
+                                        "font-size": "14px",
                                         "margin-bottom": "0",
                                         "align-self": "flex-end",
                                     },
@@ -227,7 +232,6 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -235,7 +239,7 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src=dash.get_asset_url("medico-icon.png"),
+                                    src=dash.get_asset_url("user-doctor-solid.svg"),
                                     height="25px",
                                 ),
                                 width="auto",
@@ -244,7 +248,7 @@ app.layout = dbc.Container(
                             dbc.Col(
                                 html.H3(
                                     id="big-medicos",
-                                    className="display-8 fw-bold",
+                                    className="display-8 fw-bold mb-0",
                                 ),
                                 width="auto",
                             ),
@@ -256,8 +260,9 @@ app.layout = dbc.Container(
                                         html.Br(),
                                         "por médicos",
                                     ],
+                                    className="text-muted",
                                     style={
-                                        "font-size": "12px",
+                                        "font-size": "14px",
                                         "margin-bottom": "0",
                                         "align-self": "flex-end",
                                     },
@@ -271,7 +276,6 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -279,7 +283,7 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src="assets/enfermeiro-icon.png",
+                                    src="assets/user-nurse-solid.svg",
                                     height="25px",
                                 ),
                                 width="auto",
@@ -288,7 +292,7 @@ app.layout = dbc.Container(
                             dbc.Col(
                                 html.H3(
                                     id="big-enfermeiros",
-                                    className="display-8 fw-bold",
+                                    className="display-8 fw-bold mb-0",
                                 ),
                                 width="auto",
                             ),
@@ -300,8 +304,9 @@ app.layout = dbc.Container(
                                         html.Br(),
                                         "por enfermeiros",
                                     ],
+                                    className="text-muted",
                                     style={
-                                        "font-size": "12px",
+                                        "font-size": "14px",
                                         "margin-bottom": "0",
                                         "align-self": "flex-end",
                                     },
@@ -315,7 +320,6 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=2,
                 ),
                 dbc.Col(
                     dbc.Row(
@@ -323,7 +327,7 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src="assets/outros-icon.png", height="25px"
+                                    src="assets/user-solid.svg", height="25px"
                                 ),
                                 width="auto",
                             ),
@@ -331,7 +335,7 @@ app.layout = dbc.Container(
                             dbc.Col(
                                 html.H3(
                                     id="big-outros",
-                                    className="display-8 fw-bold",
+                                    className="display-8 fw-bold mb-0",
                                 ),
                                 width="auto",
                             ),
@@ -343,8 +347,9 @@ app.layout = dbc.Container(
                                         html.Br(),
                                         "por outros profissionais",
                                     ],
+                                    className="text-muted",
                                     style={
-                                        "font-size": "12px",
+                                        "font-size": "14px",
                                         "margin-bottom": "0",
                                         "align-self": "flex-end",
                                     },
@@ -358,9 +363,9 @@ app.layout = dbc.Container(
                         ],
                         align="center",
                     ),
-                    width=2,
                 ),
-            ]
+            ],
+            className="mb-5",
         ),
         dbc.Row(
             [
@@ -392,7 +397,7 @@ app.layout = dbc.Container(
         ),
         dcc.Store(id="store-data-enc"),
         dbc.Row(
-            html.H1(
+            html.H2(
                 "Encaminhamentos",
                 className="text-start ms-0, mb-4",
                 id="section-encaminhamentos",
@@ -402,14 +407,14 @@ app.layout = dbc.Container(
             [
                 dbc.Col(
                     [
-                        html.H1(
+                        html.H2(
                             id="total-encaminhamentos",
-                            className="display-6 text-start fw-bold",
+                            className="display-8 text-start fw-bold",
                         ),
                         html.H4(
                             "Número total de encaminhamentos \
                                 registrados",
-                            className="fs-6",
+                            className="fs-6 text-muted",
                         ),
                     ],
                     width=3,

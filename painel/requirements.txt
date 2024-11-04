@@ -1,5 +1,7 @@
 dash
 plotly
+geopandas
+statsmodels
 flask~=2.3.2
 
 pandas~=2.2.3
