@@ -435,6 +435,40 @@ app.layout = dbc.Container(
             ],
             className="mb-4",
         ),
+        dbc.Row(
+            html.H3(
+                "Visitas Domiciliar",
+                className="text-start ms-0, mb-4",
+                id="section-visitas",
+            )
+        ),
+        dbc.Row(
+            [
+                # Atendimento por visitas domiciliar por trimestre
+                dbc.Col(
+                    dcc.Graph(id="chart_visitas_by_quarter", style={"height": "40vh"}),
+                    width=12,
+                ),
+            ],
+            className="mb-4",
+        ),
+        dbc.Row(
+            html.H3(
+                "Atendimentos Odontologicos",
+                className="text-start ms-0, mb-4",
+                id="section-odontologicos",
+            )
+        ),
+        dbc.Row(
+            [
+                # Atendimento por atendimentos odontologicos por trimestre
+                dbc.Col(
+                    dcc.Graph(id="chart_odonto_by_quarter", style={"height": "40vh"}),
+                    width=12,
+                ),
+            ],
+            className="mb-4",
+        ),
     ],
     className="p-5 mx-auto",
     style={"max-width": "80%"},

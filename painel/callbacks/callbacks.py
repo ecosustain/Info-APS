@@ -200,17 +200,23 @@ def register_callbacks(app):
             Output("chart_by_year", "figure"),
             Output("chart_by_year_profissionais", "figure"),
             Output("chart_by_quarter", "figure"),
+            Output("chart_visitas_by_quarter", "figure"),
+            Output("chart_odonto_by_quarter", "figure"),
         ],
         Input("store-data", "data"),
+        Input("store-data-visita", "data"),
+        Input("store-data-odonto", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
     )
-    def update_charts(data, populacao, estado, regiao, municipio):
+    def update_charts(data, data_visita, data_odonto, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
+        df_visita = get_df_from_json(data_visita, populacao)
+        df_odonto = get_df_from_json(data_odonto, populacao)
 
         type = get_type(estado, regiao, municipio)
 
@@ -224,8 +230,14 @@ def register_callbacks(app):
         chart_by_quarter = get_chart_by_quarter(
             df_atendimentos, "Atendimentos por mil habitantes", type
         )
+        chart_visitas_by_quarter = get_chart_by_quarter(
+            df_visita, "Atendimentos por mil habitantes", type
+        )
+        chart_odonto_by_quarter = get_chart_by_quarter(
+            df_odonto, "Atendimentos por mil habitantes", type
+        )
 
-        return chart_by_year, chart_by_year_profissionais, chart_by_quarter
+        return chart_by_year, chart_by_year_profissionais, chart_by_quarter, chart_visitas_by_quarter, chart_odonto_by_quarter
 
     @app.callback(
         Output("chart_encaminhamentos", "figure"),
