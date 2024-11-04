@@ -89,7 +89,7 @@ app.layout = dbc.Container(
         dbc.Row(
             [
                 dcc.Graph(
-                    config={'displayModeBar': False},
+                    config={'displayModeBar': False, 'scrollZoom': False },
                     id="mapa",
                     style={"height": "40vh"},
                 ),

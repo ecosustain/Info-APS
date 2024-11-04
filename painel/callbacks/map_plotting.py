@@ -54,9 +54,9 @@ def get_mapa_brasil():
         hover_data={"SIGLA_UF": False, "value": False},
         color="value",
         color_continuous_scale=[
-            "#B36CA3",
-            "#B36CA3",
-            "#B36CA3",
+            "#632956",
+            "#632956",
+            "#632956",
         ],
     )
 
@@ -66,9 +66,9 @@ def get_mapa_brasil():
         visible=False,
     )
     fig.update_layout(
-        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
+        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False,
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
 
     return fig
 
@@ -97,7 +97,7 @@ def get_mapa_estado(estado):
         hover_name="no_regiao",  # Supondo que todos os shapefiles têm essa coluna
         hover_data={"value": False},
         color="value",
-        color_continuous_scale=["#80B0DC", "#80B0DC", "#80B0DC"],
+        color_continuous_scale=["#34679A", "#34679A", "#34679A"],
     )
 
     # Ajustar as configurações do mapa
@@ -105,7 +105,7 @@ def get_mapa_estado(estado):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
 
     return fig
 
@@ -149,7 +149,7 @@ def get_mapa_regiao(estado, regiao):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
 
     return fig
 
@@ -177,9 +177,9 @@ def get_mapa_municipio(estado, municipio):
         },
         color="value",
         color_continuous_scale=[
-            "#FFC20D",
-            "#FFC20D",
-            "#FFC20D",
+            "#F7941C",
+            "#F7941C",
+            "#F7941C",
         ],
     )
 
@@ -191,6 +191,6 @@ def get_mapa_municipio(estado, municipio):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>")
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
 
     return fig
