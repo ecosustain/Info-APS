@@ -97,14 +97,13 @@ app.layout = dbc.Container(
                     id="output-state"
                 ),  # Div para mostrar o estado clicado
             ],
-            className="mb-5",
+            className="mb-1",
         ),
         dcc.Store(id="store-data"),
         dcc.Store(id="store-data-enc"),
         dcc.Store(id="store-data-visita"),
         dcc.Store(id="store-data-odonto"),
         dcc.Store(id="store-populacao"),
-        html.Div(id="dummy-div", children=[], style={"display": "none"}),
         dbc.Row(
             html.H2(
                 "Atendimentos",
@@ -121,8 +120,7 @@ app.layout = dbc.Container(
                             className="display-8 text-start fw-bold",
                         ),
                         html.H4(
-                            "Número de atendimentos individuais \
-                                já registrados",
+                            "Total de atendimentos individuais",
                             className="fs-6 text-muted",
                         ),
                     ],
@@ -143,7 +141,7 @@ app.layout = dbc.Container(
                     width=3,
                 ),
             ],
-            className="mb-5",
+            className="mb-3",
         ),
         dbc.Row(
             [
@@ -387,7 +385,7 @@ app.layout = dbc.Container(
                 # ),  # Segunda coluna com o gráfico
                 dbc.Col(),
             ],
-            className="mb-4",
+            className="mb-3",
         ),
         dbc.Row(
             [
@@ -397,26 +395,26 @@ app.layout = dbc.Container(
                     width=12,
                 ),
             ],
-            className="mb-4",
+            className="mb-3",
         ),
         dbc.Row(
             [
                 dbc.Col(
                     html.H3(
                         "Profissionais",
-                        className="text-start ms-0, mb-4",
+                        className="text-start ms-0, mb-3",
                         id="section-profissionais",
                     )
                 ),
                 dbc.Col(
                     html.H3(
                         "Encaminhamentos",
-                        className="text-start ms-0, mb-4",
+                        className="text-start ms-0, mb-3",
                         id="section-encaminhamentos",
                     )
                 ),
             ],
-            className="mb-4",
+            className="mb-3",
         ),
         dbc.Row(
             [
@@ -436,12 +434,12 @@ app.layout = dbc.Container(
                     width=6,
                 ),  # Segunda coluna com o gráfico
             ],
-            className="mb-4",
+            className="mb-3",
         ),
         dbc.Row(
             html.H3(
                 "Visitas Domiciliar",
-                className="text-start ms-0, mb-4",
+                className="text-start ms-0, mb-3",
                 id="section-visitas",
             )
         ),
@@ -455,12 +453,12 @@ app.layout = dbc.Container(
                     width=12,
                 ),
             ],
-            className="mb-4",
+            className="mb-3",
         ),
         dbc.Row(
             html.H3(
                 "Atendimentos Odontologicos",
-                className="text-start ms-0, mb-4",
+                className="text-start ms-0, mb-3",
                 id="section-odontologicos",
             )
         ),
@@ -474,10 +472,11 @@ app.layout = dbc.Container(
                     width=12,
                 ),
             ],
-            className="mb-4",
+            className="mb-3",
         ),
+        html.Div(id="dummy-div", children=[], style={"display": "none"}),
     ],
-    className="p-5 mx-auto",
+    className="p-3 mx-auto",
     style={"max-width": "80%"},
 )
 
