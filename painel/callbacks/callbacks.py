@@ -87,10 +87,7 @@ def register_callbacks(app):
         if estado is None:
             raise dash.exceptions.PreventUpdate
         municipios = get_municipios(estado)
-        options = [
-            {"label": municipio.upper(), "value": municipio.upper()}
-            for municipio in municipios
-        ]
+        options = [municipio["cidade"].upper() for municipio in municipios]
         if regiao is not None:
             municipios_regiao = get_municipios_regiao(regiao)
             options = [
