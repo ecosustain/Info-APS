@@ -89,7 +89,7 @@ app.layout = dbc.Container(
         dbc.Row(
             [
                 dcc.Graph(
-                    config={'displayModeBar': False, 'scrollZoom': False },
+                    config={"displayModeBar": False, "scrollZoom": False},
                     id="mapa",
                     style={"height": "40vh"},
                 ),
@@ -240,7 +240,9 @@ app.layout = dbc.Container(
                             # Coluna do ícone
                             dbc.Col(
                                 html.Img(
-                                    src=dash.get_asset_url("user-doctor-solid.svg"),
+                                    src=dash.get_asset_url(
+                                        "user-doctor-solid.svg"
+                                    ),
                                     height="25px",
                                 ),
                                 width="auto",
@@ -383,7 +385,7 @@ app.layout = dbc.Container(
                 #     ),
                 #     width=6,
                 # ),  # Segunda coluna com o gráfico
-                dbc.Col()
+                dbc.Col(),
             ],
             className="mb-4",
         ),
@@ -404,18 +406,17 @@ app.layout = dbc.Container(
                         "Profissionais",
                         className="text-start ms-0, mb-4",
                         id="section-profissionais",
-                        )
-                    ),
+                    )
+                ),
                 dbc.Col(
                     html.H3(
                         "Encaminhamentos",
                         className="text-start ms-0, mb-4",
                         id="section-encaminhamentos",
-                        )
-                    ),
+                    )
+                ),
             ],
             className="mb-4",
-            
         ),
         dbc.Row(
             [
@@ -430,8 +431,7 @@ app.layout = dbc.Container(
                 # Atendimento por encaminhamento
                 dbc.Col(
                     dcc.Graph(
-                        id="chart_encaminhamentos", 
-                        style={"height": "40vh"}
+                        id="chart_encaminhamentos", style={"height": "40vh"}
                     ),
                     width=6,
                 ),  # Segunda coluna com o gráfico
@@ -449,7 +449,9 @@ app.layout = dbc.Container(
             [
                 # Atendimento por visitas domiciliar por trimestre
                 dbc.Col(
-                    dcc.Graph(id="chart_visitas_by_quarter", style={"height": "40vh"}),
+                    dcc.Graph(
+                        id="chart_visitas_by_quarter", style={"height": "40vh"}
+                    ),
                     width=12,
                 ),
             ],
@@ -466,7 +468,9 @@ app.layout = dbc.Container(
             [
                 # Atendimento por atendimentos odontologicos por trimestre
                 dbc.Col(
-                    dcc.Graph(id="chart_odonto_by_quarter", style={"height": "40vh"}),
+                    dcc.Graph(
+                        id="chart_odonto_by_quarter", style={"height": "40vh"}
+                    ),
                     width=12,
                 ),
             ],

@@ -66,9 +66,14 @@ def get_mapa_brasil():
         visible=False,
     )
     fig.update_layout(
-        margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False,
+        margin={"r": 0, "t": 50, "l": 0, "b": 0},
+        coloraxis_showscale=False,
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
+    fig.update_traces(
+        hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        marker_line_color="white",
+        marker_line_width=0.5,
+    )
 
     return fig
 
@@ -105,7 +110,11 @@ def get_mapa_estado(estado):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
+    fig.update_traces(
+        hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        marker_line_color="white",
+        marker_line_width=0.5,
+    )
 
     return fig
 
@@ -149,7 +158,11 @@ def get_mapa_regiao(estado, regiao):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
+    fig.update_traces(
+        hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        marker_line_color="white",
+        marker_line_width=0.5,
+    )
 
     return fig
 
@@ -191,6 +204,10 @@ def get_mapa_municipio(estado, municipio):
     fig.update_layout(
         margin={"r": 0, "t": 50, "l": 0, "b": 0}, coloraxis_showscale=False
     )
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><extra></extra>", marker_line_color="white", marker_line_width=0.5)
+    fig.update_traces(
+        hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        marker_line_color="white",
+        marker_line_width=0.5,
+    )
 
     return fig

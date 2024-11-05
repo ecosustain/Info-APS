@@ -33,7 +33,9 @@ def update_layout_chart(chart, title, tipo):
         yaxis_title=None,
         plot_bgcolor="#FFFFFF",
         barcornerradius=5,
-        yaxis=dict(showticklabels=False, range=[0, chart.data[0].y.max()*1.1]),
+        yaxis=dict(
+            showticklabels=False, range=[0, chart.data[0].y.max() * 1.1]
+        ),
         margin=dict(l=35, r=35, t=60, b=40),
     )
 
@@ -63,7 +65,10 @@ def update_layout_chart_profissionais(chart, title, tipo):
         legend_title=None,
         plot_bgcolor="#FFFFFF",
         barcornerradius=5,
-        yaxis=dict(showticklabels=False, range=[0, (chart.data[0].y.max()+chart.data[1].y.max()) * 1.1]),
+        yaxis=dict(
+            showticklabels=False,
+            range=[0, (chart.data[0].y.max() + chart.data[1].y.max()) * 1.1],
+        ),
         margin=dict(l=35, r=35, t=60, b=40),
         legend=dict(
             orientation="h",
@@ -160,7 +165,9 @@ def get_chart_percentage_by_year(df, title, tipo):
 
     # Gera as porcentagens antes de gerar o gráfico
     df_grouped = (
-        df.groupby("ano", observed=True).apply(lambda x: (x["valor_1"].sum() / x["valor_2"].sum())*100).reset_index(name="valor")
+        df.groupby("ano", observed=True)
+        .apply(lambda x: (x["valor_1"].sum() / x["valor_2"].sum()) * 100)
+        .reset_index(name="valor")
     )
 
     chart = get_chart_by_year(df_grouped, title, tipo)
@@ -215,10 +222,11 @@ def add_forecast_to_chart(chart, forecast_df, tipo):
             ),
         )
     )
-    #Mudando a legenda da previsão
+    # Mudando a legenda da previsão
     chart.update_layout(
-        legend=dict(x=1, y=1, xanchor="right", yanchor="bottom"))
-    
+        legend=dict(x=1, y=1, xanchor="right", yanchor="bottom")
+    )
+
     return chart
 
 

@@ -63,8 +63,7 @@ def get_regioes(estado):
 def get_regiao_municipio(estado, municipio):
     """Função para obter a região de um município"""
     regiao = municipios[
-        (municipios["uf"] == estado)
-        & (municipios["municipio"] == municipio)
+        (municipios["uf"] == estado) & (municipios["municipio"] == municipio)
     ]["no_regiao"].values[0]
     if len(regiao) < 3:
         print(f"Erro ao obter a região do município {municipio}")

@@ -43,6 +43,7 @@ def get_atendimentos(estado, regiao, municipio):
 
     return make_request(url)
 
+
 def get_visitas_domiciliar(estado, regiao, municipio):
     """Função para obter os dados de visitas_domiciliar"""
     url = f"{API_URL}/visitas_domiciliar"
@@ -57,6 +58,7 @@ def get_visitas_domiciliar(estado, regiao, municipio):
     print("Fazendo request para:", url)
 
     return make_request(url)
+
 
 def get_atendimentos_odontologicos(estado, regiao, municipio):
     """Função para obter os dados de atendimentos_odontologicos"""
