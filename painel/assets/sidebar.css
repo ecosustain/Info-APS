@@ -14,7 +14,6 @@
   background: none;
   border: none;
   color: #ffffff;
-  --bs-btn-active-bg: #F8F9FA;
 }
 
 .btn:hover {
@@ -22,30 +21,7 @@
   color: #343A40;
 }
 
-#tabs {
-  position: fixed;
-  left: 0;
-  top: 120px;
-  display: flex;
-  flex-direction: column;
-  width: 220px;
-}
-
-.tab.jsx-2137964197 {
-  width: 100% !important;
-  border: none !important;
-  background: none !important;
-  color: #ffffff !important;
-  text-align: justify !important;
-  padding: 20px !important;
-}
-
-.tab.jsx-2137964197:hover {
-  background-color: #ffffff !important;
-  color: #343A40 !important;
-}
-
-.tab--selected.tab.jsx-2137964197 {
-  background-color: #ffffff !important;
-  color: #343A40 !important;
+.btn:active {
+  background-color: #F8F9FA;
+  color: #343A40;
 }
