@@ -1,0 +1,51 @@
+#side-bar {
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  position: fixed;
+  background-color: #343A40;
+}
+
+.btn {
+  padding: 20px;
+  width: 100%;
+  border-radius: 0px;
+  text-align: justify;
+  background: none;
+  border: none;
+  color: #ffffff;
+  --bs-btn-active-bg: #F8F9FA;
+}
+
+.btn:hover {
+  background-color: #ffffff;
+  color: #343A40;
+}
+
+#tabs {
+  position: fixed;
+  left: 0;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+}
+
+.tab.jsx-2137964197 {
+  width: 100% !important;
+  border: none !important;
+  background: none !important;
+  color: #ffffff !important;
+  text-align: justify !important;
+  padding: 20px !important;
+}
+
+.tab.jsx-2137964197:hover {
+  background-color: #ffffff !important;
+  color: #343A40 !important;
+}
+
+.tab--selected.tab.jsx-2137964197 {
+  background-color: #ffffff !important;
+  color: #343A40 !important;
+}
