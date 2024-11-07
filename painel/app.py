@@ -13,7 +13,10 @@ anos = get_anos(6)
 
 # Layout da aplicação
 app.layout = dbc.Container(
-    [  # Add dropdown of states here
+    [  
+        dcc.Location(id='url', refresh=False),
+        # dbc.Col(html.Div(id="page-content"), width=10),
+        # Add dropdown of states here
         dbc.Row(
             [
                 dbc.Col(
@@ -104,319 +107,329 @@ app.layout = dbc.Container(
         dcc.Store(id="store-data-visita"),
         dcc.Store(id="store-data-odonto"),
         dcc.Store(id="store-populacao"),
-        dbc.Row(
-            html.H2(
-                "Atendimentos",
-                className="text-start ms-0, mb-4",
-                id="section-atendimentos",
-            )
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
-                    [
-                        html.H2(
-                            id="total-atendimentos",
-                            className="display-8 text-start fw-bold",
+        # Menu em abas
+        dcc.Tabs(
+            id="tabs",
+            value="tab-inicial",
+            children= [
+                # Aba 1: Informações Iniciais
+                dcc.Tab(
+                    label="Informações Iniciais",
+                    value="tab-inicial",
+                    children=[
+                        dbc.Row(
+                            html.H2(
+                                "Atendimentos",
+                                className="text-start ms-0, mb-4",
+                                id="section-atendimentos",
+                            )
                         ),
-                        html.H4(
-                            "Total de atendimentos individuais",
-                            className="fs-6 text-muted",
-                        ),
-                    ],
-                    width=3,
-                ),
-                dbc.Col(width=1),  # Coluna vazia para espaçamento
-                dbc.Col(
-                    [
-                        html.H2(
-                            id="normalizado-atendimentos",
-                            className="display-8 text-start fw-bold",
-                        ),
-                        html.H4(
-                            "Número de atendimentos por mil habitantes no ano",
-                            className="fs-6 text-muted",
-                        ),
-                    ],
-                    width=3,
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/tooth-solid.svg", height="25px"
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-odontologicos",
-                                    className="display-8 fw-bold mb-0",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
+                        dbc.Row(
+                            [
+                                dbc.Col(
                                     [
-                                        "Atendimentos",
-                                        html.Br(),
-                                        "odontológicos",
+                                        html.H2(
+                                            id="total-atendimentos",
+                                            className="display-8 text-start fw-bold",
+                                        ),
+                                        html.H4(
+                                            "Total de atendimentos individuais",
+                                            className="fs-6 text-muted",
+                                        ),
                                     ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
+                                    width=3,
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/house-solid.svg",
-                                    height="25px",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-visitas",
-                                    className="display-8 fw-bold mb-0",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
+                                dbc.Col(width=1),  # Coluna vazia para espaçamento
+                                dbc.Col(
                                     [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "em visita domiciliar",
+                                        html.H2(
+                                            id="normalizado-atendimentos",
+                                            className="display-8 text-start fw-bold",
+                                        ),
+                                        html.H4(
+                                            "Número de atendimentos por mil habitantes no ano",
+                                            className="fs-6 text-muted",
+                                        ),
                                     ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
+                                    width=3,
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src=dash.get_asset_url(
-                                        "user-doctor-solid.svg"
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    dbc.Row(
+                                        [
+                                            # Coluna do ícone
+                                            dbc.Col(
+                                                html.Img(
+                                                    src="assets/tooth-solid.svg", height="25px"
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do número
+                                            dbc.Col(
+                                                html.H3(
+                                                    id="big-odontologicos",
+                                                    className="display-8 fw-bold mb-0",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do texto, com ajuste de tamanho
+                                            dbc.Col(
+                                                html.P(
+                                                    [
+                                                        "Atendimentos",
+                                                        html.Br(),
+                                                        "odontológicos",
+                                                    ],
+                                                    className="text-muted",
+                                                    style={
+                                                        "font-size": "14px",
+                                                        "margin-bottom": "0",
+                                                        "align-self": "flex-end",
+                                                    },
+                                                ),
+                                                width="auto",
+                                                style={
+                                                    "display": "flex",
+                                                    "align-items": "flex-end",
+                                                },  # Para alinhar o texto ao final do número
+                                            ),
+                                        ],
+                                        align="center",
                                     ),
-                                    height="25px",
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-medicos",
-                                    className="display-8 fw-bold mb-0",
+                                dbc.Col(
+                                    dbc.Row(
+                                        [
+                                            # Coluna do ícone
+                                            dbc.Col(
+                                                html.Img(
+                                                    src="assets/house-solid.svg",
+                                                    height="25px",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do número
+                                            dbc.Col(
+                                                html.H3(
+                                                    id="big-visitas",
+                                                    className="display-8 fw-bold mb-0",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do texto, com ajuste de tamanho
+                                            dbc.Col(
+                                                html.P(
+                                                    [
+                                                        "Atendimentos feitos",
+                                                        html.Br(),
+                                                        "em visita domiciliar",
+                                                    ],
+                                                    className="text-muted",
+                                                    style={
+                                                        "font-size": "14px",
+                                                        "margin-bottom": "0",
+                                                        "align-self": "flex-end",
+                                                    },
+                                                ),
+                                                width="auto",
+                                                style={
+                                                    "display": "flex",
+                                                    "align-items": "flex-end",
+                                                },  # Para alinhar o texto ao final do número
+                                            ),
+                                        ],
+                                        align="center",
+                                    ),
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "por médicos",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
+                                dbc.Col(
+                                    dbc.Row(
+                                        [
+                                            # Coluna do ícone
+                                            dbc.Col(
+                                                html.Img(
+                                                    src=dash.get_asset_url(
+                                                        "user-doctor-solid.svg"
+                                                    ),
+                                                    height="25px",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do número
+                                            dbc.Col(
+                                                html.H3(
+                                                    id="big-medicos",
+                                                    className="display-8 fw-bold mb-0",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do texto, com ajuste de tamanho
+                                            dbc.Col(
+                                                html.P(
+                                                    [
+                                                        "Atendimentos feitos",
+                                                        html.Br(),
+                                                        "por médicos",
+                                                    ],
+                                                    className="text-muted",
+                                                    style={
+                                                        "font-size": "14px",
+                                                        "margin-bottom": "0",
+                                                        "align-self": "flex-end",
+                                                    },
+                                                ),
+                                                width="auto",
+                                                style={
+                                                    "display": "flex",
+                                                    "align-items": "flex-end",
+                                                },  # Para alinhar o texto ao final do número
+                                            ),
+                                        ],
+                                        align="center",
+                                    ),
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/user-nurse-solid.svg",
-                                    height="25px",
+                                dbc.Col(
+                                    dbc.Row(
+                                        [
+                                            # Coluna do ícone
+                                            dbc.Col(
+                                                html.Img(
+                                                    src="assets/user-nurse-solid.svg",
+                                                    height="25px",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do número
+                                            dbc.Col(
+                                                html.H3(
+                                                    id="big-enfermeiros",
+                                                    className="display-8 fw-bold mb-0",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do texto, com ajuste de tamanho
+                                            dbc.Col(
+                                                html.P(
+                                                    [
+                                                        "Atendimentos feitos",
+                                                        html.Br(),
+                                                        "por enfermeiros",
+                                                    ],
+                                                    className="text-muted",
+                                                    style={
+                                                        "font-size": "14px",
+                                                        "margin-bottom": "0",
+                                                        "align-self": "flex-end",
+                                                    },
+                                                ),
+                                                width="auto",
+                                                style={
+                                                    "display": "flex",
+                                                    "align-items": "flex-end",
+                                                },  # Para alinhar o texto ao final do número
+                                            ),
+                                        ],
+                                        align="center",
+                                    ),
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-enfermeiros",
-                                    className="display-8 fw-bold mb-0",
+                                dbc.Col(
+                                    dbc.Row(
+                                        [
+                                            # Coluna do ícone
+                                            dbc.Col(
+                                                html.Img(
+                                                    src="assets/user-solid.svg", height="25px"
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do número
+                                            dbc.Col(
+                                                html.H3(
+                                                    id="big-encaminhamentos",
+                                                    className="display-8 fw-bold mb-0",
+                                                ),
+                                                width="auto",
+                                            ),
+                                            # Coluna do texto, com ajuste de tamanho
+                                            dbc.Col(
+                                                html.P(
+                                                    [
+                                                        "Atendimentos finalizados",
+                                                        html.Br(),
+                                                        "com encaminhamento",
+                                                    ],
+                                                    className="text-muted",
+                                                    style={
+                                                        "font-size": "14px",
+                                                        "margin-bottom": "0",
+                                                        "align-self": "flex-end",
+                                                    },
+                                                ),
+                                                width="auto",
+                                                style={
+                                                    "display": "flex",
+                                                    "align-items": "flex-end",
+                                                },  # Para alinhar o texto ao final do número
+                                            ),
+                                        ],
+                                        align="center",
+                                    ),
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "por enfermeiros",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
+                            ],
+                            className="mb-5",
+                        ),
+                        dbc.Row(
+                            [
+                                # Atendimento por população por ano
+                                dbc.Col(
+                                    dcc.Graph(id="chart_by_year", style={"height": "40vh"}),
+                                    width=6,
+                                ),  # Primeira coluna com o gráfico
+                                # Atendimento por profissional de saúde
+                                # dbc.Col(
+                                #     dcc.Graph(
+                                #         id="chart_by_year_profissionais",
+                                #         style={"height": "40vh"},
+                                #     ),
+                                #     width=6,
+                                # ),  # Segunda coluna com o gráfico
+                                dbc.Col(),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                # Atendimento poe população por trimestre
+                                dbc.Col(
+                                    dcc.Graph(id="chart_by_quarter", style={"height": "40vh"}),
+                                    width=12,
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/user-solid.svg", height="25px"
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    html.H3(
+                                        "Profissionais",
+                                        className="text-start ms-0, mb-3",
+                                        id="section-profissionais",
+                                    )
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-encaminhamentos",
-                                    className="display-8 fw-bold mb-0",
+                                dbc.Col(
+                                    html.H3(
+                                        "Encaminhamentos",
+                                        className="text-start ms-0, mb-3",
+                                        id="section-encaminhamentos",
+                                    )
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos finalizados",
-                                        html.Br(),
-                                        "com encaminhamento",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
-                                ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-            ],
-            className="mb-5",
-        ),
-        dbc.Row(
-            [
-                # Atendimento por população por ano
-                dbc.Col(
-                    dcc.Graph(id="chart_by_year", style={"height": "40vh"}),
-                    width=6,
-                ),  # Primeira coluna com o gráfico
-                # Atendimento por profissional de saúde
-                # dbc.Col(
-                #     dcc.Graph(
-                #         id="chart_by_year_profissionais",
-                #         style={"height": "40vh"},
-                #     ),
-                #     width=6,
-                # ),  # Segunda coluna com o gráfico
-                dbc.Col(),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                # Atendimento poe população por trimestre
-                dbc.Col(
-                    dcc.Graph(id="chart_by_quarter", style={"height": "40vh"}),
-                    width=12,
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
-                    html.H3(
-                        "Profissionais",
-                        className="text-start ms-0, mb-3",
-                        id="section-profissionais",
-                    )
-                ),
-                dbc.Col(
-                    html.H3(
-                        "Encaminhamentos",
-                        className="text-start ms-0, mb-3",
-                        id="section-encaminhamentos",
-                    )
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
             [
                 # Atendimento por profissional de saúde
                 dbc.Col(
@@ -436,14 +449,20 @@ app.layout = dbc.Container(
             ],
             className="mb-3",
         ),
-        dbc.Row(
-            html.H3(
-                "Visitas Domiciliar",
-                className="text-start ms-0, mb-3",
-                id="section-visitas",
-            )
-        ),
-        dbc.Row(
+                    ]),
+                # Aba 2: Visita domiciliar
+                dcc.Tab(
+                    label="Visita Domiciliar",
+                    value="tab-visitas",
+                    children=[
+                        dbc.Row(
+                            html.H3(
+                                "Visitas Domiciliar",
+                                className="text-start ms-0, mb-3",
+                                id="section-visitas",
+                            )
+                        ),
+                        dbc.Row(
             [
                 # Atendimento por visitas domiciliar por trimestre
                 dbc.Col(
@@ -455,14 +474,20 @@ app.layout = dbc.Container(
             ],
             className="mb-3",
         ),
-        dbc.Row(
-            html.H3(
-                "Atendimentos Odontologicos",
-                className="text-start ms-0, mb-3",
-                id="section-odontologicos",
-            )
-        ),
-        dbc.Row(
+                    ]),
+                # Aba 3: Atendimentos Odontologicos
+                dcc.Tab(
+                    label="Atendimentos Odontológicos",
+                    value="tab-odonto",
+                    children=[
+                        dbc.Row(
+                            html.H3(
+                                "Atendimentos Odontologicos",
+                                className="text-start ms-0, mb-3",
+                                id="section-odontologicos",
+                            )
+                        ),
+                        dbc.Row(
             [
                 # Atendimento por atendimentos odontologicos por trimestre
                 dbc.Col(
@@ -473,6 +498,9 @@ app.layout = dbc.Container(
                 ),
             ],
             className="mb-3",
+        ),
+                    ]),
+            ],
         ),
         html.Div(id="dummy-div", children=[], style={"display": "none"}),
     ],

@@ -4,6 +4,8 @@ import warnings
 
 import dash
 import pandas as pd
+from paginas import tela_inicial, tela_visitas, tela_odonto
+
 from callbacks.api_requests import (
     get_anos,
     get_atendimentos,
@@ -55,6 +57,18 @@ anos = get_anos(6)
 
 def register_callbacks(app):
     """Função para registrar os callbacks do painel principal"""
+
+    # Callback para atualizar o conteúdo com base na URL
+    # @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
+    # def display_page(pathname):
+    #     if pathname == '/inicial':
+    #         return tela_inicial.tela_inicial_layout
+    #     elif pathname == '/visitas':
+    #         return tela_visitas.tela_visitas_layout
+    #     elif pathname == '/odontologicos':
+    #         return tela_odonto.tela_odonto_layout
+    #     else:
+    #         return tela_inicial.tela_inicial_layout
 
     @app.callback(
         Output("dropdown-regiao", "options"),
