@@ -4,8 +4,6 @@ import warnings
 
 import dash
 import pandas as pd
-# from paginas import tela_inicial, tela_visitas, tela_odonto
-
 from callbacks.api_requests import (
     get_anos,
     get_atendimentos,
@@ -43,6 +41,9 @@ from callbacks.utils import (
 from dash import Input, Output, State
 from dash import callback_context as ctx
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
+
+# from paginas import tela_inicial, tela_visitas, tela_odonto
+
 
 warnings.filterwarnings(
     "ignore",

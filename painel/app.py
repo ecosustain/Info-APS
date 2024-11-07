@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 from callbacks.api_requests import get_anos
 from callbacks.callbacks import register_callbacks
 from callbacks.utils import estados_brasileiros
-from dash import dcc, html, Input, clientside_callback, Output
+from dash import Input, Output, clientside_callback, dcc, html
 
 # Inicializa a aplicação Dash
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -13,6 +13,7 @@ anos = get_anos(6)
 
 # Layout da aplicação
 app.layout = dbc.Container(
+<<<<<<< HEAD
     [  # Add dropdown of states here
         dbc.Row(
             [
@@ -481,31 +482,33 @@ app.layout = dbc.Container(
         html.Div(id="dummy-div", children=[], style={"display": "none"}),
     [  
         dcc.Location(id='url', refresh=False),
+=======
+    [
+        dcc.Location(id="url", refresh=False),
+>>>>>>> 9c97dc5 (Formatado código)
         # dbc.Col(html.Div(id="page-content"), width=10),
         # Add dropdown of states here
         dbc.Row(
             [
                 html.Div(
-                    id="side-bar", 
+                    id="side-bar",
                     children=[
                         html.Div(
                             [
                                 html.Img(
-                                    src=dash.get_asset_url(
-                                        "sisab.svg"
-                                    ),
+                                    src=dash.get_asset_url("sisab.svg"),
                                     height="20px",
                                 ),
                                 html.P(
                                     "SISAB + IEPS",
                                     className="fs-6 px-2 py-0 text-white",
                                     id="title",
-                                )
+                                ),
                             ],
                             className="pt-3 px-4 d-flex",
                             style={
                                 "margin-bottom": "60px",
-                            }
+                            },
                         ),
                     ],
                     className="p-0",
@@ -569,11 +572,15 @@ app.layout = dbc.Container(
                                             className="me-4 rounded",  # Adiciona margem à direita e borda arredondada
                                             style={
                                                 "background-color": (
-                                                    "#A5A5A5" if ano != anos[0] else "#000000"
+                                                    "#A5A5A5"
+                                                    if ano != anos[0]
+                                                    else "#000000"
                                                 ),  # Fundo cinza claro ou escuro
                                                 "border-color": "#A5A5A5",  # Cor da borda
                                                 "color": (
-                                                    "#fff" if ano != anos[0] else "#00000"
+                                                    "#fff"
+                                                    if ano != anos[0]
+                                                    else "#00000"
                                                 ),  # Cor do texto
                                                 "padding": "0px 12px",
                                             },
@@ -588,7 +595,10 @@ app.layout = dbc.Container(
                         dbc.Row(
                             [
                                 dcc.Graph(
-                                    config={"displayModeBar": False, "scrollZoom": False},
+                                    config={
+                                        "displayModeBar": False,
+                                        "scrollZoom": False,
+                                    },
                                     id="mapa",
                                     style={"height": "40vh"},
                                 ),
@@ -607,7 +617,7 @@ app.layout = dbc.Container(
                         dcc.Tabs(
                             id="tabs",
                             value="tab-inicial",
-                            children= [
+                            children=[
                                 # Aba 1: Informações Iniciais
                                 dcc.Tab(
                                     label="Informações Iniciais",
@@ -635,7 +645,9 @@ app.layout = dbc.Container(
                                                     ],
                                                     width=3,
                                                 ),
-                                                dbc.Col(width=1),  # Coluna vazia para espaçamento
+                                                dbc.Col(
+                                                    width=1
+                                                ),  # Coluna vazia para espaçamento
                                                 dbc.Col(
                                                     [
                                                         html.H2(
@@ -660,7 +672,8 @@ app.layout = dbc.Container(
                                                             # Coluna do ícone
                                                             dbc.Col(
                                                                 html.Img(
-                                                                    src="assets/tooth-solid.svg", height="25px"
+                                                                    src="assets/tooth-solid.svg",
+                                                                    height="25px",
                                                                 ),
                                                                 width="auto",
                                                             ),
@@ -837,7 +850,8 @@ app.layout = dbc.Container(
                                                             # Coluna do ícone
                                                             dbc.Col(
                                                                 html.Img(
-                                                                    src="assets/user-solid.svg", height="25px"
+                                                                    src="assets/user-solid.svg",
+                                                                    height="25px",
                                                                 ),
                                                                 width="auto",
                                                             ),
@@ -881,7 +895,12 @@ app.layout = dbc.Container(
                                             [
                                                 # Atendimento por população por ano
                                                 dbc.Col(
-                                                    dcc.Graph(id="chart_by_year", style={"height": "40vh"}),
+                                                    dcc.Graph(
+                                                        id="chart_by_year",
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
+                                                    ),
                                                     width=6,
                                                 ),  # Primeira coluna com o gráfico
                                                 # Atendimento por profissional de saúde
@@ -900,7 +919,12 @@ app.layout = dbc.Container(
                                             [
                                                 # Atendimento poe população por trimestre
                                                 dbc.Col(
-                                                    dcc.Graph(id="chart_by_quarter", style={"height": "40vh"}),
+                                                    dcc.Graph(
+                                                        id="chart_by_quarter",
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
+                                                    ),
                                                     width=12,
                                                 ),
                                             ],
@@ -931,21 +955,27 @@ app.layout = dbc.Container(
                                                 dbc.Col(
                                                     dcc.Graph(
                                                         id="chart_by_year_profissionais",
-                                                        style={"height": "40vh"},
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
                                                     ),
                                                     width=6,
                                                 ),  # Primeira coluna com o gráfico
                                                 # Atendimento por encaminhamento
                                                 dbc.Col(
                                                     dcc.Graph(
-                                                        id="chart_encaminhamentos", style={"height": "40vh"}
+                                                        id="chart_encaminhamentos",
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
                                                     ),
                                                     width=6,
                                                 ),  # Segunda coluna com o gráfico
                                             ],
                                             className="mb-3",
                                         ),
-                                    ]),
+                                    ],
+                                ),
                                 # Aba 2: Visita domiciliar
                                 dcc.Tab(
                                     label="Visita Domiciliar",
@@ -963,14 +993,18 @@ app.layout = dbc.Container(
                                                 # Atendimento por visitas domiciliar por trimestre
                                                 dbc.Col(
                                                     dcc.Graph(
-                                                        id="chart_visitas_by_quarter", style={"height": "40vh"}
+                                                        id="chart_visitas_by_quarter",
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
                                                     ),
                                                     width=12,
                                                 ),
                                             ],
                                             className="mb-3",
                                         ),
-                                    ]),
+                                    ],
+                                ),
                                 # Aba 3: Atendimentos Odontologicos
                                 dcc.Tab(
                                     label="Atendimentos Odontológicos",
@@ -988,20 +1022,26 @@ app.layout = dbc.Container(
                                                 # Atendimento por atendimentos odontologicos por trimestre
                                                 dbc.Col(
                                                     dcc.Graph(
-                                                        id="chart_odonto_by_quarter", style={"height": "40vh"}
+                                                        id="chart_odonto_by_quarter",
+                                                        style={
+                                                            "height": "40vh"
+                                                        },
                                                     ),
                                                     width=12,
                                                 ),
                                             ],
                                             className="mb-3",
                                         ),
-                                    ]),
+                                    ],
+                                ),
                             ],
                         ),
                     ],
                     style={"padding": "30px 30px 30px 250px"},
                 ),
-                html.Div(id="dummy-div", children=[], style={"display": "none"}),
+                html.Div(
+                    id="dummy-div", children=[], style={"display": "none"}
+                ),
             ]
         ),
     ],
@@ -1019,7 +1059,7 @@ app.clientside_callback(
     }
     """,
     [Output("dummy-div", "children")],
-    [Input('btn-ii', 'n-clicks')]
+    [Input("btn-ii", "n-clicks")],
 )
 
 
