@@ -4,7 +4,7 @@ import warnings
 
 import dash
 import pandas as pd
-from paginas import tela_inicial, tela_visitas, tela_odonto
+# from paginas import tela_inicial, tela_visitas, tela_odonto
 
 from callbacks.api_requests import (
     get_anos,
