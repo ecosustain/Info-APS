@@ -36,6 +36,7 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-visita"),
                         dcc.Store(id="store-data-odonto"),
                         dcc.Store(id="store-populacao"),
+                        dcc.Store(id="nivel-geo"),
                         # Menu em abas
                         dash.page_container,
                     ],

@@ -51,30 +51,40 @@ layout = html.Div([
                                 [
                                     html.Span(style={
                                         "display": "inline-block",
-                                        "width": "10px",
-                                        "height": "10px",
+                                        "width": "15px",
+                                        "height": "15px",
                                         "background-color": "#632956",
                                         "margin-right": "5px"
                                     }),
                                     html.H6(
-                                        id="indicador-atendimentos-brasil",
+                                        id="indicador-atend-brasil",
+                                        style={
+                                            "margin-bottom": "0",
+                                        }
                                     ),
-                                ]
+                                ],
+                                width=3,
+                                style={"display": "flex", "align-items": "center"},
                             ),
                             dbc.Col(
                                 [
                                     html.Span(style={
                                         "display": "inline-block",
-                                        "width": "10px",
-                                        "height": "10px",
+                                        "width": "15px",
+                                        "height": "15px",
                                         "background-color": "#34679A",
                                         "transform": "rotate(45deg)", 
-                                        "margin-right": "5px"
+                                        "margin-right": "5px",
                                     }),
                                     html.H6(
-                                        id="indicador-atendimentos-estado",
+                                        id="indicador-atend-estado",
+                                        style={
+                                            "margin-bottom": "0",
+                                        }
                                     ),
                                 ],
+                                width=3,
+                                style={"display": "flex", "align-items": "center"},
                             ),
                         ]
                     ),

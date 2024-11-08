@@ -156,3 +156,33 @@ def formatar_numero(numero):
     elif numero >= 1_000:
         return f"{numero / 1_000:.1f}K"
     return str(numero)
+
+
+
+def store_nivel(hist, df, populacao, nivel, anos):
+    """Função para armazenar dados historicos"""
+    if nivel == 'municipio' or nivel == 'regiao_saude':
+        return hist
+    # filtrar df para os ultimos 5 anos
+    df = df[df["ano"].isin(anos)]
+    # normalizar df pelo total da população (1000 habitantes)
+    populacao = populacao / 1000
+    df["valor"] = df["valor"] / populacao
+    df["valor"] = df["valor"].astype(int)
+
+    hist[nivel] = df
+
+    return hist
+
+
+def get_values(hist, ano, nivel):
+    """Retorna os valores historicos de um ano"""
+    if nivel == 'brasil':
+        return [None, None]
+    values = []
+    for nivel in hist.keys():
+        df = hist[nivel]
+        values.append(df[df["ano"] == ano]["valor"].sum())
+    if nivel == 'estado':
+        return [values[0], None]
+    return values

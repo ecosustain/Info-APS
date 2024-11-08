@@ -37,13 +37,15 @@ from callbacks.utils import (
     get_regiao_municipio,
     get_regioes,
     get_type,
+    store_nivel,
+    get_values,
 )
 from dash import Input, Output, State
 from dash import callback_context as ctx
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 # from paginas import tela_inicial, tela_visitas, tela_odonto
-
+hist_atend = {}
 
 warnings.filterwarnings(
     "ignore",
@@ -119,6 +121,7 @@ def register_callbacks(app):
             Output("store-data-odonto", "data"),
             Output("store-data-enc", "data"),
             Output("store-populacao", "data"),
+            Output("nivel-geo", "data"),
         ],
         [
             Input("dummy-div", "children"),
@@ -139,16 +142,21 @@ def register_callbacks(app):
         data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
         populacao = get_population(estado, regiao, municipio)
 
+        nivel = get_type(estado, regiao, municipio)
+
         return (
             data_atendimentos,
             data_visitas_domiciliar,
             data_atendimentos_odontologicos,
             data_encaminhamentos,
             populacao,
+            nivel,
         )
 
     @app.callback(
         [
+            Output("indicador-atend-brasil", "children"),
+            Output("indicador-atend-estado", "children"),
             Output("total-atendimentos", "children"),
             Output("normalizado-atendimentos", "children"),
             Output("big-medicos", "children"),
@@ -163,6 +171,7 @@ def register_callbacks(app):
             Input("store-data-visita", "data"),
             Input("store-data-odonto", "data"),
             Input("store-populacao", "data"),
+            Input("nivel-geo", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
         [
@@ -171,7 +180,7 @@ def register_callbacks(app):
         ],
     )
     def update_big_numbers(
-        data, data_enc, data_visita, data_odonto, populacao, *args
+        data, data_enc, data_visita, data_odonto, populacao, nivel, *args
     ):
         """Função para atualizar os big numbers com base nos dados armazenados"""
         ctx = dash.callback_context
@@ -189,6 +198,8 @@ def register_callbacks(app):
 
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
+        global hist_atend
+        hist_atend = store_nivel(hist_atend, df, populacao, nivel, anos)
 
         # Add encaminhamento
         df_enc = get_df_from_json(data_enc)
@@ -215,6 +226,11 @@ def register_callbacks(app):
 
         # Inserir o total de atendimentos no primeiro lugar
         big_numbers.insert(0, total_atendimentos)
+
+        values = get_values(hist_atend, ano, nivel)
+
+        big_numbers.insert(0, values[1])
+        big_numbers.insert(0, values[0])
 
         return big_numbers
 
