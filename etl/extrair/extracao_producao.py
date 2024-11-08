@@ -5,8 +5,8 @@ from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
-import etl.transformar.transf_producao as transf_producao
-from etl.extrair.extracao import (
+import transformar.transf_producao as transf_producao
+from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
     fazer_download,

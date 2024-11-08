@@ -114,10 +114,30 @@ def concat_final_csv(name, dir="."):
     df.drop_duplicates(inplace=True)
     # Ajustar as colunas para inteiros
     try:
-        for col in df.columns.difference(["Uf", "Municipio", "Mes"]):
+        # Criar lista com colunas numéricas
+        colunas_numericas = df.select_dtypes(
+            include=["number"]
+        ).columns.tolist()
+        colunas_numericas = [
+            col
+            for col in colunas_numericas
+            if col not in ["Uf", "Municipio", "Mes"]
+        ]
+        # Criar lista com colunas não numéricas
+        colunas_nao_numericas = df.select_dtypes(
+            exclude=["number"]
+        ).columns.tolist()
+        colunas_nao_numericas = [
+            col
+            for col in colunas_nao_numericas
+            if col not in ["Uf", "Municipio", "Mes"]
+        ]
+        for col in colunas_numericas:
             df[col] = (
                 pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
             )
+        for col in colunas_nao_numericas:
+            df[col] = df[col].str.replace(".", "").astype(int)
     except Exception as e:
         print(f"Erro ao converter a coluna {col} para inteiro: {e}")
     # Salvar o arquivo final
