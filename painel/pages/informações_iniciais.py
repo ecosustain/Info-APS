@@ -586,5 +586,6 @@ layout = html.Div(
             ],
             className="mb-3",
         ),
-    ]
+    ],
+    style={"padding": "5px 5px"},
 )
