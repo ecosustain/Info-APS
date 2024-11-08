@@ -230,10 +230,17 @@ def add_forecast_to_chart(chart, forecast_df, tipo):
     return chart
 
 
-def get_chart_by_quarter(df, title, tipo):
+def get_chart_forecast_by_quarter(df, title, tipo):
     """Função para gerar o gráfico de barras com a previsão."""
     df_filtered = preprocess_data(df)
     chart = create_bar_chart(df_filtered, title, tipo)
     forecast_df = forecast_sarima(df)
     chart = add_forecast_to_chart(chart, forecast_df, tipo)
+    return chart
+
+
+def get_chart_by_quarter(df, title, tipo):
+    """Função para gerar o gráfico de barras com a previsão."""
+    df_filtered = preprocess_data(df)
+    chart = create_bar_chart(df_filtered, title, tipo)
     return chart

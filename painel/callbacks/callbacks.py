@@ -13,6 +13,7 @@ from callbacks.api_requests import (
     get_visitas_domiciliar,
 )
 from callbacks.chart_plotting import (
+    get_chart_forecast_by_quarter,
     get_chart_by_quarter,
     get_chart_by_year,
     get_chart_by_year_profissionais,
@@ -282,13 +283,13 @@ def register_callbacks(app):
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
-            df_atendimentos, "Atendimentos por mil habitantes", type
+            df_atendimentos, "Atendimentos por mil hab.", type
         )
         chart_by_year_profissionais = get_chart_by_year_profissionais(
             df_atendimentos, "Atendimentos por profissionais", type
         )
-        chart_by_quarter = get_chart_by_quarter(
-            df_atendimentos, "Atendimentos por mil habitantes", type
+        chart_by_quarter = get_chart_forecast_by_quarter(
+            df_atendimentos, "Atendimentos por mil hab.", type
         )
 
         return (

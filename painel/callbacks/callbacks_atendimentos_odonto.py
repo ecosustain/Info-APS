@@ -25,7 +25,7 @@ def register_callbacks_odonto(app):
         type = get_type(estado, regiao, municipio)
 
         chart_odonto_by_quarter = get_chart_by_quarter(
-            df_odonto, "Atendimentos por mil habitantes", type
+            df_odonto, "Atend. Odontológico por mil hab.", type
         )
 
         return (chart_odonto_by_quarter,)

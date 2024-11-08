@@ -39,7 +39,7 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             html.H4(
-                                "Número de atendimentos por mil habitantes no ano",
+                                "Atendimentos por mil hab. no ano",
                                 className="fs-6 text-muted",
                             ),
                         ),
@@ -519,30 +519,17 @@ layout = html.Div(
                         id="chart_by_year",
                         style={"height": "40vh"},
                     ),
-                    width=6,
+                    width=3,
                 ),  # Primeira coluna com o gráfico
-                # Atendimento por profissional de saúde
-                # dbc.Col(
-                #     dcc.Graph(
-                #         id="chart_by_year_profissionais",
-                #         style={"height": "40vh"},
-                #     ),
-                #     width=6,
-                # ),  # Segunda coluna com o gráfico
-                dbc.Col(),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                # Atendimento poe população por trimestre
+                # Atendimento por trimestre
                 dbc.Col(
                     dcc.Graph(
                         id="chart_by_quarter",
                         style={"height": "40vh"},
                     ),
-                    width=12,
-                ),
+                    width=9,
+                ),  # Segunda coluna com o gráfico
+                dbc.Col(),
             ],
             className="mb-3",
         ),

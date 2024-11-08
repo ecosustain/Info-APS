@@ -25,7 +25,7 @@ def register_callbacks_visita(app):
         type = get_type(estado, regiao, municipio)
 
         chart_visitas_by_quarter = get_chart_by_quarter(
-            df_visita, "Atendimentos por mil habitantes", type
+            df_visita, "Visitas Domiciliar por mil hab.", type
         )
 
         return (chart_visitas_by_quarter,)
