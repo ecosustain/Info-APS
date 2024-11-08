@@ -90,7 +90,7 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, num_meses=1000):
 
 
 # Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
-lista = ["producao_conduta"]
+lista = ["producao_tipo"]
 
 
 if __name__ == "__main__":

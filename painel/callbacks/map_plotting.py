@@ -34,14 +34,14 @@ def get_shapefile_regiao(estado):
     regioes = list(set(regioes.keys()))
 
     return [
-        f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp"
+        f"mapas/shapefiles/{estado}/{regiao}/{regiao}.shp"
         for regiao in regioes
     ]
 
 
 def get_mapa_brasil():
     """Função para criar o mapa do Brasil"""
-    shapefile_uf = "../mapas/BR_UF_2022/BR_UF_2022.shp"
+    shapefile_uf = "mapas/BR_UF_2022/BR_UF_2022.shp"
     brasil_estados = gpd.read_file(shapefile_uf)
     mapa_uf = brasil_estados[["SIGLA_UF", "geometry"]]
     mapa_uf["geometry"] = brasil_estados["geometry"].simplify(tolerance=0.01)
@@ -126,7 +126,7 @@ def get_mapa_regiao(estado, regiao):
         # get the key by value
         regiao = list(regioes.keys())[list(regioes.values()).index(regiao)]
 
-    shapefile = f"../shapefile/shapefiles/{estado}/{regiao}/{regiao}.shp"
+    shapefile = f"mapas/shapefiles/{estado}/{regiao}/{regiao}.shp"
 
     mapa_mun = gpd.read_file(shapefile)
     mapa_mun = mapa_mun[["CD_MUN", "NM_MUN", "SIGLA_UF", "geometry"]]
@@ -169,7 +169,7 @@ def get_mapa_regiao(estado, regiao):
 
 def get_mapa_municipio(estado, municipio):
     """Função para criar o mapa de um município"""
-    shapefile = f"../mapas/Estados/{estado}/{estado}_Municipios_2022.shp"
+    shapefile = f"mapas/Estados/{estado}/{estado}_Municipios_2022.shp"
 
     mapa_mun = gpd.read_file(shapefile)
     # Transformar nome do município em maiúsculas

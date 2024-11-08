@@ -3,6 +3,8 @@ plotly
 geopandas
 statsmodels
 flask~=2.3.2
-
+dash_bootstrap_components
 pandas~=2.2.3
 pymongo~=4.5.0
+requests==2.31.0
+pyyaml
