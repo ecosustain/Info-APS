@@ -46,6 +46,8 @@ from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 # from paginas import tela_inicial, tela_visitas, tela_odonto
 hist_atend = {}
+hist_odont = {}
+hist_visita = {}
 
 warnings.filterwarnings(
     "ignore",
@@ -155,6 +157,10 @@ def register_callbacks(app):
 
     @app.callback(
         [
+            Output("indicador-visita-brasil", "children"),
+            Output("indicador-visita-estado", "children"),
+            Output("indicador-odont-brasil", "children"),
+            Output("indicador-odont-estado", "children"),
             Output("indicador-atend-brasil", "children"),
             Output("indicador-atend-estado", "children"),
             Output("total-atendimentos", "children"),
@@ -210,11 +216,17 @@ def register_callbacks(app):
         df_visita = get_df_from_json(data_visita)
         total_visita_ano = df_visita[df_visita["ano"] == ano]["valor"].sum()
         big_numbers.append(total_visita_ano)
+        global hist_visita
+        hist_visita = store_nivel(
+            hist_visita, df_visita, populacao, nivel, anos
+        )
 
         # Add atendimentos odontologicos
         df_odonto = get_df_from_json(data_odonto)
         total_odonto_ano = df_odonto[df_odonto["ano"] == ano]["valor"].sum()
         big_numbers.append(total_odonto_ano)
+        global hist_odont
+        hist_odont = store_nivel(hist_odont, df_odonto, populacao, nivel, anos)
 
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
@@ -228,6 +240,16 @@ def register_callbacks(app):
         big_numbers.insert(0, total_atendimentos)
 
         values = get_values(hist_atend, ano, nivel)
+
+        big_numbers.insert(0, values[1])
+        big_numbers.insert(0, values[0])
+
+        values = get_values(hist_odont, ano, nivel)
+
+        big_numbers.insert(0, values[1])
+        big_numbers.insert(0, values[0])
+
+        values = get_values(hist_visita, ano, nivel)
 
         big_numbers.insert(0, values[1])
         big_numbers.insert(0, values[0])

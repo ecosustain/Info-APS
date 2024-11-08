@@ -50,8 +50,8 @@ layout = html.Div(
                                         html.Span(
                                             style={
                                                 "display": "inline-block",
-                                                "width": "15px",
-                                                "height": "15px",
+                                                "width": "13px",
+                                                "height": "13px",
                                                 "background-color": "#632956",
                                                 "margin-right": "5px",
                                             }
@@ -74,8 +74,8 @@ layout = html.Div(
                                         html.Span(
                                             style={
                                                 "display": "inline-block",
-                                                "width": "15px",
-                                                "height": "15px",
+                                                "width": "13px",
+                                                "height": "13px",
                                                 "background-color": "#34679A",
                                                 "transform": "rotate(45deg)",
                                                 "margin-right": "5px",
@@ -105,92 +105,211 @@ layout = html.Div(
         dbc.Row(
             [
                 dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/tooth-solid.svg",
-                                    height="25px",
+                    [
+                        dbc.Row(
+                            [
+                                # Coluna do ícone
+                                dbc.Col(
+                                    html.Img(
+                                        src="assets/tooth-solid.svg",
+                                        height="25px",
+                                    ),
+                                    width="auto",
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-odontologicos",
-                                    className="display-8 fw-bold mb-0",
+                                # Coluna do número
+                                dbc.Col(
+                                    html.H3(
+                                        id="big-odontologicos",
+                                        className="display-8 fw-bold mb-0",
+                                    ),
+                                    width="auto",
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos",
-                                        html.Br(),
-                                        "odontológicos",
-                                    ],
-                                    className="text-muted",
+                            ],
+                            align="center",
+                        ),
+                        dbc.Row(
+                            [
+                                # Coluna do texto, com ajuste de tamanho
+                                dbc.Col(
+                                    html.P(
+                                        [
+                                            "Atendimentos",
+                                            html.Br(),
+                                            "odontológicos",
+                                        ],
+                                        className="text-muted",
+                                        style={
+                                            "font-size": "14px",
+                                            "margin-bottom": "0",
+                                            "align-self": "flex-end",
+                                        },
+                                    ),
+                                    width="auto",
                                     style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
+                                        "display": "flex",
+                                        "align-items": "flex-end",
+                                    },  # Para alinhar o texto ao final do número
+                                ),
+                            ],
+                            align="center",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Span(
+                                            style={
+                                                "display": "inline-block",
+                                                "width": "10px",
+                                                "height": "10px",
+                                                "background-color": "#632956",
+                                            }
+                                        ),
+                                        html.P(
+                                            id="indicador-odont-brasil",
+                                            style={
+                                                "margin-bottom": "0",
+                                                "margin-left": "2px",
+                                                "margin-right": "2px",
+                                            },
+                                        ),
+                                    ],
+                                    width="auto",
+                                    style={
+                                        "display": "flex",
+                                        "align-items": "center",
                                     },
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
+                                dbc.Col(
+                                    [
+                                        html.Span(
+                                            style={
+                                                "display": "inline-block",
+                                                "width": "10px",
+                                                "height": "10px",
+                                                "background-color": "#34679A",
+                                                "transform": "rotate(45deg)",
+                                            }
+                                        ),
+                                        html.P(
+                                            id="indicador-odont-estado",
+                                            style={
+                                                "margin-bottom": "0",
+                                                "margin-left": "2px",
+                                                "margin-right": "2px",
+                                            },
+                                        ),
+                                    ],
+                                    width="auto",
+                                    style={
+                                        "display": "flex",
+                                        "align-items": "center",
+                                    },
+                                ),
+                            ]
+                        ),
+                    ],
                 ),
                 dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/house-solid.svg",
-                                    height="25px",
+                    [
+                        dbc.Row(
+                            [
+                                # Coluna do ícone
+                                dbc.Col(
+                                    html.Img(
+                                        src="assets/house-solid.svg",
+                                        height="25px",
+                                    ),
+                                    width="auto",
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-visitas",
-                                    className="display-8 fw-bold mb-0",
+                                # Coluna do número
+                                dbc.Col(
+                                    html.H3(
+                                        id="big-visitas",
+                                        className="display-8 fw-bold mb-0",
+                                    ),
+                                    width="auto",
                                 ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "em visita domiciliar",
-                                    ],
-                                    className="text-muted",
+                                # Coluna do texto, com ajuste de tamanho
+                                dbc.Col(
+                                    html.P(
+                                        [
+                                            "Atendimentos feitos",
+                                            html.Br(),
+                                            "em visita domiciliar",
+                                        ],
+                                        className="text-muted",
+                                        style={
+                                            "font-size": "14px",
+                                            "margin-bottom": "0",
+                                            "align-self": "flex-end",
+                                        },
+                                    ),
+                                    width="auto",
                                     style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
+                                        "display": "flex",
+                                        "align-items": "flex-end",
+                                    },  # Para alinhar o texto ao final do número
+                                ),
+                            ],
+                            align="center",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Span(
+                                            style={
+                                                "display": "inline-block",
+                                                "width": "10px",
+                                                "height": "10px",
+                                                "background-color": "#632956",
+                                            }
+                                        ),
+                                        html.P(
+                                            id="indicador-visita-brasil",
+                                            style={
+                                                "margin-bottom": "0",
+                                                "margin-left": "2px",
+                                                "margin-right": "2px",
+                                            },
+                                        ),
+                                    ],
+                                    width="auto",
+                                    style={
+                                        "display": "flex",
+                                        "align-items": "center",
                                     },
                                 ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
+                                dbc.Col(
+                                    [
+                                        html.Span(
+                                            style={
+                                                "display": "inline-block",
+                                                "width": "10px",
+                                                "height": "10px",
+                                                "background-color": "#34679A",
+                                                "transform": "rotate(45deg)",
+                                            }
+                                        ),
+                                        html.P(
+                                            id="indicador-visita-estado",
+                                            style={
+                                                "margin-bottom": "0",
+                                                "margin-left": "2px",
+                                                "margin-right": "2px",
+                                            },
+                                        ),
+                                    ],
+                                    width="auto",
+                                    style={
+                                        "display": "flex",
+                                        "align-items": "center",
+                                    },
+                                ),
+                            ]
+                        ),
+                    ],
                 ),
                 dbc.Col(
                     dbc.Row(
