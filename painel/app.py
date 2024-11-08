@@ -3,6 +3,8 @@ import dash_bootstrap_components as dbc
 
 from callbacks.api_requests import get_anos
 from callbacks.callbacks import register_callbacks
+from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
+from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 
 from dash import dcc, html
 
@@ -51,6 +53,8 @@ app.layout = dbc.Container(
 
 # Inicializa os callbacks
 register_callbacks(app)
+register_callbacks_visita(app)
+register_callbacks_odonto(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
