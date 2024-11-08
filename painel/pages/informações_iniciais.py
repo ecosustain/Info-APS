@@ -99,6 +99,63 @@ layout = html.Div(
                     ],
                     width=3,
                 ),
+                dbc.Col(width=1),
+                dbc.Col(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    html.Span(
+                                        style={
+                                            "display": "inline-block",
+                                            "width": "15px",
+                                            "height": "15px",
+                                            "background-color": "#632956",
+                                            "margin-right": "5px",
+                                        }
+                                    ),
+                                    width=2,
+                                ),
+                                dbc.Col(
+                                    html.H5(
+                                        "Brasil",
+                                        style={
+                                            "margin-bottom": "0",
+                                        },
+                                    ),
+                                    width=2,
+                                ),
+                            ],
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    html.Span(
+                                        style={
+                                            "display": "inline-block",
+                                            "width": "15px",
+                                            "height": "15px",
+                                            "background-color": "#34679A",
+                                            "transform": "rotate(45deg)",
+                                            "margin-right": "5px",
+                                        }
+                                    ),
+                                    width=2,
+                                ),
+                                dbc.Col(
+                                    html.H5(
+                                        "Estado",
+                                        style={
+                                            "margin-bottom": "0",
+                                        },
+                                    ),
+                                    width=2,
+                                ),
+                            ],
+                        ),
+                    ],
+                    width=3,
+                ),
             ],
             className="mb-3",
         ),
