@@ -573,6 +573,63 @@ layout = html.Div(
             ],
             className="mb-3",
         ),
+        dbc.Row(
+            html.H3(
+                "Atendimentos Odontológicos",
+                className="text-start ms-0, mb-3",
+                id="section-odontologicos",
+            )
+        ),
+        dbc.Row(
+            [
+                # Atendimento por atendimentos odontologicos por ano
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_odonto_by_year",
+                        style={"height": "40vh"},
+                    ),
+                    width=3,
+                ),
+                # Atendimento por atendimentos odontologicos por trimestre
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_odonto_by_quarter",
+                        style={"height": "40vh"},
+                    ),
+                    width=9,
+                ),
+            ],
+            className="mb-3",
+        ),
+        
+        dbc.Row(
+            html.H3(
+                "Visitas Domiciliar",
+                className="text-start ms-0, mb-3",
+                id="section-visitas",
+            )
+        ),
+        dbc.Row(
+            [
+                # Atendimento por atendimentos visitas por ano
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_visitas_by_year",
+                        style={"height": "40vh"},
+                    ),
+                    width=3,
+                ),
+                # Atendimento por atendimentos visitas por trimestre
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_visitas_by_quarter",
+                        style={"height": "40vh"},
+                    ),
+                    width=9,
+                ),
+            ],
+            className="mb-3",
+        ),
     ],
     style={"padding": "5px 5px"},
 )

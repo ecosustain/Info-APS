@@ -24,13 +24,21 @@ layout = html.Div(
                 ),
                 dbc.Row(
                     [
+                        # Atendimento por atendimentos odontologicos por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_odonto_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=3,
+                        ),
                         # Atendimento por atendimentos odontologicos por trimestre
                         dbc.Col(
                             dcc.Graph(
                                 id="chart_odonto_by_quarter",
                                 style={"height": "40vh"},
                             ),
-                            width=12,
+                            width=9,
                         ),
                     ],
                     className="mb-3",

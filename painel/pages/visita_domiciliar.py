@@ -22,10 +22,18 @@ layout = html.Div(
                         # Atendimento por visitas domiciliar por trimestre
                         dbc.Col(
                             dcc.Graph(
+                                id="chart_visitas_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=3,
+                        ),
+                        # Atendimento por visitas domiciliar por trimestre
+                        dbc.Col(
+                            dcc.Graph(
                                 id="chart_visitas_by_quarter",
                                 style={"height": "40vh"},
                             ),
-                            width=12,
+                            width=9,
                         ),
                     ],
                     className="mb-3",
