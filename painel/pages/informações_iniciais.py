@@ -33,13 +33,50 @@ layout = html.Div([
             ),  # Coluna vazia para espaçamento
             dbc.Col(
                 [
-                    html.H2(
-                        id="normalizado-atendimentos",
-                        className="display-8 text-start fw-bold",
+                    dbc.Row(
+                        html.H2(
+                            id="normalizado-atendimentos",
+                            className="display-8 text-start fw-bold",
+                        ),
                     ),
-                    html.H4(
-                        "Número de atendimentos por mil habitantes no ano",
-                        className="fs-6 text-muted",
+                    dbc.Row(
+                        html.H4(
+                            "Número de atendimentos por mil habitantes no ano",
+                            className="fs-6 text-muted",
+                        ),
+                    ),
+                    dbc.Row(
+                        [   
+                            dbc.Col(
+                                [
+                                    html.Span(style={
+                                        "display": "inline-block",
+                                        "width": "10px",
+                                        "height": "10px",
+                                        "background-color": "#632956",
+                                        "margin-right": "5px"
+                                    }),
+                                    html.H6(
+                                        id="indicador-atendimentos-brasil",
+                                    ),
+                                ]
+                            ),
+                            dbc.Col(
+                                [
+                                    html.Span(style={
+                                        "display": "inline-block",
+                                        "width": "10px",
+                                        "height": "10px",
+                                        "background-color": "#34679A",
+                                        "transform": "rotate(45deg)", 
+                                        "margin-right": "5px"
+                                    }),
+                                    html.H6(
+                                        id="indicador-atendimentos-estado",
+                                    ),
+                                ],
+                            ),
+                        ]
                     ),
                 ],
                 width=3,
