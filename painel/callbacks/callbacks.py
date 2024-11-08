@@ -37,8 +37,8 @@ from callbacks.utils import (
     get_regiao_municipio,
     get_regioes,
     get_type,
-    store_nivel,
     get_values,
+    store_nivel,
 )
 from dash import Input, Output, State
 from dash import callback_context as ctx

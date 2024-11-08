@@ -158,10 +158,9 @@ def formatar_numero(numero):
     return str(numero)
 
 
-
 def store_nivel(hist, df, populacao, nivel, anos):
     """Função para armazenar dados historicos"""
-    if nivel == 'municipio' or nivel == 'regiao_saude':
+    if nivel == "municipio" or nivel == "regiao_saude":
         return hist
     # filtrar df para os ultimos 5 anos
     df = df[df["ano"].isin(anos)]
@@ -177,12 +176,12 @@ def store_nivel(hist, df, populacao, nivel, anos):
 
 def get_values(hist, ano, nivel):
     """Retorna os valores historicos de um ano"""
-    if nivel == 'brasil':
+    if nivel == "brasil":
         return [None, None]
     values = []
     for nivel in hist.keys():
         df = hist[nivel]
         values.append(df[df["ano"] == ano]["valor"].sum())
-    if nivel == 'estado':
+    if nivel == "estado":
         return [values[0], None]
     return values
