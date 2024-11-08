@@ -1,0 +1,15 @@
+#mapa {
+  background: none;
+}
+
+.main-svg {
+  background: none !important;
+}
+
+.bg {
+  fill: none !important;
+}
+
+.bg rect {
+  fill: none !important;
+}

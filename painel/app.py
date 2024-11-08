@@ -5,13 +5,12 @@ from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
 from components.header import Header
-from components.map import Map
 from components.sidebar_structure import SideBar
 from dash import dcc, html
 
 # Inicializa a aplicação Dash
 app = dash.Dash(
-    __name__, external_stylesheets=[dbc.themes.BOOTSTRAP], use_pages=True
+    __name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "https://use.fontawesome.com/releases/v6.4.2/css/all.css"], use_pages=True, 
 )
 
 anos = get_anos(6)
@@ -29,7 +28,6 @@ app.layout = dbc.Container(
                     id="content",
                     children=[
                         Header(),
-                        Map(),
                         dcc.Store(id="store-data"),
                         dcc.Store(id="store-data-enc"),
                         dcc.Store(id="store-data-visita"),
