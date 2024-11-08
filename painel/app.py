@@ -39,7 +39,7 @@ app.layout = dbc.Container(
                         # Menu em abas
                         dash.page_container,
                     ],
-                    style={"padding": "30px 30px 30px 250px"},
+                    style={"left": "0", "padding": "200px 12px 0px 232px", "background-color": "#F8F9FA"},
                 ),
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}

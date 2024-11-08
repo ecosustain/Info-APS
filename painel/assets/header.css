@@ -1,0 +1,86 @@
+#header {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 100;
+  width: calc(100% - 220px);
+}
+
+#header-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #FFFFFF;
+}
+
+#header-description {
+  width: 50%;
+  line-height: normal;
+}
+
+#dashboard-title {
+  font-weight: 900;
+  margin-bottom: 0px !important;
+}
+
+#dashboard-description {
+  font-size: 12px;
+  margin-bottom: 0px !important;
+}
+
+#header-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+
+  padding: 15px 25px;
+  background-color: #f8f9fa;
+}
+
+#filter-dropdown {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.dropdown {
+  margin-left: 24px;
+  min-width: 180px;
+  font-size: 12px;
+}
+
+.Select-multi-value-wrapper {
+  height: 24px;
+}
+
+.Select-placeholder {
+  height: 24px;
+  line-height: 24px;
+}
+
+.Select-control {
+  height: 24px;
+  border: 1px solid #343A40;
+  border-radius: 5px;
+}
+
+.Select-value {
+  display: flex;
+  align-items: center;
+}
+
+.Select-input {
+  display: flex !important;
+  align-items: center;
+  height: 24px;
+}
+
+.Select-arrow {
+  border-color: #343A40 transparent transparent;
+}
+
+.year-button {
+  margin-left: 16px !important;
+  font-size: 12px;
+  padding: 10px 12px;
+}

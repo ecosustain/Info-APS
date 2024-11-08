@@ -376,16 +376,18 @@ def register_callbacks(app):
             if ano == ano_selecionado:
                 estilo = {
                     "background-color": "#000000",  # Fundo preto
-                    "border-color": "#A5A5A5",  # Cor da borda
+                    "border-color": "#343A40",  # Cor da borda
+                    "border": "1px solid #343A40",
                     "color": "#fff",  # Cor do texto
-                    "padding": "0px 12px",
+                    "padding": "2px 10px",
                 }
             else:
                 estilo = {
-                    "background-color": "#A5A5A5",  # Fundo cinza claro
-                    "border-color": "#A5A5A5",  # Cor da borda
-                    "color": "#fff",  # Cor do texto
-                    "padding": "0px 12px",
+                    "background-color": "#FFFFFF",  # Fundo cinza claro
+                    "border-color": "#343A40",  # Cor da borda
+                    "border": "1px solid #343A40",
+                    "color": "#343A40",  # Cor do texto
+                    "padding": "2px 10px",
                 }
             estilos.append(estilo)
         return estilos
