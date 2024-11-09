@@ -4,6 +4,7 @@ from callbacks.api_requests import get_anos
 from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
+from callbacks.callbacks_programaticos import register_callbacks_programaticos
 from components.header import Header
 from components.sidebar_structure import SideBar
 from dash import dcc, html
@@ -34,6 +35,12 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-odonto"),
                         dcc.Store(id="store-populacao"),
                         dcc.Store(id="nivel-geo"),
+                        # Programático
+                        dcc.Store(id="store-data-hipertensao"),
+                        dcc.Store(id="store-data-diabetes"),
+                        dcc.Store(id="store-data-saude-sexual"),
+                        dcc.Store(id="store-data-saude-mental"),
+                        dcc.Store(id="store-data-puericultura"),
                         # Menu em abas
                         dash.page_container,
                     ],
@@ -57,6 +64,7 @@ app.layout = dbc.Container(
 register_callbacks(app)
 register_callbacks_visita(app)
 register_callbacks_odonto(app)
+register_callbacks_programaticos(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
