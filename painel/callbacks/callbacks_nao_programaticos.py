@@ -8,6 +8,7 @@ import pandas as pd
 
 
 def register_callbacks_nao_programaticos(app):
+    qtd_hab = 100000
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
@@ -69,8 +70,8 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "ASMA e DPOC"
         
-        df_asma = get_df_from_json(data_asma, populacao)
-        df_dpoc = get_df_from_json(data_dpoc, populacao)
+        df_asma = get_df_from_json(data_asma, populacao, qtd_hab)
+        df_dpoc = get_df_from_json(data_dpoc, populacao, qtd_hab)
         df =  pd.merge(df_asma, df_dpoc, on=['ano', 'ano_trimestre', 'trimestre', 'mes'], suffixes=('_1', '_2'))
         df['valor'] = df['valor_1'] + df['valor_2']
 
@@ -98,7 +99,7 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Dengue"
         
-        df = get_df_from_json(data, populacao)
+        df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
         chart_by_quarter = get_chart_by_quarter( df, titulo, type)
@@ -123,7 +124,7 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Tuberculose"
         
-        df = get_df_from_json(data, populacao)
+        df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
         chart_by_quarter = get_chart_by_quarter( df, titulo, type)
@@ -148,7 +149,7 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "DST"
         
-        df = get_df_from_json(data, populacao)
+        df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
         chart_by_quarter = get_chart_by_quarter( df, titulo, type)
@@ -157,8 +158,8 @@ def register_callbacks_nao_programaticos(app):
 
     @app.callback(
         [
-            Output("chart_hanseniase_by_quarter", "figure"),
             Output("chart_hanseniase_by_year", "figure"),
+            Output("chart_hanseniase_by_quarter", "figure"),
         ],
         [
             Input("store-data-hanseniase", "data"),
@@ -173,7 +174,7 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Hanseníase"
         
-        df = get_df_from_json(data, populacao)
+        df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
         chart_by_quarter = get_chart_by_quarter( df, titulo, type)

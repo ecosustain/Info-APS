@@ -92,7 +92,7 @@ def get_df_atendimentos(json_data, populacao=None):
     return df
 
 
-def get_df_from_json(json_data, populacao=None):
+def get_df_from_json(json_data, populacao=None, qtd_hab=1000):
     """Função para transformar um json (ex: visitas, atendimentos odontologicos) em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
     #    json_data -> json que contem os dados de atendimento
@@ -123,7 +123,7 @@ def get_df_from_json(json_data, populacao=None):
 
     # normalizar valores pelo total da população (1000 habitantes)
     if populacao is not None:
-        populacao = populacao / 1000
+        populacao = populacao / qtd_hab
         df["valor"] = df["valor"] / populacao
         df["valor"] = df["valor"].astype(int)
 
