@@ -43,7 +43,7 @@ slash_column = dbc.Col([
         )
     ], className="slash")
 
-def  indicator_component(title, ind_brasil, ind_estado, ind, icon): 
+def  indicator_component(title, ind_brasil, ind_estado, ind): 
     legend = html.Div([])
 
     if ind_brasil != None:
@@ -88,9 +88,6 @@ def  indicator_component(title, ind_brasil, ind_estado, ind, icon):
                             id=ind,
                             className="indicator-number-small",
                         ),
-                        html.Div([
-                            html.Span(className=f"fa fa-{icon}", style={"color": "white", "font-size": "10px"})
-                        ], className="icon-content")
                     ]
                 ),
             )
@@ -107,7 +104,7 @@ layout = html.Div(
             Map(),
             html.Div([
                 html.H2(
-                    "Atendimentos individuais",
+                    "Atendimentos Programáticos",
                     id="atendimentos-title",
                 ),
                 html.Div (
@@ -137,97 +134,51 @@ layout = html.Div(
                     ]),
                     dbc.Row(
                         [
-                            dbc.Col(
-                                [
-                                    html.P(
-                                        "Total",
-                                        className="description-indicator-total",
-                                    ),
-                                    html.H2(
-                                        id="total-atendimentos",
-                                        className="indicator-number-total",
-                                    ),
-                                ],
-                                className="indicator-column"
+                           indicator_component(
+                                "Hipertensão Arterial", 
+                                "indicador-hiper-brasil", 
+                                "indicador-hiper-estado",
+                                "big-hipertensao",
                             ),
                             slash_column,
-                            dbc.Col(
-                                [
-                                    dbc.Row(
-                                        html.H4(
-                                            "Atendimentos por mil hab. no ano",
-                                            className="description-indicator",
-                                        ),
-                                    ),
-                                    html.Div(
-                                        className="indicator-legend-box",
-                                        children=[
-                                            html.Div(
-                                            className="indicator-legend",
-                                            children=[
-                                                square_legend,
-                                                html.P(
-                                                    id="indicador-atend-brasil",
-                                                    className="legend-text"
-                                                ),
-                                            ]),
-                                            html.Div(
-                                                className="indicator-legend",
-                                                children=[
-                                                rhombus_legend,
-                                                html.P(
-                                                    id="indicador-atend-estado",
-                                                    className="legend-text"
-                                                ),
-                                            ]),
-                                        ]
-                                    ),
-                                    dbc.Row(
-                                        html.H2(
-                                            id="normalizado-atendimentos",
-                                            className="indicator-number",
-                                        ),
-                                    ),
-                                ],
-                                className="px-4 indicator-column"
+                            indicator_component(
+                                "Diabetes", 
+                                "indicador-diabetes-brasil", 
+                                "indicador-diabetes-estado",
+                                "big-diabetes",
+                            ),
+                            slash_column,
+                            indicator_component(
+                                "Saúde Sexual", 
+                                "indicador-sexual-brasil", 
+                                "indicador-sexual-estado",
+                                "big-sexual",
                             ),
                         ],
-                        className="mb-4",
+                        className="mb-3",
                     ),
                     dbc.Row(
                         [
                            indicator_component(
-                                "Atendimentos odontológicos", 
-                                "indicador-odont-brasil", 
-                                "indicador-odont-estado",
-                                "big-odontologicos",
-                                "tooth"
+                                "Saúde Mental", 
+                                "indicador-mental-brasil", 
+                                "indicador-mental-estado",
+                                "big-mental",
                             ),
                             slash_column,
                             indicator_component(
-                                "Atendimentos feitos em visita domiciliar",
-                                "indicador-visita-brasil",
-                                "indicador-visita-estado",
-                                "big-visitas",
-                                "house"
+                                "Puericultura", 
+                                "indicador-puericultura-brasil", 
+                                "indicador-puericultura-estado",
+                                "big-puericultura",
                             ),
                             slash_column,
                             indicator_component(
-                                "Atendimentos feitos por médicos",
-                                None,
-                                None,
-                                "big-medicos",
-                                "user-doctor"
-
+                                "Grávidas", 
+                                "indicador-gravidas-brasil", 
+                                "indicador-gravidas-estado",
+                                "big-gravidas",
                             ),
-                            slash_column,
-                            indicator_component(
-                                "Encaminhamentos",
-                                None,
-                                None,
-                                "big-encaminhamentos",
-                                "hand-point-right"
-                            )
                         ],
                         className="mb-3",
                     ),
@@ -235,17 +186,6 @@ layout = html.Div(
                 ),
             ], style={"width": "100%"}),
           ]
-        ),
-        dbc.Row(
-            [
-                indicator_component(
-                    "Enfermeiros",
-                    None,
-                    None,
-                    "big-enfermeiros",
-                    "user-nurse"
-                ),
-            ]
         ),
         dbc.Row(
             [
