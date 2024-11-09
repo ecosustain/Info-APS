@@ -1,7 +1,5 @@
-from selenium.webdriver.common.by import By
-
-import etl.transformar.transformacao as transformacao
-from etl.extrair.extracao import (
+import transformar.transformacao as transformacao
+from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
     fazer_download,
@@ -10,6 +8,7 @@ from etl.extrair.extracao import (
     seleciona_xpath,
     verifica_arquivo,
 )
+from selenium.webdriver.common.by import By
 
 logger = get_logger("cadastro.log")
 xpaths = carregar_xpaths()

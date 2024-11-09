@@ -3,8 +3,6 @@
 import configparser
 from datetime import datetime
 
-from selenium.webdriver.common.by import By
-
 import transformar.transf_producao as transf_producao
 from extrair.extracao import (
     carregar_xpaths,
@@ -17,6 +15,7 @@ from extrair.extracao import (
     verifica_arquivo,
     verifica_grupo,
 )
+from selenium.webdriver.common.by import By
 
 logger = get_logger("producao.log")
 
@@ -90,7 +89,12 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, num_meses=1000):
 
 
 # Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
-lista = ["producao_tipo"]
+lista = [
+    "producao_profissionais_individual",
+    "producao_conduta",
+    "producao_condicao",
+    "producao_tipo",
+]
 
 
 if __name__ == "__main__":
@@ -103,6 +107,7 @@ if __name__ == "__main__":
             xpaths[producao]["coluna"],  # Acessa o XPath da coluna
             xpaths[producao]["checkbox"],  # Acessa o XPath do checkbox
             producao,
+            3,
         )
         transf_producao.main()
     logger.info("Script Finalizado")

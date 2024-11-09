@@ -4,12 +4,8 @@ import configparser
 from datetime import datetime
 from time import sleep
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
-import etl.transformar.transf_producao as transf_producao
-from etl.extrair.extracao import (
+import transformar.transf_producao as transf_producao
+from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
     fazer_download,
@@ -17,6 +13,9 @@ from etl.extrair.extracao import (
     seleciona_competencias,
     seleciona_xpath,
 )
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 logger = get_logger("codigos.log")
 

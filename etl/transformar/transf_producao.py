@@ -108,36 +108,15 @@ def concat_final_csv(name, dir="."):
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
     for file in list_files(dir):
-        df_temp = pd.read_csv(file)
+        df_temp = pd.read_csv(file, dtype=str)
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
     # Ajustar as colunas para inteiros
     try:
-        # Criar lista com colunas numéricas
-        colunas_numericas = df.select_dtypes(
-            include=["number"]
-        ).columns.tolist()
-        colunas_numericas = [
-            col
-            for col in colunas_numericas
-            if col not in ["Uf", "Municipio", "Mes"]
-        ]
-        # Criar lista com colunas não numéricas
-        colunas_nao_numericas = df.select_dtypes(
-            exclude=["number"]
-        ).columns.tolist()
-        colunas_nao_numericas = [
-            col
-            for col in colunas_nao_numericas
-            if col not in ["Uf", "Municipio", "Mes"]
-        ]
-        for col in colunas_numericas:
-            df[col] = (
-                pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
-            )
-        for col in colunas_nao_numericas:
-            df[col] = df[col].str.replace(".", "").astype(int)
+        for col in df.columns:
+            if col not in ["Uf", "Municipio", "Mes"]:
+                df[col] = df[col].str.replace(".", "").astype(int)
     except Exception as e:
         print(f"Erro ao converter a coluna {col} para inteiro: {e}")
     # Salvar o arquivo final
