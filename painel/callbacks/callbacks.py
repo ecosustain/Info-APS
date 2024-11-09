@@ -99,13 +99,8 @@ def register_callbacks(app):
             ]
         return options
 
-    # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
-            Output("store-data", "data"),
-            Output("store-data-visita", "data"),
-            Output("store-data-odonto", "data"),
-            Output("store-data-enc", "data"),
             Output("store-populacao", "data"),
             Output("nivel-geo", "data"),
         ],
@@ -116,8 +111,32 @@ def register_callbacks(app):
             Input("dropdown-municipio", "value"),
         ],
     )
-    def fetch_data(dummy, estado, regiao, municipio):
+    def fetch_population(dummy, estado, regiao, municipio):
+        """Função para buscar a populacao do local selecionado"""
+        populacao = get_population(estado, regiao, municipio)
+        nivel = get_type(estado, regiao, municipio)
+        return populacao, nivel
+
+    # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
+    @app.callback(
+        [
+            Output("store-data", "data"),
+            Output("store-data-visita", "data"),
+            Output("store-data-odonto", "data"),
+            Output("store-data-enc", "data"),
+        ],
+        [
+            Input("dummy-div", "children"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+            Input("url", "pathname"),
+        ],
+    )
+    def fetch_data(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
+        if url != "/":
+            raise dash.exceptions.PreventUpdate
         data_atendimentos = get_atendimentos(estado, regiao, municipio)
         data_visitas_domiciliar = get_visitas_domiciliar(
             estado, regiao, municipio
@@ -126,17 +145,12 @@ def register_callbacks(app):
             estado, regiao, municipio
         )
         data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
-        populacao = get_population(estado, regiao, municipio)
-
-        nivel = get_type(estado, regiao, municipio)
 
         return (
             data_atendimentos,
             data_visitas_domiciliar,
             data_atendimentos_odontologicos,
             data_encaminhamentos,
-            populacao,
-            nivel,
         )
 
     @app.callback(

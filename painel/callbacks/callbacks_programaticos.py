@@ -66,10 +66,13 @@ def register_callbacks_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
+            Input("url", "pathname"),
         ],
     )
-    def fetch_programatico_data(dummy, estado, regiao, municipio):
+    def fetch_programatico_data(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
+        if url != "/atendimentos-programaticos":
+            raise dash.exceptions.PreventUpdate
         data_hipertensao = get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Hipertensão arterial"
         )
