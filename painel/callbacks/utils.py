@@ -167,7 +167,7 @@ def store_nivel(hist, df, populacao, nivel, anos):
     # normalizar df pelo total da população (1000 habitantes)
     populacao = populacao / 1000
     df["valor"] = df["valor"] / populacao
-    df["valor"] = df["valor"].astype(int)
+    df["valor"] = df["valor"]
 
     hist[nivel] = df
 
@@ -181,7 +181,7 @@ def get_values(hist, ano, nivel):
     values = []
     for nivel in hist.keys():
         df = hist[nivel]
-        values.append(df[df["ano"] == ano]["valor"].sum())
+        values.append(int(df[df["ano"] == ano]["valor"].sum()))
     if nivel == "estado":
         return [values[0], None]
     return values
