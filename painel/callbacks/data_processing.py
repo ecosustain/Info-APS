@@ -168,7 +168,5 @@ def get_big_numbers_atendimentos(df, ano):
     medico = df[(df["profissional"] == "medico") & (df["ano"] == ano)][
         "valor"
     ].sum()
-    enfermeiro = df[(df["profissional"] == "enfermeiro") & (df["ano"] == ano)][
-        "valor"
-    ].sum()
-    return [total_ano, medico, enfermeiro]
+
+    return [total_ano, medico]

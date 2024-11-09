@@ -233,17 +233,6 @@ layout = html.Div(
         ),
         dbc.Row(
             [
-                indicator_component(
-                    "Enfermeiros",
-                    None,
-                    None,
-                    "big-enfermeiros",
-                    "user-nurse"
-                ),
-            ]
-        ),
-        dbc.Row(
-            [
                 # Atendimento por população por ano
                 dbc.Col(
                     dcc.Graph(
