@@ -42,15 +42,12 @@ def update_layout_chart(chart, title, tipo):
     return chart
 
 
-def update_layout_chart_profissionais(chart, title, tipo):
+def update_layout_chart_profissionais(chart, title):
     """Para atualizar o layout do gráfico
     chart -> o gráfico que vamos alterar
     title -> string com o nome que deve aparecer no label do gráfico
     type -> string para saber em qual agregação estamos ['brasil', 'estado', 'regiao_saude', 'municipio']
     retorna o gráfico atualizado"""
-
-    # color1 = type_color_map.get(tipo, [None])[0]
-    # color2 = type_color_map.get(tipo, [None])[1]
 
     # Aplicar as duas cores alternadamente
     chart.update_traces(
@@ -122,22 +119,28 @@ def get_chart_by_year_profissionais(df, title, tipo):
     )
 
     # Atualizar para o layout padrão
-    chart = update_layout_chart_profissionais(chart, title, tipo)
+    chart = update_layout_chart_profissionais(chart, title)
 
     return chart
 
 
-def get_chart_by_year(df, title, tipo):
+def get_chart_by_year(df, title, tipo, calculo="sum"):
     """Retorna o gráfico de barras com o total acumulado dos últimos 6 anos de dados
     #    df -> dados para gerar o gráfico que deve conter ['ano', 'valor']
     #    title -> string com o nome que deve aparecer no label do gráfico
     #    type -> string para saber em qual agregação estamos ['brasil', 'estado', 'regiao_saude', 'municipio']
     # retorna o gráfico gerado."""
 
-    # Agrupar os dados por ano e quarter somando os valores
-    df_grouped = (
-        df.groupby(["ano"], observed=True)["valor"].sum().reset_index()
-    )
+    if calculo == "sum":
+        # Agrupar os dados por ano e quarter somando os valores
+        df_grouped = (
+            df.groupby(["ano"], observed=True)["valor"].sum().reset_index()
+        )
+    elif calculo == "mean":
+        # Agrupar os dados por ano e quarter calculando a média dos valores
+        df_grouped = (
+            df.groupby(["ano"], observed=True)["valor"].mean().reset_index()
+        )
     df_grouped = df_grouped.sort_values("ano")
     df_filtered = df_grouped.tail(6)
 
@@ -174,15 +177,24 @@ def get_chart_percentage_by_year(df, title, tipo):
     return chart.update_traces(texttemplate="%{y:.0f}%")
 
 
-def preprocess_data(df):
+def preprocess_data(df, calculo="sum"):
     """Pré-processamento dos dados para gerar o modelo de previsão."""
-    df_grouped = (
-        df.groupby(["ano_trimestre", "ano", "trimestre"], observed=True)[
-            "valor"
-        ]
-        .sum()
-        .reset_index()
-    )
+    if calculo == "sum":
+        df_grouped = (
+            df.groupby(["ano_trimestre", "ano", "trimestre"], observed=True)[
+                "valor"
+            ]
+            .sum()
+            .reset_index()
+        )
+    else:
+        df_grouped = (
+            df.groupby(["ano_trimestre", "ano", "trimestre"], observed=True)[
+                "valor"
+            ]
+            .mean()
+            .reset_index()
+        )
     df_grouped["ano_order"] = df_grouped["ano"].astype(str) + df_grouped[
         "trimestre"
     ].astype(str).str.replace("T", "")
@@ -239,8 +251,8 @@ def get_chart_forecast_by_quarter(df, title, tipo):
     return chart
 
 
-def get_chart_by_quarter(df, title, tipo):
+def get_chart_by_quarter(df, title, tipo, calculo="sum"):
     """Função para gerar o gráfico de barras com a previsão."""
-    df_filtered = preprocess_data(df)
+    df_filtered = preprocess_data(df, calculo)
     chart = create_bar_chart(df_filtered, title, tipo)
     return chart

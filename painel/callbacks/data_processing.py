@@ -3,6 +3,8 @@
 import dash
 import pandas as pd
 
+from callbacks.api_requests import get_collection
+
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
     "JAN": 1,
@@ -170,3 +172,30 @@ def get_big_numbers_atendimentos(df, ano):
     ].sum()
 
     return [total_ano, medico]
+
+
+def calcular_indice(adequado, inadequado):
+    """Função para calcular o índice de Atendimentos adequados de gravidez
+    indice = atendimentos adequados / (atendimentos adequados + atendimentos inadequados)
+    """
+    indice = {}
+    for ano in adequado:
+        indice[ano] = {}
+        for mes in adequado[ano]:
+            if mes in inadequado[ano]:
+                valor_adequado = adequado[ano][mes]
+                valor_inadequado = inadequado[ano][mes]
+                if valor_adequado + valor_inadequado > 0:
+                    indice[ano][mes] = valor_adequado / (valor_adequado + valor_inadequado)
+                    indice[ano][mes] = round(indice[ano][mes] * 100, 2)
+                else:
+                    indice[ano][mes] = None  # Evitar divisão por zero
+    return indice
+
+
+def get_gravidez_json(estado, regiao, municipio):
+    """Função para obter o indice de gravidez"""
+    adequado = get_collection(estado, regiao, municipio, 'Gravidez', '6 ou mais atendimentos')
+    inadequado = get_collection(estado, regiao, municipio, 'Gravidez', 'De 1 a 3 atendimentos,De 4 a 5 atendimentos')
+    indice = calcular_indice(adequado, inadequado)
+    return indice

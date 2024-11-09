@@ -105,6 +105,23 @@ def get_atendimentos_individuais_problema(estado, regiao, municipio, problema):
 
     return make_request(url)
 
+
+def get_collection(estado, regiao, municipio, collection, colunas):
+    """Função para obter os dados de uma coleção específica"""
+    url = f"{API_URL}/{collection}/{colunas}"
+    if estado is not None:
+        url = f"{API_URL}/{collection}/states/{estado}/{colunas}"
+    if regiao is not None and estado is not None and municipio is None:
+        regiao_code = get_code_regiao(estado, regiao)
+        url = f"{API_URL}/{collection}/regions/{regiao_code}/{colunas}"
+    if municipio is not None and estado is not None:
+        ibge_code = get_ibge_code(estado, municipio)
+        url = f"{API_URL}/{collection}/cities/{ibge_code}/{colunas}"
+    print("Fazendo request para:", url)
+
+    return make_request(url)
+
+
 def get_anos(num):
     """Retorna uma lista com os anos a serem utilizados"""
     url = f"{API_URL}/years"

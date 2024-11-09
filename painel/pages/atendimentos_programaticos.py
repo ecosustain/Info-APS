@@ -301,5 +301,27 @@ layout = html.Div(
             ],
             className="mb-3",
         ),
+        dbc.Row(
+            [
+                # Puericultura por população por ano
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_gravidez_by_year",
+                        style={"height": "40vh"},
+                    ),
+                    width=3,
+                ),
+                # Puericultura por trimestre
+                dbc.Col(
+                    dcc.Graph(
+                        id="chart_gravidez_by_quarter",
+                        style={"height": "40vh"},
+                    ),
+                    width=9,
+                ),
+                dbc.Col(),
+            ],
+            className="mb-3",
+        ),
     ]
 )

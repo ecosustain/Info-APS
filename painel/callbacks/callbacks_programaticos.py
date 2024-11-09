@@ -2,8 +2,8 @@ import dash
 from dash import Input, Output, State
 
 from callbacks.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year
-from callbacks.data_processing import get_df_from_json
+from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year, get_chart_percentage_by_year
+from callbacks.data_processing import get_df_from_json, get_gravidez_json
 from callbacks.utils import get_type, get_values, store_nivel
 
 # Dicionários para armazenar os históricos dos atendimentos
@@ -60,6 +60,7 @@ def register_callbacks_programaticos(app):
             Output("store-data-saude-sexual", "data"),
             Output("store-data-saude-mental", "data"),
             Output("store-data-puericultura", "data"),
+            Output("store-data-gravidez", "data"),
         ],
         [
             Input("dummy-div", "children"),
@@ -88,7 +89,7 @@ def register_callbacks_programaticos(app):
         data_puericultura = get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Puericultura"
         )
-        # Gravidas
+        data_gravidez = get_gravidez_json(estado, regiao, municipio)
 
         return (
             data_hipertensao,
@@ -96,6 +97,7 @@ def register_callbacks_programaticos(app):
             data_saude_sexual,
             data_saude_mental,
             data_puericultura,
+            data_gravidez,
         )
 
     @app.callback(
@@ -204,9 +206,9 @@ def register_callbacks_programaticos(app):
         titulo = "Hipertensão Arterial"
 
         df = get_df_from_json(data, populacao)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -229,9 +231,9 @@ def register_callbacks_programaticos(app):
         titulo = "Diabetes"
 
         df = get_df_from_json(data, populacao)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -254,9 +256,9 @@ def register_callbacks_programaticos(app):
         titulo = "Saúde Sexual"
 
         df = get_df_from_json(data, populacao)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -279,9 +281,9 @@ def register_callbacks_programaticos(app):
         titulo = "Saúde Mental"
 
         df = get_df_from_json(data, populacao)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -304,8 +306,35 @@ def register_callbacks_programaticos(app):
         titulo = "Puericultura"
 
         df = get_df_from_json(data, populacao)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
+
+        return (chart_by_year, chart_by_quarter)
+
+    @app.callback(
+        [
+            Output("chart_gravidez_by_year", "figure"),
+            Output("chart_gravidez_by_quarter", "figure"),
+        ],
+        [
+            Input("store-data-gravidez", "data"),
+            Input("store-populacao", "data"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+        ],
+    )
+    def update_gravidez_charts(data, populacao, estado, regiao, municipio):
+        print(data)
+        if data is None:
+            raise dash.exceptions.PreventUpdate
+        titulo = "% de Atendimentos Adequados de Gravidez"
+        print('passou')
+        df = get_df_from_json(data)
+        print(df)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel, "mean")
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel, "mean")
 
         return (chart_by_year, chart_by_quarter)
