@@ -21,7 +21,7 @@ app.layout = dbc.Container(
         dcc.Location(id="url", refresh=False),
         # dbc.Col(html.Div(id="page-content"), width=10),
         # Add dropdown of states here
-        dbc.Row(
+        html.Div(
             [
                 SideBar(),
                 html.Div(
@@ -46,7 +46,7 @@ app.layout = dbc.Container(
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}
                 ),
-            ]
+            ],
         ),
     ],
     className="p-0 mx-auto",

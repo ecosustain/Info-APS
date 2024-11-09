@@ -7,7 +7,8 @@ body {
 }
 
 /* Estiliza o container principal */
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -19,6 +20,10 @@ h1 {
     margin-top: 2%;
 }
 
+#_pages_content {
+    width: 100%;
+}
+
 
 /* Estiliza o Slider */
 #slider-ano .rc-slider {
@@ -28,7 +33,11 @@ h1 {
 }
 
 /* Ajusta o layout do gráfico */
-#grafico-evolucao-problemas, #grafico-problemas-resumo, #tabela-comparativa, #grafico-comparativo-total, #grafico-comparativo-porcentagem {
+#grafico-evolucao-problemas,
+#grafico-problemas-resumo,
+#tabela-comparativa,
+#grafico-comparativo-total,
+#grafico-comparativo-porcentagem {
     padding: 20px;
     margin-top: 20px;
     background-color: rgb(255, 255, 255);
@@ -63,7 +72,8 @@ label {
     height: 18px;
 }
 
-.dash-core-components, .dash-html-components {
+.dash-core-components,
+.dash-html-components {
     max-width: 100%;
 }
 
