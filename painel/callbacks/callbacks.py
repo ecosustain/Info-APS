@@ -250,8 +250,7 @@ def register_callbacks(app):
 
         big_numbers.insert(0, values[1])
         big_numbers.insert(0, values[0])
-        print("--- Atualizando Big Numbers ---")
-        print(big_numbers)
+
         return big_numbers
 
     # Callback para atualizar os gráficos de atendimentos com base nos dados armazenados

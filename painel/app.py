@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.api_requests import get_anos
+from callbacks.api_requests import get_anos, anos
 from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
@@ -9,12 +9,11 @@ from components.header import Header
 from components.sidebar_structure import SideBar
 from dash import dcc, html
 
+
 # Inicializa a aplicação Dash
 app = dash.Dash(
     __name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "https://use.fontawesome.com/releases/v6.4.2/css/all.css"], use_pages=True, 
 )
-
-anos = get_anos(6)
 
 # Layout da aplicação
 app.layout = dbc.Container(

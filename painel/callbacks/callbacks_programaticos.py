@@ -182,7 +182,6 @@ def register_callbacks_programaticos(app):
         big_numbers.append([None, None, None])
 
         big_numbers = [item for sublist in big_numbers for item in sublist]
-        print(big_numbers)
 
         return big_numbers
 
