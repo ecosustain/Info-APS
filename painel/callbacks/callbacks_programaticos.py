@@ -12,14 +12,18 @@ hist_diabetes = {}
 hist_saude_sexual = {}
 hist_saude_mental = {}
 hist_puericultura = {}
+hist_gravidez = {}
 
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
-    # Add hipertensao
+
     df = get_df_from_json(json)
-    total = df[df["ano"] == ano]["valor"].sum()
-    total = int(total / populacao * 1000)
+    if populacao is not None:
+        total = df[df["ano"] == ano]["valor"].sum()
+        total = int(total / populacao * 1000)
+    else:
+        total = round(df[df["ano"] == ano]["valor"].mean(), 2)
 
     if tipo == "hipertensao":
         global hist_hipertensao
@@ -47,6 +51,12 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
             hist_puericultura, df, populacao, nivel_geo, anos
         )
         values = get_values(hist_puericultura, ano, nivel_geo)
+    elif tipo == "gravidez":
+        global hist_gravidez
+        hist_gravidez = store_nivel(hist_gravidez, df, None, nivel_geo, anos)
+        values = get_values(hist_gravidez, ano, nivel_geo, "mean")
+    else:
+        return None, None, None
 
     return values[0], values[1], total
 
@@ -127,6 +137,7 @@ def register_callbacks_programaticos(app):
             Input("store-data-saude-sexual", "data"),
             Input("store-data-saude-mental", "data"),
             Input("store-data-puericultura", "data"),
+            Input("store-data-gravidez", "data"),
             Input("store-populacao", "data"),
             Input("nivel-geo", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
@@ -142,6 +153,7 @@ def register_callbacks_programaticos(app):
         saude_sexual,
         saude_mental,
         puericultura,
+        gravidez,
         populacao,
         nivel_geo,
         *args,
@@ -181,7 +193,9 @@ def register_callbacks_programaticos(app):
             gera_big_numbers("puericultura", puericultura, populacao, nivel_geo, ano)
         )
         # Gravidas
-        big_numbers.append([None, None, None])
+        big_numbers.append(
+            gera_big_numbers("gravidez", gravidez, None, nivel_geo, ano)
+        )
 
         big_numbers = [item for sublist in big_numbers for item in sublist]
 
@@ -319,13 +333,12 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-gravidez", "data"),
-            Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ],
     )
-    def update_gravidez_charts(data, populacao, estado, regiao, municipio):
+    def update_gravidez_charts(data, estado, regiao, municipio):
         print(data)
         if data is None:
             raise dash.exceptions.PreventUpdate

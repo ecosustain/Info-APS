@@ -164,24 +164,27 @@ def store_nivel(hist, df, populacao, nivel, anos):
         return hist
     # filtrar df para os ultimos 5 anos
     df = df[df["ano"].isin(anos)]
-    # normalizar df pelo total da população (1000 habitantes)
-    populacao = populacao / 1000
-    df["valor"] = df["valor"] / populacao
-    df["valor"] = df["valor"]
+    if populacao is not None:
+        # normalizar df pelo total da população (1000 habitantes)
+        populacao = populacao / 1000
+        df["valor"] = df["valor"] / populacao
 
     hist[nivel] = df
 
     return hist
 
 
-def get_values(hist, ano, nivel):
+def get_values(hist, ano, nivel, calculo="sum"):
     """Retorna os valores historicos de um ano"""
     if nivel == "brasil":
         return [None, None]
     values = []
     for nivel in hist.keys():
         df = hist[nivel]
-        values.append(int(df[df["ano"] == ano]["valor"].sum()))
+        if calculo == "sum":
+            values.append(round(df[df["ano"] == ano]["valor"].sum()))
+        elif calculo == "mean":
+            values.append(round(df[df["ano"] == ano]["valor"].mean()))
     if nivel == "estado":
         return [values[0], None]
     return values
