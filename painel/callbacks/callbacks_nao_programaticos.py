@@ -1,14 +1,52 @@
 import dash
-from callbacks.api_requests import get_atendimentos_individuais_problema
+from dash import Input, Output, State
+
+from callbacks.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year 
 from callbacks.data_processing import get_df_from_json
-from callbacks.utils import get_type
-from dash import Input, Output
+from callbacks.utils import get_type, get_values, store_nivel
 import pandas as pd
 
+qtd_hab = 100000
+    
+# Dicionários para armazenar os históricos dos atendimentos
+hist_asma_dpoc = {}
+hist_dengue = {}
+hist_tuberculose = {}
+hist_dst = {}
+hist_hanseniase = {}
+
+def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
+    """Função para gerar os números grandes dos indicadores programáticos"""
+    # Add asma_dpoc
+    df = get_df_from_json(json)
+    total = df[df["ano"] == ano]["valor"].sum()
+    total = int(total / populacao * qtd_hab)
+
+    if tipo == "asma_dpoc":
+        global hist_asma_dpoc
+        hist_asma_dpoc = store_nivel(hist_asma_dpoc, df, populacao, nivel_geo, anos)
+        values = get_values(hist_asma_dpoc, ano, nivel_geo)
+    elif tipo == "dengue":
+        global hist_dengue
+        hist_dengue = store_nivel(hist_dengue, df, populacao, nivel_geo, anos)
+        values = get_values(hist_dengue, ano, nivel_geo)
+    elif tipo == "tuberculose":
+        global hist_tuberculose
+        hist_tuberculose = store_nivel(hist_tuberculose, df, populacao, nivel_geo, anos)
+        values = get_values(hist_tuberculose, ano, nivel_geo)
+    elif tipo == "dst":
+        global hist_dst
+        hist_dst = store_nivel(hist_dst, df, populacao, nivel_geo, anos)
+        values = get_values(hist_dst, ano, nivel_geo)
+    elif tipo == "hanseniase":
+        global hist_hanseniase
+        hist_hanseniase = store_nivel(hist_hanseniase, df, populacao, nivel_geo, anos)
+        values = get_values(hist_hanseniase, ano, nivel_geo)
+
+    return values[0], values[1], total
 
 def register_callbacks_nao_programaticos(app):
-    qtd_hab = 100000
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
@@ -50,6 +88,90 @@ def register_callbacks_nao_programaticos(app):
             data_dst,
             data_hanseniase,
         )
+
+    @app.callback(
+        [
+            # Output("indicador-asma_dpoc-brasil", "children"),
+            # Output("indicador-asma_dpoc-estado", "children"),
+            # Output("big-asma_dpoc", "children"),
+            Output("indicador-dengue-brasil", "children"),
+            Output("indicador-dengue-estado", "children"),
+            Output("big-dengue", "children"),
+            Output("indicador-tuberculose-brasil", "children"),
+            Output("indicador-tuberculose-estado", "children"),
+            Output("big-tuberculose", "children"),
+            Output("indicador-dst-brasil", "children"),
+            Output("indicador-dst-estado", "children"),
+            Output("big-dst", "children"),
+            Output("indicador-hanseniase-brasil", "children"),
+            Output("indicador-hanseniase-estado", "children"),
+            Output("big-hanseniase", "children"),
+        ],
+        [
+            # Input("store-data-asma", "data"),
+            # Input("store-data-dpoc", "data"),
+            Input("store-data-dengue", "data"),
+            Input("store-data-tuberculose", "data"),
+            Input("store-data-dst", "data"),
+            Input("store-data-hanseniase", "data"),
+            Input("store-populacao", "data"),
+            Input("nivel-geo", "data"),
+            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+        ],
+        [
+            State("store-data", "data"),
+            *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+        ],
+    )
+    def update_programatico_big_numbers(
+        # asma,
+        # dpoc,
+        dengue,
+        tuberculose,
+        dst,
+        hanseniase,
+        populacao,
+        nivel_geo,
+        *args,
+    ):
+        """Função para atualizar os números grandes dos indicadores programáticos"""
+        ctx = dash.callback_context
+        # Identificar o ano selecionado
+        ano = anos[0]  # Define o primeiro ano como padrão
+        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+            prop_id = ctx.triggered[0]["prop_id"]
+            if "btn-ano" in prop_id:
+                ano = int(
+                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
+                )  # Extrai o ano do ID do botão
+
+        # Inicializa a lista para armazenar os números grandes
+        big_numbers = []
+
+        # # Add asma_dpoc
+        # big_numbers.append(
+        #     gera_big_numbers("asma_dpoc", asma_dpoc, populacao, nivel_geo, ano)
+        # )
+        # Add dengue
+        big_numbers.append(
+            gera_big_numbers("dengue", dengue, populacao, nivel_geo, ano)
+        )
+        # Add tuberculose
+        big_numbers.append(
+            gera_big_numbers("tuberculose", tuberculose, populacao, nivel_geo, ano)
+        )
+        # Add dst
+        big_numbers.append(
+            gera_big_numbers("dst", dst, populacao, nivel_geo, ano)
+        )
+        # Add hanseniase
+        big_numbers.append(
+            gera_big_numbers("hanseniase", hanseniase, populacao, nivel_geo, ano)
+        )
+
+        big_numbers = [item for sublist in big_numbers for item in sublist]
+
+        return big_numbers
 
     @app.callback(
         [

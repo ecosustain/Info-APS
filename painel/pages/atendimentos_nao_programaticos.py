@@ -133,56 +133,56 @@ layout = html.Div(
                                         ),
                                     ],
                                 ),
-                                # dbc.Row(
-                                #     [
-                                #         indicator_component(
-                                #             "Hipertensão Arterial",
-                                #             "indicador-hipertensao-brasil",
-                                #             "indicador-hipertensao-estado",
-                                #             "big-hipertensao",
-                                #         ),
-                                #         slash_column,
-                                #         indicator_component(
-                                #             "Diabetes",
-                                #             "indicador-diabetes-brasil",
-                                #             "indicador-diabetes-estado",
-                                #             "big-diabetes",
-                                #         ),
-                                #         slash_column,
-                                #         indicator_component(
-                                #             "Saúde Sexual",
-                                #             "indicador-sexual-brasil",
-                                #             "indicador-sexual-estado",
-                                #             "big-sexual",
-                                #         ),
-                                #     ],
-                                #     className="mb-3",
-                                # ),
-                                # dbc.Row(
-                                #     [
-                                #         indicator_component(
-                                #             "Saúde Mental",
-                                #             "indicador-mental-brasil",
-                                #             "indicador-mental-estado",
-                                #             "big-mental",
-                                #         ),
-                                #         slash_column,
-                                #         indicator_component(
-                                #             "Puericultura",
-                                #             "indicador-puericultura-brasil",
-                                #             "indicador-puericultura-estado",
-                                #             "big-puericultura",
-                                #         ),
-                                #         slash_column,
-                                #         indicator_component(
-                                #             "Grávidas",
-                                #             "indicador-gravidas-brasil",
-                                #             "indicador-gravidas-estado",
-                                #             "big-gravidas",
-                                #         ),
-                                #     ],
-                                #     className="mb-3",
-                                # ),
+                                dbc.Row(
+                                    [
+                                        # indicator_component(
+                                        #     "ASMA e DPOC",
+                                        #     "indicador-asma_dpoc-brasil",
+                                        #     "indicador-asma_dpoc-estado",
+                                        #     "big-asma_dpoc",
+                                        # ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Dengue",
+                                            "indicador-dengue-brasil",
+                                            "indicador-dengue-estado",
+                                            "big-dengue",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Tuberculose",
+                                            "indicador-tuberculose-brasil",
+                                            "indicador-tuberculose-estado",
+                                            "big-tuberculose",
+                                        ),
+                                    ],
+                                    className="mb-3",
+                                ),
+                                dbc.Row(
+                                    [
+                                        indicator_component(
+                                            "DST",
+                                            "indicador-dst-brasil",
+                                            "indicador-dst-estado",
+                                            "big-dst",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Hanseníase",
+                                            "indicador-hanseniase-brasil",
+                                            "indicador-hanseniase-estado",
+                                            "big-hanseniase",
+                                        ),
+                                        # slash_column,
+                                        # indicator_component(
+                                        #     "Grávidas",
+                                        #     "indicador-gravidas-brasil",
+                                        #     "indicador-gravidas-estado",
+                                        #     "big-gravidas",
+                                        # ),
+                                    ],
+                                    className="mb-3",
+                                ),
                             ],
                         ),
                     ],
