@@ -11,7 +11,7 @@ def Map():
                     "scrollZoom": False,
                 },
                 id="mapa",
-                style={"height": "40vh"},
+                style={"height": "300px", "width": "520px"},
             ),
             html.Div(id="output-state"),  # Div para mostrar o estado clicado
         ],

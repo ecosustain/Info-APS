@@ -2,514 +2,245 @@ import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
+from components.map import Map
+
 dash.register_page(__name__, path="/")
+
+square_legend = html.Span(
+        style={
+            "display": "inline-block",
+            "width": "8px",
+            "height": "8px",
+            "background-color": "#632956",
+            "margin-right": "5px",
+        }
+    )
+
+rhombus_legend = html.Span(
+        style={
+            "display": "inline-block",
+            "width": "8px",
+            "height": "8px",
+            "background-color": "#34679A",
+            "transform": "rotate(45deg)",
+            "margin-right": "5px",
+        }
+    )
+
+slash_column = dbc.Col([
+        html.Span(
+            style={
+                "display": "inline-block",
+                "width": "1px",
+                "height": "100%",
+                "background-color": "#212529bf",
+            }
+        )
+    ], className="slash")
+
+def  indicator_component(title, ind_brasil, ind_estado, ind, icon): 
+    legend = html.Div([])
+
+    if ind_brasil != None:
+        legend = html.Div(
+            className="indicator-legend-box",
+            children=[
+                html.Div(
+                className="indicator-legend",
+                children=[
+                    square_legend,
+                    html.P(
+                        id=ind_brasil,
+                        className="legend-text"
+                    ),
+                ]),
+                html.Div(
+                    className="indicator-legend",
+                    children=[
+                    rhombus_legend,
+                    html.P(
+                        id=ind_estado,
+                        className="legend-text"
+                    ),
+                ]),
+            ]
+        )
+    
+    return dbc.Col(
+        [
+            dbc.Row(
+                html.H4(
+                    title,
+                    className="description-indicator-small",
+                ),
+            ),
+            legend,
+            dbc.Row(
+                html.Div(
+                    className="indicator-footer",
+                    children=[
+                        html.H2(
+                            id=ind,
+                            className="indicator-number-small",
+                        ),
+                        html.Div([
+                            html.Span(className=f"fa fa-{icon}", style={"color": "white", "font-size": "10px"})
+                        ], className="icon-content")
+                    ]
+                ),
+            )
+        ],
+        className="indicator-column"
+    )
 
 layout = html.Div(
     [
-        dbc.Row(
-            html.H2(
-                "Atendimentos",
-                className="text-start ms-0, mb-4",
-                id="section-atendimentos",
-            )
+        html.Div(
+          id="indicators",
+
+          children=[
+            Map(),
+            html.Div([
+                html.H2(
+                    "Atendimentos individuais",
+                    id="atendimentos-title",
+                ),
+                html.Div (
+                  id="indicator-content",
+                  children=[
+                    html.Div(
+                    className="indicator-legend-box",
+                    children=[
+                        html.Div(
+                        className="indicator-legend",
+                        children=[
+                            square_legend,
+                            html.P(
+                                "Brasil",
+                                className="legend-text"
+                            ),
+                        ]),
+                        html.Div(
+                            className="indicator-legend",
+                            children=[
+                            rhombus_legend,
+                            html.P(
+                                "Estado",
+                                className="legend-text"
+                            ),
+                        ]),
+                    ]),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    html.P(
+                                        "Total",
+                                        className="description-indicator-total",
+                                    ),
+                                    html.H2(
+                                        id="total-atendimentos",
+                                        className="indicator-number-total",
+                                    ),
+                                ],
+                                className="indicator-column"
+                            ),
+                            slash_column,
+                            dbc.Col(
+                                [
+                                    dbc.Row(
+                                        html.H4(
+                                            "Atendimentos por mil hab. no ano",
+                                            className="description-indicator",
+                                        ),
+                                    ),
+                                    html.Div(
+                                        className="indicator-legend-box",
+                                        children=[
+                                            html.Div(
+                                            className="indicator-legend",
+                                            children=[
+                                                square_legend,
+                                                html.P(
+                                                    id="indicador-atend-brasil",
+                                                    className="legend-text"
+                                                ),
+                                            ]),
+                                            html.Div(
+                                                className="indicator-legend",
+                                                children=[
+                                                rhombus_legend,
+                                                html.P(
+                                                    id="indicador-atend-estado",
+                                                    className="legend-text"
+                                                ),
+                                            ]),
+                                        ]
+                                    ),
+                                    dbc.Row(
+                                        html.H2(
+                                            id="normalizado-atendimentos",
+                                            className="indicator-number",
+                                        ),
+                                    ),
+                                ],
+                                className="px-4 indicator-column"
+                            ),
+                        ],
+                        className="mb-4",
+                    ),
+                    dbc.Row(
+                        [
+                           indicator_component(
+                                "Atendimentos odontológicos", 
+                                "indicador-odont-brasil", 
+                                "indicador-odont-estado",
+                                "big-odontologicos",
+                                "tooth"
+                            ),
+                            slash_column,
+                            indicator_component(
+                                "Atendimentos feitos em visita domiciliar",
+                                "indicador-visita-brasil",
+                                "indicador-visita-estado",
+                                "big-visitas",
+                                "house"
+                            ),
+                            slash_column,
+                            indicator_component(
+                                "Atendimentos feitos por médicos",
+                                None,
+                                None,
+                                "big-medicos",
+                                "user-doctor"
+
+                            ),
+                            slash_column,
+                            indicator_component(
+                                "Encaminhamentos",
+                                None,
+                                None,
+                                "big-encaminhamentos",
+                                "hand-point-right"
+                            )
+                        ],
+                        className="mb-3",
+                    ),
+                  ]
+                ),
+            ], style={"width": "100%"}),
+          ]
         ),
         dbc.Row(
             [
-                dbc.Col(
-                    [
-                        html.H2(
-                            id="total-atendimentos",
-                            className="display-8 text-start fw-bold",
-                        ),
-                        html.H4(
-                            "Total de atendimentos individuais",
-                            className="fs-6 text-muted",
-                        ),
-                    ],
-                    width=3,
+                indicator_component(
+                    "Enfermeiros",
+                    None,
+                    None,
+                    "big-enfermeiros",
+                    "user-nurse"
                 ),
-                dbc.Col(width=1),  # Coluna vazia para espaçamento
-                dbc.Col(
-                    [
-                        dbc.Row(
-                            html.H2(
-                                id="normalizado-atendimentos",
-                                className="display-8 text-start fw-bold",
-                            ),
-                        ),
-                        dbc.Row(
-                            html.H4(
-                                "Atendimentos por mil hab. no ano",
-                                className="fs-6 text-muted",
-                            ),
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "13px",
-                                                "height": "13px",
-                                                "background-color": "#632956",
-                                                "margin-right": "5px",
-                                            }
-                                        ),
-                                        html.H6(
-                                            id="indicador-atend-brasil",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "font-size": "14px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "13px",
-                                                "height": "13px",
-                                                "background-color": "#34679A",
-                                                "transform": "rotate(45deg)",
-                                                "margin-right": "5px",
-                                            }
-                                        ),
-                                        html.H6(
-                                            id="indicador-atend-estado",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "font-size": "14px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                            ]
-                        ),
-                    ],
-                    width=3,
-                ),
-                dbc.Col(width=1),
-                dbc.Col(
-                    [
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    html.Span(
-                                        style={
-                                            "display": "inline-block",
-                                            "width": "15px",
-                                            "height": "15px",
-                                            "background-color": "#632956",
-                                            "margin-right": "5px",
-                                        }
-                                    ),
-                                    width=2,
-                                ),
-                                dbc.Col(
-                                    html.H5(
-                                        "Brasil",
-                                        style={
-                                            "margin-bottom": "0",
-                                        },
-                                    ),
-                                    width=2,
-                                ),
-                            ],
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    html.Span(
-                                        style={
-                                            "display": "inline-block",
-                                            "width": "15px",
-                                            "height": "15px",
-                                            "background-color": "#34679A",
-                                            "transform": "rotate(45deg)",
-                                            "margin-right": "5px",
-                                        }
-                                    ),
-                                    width=2,
-                                ),
-                                dbc.Col(
-                                    html.H5(
-                                        "Estado",
-                                        style={
-                                            "margin-bottom": "0",
-                                        },
-                                    ),
-                                    width=2,
-                                ),
-                            ],
-                        ),
-                    ],
-                    width=3,
-                ),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
-                    [
-                        dbc.Row(
-                            [
-                                # Coluna do ícone
-                                dbc.Col(
-                                    html.Img(
-                                        src="assets/tooth-solid.svg",
-                                        height="25px",
-                                    ),
-                                    width="auto",
-                                ),
-                                # Coluna do número
-                                dbc.Col(
-                                    html.H3(
-                                        id="big-odontologicos",
-                                        className="display-8 fw-bold mb-0",
-                                    ),
-                                    width="auto",
-                                ),
-                            ],
-                            align="center",
-                        ),
-                        dbc.Row(
-                            [
-                                # Coluna do texto, com ajuste de tamanho
-                                dbc.Col(
-                                    html.P(
-                                        [
-                                            "Atendimentos",
-                                            html.Br(),
-                                            "odontológicos",
-                                        ],
-                                        className="text-muted",
-                                        style={
-                                            "font-size": "14px",
-                                            "margin-bottom": "0",
-                                            "align-self": "flex-end",
-                                        },
-                                    ),
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "flex-end",
-                                    },  # Para alinhar o texto ao final do número
-                                ),
-                            ],
-                            align="center",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "10px",
-                                                "height": "10px",
-                                                "background-color": "#632956",
-                                            }
-                                        ),
-                                        html.P(
-                                            id="indicador-odont-brasil",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "margin-left": "2px",
-                                                "margin-right": "2px",
-                                                "font-size": "12px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "10px",
-                                                "height": "10px",
-                                                "background-color": "#34679A",
-                                                "transform": "rotate(45deg)",
-                                            }
-                                        ),
-                                        html.P(
-                                            id="indicador-odont-estado",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "margin-left": "2px",
-                                                "margin-right": "2px",
-                                                "font-size": "12px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                            ]
-                        ),
-                    ],
-                ),
-                dbc.Col(
-                    [
-                        dbc.Row(
-                            [
-                                # Coluna do ícone
-                                dbc.Col(
-                                    html.Img(
-                                        src="assets/house-solid.svg",
-                                        height="25px",
-                                    ),
-                                    width="auto",
-                                ),
-                                # Coluna do número
-                                dbc.Col(
-                                    html.H3(
-                                        id="big-visitas",
-                                        className="display-8 fw-bold mb-0",
-                                    ),
-                                    width="auto",
-                                ),
-                                # Coluna do texto, com ajuste de tamanho
-                                dbc.Col(
-                                    html.P(
-                                        [
-                                            "Atendimentos feitos",
-                                            html.Br(),
-                                            "em visita domiciliar",
-                                        ],
-                                        className="text-muted",
-                                        style={
-                                            "font-size": "14px",
-                                            "margin-bottom": "0",
-                                            "align-self": "flex-end",
-                                        },
-                                    ),
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "flex-end",
-                                    },  # Para alinhar o texto ao final do número
-                                ),
-                            ],
-                            align="center",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "10px",
-                                                "height": "10px",
-                                                "background-color": "#632956",
-                                            }
-                                        ),
-                                        html.P(
-                                            id="indicador-visita-brasil",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "margin-left": "2px",
-                                                "margin-right": "2px",
-                                                "font-size": "12px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Span(
-                                            style={
-                                                "display": "inline-block",
-                                                "width": "10px",
-                                                "height": "10px",
-                                                "background-color": "#34679A",
-                                                "transform": "rotate(45deg)",
-                                            }
-                                        ),
-                                        html.P(
-                                            id="indicador-visita-estado",
-                                            style={
-                                                "margin-bottom": "0",
-                                                "margin-left": "2px",
-                                                "margin-right": "2px",
-                                                "font-size": "12px",
-                                            },
-                                        ),
-                                    ],
-                                    width="auto",
-                                    style={
-                                        "display": "flex",
-                                        "align-items": "center",
-                                    },
-                                ),
-                            ]
-                        ),
-                    ],
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src=dash.get_asset_url(
-                                        "user-doctor-solid.svg"
-                                    ),
-                                    height="25px",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-medicos",
-                                    className="display-8 fw-bold mb-0",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "por médicos",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
-                                ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/user-nurse-solid.svg",
-                                    height="25px",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-enfermeiros",
-                                    className="display-8 fw-bold mb-0",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos feitos",
-                                        html.Br(),
-                                        "por enfermeiros",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
-                                ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-                dbc.Col(
-                    dbc.Row(
-                        [
-                            # Coluna do ícone
-                            dbc.Col(
-                                html.Img(
-                                    src="assets/user-solid.svg",
-                                    height="25px",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do número
-                            dbc.Col(
-                                html.H3(
-                                    id="big-encaminhamentos",
-                                    className="display-8 fw-bold mb-0",
-                                ),
-                                width="auto",
-                            ),
-                            # Coluna do texto, com ajuste de tamanho
-                            dbc.Col(
-                                html.P(
-                                    [
-                                        "Atendimentos finalizados",
-                                        html.Br(),
-                                        "com encaminhamento",
-                                    ],
-                                    className="text-muted",
-                                    style={
-                                        "font-size": "14px",
-                                        "margin-bottom": "0",
-                                        "align-self": "flex-end",
-                                    },
-                                ),
-                                width="auto",
-                                style={
-                                    "display": "flex",
-                                    "align-items": "flex-end",
-                                },  # Para alinhar o texto ao final do número
-                            ),
-                        ],
-                        align="center",
-                    ),
-                ),
-            ],
-            className="mb-5",
+            ]
         ),
         dbc.Row(
             [
@@ -631,5 +362,5 @@ layout = html.Div(
             className="mb-3",
         ),
     ],
-    style={"padding": "5px 5px"},
+    style={"padding": "0px 25px"},
 )
