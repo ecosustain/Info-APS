@@ -5,7 +5,7 @@ import warnings
 import dash
 import pandas as pd
 from callbacks.api_requests import (
-    get_anos,
+    anos,
     get_atendimentos,
     get_atendimentos_odontologicos,
     get_encaminhamentos,
@@ -55,9 +55,6 @@ warnings.filterwarnings(
     message="Non-invertible starting seasonal moving average",
 )
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
-
-
-anos = get_anos(6)
 
 
 def register_callbacks(app):

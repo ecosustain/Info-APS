@@ -12,27 +12,28 @@ dash.register_page(
 from components.map import Map
 
 square_legend = html.Span(
-        style={
-            "display": "inline-block",
-            "width": "8px",
-            "height": "8px",
-            "background-color": "#632956",
-            "margin-right": "5px",
-        }
-    )
+    style={
+        "display": "inline-block",
+        "width": "8px",
+        "height": "8px",
+        "background-color": "#632956",
+        "margin-right": "5px",
+    }
+)
 
 rhombus_legend = html.Span(
-        style={
-            "display": "inline-block",
-            "width": "8px",
-            "height": "8px",
-            "background-color": "#34679A",
-            "transform": "rotate(45deg)",
-            "margin-right": "5px",
-        }
-    )
+    style={
+        "display": "inline-block",
+        "width": "8px",
+        "height": "8px",
+        "background-color": "#34679A",
+        "transform": "rotate(45deg)",
+        "margin-right": "5px",
+    }
+)
 
-slash_column = dbc.Col([
+slash_column = dbc.Col(
+    [
         html.Span(
             style={
                 "display": "inline-block",
@@ -41,9 +42,12 @@ slash_column = dbc.Col([
                 "background-color": "#212529bf",
             }
         )
-    ], className="slash")
+    ],
+    className="slash",
+)
 
-def  indicator_component(title, ind_brasil, ind_estado, ind): 
+
+def indicator_component(title, ind_brasil, ind_estado, ind):
     legend = html.Div([])
 
     if ind_brasil != None:
@@ -51,26 +55,22 @@ def  indicator_component(title, ind_brasil, ind_estado, ind):
             className="indicator-legend-box",
             children=[
                 html.Div(
-                className="indicator-legend",
-                children=[
-                    square_legend,
-                    html.P(
-                        id=ind_brasil,
-                        className="legend-text"
-                    ),
-                ]),
+                    className="indicator-legend",
+                    children=[
+                        square_legend,
+                        html.P(id=ind_brasil, className="legend-text"),
+                    ],
+                ),
                 html.Div(
                     className="indicator-legend",
                     children=[
-                    rhombus_legend,
-                    html.P(
-                        id=ind_estado,
-                        className="legend-text"
-                    ),
-                ]),
-            ]
+                        rhombus_legend,
+                        html.P(id=ind_estado, className="legend-text"),
+                    ],
+                ),
+            ],
         )
-    
+
     return dbc.Col(
         [
             dbc.Row(
@@ -88,104 +88,108 @@ def  indicator_component(title, ind_brasil, ind_estado, ind):
                             id=ind,
                             className="indicator-number-small",
                         ),
-                    ]
+                    ],
                 ),
-            )
+            ),
         ],
-        className="indicator-column"
+        className="indicator-column",
     )
+
 
 layout = html.Div(
     [
         html.Div(
-          id="indicators",
-
-          children=[
-            Map(),
-            html.Div([
-                html.H2(
-                    "Atendimentos Programáticos",
-                    id="atendimentos-title",
-                ),
-                html.Div (
-                  id="indicator-content",
-                  children=[
-                    html.Div(
-                    className="indicator-legend-box",
-                    children=[
+            id="indicators",
+            children=[
+                Map(),
+                html.Div(
+                    [
+                        html.H2(
+                            "Atendimentos Programáticos",
+                            id="atendimentos-title",
+                        ),
                         html.Div(
-                        className="indicator-legend",
-                        children=[
-                            square_legend,
-                            html.P(
-                                "Brasil",
-                                className="legend-text"
-                            ),
-                        ]),
-                        html.Div(
-                            className="indicator-legend",
+                            id="indicator-content",
                             children=[
-                            rhombus_legend,
-                            html.P(
-                                "Estado",
-                                className="legend-text"
-                            ),
-                        ]),
-                    ]),
-                    dbc.Row(
-                        [
-                           indicator_component(
-                                "Hipertensão Arterial", 
-                                "indicador-hiper-brasil", 
-                                "indicador-hiper-estado",
-                                "big-hipertensao",
-                            ),
-                            slash_column,
-                            indicator_component(
-                                "Diabetes", 
-                                "indicador-diabetes-brasil", 
-                                "indicador-diabetes-estado",
-                                "big-diabetes",
-                            ),
-                            slash_column,
-                            indicator_component(
-                                "Saúde Sexual", 
-                                "indicador-sexual-brasil", 
-                                "indicador-sexual-estado",
-                                "big-sexual",
-                            ),
-                        ],
-                        className="mb-3",
-                    ),
-                    dbc.Row(
-                        [
-                           indicator_component(
-                                "Saúde Mental", 
-                                "indicador-mental-brasil", 
-                                "indicador-mental-estado",
-                                "big-mental",
-                            ),
-                            slash_column,
-                            indicator_component(
-                                "Puericultura", 
-                                "indicador-puericultura-brasil", 
-                                "indicador-puericultura-estado",
-                                "big-puericultura",
-                            ),
-                            slash_column,
-                            indicator_component(
-                                "Grávidas", 
-                                "indicador-gravidas-brasil", 
-                                "indicador-gravidas-estado",
-                                "big-gravidas",
-                            ),
-                        ],
-                        className="mb-3",
-                    ),
-                  ]
+                                html.Div(
+                                    className="indicator-legend-box",
+                                    children=[
+                                        html.Div(
+                                            className="indicator-legend",
+                                            children=[
+                                                square_legend,
+                                                html.P(
+                                                    "Brasil", className="legend-text"
+                                                ),
+                                            ],
+                                        ),
+                                        html.Div(
+                                            className="indicator-legend",
+                                            children=[
+                                                rhombus_legend,
+                                                html.P(
+                                                    "Estado", className="legend-text"
+                                                ),
+                                            ],
+                                        ),
+                                    ],
+                                ),
+                                dbc.Row(
+                                    [
+                                        indicator_component(
+                                            "Hipertensão Arterial",
+                                            "indicador-hipertensao-brasil",
+                                            "indicador-hipertensao-estado",
+                                            "big-hipertensao",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Diabetes",
+                                            "indicador-diabetes-brasil",
+                                            "indicador-diabetes-estado",
+                                            "big-diabetes",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Saúde Sexual",
+                                            "indicador-sexual-brasil",
+                                            "indicador-sexual-estado",
+                                            "big-sexual",
+                                        ),
+                                    ],
+                                    className="mb-3",
+                                ),
+                                dbc.Row(
+                                    [
+                                        indicator_component(
+                                            "Saúde Mental",
+                                            "indicador-mental-brasil",
+                                            "indicador-mental-estado",
+                                            "big-mental",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Puericultura",
+                                            "indicador-puericultura-brasil",
+                                            "indicador-puericultura-estado",
+                                            "big-puericultura",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Grávidas",
+                                            "indicador-gravidas-brasil",
+                                            "indicador-gravidas-estado",
+                                            "big-gravidas",
+                                        ),
+                                    ],
+                                    className="mb-3",
+                                ),
+                            ],
+                        ),
+                    ],
+                    style={"width": "100%"},
                 ),
-            ], style={"width": "100%"}),
-          ]
+            ],
         ),
         dbc.Row(
             [
@@ -196,7 +200,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=3,
-                ),  
+                ),
                 # Hipertensão por trimestre
                 dbc.Col(
                     dcc.Graph(
@@ -204,7 +208,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=9,
-                ),  
+                ),
                 dbc.Col(),
             ],
             className="mb-3",
@@ -218,7 +222,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=3,
-                ),  
+                ),
                 # Diabetes por trimestre
                 dbc.Col(
                     dcc.Graph(
@@ -226,7 +230,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=9,
-                ),  
+                ),
                 dbc.Col(),
             ],
             className="mb-3",
@@ -240,7 +244,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=3,
-                ),  
+                ),
                 # Saude Sexual por trimestre
                 dbc.Col(
                     dcc.Graph(
@@ -248,7 +252,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=9,
-                ),  
+                ),
                 dbc.Col(),
             ],
             className="mb-3",
@@ -262,7 +266,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=3,
-                ),  
+                ),
                 # Saude Mental por trimestre
                 dbc.Col(
                     dcc.Graph(
@@ -270,7 +274,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=9,
-                ),  
+                ),
                 dbc.Col(),
             ],
             className="mb-3",
@@ -284,7 +288,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=3,
-                ),  
+                ),
                 # Puericultura por trimestre
                 dbc.Col(
                     dcc.Graph(
@@ -292,7 +296,7 @@ layout = html.Div(
                         style={"height": "40vh"},
                     ),
                     width=9,
-                ),  
+                ),
                 dbc.Col(),
             ],
             className="mb-3",

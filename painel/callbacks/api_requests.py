@@ -114,3 +114,5 @@ def get_anos(num):
     anos.sort(reverse=True)
 
     return anos
+
+anos = get_anos(6)
