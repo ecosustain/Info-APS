@@ -34,7 +34,7 @@ def update_layout_chart(chart, title, tipo):
         plot_bgcolor="#FFFFFF",
         barcornerradius=5,
         yaxis=dict(
-            showticklabels=False, range=[0, chart.data[0].y.max() * 1.1]
+            showticklabels=False, range=[0, chart.data[0].y.max() * 1.2]
         ),
         margin=dict(l=35, r=35, t=60, b=40),
     )
@@ -67,7 +67,7 @@ def update_layout_chart_profissionais(chart, title, tipo):
         barcornerradius=5,
         yaxis=dict(
             showticklabels=False,
-            range=[0, (chart.data[0].y.max() + chart.data[1].y.max()) * 1.1],
+            range=[0, (chart.data[0].y.max() + chart.data[1].y.max()) * 1.2],
         ),
         margin=dict(l=35, r=35, t=60, b=40),
         legend=dict(
