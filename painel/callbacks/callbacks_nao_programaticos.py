@@ -339,3 +339,78 @@ def register_callbacks_nao_programaticos(app):
 
         return (chart_by_year, chart_by_quarter)
     
+    @app.callback(
+        [
+            Output("chart_febre_by_year", "figure"),
+            Output("chart_febre_by_quarter", "figure"),
+        ],
+        [
+            Input("store-data-febre", "data"),
+            Input("store-populacao", "data"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+        ]
+    )
+    def update_febre_charts(data, populacao, estado, regiao, municipio):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
+        titulo = "Febre"
+
+        df = get_df_from_json(data, populacao, qtd_hab)
+        type = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+
+        return (chart_by_year, chart_by_quarter)
+    
+    @app.callback(
+        [
+            Output("chart_cefaleia_by_year", "figure"),
+            Output("chart_cefaleia_by_quarter", "figure"),
+        ],
+        [
+            Input("store-data-cefaleia", "data"),
+            Input("store-populacao", "data"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+        ]
+    )
+    def update_cefaleia_charts(data, populacao, estado, regiao, municipio):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
+        titulo = "Cefaleia"
+
+        df = get_df_from_json(data, populacao, qtd_hab)
+        type = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+
+        return (chart_by_year, chart_by_quarter)
+    
+    @app.callback(
+        [
+            Output("chart_tosse_by_year", "figure"),
+            Output("chart_tosse_by_quarter", "figure"),
+        ],
+        [
+            Input("store-data-tosse", "data"),
+            Input("store-populacao", "data"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+        ]
+    )
+    def update_tosse_charts(data, populacao, estado, regiao, municipio):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
+        titulo = "Tosse"
+
+        df = get_df_from_json(data, populacao, qtd_hab)
+        type = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+
+        return (chart_by_year, chart_by_quarter)
+    
