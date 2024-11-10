@@ -10,7 +10,7 @@ API_URL = "https://dash-saude-mongo.elsvital.dev/api/v1"
 def make_request(url):
     """Função para fazer uma requisição à API"""
     headers = {"accept": "application/json"}
-
+    print("Fazendo request para:", url)
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
@@ -39,7 +39,6 @@ def get_atendimentos(estado, regiao, municipio):
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"{API_URL}/atendimentos/cities/{ibge_code}"
-    print("Fazendo request para:", url)
 
     return make_request(url)
 
@@ -55,7 +54,6 @@ def get_visitas_domiciliar(estado, regiao, municipio):
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"{API_URL}/visitas_domiciliar/cities/{ibge_code}"
-    print("Fazendo request para:", url)
 
     return make_request(url)
 
@@ -71,7 +69,6 @@ def get_atendimentos_odontologicos(estado, regiao, municipio):
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"{API_URL}/atendimentos_odontologicos/cities/{ibge_code}"
-    print("Fazendo request para:", url)
 
     return make_request(url)
 
@@ -101,7 +98,6 @@ def get_atendimentos_individuais_problema(estado, regiao, municipio, problema):
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"{API_URL}/atendimento_individual/cities/{ibge_code}/{problema}"
-    print("Fazendo request para:", url)
 
     return make_request(url)
 
@@ -117,7 +113,6 @@ def get_collection(estado, regiao, municipio, collection, colunas):
     if municipio is not None and estado is not None:
         ibge_code = get_ibge_code(estado, municipio)
         url = f"{API_URL}/{collection}/cities/{ibge_code}/{colunas}"
-    print("Fazendo request para:", url)
 
     return make_request(url)
 
@@ -132,4 +127,12 @@ def get_anos(num):
 
     return anos
 
+
 anos = get_anos(6)
+
+
+def get_collection_atributes(collection):
+    """Função para obter os atributos de uma coleção"""
+    url = f"{API_URL}/collections/{collection}/attributes"
+
+    return make_request(url)

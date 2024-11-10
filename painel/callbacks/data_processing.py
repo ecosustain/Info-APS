@@ -3,7 +3,7 @@
 import dash
 import pandas as pd
 
-from callbacks.api_requests import get_collection
+from callbacks.api_requests import get_collection, get_collection_atributes
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -198,3 +198,25 @@ def get_gravidez_json(estado, regiao, municipio):
     inadequado = get_collection(estado, regiao, municipio, 'Gravidez', 'De 1 a 3 atendimentos,De 4 a 5 atendimentos')
     indice = calcular_indice(adequado, inadequado)
     return indice
+
+
+def get_atributos_febre():
+    """Função para obter os atributos de febre"""
+    atributos = get_collection_atributes('CIDS')
+    remover = ['CIAP (N01) Cefaléia', 'CIAP (R05) Tosse']
+    for r in remover:
+        atributos.remove(r)
+    # Concatenar os atributos, separando-os por vírgula
+    atributos = ",".join(atributos)
+    return atributos
+
+
+def get_cids_json(estado, regiao, municipio):
+    """Função para obter os jsons de cids"""
+    febre = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (A03) Febre')
+    dor_cabeca = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (N01) Cefaléia')
+    tosse = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (R05) Tosse')
+    # atributos_febre = get_atributos_febre()
+    # palavra_febre = get_collection(estado, regiao, municipio, 'CIDS', atributos_febre)
+
+    return febre, dor_cabeca, tosse

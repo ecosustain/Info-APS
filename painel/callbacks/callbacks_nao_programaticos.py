@@ -3,7 +3,7 @@ from dash import Input, Output, State
 
 from callbacks.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year 
-from callbacks.data_processing import get_df_from_json
+from callbacks.data_processing import get_df_from_json, get_cids_json
 from callbacks.utils import get_type, get_values, store_nivel
 import pandas as pd
 
@@ -15,6 +15,9 @@ hist_dengue = {}
 hist_tuberculose = {}
 hist_dst = {}
 hist_hanseniase = {}
+hist_febre = {}
+hist_cefaleia = {}
+hist_tosse = {}
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
@@ -43,6 +46,18 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
         global hist_hanseniase
         hist_hanseniase = store_nivel(hist_hanseniase, df, populacao, nivel_geo, anos)
         values = get_values(hist_hanseniase, ano, nivel_geo)
+    elif tipo == "febre":
+        global hist_febre
+        hist_febre = store_nivel(hist_febre, df, populacao, nivel_geo, anos)
+        values = get_values(hist_febre, ano, nivel_geo)
+    elif tipo == "cefaleia":
+        global hist_cefaleia
+        hist_cefaleia = store_nivel(hist_cefaleia, df, populacao, nivel_geo, anos)
+        values = get_values(hist_cefaleia, ano, nivel_geo)
+    elif tipo == "tosse":
+        global hist_tosse
+        hist_tosse = store_nivel(hist_tosse, df, populacao, nivel_geo, anos)
+        values = get_values(hist_tosse, ano, nivel_geo)
 
     return values[0], values[1], total
 
@@ -56,6 +71,9 @@ def register_callbacks_nao_programaticos(app):
             Output("store-data-tuberculose", "data"),
             Output("store-data-dst", "data"),
             Output("store-data-hanseniase", "data"),
+            Output("store-data-febre", "data"),
+            Output("store-data-cefaleia", "data"),
+            Output("store-data-tosse", "data"),
         ],
         [
             Input("dummy-div", "children"),
@@ -75,12 +93,9 @@ def register_callbacks_nao_programaticos(app):
         data_tuberculose = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Tuberculose")
         data_dst = get_atendimentos_individuais_problema(estado, regiao, municipio, "Doenças transmissíveis - DST")
         data_hanseniase = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Hanseníase")
+        data_febre, data_cefaleia, data_tosse = get_cids_json(estado, regiao, municipio)
         #TODO
         # vi. Número de atendimentos individuais por mil habitantes que tiveram como CID/CIAP a palavra Febre
-        # vii. Número de atendimentos individuais por mil habitantes que tiveram Febre (CIAP A03)
-        # viii. Número de atendimentos individuais por mil habitantes que tiveram Dor de Cabeça (CIAP N01)
-        # ix. Número de atendimentos individuais por mil habitantes que tiveram Tosse (CIAP R05) 
-
         
         return (
             data_asma,
@@ -89,6 +104,9 @@ def register_callbacks_nao_programaticos(app):
             data_tuberculose,
             data_dst,
             data_hanseniase,
+            data_febre,
+            data_cefaleia,
+            data_tosse,
         )
 
     @app.callback(
@@ -108,6 +126,15 @@ def register_callbacks_nao_programaticos(app):
             Output("indicador-hanseniase-brasil", "children"),
             Output("indicador-hanseniase-estado", "children"),
             Output("big-hanseniase", "children"),
+            Output("indicador-febre-brasil", "children"),
+            Output("indicador-febre-estado", "children"),
+            Output("big-febre", "children"),
+            Output("indicador-cefaleia-brasil", "children"),
+            Output("indicador-cefaleia-estado", "children"),
+            Output("big-cefaleia", "children"),
+            Output("indicador-tosse-brasil", "children"),
+            Output("indicador-tosse-estado", "children"),
+            Output("big-tosse", "children"),
         ],
         [
             # Input("store-data-asma", "data"),
@@ -169,6 +196,18 @@ def register_callbacks_nao_programaticos(app):
         # Add hanseniase
         big_numbers.append(
             gera_big_numbers("hanseniase", hanseniase, populacao, nivel_geo, ano)
+        )
+        # Add febre
+        big_numbers.append(
+            gera_big_numbers("febre", hanseniase, populacao, nivel_geo, ano)
+        )
+        # Add cefaleia
+        big_numbers.append(
+            gera_big_numbers("cefaleia", hanseniase, populacao, nivel_geo, ano)
+        )
+        # Add tosse
+        big_numbers.append(
+            gera_big_numbers("tosse", hanseniase, populacao, nivel_geo, ano)
         )
 
         big_numbers = [item for sublist in big_numbers for item in sublist]
