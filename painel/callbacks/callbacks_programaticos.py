@@ -21,7 +21,7 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     df = get_df_from_json(json)
     if populacao is not None:
         total = df[df["ano"] == ano]["valor"].sum()
-        total = int(total / populacao * 1000)
+        total = round(total / populacao * 1000)
     else:
         total = round(df[df["ano"] == ano]["valor"].mean(), 2)
 
