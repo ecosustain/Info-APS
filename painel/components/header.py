@@ -1,11 +1,8 @@
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.api_requests import get_anos
+from constants import time_division
 from callbacks.utils import estados_brasileiros
 from dash import dcc, html
-
-anos = get_anos(6)
-
 
 def Header():
     return html.Div(
@@ -80,33 +77,20 @@ def Header():
                             dbc.ButtonGroup(
                                 [
                                     dbc.Button(
-                                        str(ano),
-                                        id=f"btn-ano-{ano}",
+                                        str(division),
+                                        id=f"btn-{division}",
                                         color="primary",
                                         outline=True,
                                         active=(
-                                            ano == anos[0]
+                                            division == time_division.graphic_division[0]
                                         ),  # Define o primeiro ano como ativo
-                                        className="year-button rounded",  # Adiciona margem à direita e borda arredondada
-                                        style={
-                                            "background-color": (
-                                                "#FFFFFF"
-                                                if ano != anos[0]
-                                                else "#000000"
-                                            ),  # Fundo cinza claro ou escuro
-                                            "border-color": "#343A40",  # Cor da borda
-                                            "color": (
-                                                "#fff"
-                                                if ano != anos[0]
-                                                else "#343A40"
-                                            ),  # Cor do texto
-                                            "padding": "10px 12px",
-                                        },
+                                        className="temp-button rounded",
+                                        style={"padding": "0px"}
                                     )
-                                    for ano in anos
+                                    for division in time_division.graphic_division
                                 ],
                                 vertical=False,  # Para deixar os botões lado a lado
-                            )
+                            ),
                         ),
                     ),
                 ],

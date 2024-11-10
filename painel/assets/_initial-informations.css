@@ -8,11 +8,23 @@
   padding: 12px 20px;
 }
 
-#atendimentos-title {
+#overview {
   font-size: 18px;
   margin-bottom: 6px !important;
   margin-left: 2px;
   font-weight: bold;
+}
+
+.time-visualization-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+#atendimentos-title {
+  font-size: 16px;
+  margin-bottom: 3px !important;
+  font-weight: medium;
 }
 
 .indicator-column {
@@ -91,4 +103,10 @@
   align-items: center;
   border-radius: 50%;
   background-color: #343A40;
+}
+
+.year-button {
+  margin-right: 16px !important;
+  font-size: 10px;
+  padding: 2px 8px !important;
 }

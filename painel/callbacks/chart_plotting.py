@@ -150,7 +150,7 @@ def get_chart_by_year(df, title, tipo, calculo="sum"):
         x="ano",
         y="valor",
         text_auto=".2s",
-        title=f"{title.capitalize()} por Ano",
+        # title=f"{title.capitalize()} por Ano",
     )
 
     # Atualizar para o layout padrão
@@ -209,7 +209,7 @@ def create_bar_chart(df_filtered, title, tipo):
         x="ano_trimestre",
         y="valor",
         text_auto=".2s",
-        title=f"{title.capitalize()} por Trimestre",
+        # title=f"{title.capitalize()} por Trimestre",
     )
     chart = update_layout_chart(chart, title, tipo)
     return chart
