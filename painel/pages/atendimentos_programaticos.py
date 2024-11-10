@@ -221,26 +221,44 @@ layout = html.Div(
                     [
                         # Hipertensão por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_hipertensao_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Hipertensão Arterial",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_hipertensao_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                         # Diabetes por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_diabetes_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Diabetes",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_diabetes_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                         # Saude Sexual por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_saude_sexual_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Saúde Sexual",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_saude_sexual_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                     ],
@@ -249,26 +267,44 @@ layout = html.Div(
                     [
                         # Saude Mental por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_saude_mental_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Saúde Mental",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_saude_mental_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                         # Puericultura por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_puericultura_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Puericultura",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_puericultura_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                         # Gravidez por população por ano
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_gravidez_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Gravidez Adequados",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_gravidez_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                     ],
@@ -283,18 +319,30 @@ layout = html.Div(
                     [
                         # Hipertensão por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_hipertensao_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Hipertensão Arterial",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_hipertensao_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Diabetes por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_diabetes_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Diabetes",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_diabetes_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -303,18 +351,30 @@ layout = html.Div(
                     [
                         # Saude Sexual por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_saude_sexual_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Saúde Sexual",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_saude_sexual_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Saude Mental por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_saude_mental_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Saúde Mental",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_saude_mental_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -323,18 +383,30 @@ layout = html.Div(
                     [
                         # Puericultura por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_puericultura_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Puericultura",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_puericultura_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Gravidez por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_gravidez_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos adequados de Gravidez",
+                                    className="description-indicator",
+                                ),
+                                dcc.Graph(
+                                    id="chart_gravidez_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],

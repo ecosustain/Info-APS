@@ -386,7 +386,6 @@ layout = html.Div(
             id="quarter-content",
             className="time-visualization-content",
             children=[
-                html.H2("Atendimentos Não Programáticos por Trimestre"),
                 dbc.Row(
                     [
                         # Asma + DPOC por trimestre
