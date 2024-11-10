@@ -158,16 +158,17 @@ def formatar_numero(numero):
     return str(numero)
 
 
-def store_nivel(hist, df, populacao, nivel, anos):
+def store_nivel(hist, df, populacao, nivel, anos, qtd_hab=1000):
     """Função para armazenar dados historicos"""
     if nivel == "municipio" or nivel == "regiao_saude":
         return hist
     # filtrar df para os ultimos 5 anos
     df = df[df["ano"].isin(anos)]
     if populacao is not None:
+        print("--- Normalizando valores ---")
         # normalizar df pelo total da população (1000 habitantes)
-        populacao = populacao / 1000
-        df["valor"] = df["valor"] / populacao
+        populacao = populacao / qtd_hab
+        df["valor"] = round(df["valor"] / populacao)
 
     hist[nivel] = df
 

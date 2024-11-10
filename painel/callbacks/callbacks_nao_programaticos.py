@@ -24,39 +24,39 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     # Add asma_dpoc
     df = get_df_from_json(json)
     total = df[df["ano"] == ano]["valor"].sum()
-    total = int(total / populacao * qtd_hab)
+    total = round(total / populacao * qtd_hab)
 
     if tipo == "asma_dpoc":
         global hist_asma_dpoc
-        hist_asma_dpoc = store_nivel(hist_asma_dpoc, df, populacao, nivel_geo, anos)
+        hist_asma_dpoc = store_nivel(hist_asma_dpoc, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_asma_dpoc, ano, nivel_geo)
     elif tipo == "dengue":
         global hist_dengue
-        hist_dengue = store_nivel(hist_dengue, df, populacao, nivel_geo, anos)
+        hist_dengue = store_nivel(hist_dengue, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_dengue, ano, nivel_geo)
     elif tipo == "tuberculose":
         global hist_tuberculose
-        hist_tuberculose = store_nivel(hist_tuberculose, df, populacao, nivel_geo, anos)
+        hist_tuberculose = store_nivel(hist_tuberculose, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_tuberculose, ano, nivel_geo)
     elif tipo == "dst":
         global hist_dst
-        hist_dst = store_nivel(hist_dst, df, populacao, nivel_geo, anos)
+        hist_dst = store_nivel(hist_dst, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_dst, ano, nivel_geo)
     elif tipo == "hanseniase":
         global hist_hanseniase
-        hist_hanseniase = store_nivel(hist_hanseniase, df, populacao, nivel_geo, anos)
+        hist_hanseniase = store_nivel(hist_hanseniase, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_hanseniase, ano, nivel_geo)
     elif tipo == "febre":
         global hist_febre
-        hist_febre = store_nivel(hist_febre, df, populacao, nivel_geo, anos)
+        hist_febre = store_nivel(hist_febre, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_febre, ano, nivel_geo)
     elif tipo == "cefaleia":
         global hist_cefaleia
-        hist_cefaleia = store_nivel(hist_cefaleia, df, populacao, nivel_geo, anos)
+        hist_cefaleia = store_nivel(hist_cefaleia, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_cefaleia, ano, nivel_geo)
     elif tipo == "tosse":
         global hist_tosse
-        hist_tosse = store_nivel(hist_tosse, df, populacao, nivel_geo, anos)
+        hist_tosse = store_nivel(hist_tosse, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_tosse, ano, nivel_geo)
 
     return values[0], values[1], total
