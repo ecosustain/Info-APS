@@ -143,6 +143,9 @@ def register_callbacks_nao_programaticos(app):
             Input("store-data-tuberculose", "data"),
             Input("store-data-dst", "data"),
             Input("store-data-hanseniase", "data"),
+            Input("store-data-febre", "data"),
+            Input("store-data-cefaleia", "data"),
+            Input("store-data-tosse", "data"),
             Input("store-populacao", "data"),
             Input("nivel-geo", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
@@ -159,6 +162,9 @@ def register_callbacks_nao_programaticos(app):
         tuberculose,
         dst,
         hanseniase,
+        febre,
+        cefaleia,
+        tosse,
         populacao,
         nivel_geo,
         *args,
@@ -199,15 +205,15 @@ def register_callbacks_nao_programaticos(app):
         )
         # Add febre
         big_numbers.append(
-            gera_big_numbers("febre", hanseniase, populacao, nivel_geo, ano)
+            gera_big_numbers("febre", febre, populacao, nivel_geo, ano)
         )
         # Add cefaleia
         big_numbers.append(
-            gera_big_numbers("cefaleia", hanseniase, populacao, nivel_geo, ano)
+            gera_big_numbers("cefaleia", cefaleia, populacao, nivel_geo, ano)
         )
         # Add tosse
         big_numbers.append(
-            gera_big_numbers("tosse", hanseniase, populacao, nivel_geo, ano)
+            gera_big_numbers("tosse", tosse, populacao, nivel_geo, ano)
         )
 
         big_numbers = [item for sublist in big_numbers for item in sublist]

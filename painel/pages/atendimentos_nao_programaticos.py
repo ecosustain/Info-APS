@@ -200,6 +200,31 @@ layout = html.Div(
                                     ],
                                     className="mb-3",
                                 ),
+                                dbc.Row(
+                                    [
+                                        indicator_component(
+                                            "Febre",
+                                            "indicador-febre-brasil",
+                                            "indicador-febre-estado",
+                                            "big-febre",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Cefaléia",
+                                            "indicador-cefaleia-brasil",
+                                            "indicador-cefaleia-estado",
+                                            "big-cefaleia",
+                                        ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Tosse",
+                                            "indicador-tosse-brasil",
+                                            "indicador-tosse-estado",
+                                            "big-tosse",
+                                        ),
+                                    ],
+                                    className="mb-3",
+                                ),
                             ],
                         ),
                     ],
