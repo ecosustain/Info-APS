@@ -339,13 +339,10 @@ def register_callbacks_programaticos(app):
         ],
     )
     def update_gravidez_charts(data, estado, regiao, municipio):
-        print(data)
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "% de Atendimentos Adequados de Gravidez"
-        print('passou')
         df = get_df_from_json(data)
-        print(df)
         nivel = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, nivel, "mean")
         chart_by_quarter = get_chart_by_quarter(df, titulo, nivel, "mean")
