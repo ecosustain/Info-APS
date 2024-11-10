@@ -41,6 +41,7 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-saude-sexual"),
                         dcc.Store(id="store-data-saude-mental"),
                         dcc.Store(id="store-data-puericultura"),
+                        dcc.Store(id="store-data-gravidez"),
                         # Não Programático
                         dcc.Store(id="store-data-asma"),
                         dcc.Store(id="store-data-dpoc"),
@@ -48,7 +49,9 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-tuberculose"),
                         dcc.Store(id="store-data-dst"),
                         dcc.Store(id="store-data-hanseniase"),
-                        dcc.Store(id="store-data-gravidez"),
+                        dcc.Store(id="store-data-febre"),
+                        dcc.Store(id="store-data-cefaleia"),
+                        dcc.Store(id="store-data-tosse"),
                         # Menu em abas
                         dash.page_container,
                     ],

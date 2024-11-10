@@ -1,6 +1,7 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+from callbacks.api_requests import anos
 
 dash.register_page(
     __name__,
@@ -110,6 +111,22 @@ layout = html.Div(
                         html.Div(
                             id="indicator-content",
                             children=[
+                                dbc.ButtonGroup(
+                        [
+                                dbc.Button(
+                                            str(ano),
+                                            id=f"btn-ano-{ano}",
+                                            color="primary",
+                                            outline=True,
+                                            active=(
+                                                ano == anos[0]
+                                            ),  # Define o primeiro ano como ativo
+                                            className="year-button rounded",
+                                        )
+                                        for ano in anos
+                                    ],
+                                    vertical=False,  # Para deixar os botões lado a lado
+                                ),
                                 html.Div(
                                     className="indicator-legend-box",
                                     children=[
