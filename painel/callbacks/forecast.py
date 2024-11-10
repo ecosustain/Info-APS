@@ -19,23 +19,43 @@ def preprocess_sarima_data(df):
     return df_grouped_mes[:-1]  # Desconsiderar o último mês
 
 
-def fit_sarima_model(df_sarima):
+def fit_sarima_model(df_sarima, steps):
     """Função para treinar o modelo SARIMA."""
     model = SARIMAX(
         df_sarima["valor"], order=(2, 0, 3), seasonal_order=(1, 1, 2, 12)
     )
     results = model.fit(disp=False)
-    return results.get_forecast(steps=6)
+    return results.get_forecast(steps=steps)
+
+
+def get_n_months(last_month):
+    resto = last_month % 3
+    if resto == 0:
+        return 6
+    elif resto == 1:
+        return 7
+    else:
+        return 8
+
+
+def get_last_month(df_sarima):
+    """Função para obter o último mês do dataframe."""
+    last_year = df_sarima["ano"].max()
+    last_month = df_sarima[df_sarima["ano"] == last_year]["mes"].max()
+    print('-------------------last_month', last_month)
+    return last_month
 
 
 def generate_forecast_dates(df_sarima):
     """Função para gerar os trimestres para os quais a previsão será feita."""
     last_year = df_sarima["ano"].max()
     last_month = df_sarima[df_sarima["ano"] == last_year]["mes"].max()
+    print('-------------------last_month', last_month)
+    n = get_n_months(last_month)
 
     forecast_month = []
     forecast_year = []
-    for i in range(1, 7):
+    for i in range(1, n):
         if last_month == 12:
             last_month = 1
             last_year += 1
@@ -59,14 +79,33 @@ def create_forecast_df(forecast_index, forecast_values):
     forecast_df = (
         forecast_df.groupby("ano_trimestre")["valor"].sum().reset_index()
     )
+
+    # Criar colunas auxiliares para o ano e o trimestre
+    forecast_df['ano'] = forecast_df['ano_trimestre'].apply(lambda x: int(x.split('/')[1]))
+    forecast_df['trimestre'] = forecast_df['ano_trimestre'].apply(lambda x: int(x.split('/')[0][1]))
+
+    # Ordenar os dados com base nas colunas auxiliares
+    forecast_df = forecast_df.sort_values(by=['ano', 'trimestre'])
+
+    # Remover as colunas auxiliares
+    forecast_df = forecast_df.drop(columns=['ano', 'trimestre'])
+
     forecast_df["valor"] = forecast_df["valor"].astype(str)
     return forecast_df
 
+def ajusta_forecast(df, steps):
+    """Função para ajustar o forecast para o número de trimestres."""
+    if steps == 7:
+        df = df.iloc[1:]
+    return df
 
 def forecast_sarima(df):
     """Função para gerar a previsão com SARIMA."""
     df_sarima = preprocess_sarima_data(df)
-    forecast = fit_sarima_model(df_sarima)
+    steps = get_n_months(get_last_month(df_sarima)) - 1
+    forecast = fit_sarima_model(df_sarima, steps)
     forecast_index = generate_forecast_dates(df_sarima)
     forecast_values = forecast.predicted_mean
-    return create_forecast_df(forecast_index, forecast_values)
+    forecast_df = create_forecast_df(forecast_index, forecast_values)
+    forecast_df = ajusta_forecast(forecast_df, steps)
+    return forecast_df
