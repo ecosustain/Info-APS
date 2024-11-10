@@ -1,8 +1,9 @@
 import dash
 import dash_bootstrap_components as dbc
-from constants import time_division
 from callbacks.utils import estados_brasileiros
+from constants import time_division
 from dash import dcc, html
+
 
 def Header():
     return html.Div(
@@ -82,10 +83,13 @@ def Header():
                                         color="primary",
                                         outline=True,
                                         active=(
-                                            division == time_division.graphic_division[0]
+                                            division
+                                            == time_division.graphic_division[
+                                                0
+                                            ]
                                         ),  # Define o primeiro ano como ativo
                                         className="temp-button rounded",
-                                        style={"padding": "0px"}
+                                        style={"padding": "0px"},
                                     )
                                     for division in time_division.graphic_division
                                 ],

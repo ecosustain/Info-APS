@@ -1,5 +1,5 @@
 import dash
-from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year 
+from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year
 from callbacks.data_processing import get_df_from_json
 from callbacks.utils import get_type
 from dash import Input, Output
@@ -28,7 +28,7 @@ def register_callbacks_visita(app):
         chart_visitas_by_quarter = get_chart_by_quarter(
             df_visita, "Visitas Domiciliar por mil hab.", type
         )
-        
+
         chart_visitas_by_year = get_chart_by_year(
             df_visita, "Visitas Domiciliar por mil hab.", type
         )

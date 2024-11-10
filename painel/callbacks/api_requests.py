@@ -87,6 +87,7 @@ def get_encaminhamentos(estado, regiao, municipio):
 
     return make_request(url)
 
+
 def get_atendimentos_individuais_problema(estado, regiao, municipio, problema):
     """Função para obter os dados de atendimento inidividual por problema de saúde"""
     url = f"{API_URL}/atendimento_individual/{problema}"

@@ -79,23 +79,29 @@ def create_forecast_df(forecast_index, forecast_values):
     )
 
     # Criar colunas auxiliares para o ano e o trimestre
-    forecast_df['ano'] = forecast_df['ano_trimestre'].apply(lambda x: int(x.split('/')[1]))
-    forecast_df['trimestre'] = forecast_df['ano_trimestre'].apply(lambda x: int(x.split('/')[0][1]))
+    forecast_df["ano"] = forecast_df["ano_trimestre"].apply(
+        lambda x: int(x.split("/")[1])
+    )
+    forecast_df["trimestre"] = forecast_df["ano_trimestre"].apply(
+        lambda x: int(x.split("/")[0][1])
+    )
 
     # Ordenar os dados com base nas colunas auxiliares
-    forecast_df = forecast_df.sort_values(by=['ano', 'trimestre'])
+    forecast_df = forecast_df.sort_values(by=["ano", "trimestre"])
 
     # Remover as colunas auxiliares
-    forecast_df = forecast_df.drop(columns=['ano', 'trimestre'])
+    forecast_df = forecast_df.drop(columns=["ano", "trimestre"])
 
     forecast_df["valor"] = forecast_df["valor"].astype(str)
     return forecast_df
+
 
 def ajusta_forecast(df, steps):
     """Função para ajustar o forecast para o número de trimestres."""
     if steps == 7:
         df = df.iloc[1:]
     return df
+
 
 def forecast_sarima(df):
     """Função para gerar a previsão com SARIMA."""

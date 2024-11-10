@@ -2,8 +2,12 @@
 
 import dash
 import pandas as pd
-
-from callbacks.api_requests import get_collection, get_collection_atributes, get_atendimentos_individuais_problema, get_febres
+from callbacks.api_requests import (
+    get_atendimentos_individuais_problema,
+    get_collection,
+    get_collection_atributes,
+    get_febres,
+)
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -185,7 +189,9 @@ def calcular_indice(adequado, inadequado):
                 valor_adequado = adequado[ano][mes]
                 valor_inadequado = inadequado[ano][mes]
                 if valor_adequado + valor_inadequado > 0:
-                    indice[ano][mes] = valor_adequado / (valor_adequado + valor_inadequado)
+                    indice[ano][mes] = valor_adequado / (
+                        valor_adequado + valor_inadequado
+                    )
                     indice[ano][mes] = round(indice[ano][mes] * 100, 2)
                 else:
                     indice[ano][mes] = None  # Evitar divisão por zero
@@ -194,16 +200,24 @@ def calcular_indice(adequado, inadequado):
 
 def get_gravidez_json(estado, regiao, municipio):
     """Função para obter o indice de gravidez"""
-    adequado = get_collection(estado, regiao, municipio, 'Gravidez', '6 ou mais atendimentos')
-    inadequado = get_collection(estado, regiao, municipio, 'Gravidez', 'De 1 a 3 atendimentos,De 4 a 5 atendimentos')
+    adequado = get_collection(
+        estado, regiao, municipio, "Gravidez", "6 ou mais atendimentos"
+    )
+    inadequado = get_collection(
+        estado,
+        regiao,
+        municipio,
+        "Gravidez",
+        "De 1 a 3 atendimentos,De 4 a 5 atendimentos",
+    )
     indice = calcular_indice(adequado, inadequado)
     return indice
 
 
 def get_atributos_febre():
     """Função para obter os atributos de febre"""
-    atributos = get_collection_atributes('CIDS')
-    remover = ['CIAP (N01) Cefaléia', 'CIAP (R05) Tosse']
+    atributos = get_collection_atributes("CIDS")
+    remover = ["CIAP (N01) Cefaléia", "CIAP (R05) Tosse"]
     for r in remover:
         atributos.remove(r)
     # Concatenar os atributos, separando-os por vírgula
@@ -213,9 +227,15 @@ def get_atributos_febre():
 
 def get_cids_json(estado, regiao, municipio):
     """Função para obter os jsons de cids"""
-    febre = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (A03) Febre')
-    dor_cabeca = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (N01) Cefaléia')
-    tosse = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (R05) Tosse')
+    febre = get_collection(
+        estado, regiao, municipio, "CIDS", "CIAP (A03) Febre"
+    )
+    dor_cabeca = get_collection(
+        estado, regiao, municipio, "CIDS", "CIAP (N01) Cefaléia"
+    )
+    tosse = get_collection(
+        estado, regiao, municipio, "CIDS", "CIAP (R05) Tosse"
+    )
     palavra_febre = get_febres(estado, regiao, municipio)
 
     return febre, dor_cabeca, tosse, palavra_febre
@@ -223,8 +243,12 @@ def get_cids_json(estado, regiao, municipio):
 
 def get_asma_dpoc_json(estado, regiao, municipio):
     """Função para obter os jsons de asma e dpoc"""
-    asma = get_atendimentos_individuais_problema(estado, regiao, municipio, "Asma")
-    dpoc = get_atendimentos_individuais_problema(estado, regiao, municipio, "DPOC")
+    asma = get_atendimentos_individuais_problema(
+        estado, regiao, municipio, "Asma"
+    )
+    dpoc = get_atendimentos_individuais_problema(
+        estado, regiao, municipio, "DPOC"
+    )
     # Somar os valores de asma e dpoc
     for ano in asma:
         for mes in asma[ano]:

@@ -1,10 +1,13 @@
 import dash
-from dash import Input, Output, State
-
 from callbacks.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year, get_chart_percentage_by_year
+from callbacks.chart_plotting import (
+    get_chart_by_quarter,
+    get_chart_by_year,
+    get_chart_percentage_by_year,
+)
 from callbacks.data_processing import get_df_from_json, get_gravidez_json
 from callbacks.utils import get_type, get_values, store_nivel
+from dash import Input, Output, State
 
 # Dicionários para armazenar os históricos dos atendimentos
 hist_hipertensao = {}
@@ -27,11 +30,15 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
     if tipo == "hipertensao":
         global hist_hipertensao
-        hist_hipertensao = store_nivel(hist_hipertensao, df, populacao, nivel_geo, anos)
+        hist_hipertensao = store_nivel(
+            hist_hipertensao, df, populacao, nivel_geo, anos
+        )
         values = get_values(hist_hipertensao, ano, nivel_geo)
     elif tipo == "diabetes":
         global hist_diabetes
-        hist_diabetes = store_nivel(hist_diabetes, df, populacao, nivel_geo, anos)
+        hist_diabetes = store_nivel(
+            hist_diabetes, df, populacao, nivel_geo, anos
+        )
         values = get_values(hist_diabetes, ano, nivel_geo)
     elif tipo == "saude_sexual":
         global hist_saude_sexual
@@ -174,7 +181,9 @@ def register_callbacks_programaticos(app):
 
         # Add hipertensao
         big_numbers.append(
-            gera_big_numbers("hipertensao", hipertensao, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "hipertensao", hipertensao, populacao, nivel_geo, ano
+            )
         )
         # Add diabetes
         big_numbers.append(
@@ -182,15 +191,21 @@ def register_callbacks_programaticos(app):
         )
         # Add saude_sexual
         big_numbers.append(
-            gera_big_numbers("saude_sexual", saude_sexual, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "saude_sexual", saude_sexual, populacao, nivel_geo, ano
+            )
         )
         # Add saude_mental
         big_numbers.append(
-            gera_big_numbers("saude_mental", saude_mental, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "saude_mental", saude_mental, populacao, nivel_geo, ano
+            )
         )
         # Add puericultura
         big_numbers.append(
-            gera_big_numbers("puericultura", puericultura, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "puericultura", puericultura, populacao, nivel_geo, ano
+            )
         )
         # Gravidas
         big_numbers.append(

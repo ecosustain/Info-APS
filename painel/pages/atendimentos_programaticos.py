@@ -1,7 +1,7 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
 from callbacks.api_requests import anos
+from dash import dcc, html
 
 dash.register_page(
     __name__,
@@ -113,8 +113,8 @@ layout = html.Div(
                             id="indicator-content",
                             children=[
                                 dbc.ButtonGroup(
-                        [
-                                dbc.Button(
+                                    [
+                                        dbc.Button(
                                             str(ano),
                                             id=f"btn-ano-{ano}",
                                             color="primary",
@@ -136,7 +136,8 @@ layout = html.Div(
                                             children=[
                                                 square_legend,
                                                 html.P(
-                                                    "Brasil", className="legend-text"
+                                                    "Brasil",
+                                                    className="legend-text",
                                                 ),
                                             ],
                                         ),
@@ -145,7 +146,8 @@ layout = html.Div(
                                             children=[
                                                 rhombus_legend,
                                                 html.P(
-                                                    "Estado", className="legend-text"
+                                                    "Estado",
+                                                    className="legend-text",
                                                 ),
                                             ],
                                         ),
@@ -208,12 +210,8 @@ layout = html.Div(
                 ),
             ],
         ),
-        html.H2(
-            "Visão ao decorrer do tempo",
-            id="overview",
-            className="mt-3"
-        ),
-        html.Div (
+        html.H2("Visão ao decorrer do tempo", id="overview", className="mt-3"),
+        html.Div(
             id="year-content",
             className="time-visualization-content",
             children=[

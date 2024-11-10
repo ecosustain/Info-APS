@@ -1,4 +1,1 @@
-graphic_division = [
-    "Ano",
-    "Trimestre"
-]
+graphic_division = ["Ano", "Trimestre"]

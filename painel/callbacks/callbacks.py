@@ -3,7 +3,6 @@
 import warnings
 
 import dash
-from constants import time_division
 from callbacks.api_requests import (
     anos,
     get_atendimentos,
@@ -13,9 +12,9 @@ from callbacks.api_requests import (
     get_visitas_domiciliar,
 )
 from callbacks.chart_plotting import (
-    get_chart_forecast_by_quarter,
     get_chart_by_year,
     get_chart_by_year_profissionais,
+    get_chart_forecast_by_quarter,
     get_chart_percentage_by_year,
 )
 from callbacks.data_processing import (
@@ -40,6 +39,7 @@ from callbacks.utils import (
     get_values,
     store_nivel,
 )
+from constants import time_division
 from dash import Input, Output, State
 from dash import callback_context as ctx
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -59,6 +59,7 @@ warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 def register_callbacks(app):
     """Função para registrar os callbacks do painel principal"""
+
     @app.callback(
         Output("dropdown-regiao", "options"),
         Input("dropdown-estado", "value"),
@@ -266,9 +267,7 @@ def register_callbacks(app):
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
     )
-    def update_charts(
-        data, populacao, estado, regiao, municipio
-    ):
+    def update_charts(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
@@ -422,20 +421,30 @@ def register_callbacks(app):
                 }
             estilos.append(estilo)
         return estilos
-    
+
     @app.callback(
-        [Output(f"btn-{division}", "style") for division in time_division.graphic_division],
-        [Input(f"btn-{division}", "n_clicks") for division in time_division.graphic_division],
+        [
+            Output(f"btn-{division}", "style")
+            for division in time_division.graphic_division
+        ],
+        [
+            Input(f"btn-{division}", "n_clicks")
+            for division in time_division.graphic_division
+        ],
     )
     def update_button_styles_division(*n_clicks):
         ctx = dash.callback_context
 
         # Identificar o ano selecionado
-        selecionado = time_division.graphic_division[0]  # Define o primeiro ano como padrão
+        selecionado = time_division.graphic_division[
+            0
+        ]  # Define o primeiro ano como padrão
         if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
             prop_id = ctx.triggered[0]["prop_id"]
             if "btn" in prop_id:
-                selecionado = prop_id.split(".")[0].split("-")[-1]  # Extrai o ano do ID do botão
+                selecionado = prop_id.split(".")[0].split("-")[
+                    -1
+                ]  # Extrai o ano do ID do botão
 
         # Atualizar o estilo dos botões com base no ano selecionado
         estilos = []
@@ -456,7 +465,7 @@ def register_callbacks(app):
                 }
             estilos.append(estilo)
         return estilos
-    
+
     @app.callback(
         [
             Output("year-content", "style"),
@@ -467,14 +476,22 @@ def register_callbacks(app):
                 Input("year-content", "id"),
                 Input("quarter-content", "id"),
             ],
-            *[Input(f"btn-{division}", "n_clicks") for division in time_division.graphic_division],
+            *[
+                Input(f"btn-{division}", "n_clicks")
+                for division in time_division.graphic_division
+            ],
         ],
         [
-            *[State(f"btn-{division}", "n_clicks") for division in time_division.graphic_division],
+            *[
+                State(f"btn-{division}", "n_clicks")
+                for division in time_division.graphic_division
+            ],
         ],
     )
     def filter_graphic(*args):
-        selecionado = time_division.graphic_division[0]  # Define o primeiro ano como padrão
+        selecionado = time_division.graphic_division[
+            0
+        ]  # Define o primeiro ano como padrão
         if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
             prop_id = ctx.triggered[0]["prop_id"]
             if "btn" in prop_id:
@@ -482,20 +499,13 @@ def register_callbacks(app):
 
         ids = args[:2]
 
-        dict_division = {
-            "Ano": "year",
-            "Trimestre": "quarter"
-        }
+        dict_division = {"Ano": "year", "Trimestre": "quarter"}
 
         estilos = []
         for id_graphic in ids:
             if id_graphic.find(dict_division[selecionado]) != -1:
-                estilo = {
-                    "display": "block"
-                }
+                estilo = {"display": "block"}
             else:
-                estilo = {
-                    "display": "none"
-                }
+                estilo = {"display": "none"}
             estilos.append(estilo)
         return estilos

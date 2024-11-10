@@ -1,7 +1,7 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
 from callbacks.api_requests import anos
+from dash import dcc, html
 
 dash.register_page(
     __name__,
@@ -112,8 +112,8 @@ layout = html.Div(
                             id="indicator-content",
                             children=[
                                 dbc.ButtonGroup(
-                        [
-                                dbc.Button(
+                                    [
+                                        dbc.Button(
                                             str(ano),
                                             id=f"btn-ano-{ano}",
                                             color="primary",
@@ -135,7 +135,8 @@ layout = html.Div(
                                             children=[
                                                 square_legend,
                                                 html.P(
-                                                    "Brasil", className="legend-text"
+                                                    "Brasil",
+                                                    className="legend-text",
                                                 ),
                                             ],
                                         ),
@@ -144,7 +145,8 @@ layout = html.Div(
                                             children=[
                                                 rhombus_legend,
                                                 html.P(
-                                                    "Estado", className="legend-text"
+                                                    "Estado",
+                                                    className="legend-text",
                                                 ),
                                             ],
                                         ),
@@ -232,11 +234,7 @@ layout = html.Div(
                 ),
             ],
         ),
-        html.H2(
-            "Visão ao decorrer do tempo",
-            id="overview",
-            className="mt-3"
-        ),
+        html.H2("Visão ao decorrer do tempo", id="overview", className="mt-3"),
         html.Div(
             id="year-content",
             className="time-visualization-content",
@@ -263,7 +261,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Dengue",
                                     id="dengue-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_dengue_by_year",
                                     style={"height": "40vh"},
@@ -277,7 +275,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Tuberculose",
                                     id="tuberculose-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_tuberculose_by_year",
                                     style={"height": "40vh"},
@@ -285,7 +283,6 @@ layout = html.Div(
                             ],
                             width=4,
                         ),
-
                     ],
                 ),
                 dbc.Row(
@@ -296,7 +293,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de DST",
                                     id="dst-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_dst_by_year",
                                     style={"height": "40vh"},
@@ -310,7 +307,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Hanseníase",
                                     id="hanseniase-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_hanseniase_by_year",
                                     style={"height": "40vh"},
@@ -324,7 +321,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Febres",
                                     id="febres-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_febres_by_year",
                                     style={"height": "40vh"},
@@ -342,7 +339,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Febre",
                                     id="febre-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_febre_by_year",
                                     style={"height": "40vh"},
@@ -356,7 +353,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Cefaleia",
                                     id="cefaleia-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_cefaleia_by_year",
                                     style={"height": "40vh"},
@@ -370,7 +367,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Tosse",
                                     id="tosse-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_tosse_by_year",
                                     style={"height": "40vh"},
@@ -408,7 +405,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Dengue por Trimestre",
                                     id="dengue-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_dengue_by_quarter",
                                     style={"height": "40vh"},
@@ -426,7 +423,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Tuberculose por Trimestre",
                                     id="tuberculose-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_tuberculose_by_quarter",
                                     style={"height": "40vh"},
@@ -440,7 +437,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de DST por Trimestre",
                                     id="dst-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_dst_by_quarter",
                                     style={"height": "40vh"},
@@ -458,7 +455,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Hanseníase por Trimestre",
                                     id="hanseniase-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_hanseniase_by_quarter",
                                     style={"height": "40vh"},
@@ -472,7 +469,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Febres por Trimestre",
                                     id="febres-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_febres_by_quarter",
                                     style={"height": "40vh"},
@@ -490,7 +487,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Febre por Trimestre",
                                     id="febre-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_febre_by_quarter",
                                     style={"height": "40vh"},
@@ -504,7 +501,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Cefaleia por Trimestre",
                                     id="cefaleia-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_cefaleia_by_quarter",
                                     style={"height": "40vh"},
@@ -522,7 +519,7 @@ layout = html.Div(
                                 html.H6(
                                     "Atendimentos de Tosse por Trimestre",
                                     id="tosse-title",
-                                    ),
+                                ),
                                 dcc.Graph(
                                     id="chart_tosse_by_quarter",
                                     style={"height": "40vh"},

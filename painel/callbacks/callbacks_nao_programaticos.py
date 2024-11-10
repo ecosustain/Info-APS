@@ -1,14 +1,17 @@
 import dash
+import pandas as pd
+from callbacks.api_requests import anos, get_atendimentos_individuais_problema
+from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year
+from callbacks.data_processing import (
+    get_asma_dpoc_json,
+    get_cids_json,
+    get_df_from_json,
+)
+from callbacks.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
-from callbacks.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year 
-from callbacks.data_processing import get_df_from_json, get_cids_json, get_asma_dpoc_json
-from callbacks.utils import get_type, get_values, store_nivel
-import pandas as pd
-
 qtd_hab = 100000
-    
+
 # Dicionários para armazenar os históricos dos atendimentos
 hist_asma_dpoc = {}
 hist_dengue = {}
@@ -20,6 +23,7 @@ hist_cefaleia = {}
 hist_tosse = {}
 hist_febres = {}
 
+
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
     # Add asma_dpoc
@@ -29,42 +33,61 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
     if tipo == "asma_dpoc":
         global hist_asma_dpoc
-        hist_asma_dpoc = store_nivel(hist_asma_dpoc, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_asma_dpoc = store_nivel(
+            hist_asma_dpoc, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_asma_dpoc, ano, nivel_geo)
     elif tipo == "dengue":
         global hist_dengue
-        hist_dengue = store_nivel(hist_dengue, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_dengue = store_nivel(
+            hist_dengue, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_dengue, ano, nivel_geo)
     elif tipo == "tuberculose":
         global hist_tuberculose
-        hist_tuberculose = store_nivel(hist_tuberculose, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_tuberculose = store_nivel(
+            hist_tuberculose, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_tuberculose, ano, nivel_geo)
     elif tipo == "dst":
         global hist_dst
-        hist_dst = store_nivel(hist_dst, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_dst = store_nivel(
+            hist_dst, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_dst, ano, nivel_geo)
     elif tipo == "hanseniase":
         global hist_hanseniase
-        hist_hanseniase = store_nivel(hist_hanseniase, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_hanseniase = store_nivel(
+            hist_hanseniase, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_hanseniase, ano, nivel_geo)
     elif tipo == "febre":
         global hist_febre
-        hist_febre = store_nivel(hist_febre, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_febre = store_nivel(
+            hist_febre, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_febre, ano, nivel_geo)
     elif tipo == "cefaleia":
         global hist_cefaleia
-        hist_cefaleia = store_nivel(hist_cefaleia, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_cefaleia = store_nivel(
+            hist_cefaleia, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_cefaleia, ano, nivel_geo)
     elif tipo == "tosse":
         global hist_tosse
-        hist_tosse = store_nivel(hist_tosse, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_tosse = store_nivel(
+            hist_tosse, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_tosse, ano, nivel_geo)
     elif tipo == "febres":
         global hist_febres
-        hist_febres = store_nivel(hist_febres, df, populacao, nivel_geo, anos, qtd_hab)
+        hist_febres = store_nivel(
+            hist_febres, df, populacao, nivel_geo, anos, qtd_hab
+        )
         values = get_values(hist_febres, ano, nivel_geo)
 
     return values[0], values[1], total
+
 
 def register_callbacks_nao_programaticos(app):
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
@@ -93,12 +116,22 @@ def register_callbacks_nao_programaticos(app):
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         data_asma_dpoc = get_asma_dpoc_json(estado, regiao, municipio)
-        data_dengue = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Dengue")
-        data_tuberculose = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Tuberculose")
-        data_dst = get_atendimentos_individuais_problema(estado, regiao, municipio, "Doenças transmissíveis - DST")
-        data_hanseniase = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Hanseníase")
-        data_febre, data_cefaleia, data_tosse, data_febres = get_cids_json(estado, regiao, municipio)
-        
+        data_dengue = get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "DTransmissíveis - Dengue"
+        )
+        data_tuberculose = get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "DTransmissíveis - Tuberculose"
+        )
+        data_dst = get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Doenças transmissíveis - DST"
+        )
+        data_hanseniase = get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "DTransmissíveis - Hanseníase"
+        )
+        data_febre, data_cefaleia, data_tosse, data_febres = get_cids_json(
+            estado, regiao, municipio
+        )
+
         return (
             data_asma_dpoc,
             data_dengue,
@@ -198,7 +231,9 @@ def register_callbacks_nao_programaticos(app):
         )
         # Add tuberculose
         big_numbers.append(
-            gera_big_numbers("tuberculose", tuberculose, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "tuberculose", tuberculose, populacao, nivel_geo, ano
+            )
         )
         # Add dst
         big_numbers.append(
@@ -206,7 +241,9 @@ def register_callbacks_nao_programaticos(app):
         )
         # Add hanseniase
         big_numbers.append(
-            gera_big_numbers("hanseniase", hanseniase, populacao, nivel_geo, ano)
+            gera_big_numbers(
+                "hanseniase", hanseniase, populacao, nivel_geo, ano
+            )
         )
         # Add febre
         big_numbers.append(
@@ -240,17 +277,19 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
-    def update_asma_dpoc_charts(data_asma, populacao, estado, regiao, municipio):
+    def update_asma_dpoc_charts(
+        data_asma, populacao, estado, regiao, municipio
+    ):
         if data_asma is None:
             raise dash.exceptions.PreventUpdate
         titulo = "ASMA e DPOC"
         df = get_df_from_json(data_asma, populacao, qtd_hab)
         nivel = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, nivel)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, nivel)
-        
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
+
         return (chart_by_year, chart_by_quarter)
 
     @app.callback(
@@ -264,18 +303,18 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_dengue_charts(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "Dengue"
-        
+
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
-        
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+
         return (chart_by_year, chart_by_quarter)
 
     @app.callback(
@@ -289,18 +328,18 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_tuberculose_charts(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "Tuberculose"
-        
+
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
-        
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+
         return (chart_by_year, chart_by_quarter)
 
     @app.callback(
@@ -314,18 +353,18 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_dst_charts(data, populacao, estado, regiao, municipio):
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "DST"
-        
+
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
-        
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+
         return (chart_by_year, chart_by_quarter)
 
     @app.callback(
@@ -339,7 +378,7 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_hanseniase_charts(data, populacao, estado, regiao, municipio):
         if data is None:
@@ -349,10 +388,10 @@ def register_callbacks_nao_programaticos(app):
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
 
         return (chart_by_year, chart_by_quarter)
-    
+
     @app.callback(
         [
             Output("chart_febre_by_year", "figure"),
@@ -364,7 +403,7 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_febre_charts(data, populacao, estado, regiao, municipio):
         if data is None:
@@ -374,10 +413,10 @@ def register_callbacks_nao_programaticos(app):
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
 
         return (chart_by_year, chart_by_quarter)
-    
+
     @app.callback(
         [
             Output("chart_cefaleia_by_year", "figure"),
@@ -389,7 +428,7 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_cefaleia_charts(data, populacao, estado, regiao, municipio):
         if data is None:
@@ -399,10 +438,10 @@ def register_callbacks_nao_programaticos(app):
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
 
         return (chart_by_year, chart_by_quarter)
-    
+
     @app.callback(
         [
             Output("chart_tosse_by_year", "figure"),
@@ -414,7 +453,7 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_tosse_charts(data, populacao, estado, regiao, municipio):
         if data is None:
@@ -424,10 +463,10 @@ def register_callbacks_nao_programaticos(app):
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
 
         return (chart_by_year, chart_by_quarter)
-    
+
     @app.callback(
         [
             Output("chart_febres_by_year", "figure"),
@@ -439,7 +478,7 @@ def register_callbacks_nao_programaticos(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
-        ]
+        ],
     )
     def update_febres_charts(data, populacao, estado, regiao, municipio):
         if data is None:
@@ -449,6 +488,6 @@ def register_callbacks_nao_programaticos(app):
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
 
         return (chart_by_year, chart_by_quarter)

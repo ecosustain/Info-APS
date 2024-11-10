@@ -68,7 +68,7 @@ def get_mapa_brasil():
     fig.update_layout(
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
         coloraxis_showscale=False,
-        dragmode=False
+        dragmode=False,
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
@@ -109,7 +109,9 @@ def get_mapa_estado(estado):
     # Ajustar as configurações do mapa
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False, dragmode=False
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        coloraxis_showscale=False,
+        dragmode=False,
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
@@ -157,7 +159,9 @@ def get_mapa_regiao(estado, regiao):
         visible=False,
     )
     fig.update_layout(
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False, dragmode=False
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        coloraxis_showscale=False,
+        dragmode=False,
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
@@ -203,7 +207,9 @@ def get_mapa_municipio(estado, municipio):
         visible=False,
     )
     fig.update_layout(
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}, coloraxis_showscale=False,  dragmode=False
+        margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        coloraxis_showscale=False,
+        dragmode=False,
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",

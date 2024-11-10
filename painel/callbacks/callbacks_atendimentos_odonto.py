@@ -32,4 +32,4 @@ def register_callbacks_odonto(app):
             df_odonto, "Atend. Odontológico por mil hab.", type
         )
 
-        return (chart_odonto_by_quarter,chart_odonto_by_year)
+        return (chart_odonto_by_quarter, chart_odonto_by_year)
