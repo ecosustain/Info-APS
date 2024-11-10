@@ -232,35 +232,57 @@ layout = html.Div(
                 ),
             ],
         ),
+        html.H2(
+            "Visão ao decorrer do tempo",
+            id="overview",
+            className="mt-3"
+        ),
         html.Div(
             id="year-content",
             className="time-visualization-content",
             children=[
-                html.H2("Atendimentos Não Programáticos por Ano"),
                 dbc.Row(
                     [
-                        # Asma + DPOC por população por ano
+                        # Asma + DPOC por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_asma_dpoc_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Asma e DPOC",
+                                    id="asma-dpoc-title",
+                                ),
+                                dcc.Graph(
+                                    id="chart_asma_dpoc_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Dengue por população por ano
+                        # Dengue por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_dengue_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Dengue",
+                                    id="dengue-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_dengue_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Tuberculose por população por ano
+                        # Tuberculose por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_tuberculose_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Tuberculose",
+                                    id="tuberculose-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_tuberculose_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
 
@@ -268,56 +290,92 @@ layout = html.Div(
                 ),
                 dbc.Row(
                     [
-                        # DST por população por ano
+                        # DST por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_dst_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de DST",
+                                    id="dst-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_dst_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Hanseniase por população por ano
+                        # Hanseniase por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_hanseniase_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Hanseníase",
+                                    id="hanseniase-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_hanseniase_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Febres por população por ano
+                        # Febres por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_febres_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Febres",
+                                    id="febres-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_febres_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                     ],
                 ),
                 dbc.Row(
                     [
-                        # Febre por população por ano
+                        # Febre por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_febre_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Febre",
+                                    id="febre-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_febre_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Cefaleia por população por ano
+                        # Cefaleia por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_cefaleia_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Cefaleia",
+                                    id="cefaleia-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_cefaleia_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
-                        # Tosse por população por ano
+                        # Tosse por população
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_tosse_by_year",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Tosse",
+                                    id="tosse-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_tosse_by_year",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=4,
                         ),
                     ],
@@ -333,18 +391,30 @@ layout = html.Div(
                     [
                         # Asma + DPOC por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_asma_dpoc_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Asma e DPOC por Trimestre",
+                                    id="asma-dpoc-title",
+                                ),
+                                dcc.Graph(
+                                    id="chart_asma_dpoc_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Dengue por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_dengue_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Dengue por Trimestre",
+                                    id="dengue-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_dengue_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -353,18 +423,30 @@ layout = html.Div(
                     [
                         # Tuberculose por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_tuberculose_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Tuberculose por Trimestre",
+                                    id="tuberculose-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_tuberculose_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # DST por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_dst_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de DST por Trimestre",
+                                    id="dst-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_dst_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -373,18 +455,30 @@ layout = html.Div(
                     [
                         # Hanseniase por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_hanseniase_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Hanseníase por Trimestre",
+                                    id="hanseniase-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_hanseniase_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Febres por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_febres_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Febres por Trimestre",
+                                    id="febres-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_febres_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -393,18 +487,30 @@ layout = html.Div(
                     [
                         # Febre por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_febre_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Febre por Trimestre",
+                                    id="febre-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_febre_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                         # Cefaleia por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_cefaleia_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Cefaleia por Trimestre",
+                                    id="cefaleia-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_cefaleia_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
@@ -413,10 +519,16 @@ layout = html.Div(
                     [
                         # Tosse por trimestre
                         dbc.Col(
-                            dcc.Graph(
-                                id="chart_tosse_by_quarter",
-                                style={"height": "40vh"},
-                            ),
+                            [
+                                html.H6(
+                                    "Atendimentos de Tosse por Trimestre",
+                                    id="tosse-title",
+                                    ),
+                                dcc.Graph(
+                                    id="chart_tosse_by_quarter",
+                                    style={"height": "40vh"},
+                                ),
+                            ],
                             width=6,
                         ),
                     ],
