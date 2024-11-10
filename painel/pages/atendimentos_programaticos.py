@@ -208,137 +208,138 @@ layout = html.Div(
                 ),
             ],
         ),
-        dbc.Row(
-            [
-                # Hipertensão por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_hipertensao_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
-                ),
-                # Hipertensão por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_hipertensao_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
-                ),
-                dbc.Col(),
-            ],
-            className="mb-3",
+        html.H2(
+            "Visão ao decorrer do tempo",
+            id="overview",
+            className="mt-3"
         ),
-        dbc.Row(
-            [
-                # Diabetes por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_diabetes_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
+        html.Div (
+            id="year-content",
+            className="time-visualization-content",
+            children=[
+                dbc.Row(
+                    [
+                        # Hipertensão por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_hipertensao_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                        # Diabetes por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_diabetes_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                        # Saude Sexual por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_saude_sexual_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                    ],
                 ),
-                # Diabetes por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_diabetes_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
+                dbc.Row(
+                    [
+                        # Saude Mental por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_saude_mental_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                        # Puericultura por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_puericultura_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                        # Gravidez por população por ano
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_gravidez_by_year",
+                                style={"height": "40vh"},
+                            ),
+                            width=4,
+                        ),
+                    ],
                 ),
-                dbc.Col(),
             ],
-            className="mb-3",
         ),
-        dbc.Row(
-            [
-                # Saude Sexual por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_saude_sexual_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
+        html.Div(
+            id="quarter-content",
+            className="time-visualization-content",
+            children=[
+                dbc.Row(
+                    [
+                        # Hipertensão por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_hipertensao_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                        # Diabetes por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_diabetes_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                    ],
                 ),
-                # Saude Sexual por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_saude_sexual_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
+                dbc.Row(
+                    [
+                        # Saude Sexual por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_saude_sexual_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                        # Saude Mental por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_saude_mental_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                    ],
                 ),
-                dbc.Col(),
+                dbc.Row(
+                    [
+                        # Puericultura por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_puericultura_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                        # Gravidez por trimestre
+                        dbc.Col(
+                            dcc.Graph(
+                                id="chart_gravidez_by_quarter",
+                                style={"height": "40vh"},
+                            ),
+                            width=6,
+                        ),
+                    ],
+                ),
             ],
-            className="mb-3",
         ),
-        dbc.Row(
-            [
-                # Saude Mental por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_saude_mental_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
-                ),
-                # Saude Mental por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_saude_mental_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
-                ),
-                dbc.Col(),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                # Puericultura por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_puericultura_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
-                ),
-                # Puericultura por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_puericultura_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
-                ),
-                dbc.Col(),
-            ],
-            className="mb-3",
-        ),
-        dbc.Row(
-            [
-                # Puericultura por população por ano
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_gravidez_by_year",
-                        style={"height": "40vh"},
-                    ),
-                    width=3,
-                ),
-                # Puericultura por trimestre
-                dbc.Col(
-                    dcc.Graph(
-                        id="chart_gravidez_by_quarter",
-                        style={"height": "40vh"},
-                    ),
-                    width=9,
-                ),
-                dbc.Col(),
-            ],
-            className="mb-3",
-        ),
-    ]
+    ],
 )
