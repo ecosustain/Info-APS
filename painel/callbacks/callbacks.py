@@ -261,8 +261,6 @@ def register_callbacks(app):
             Output("chart_by_quarter", "figure"),
         ],
         Input("store-data", "data"),
-        Input("store-data-visita", "data"),
-        Input("store-data-odonto", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),

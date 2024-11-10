@@ -320,7 +320,7 @@ layout = html.Div(
                         dbc.Col(   
                             [
                                 html.H2(
-                                    "Atendimentos por profissionar",
+                                    "Atendimentos por profissionais",
                                     id="atendimentos-title",
                                 ),
                                 dcc.Graph(
