@@ -126,8 +126,7 @@ def get_df_from_json(json_data, populacao=None, qtd_hab=1000):
     # normalizar valores pelo total da população (1000 habitantes)
     if populacao is not None:
         populacao = populacao / qtd_hab
-        df["valor"] = df["valor"] / populacao
-        df["valor"] = df["valor"].astype(int)
+        df["valor"] = round(df["valor"] / populacao)
 
     return df
 
