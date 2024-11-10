@@ -42,7 +42,6 @@ def get_last_month(df_sarima):
     """Função para obter o último mês do dataframe."""
     last_year = df_sarima["ano"].max()
     last_month = df_sarima[df_sarima["ano"] == last_year]["mes"].max()
-    print('-------------------last_month', last_month)
     return last_month
 
 
@@ -50,7 +49,6 @@ def generate_forecast_dates(df_sarima):
     """Função para gerar os trimestres para os quais a previsão será feita."""
     last_year = df_sarima["ano"].max()
     last_month = df_sarima[df_sarima["ano"] == last_year]["mes"].max()
-    print('-------------------last_month', last_month)
     n = get_n_months(last_month)
 
     forecast_month = []

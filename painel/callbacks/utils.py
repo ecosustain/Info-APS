@@ -165,7 +165,6 @@ def store_nivel(hist, df, populacao, nivel, anos, qtd_hab=1000):
     # filtrar df para os ultimos 5 anos
     df = df[df["ano"].isin(anos)]
     if populacao is not None:
-        print("--- Normalizando valores ---")
         # normalizar df pelo total da população (1000 habitantes)
         populacao = populacao / qtd_hab
         df["valor"] = round(df["valor"] / populacao)

@@ -3,7 +3,7 @@ from dash import Input, Output, State
 
 from callbacks.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.chart_plotting import get_chart_by_quarter, get_chart_by_year 
-from callbacks.data_processing import get_df_from_json, get_cids_json
+from callbacks.data_processing import get_df_from_json, get_cids_json, get_asma_dpoc_json
 from callbacks.utils import get_type, get_values, store_nivel
 import pandas as pd
 
@@ -65,8 +65,7 @@ def register_callbacks_nao_programaticos(app):
     # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
         [
-            Output("store-data-asma", "data"),
-            Output("store-data-dpoc", "data"),
+            Output("store-data-asma-dpoc", "data"),
             Output("store-data-dengue", "data"),
             Output("store-data-tuberculose", "data"),
             Output("store-data-dst", "data"),
@@ -87,8 +86,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        data_asma = get_atendimentos_individuais_problema(estado, regiao, municipio, "Asma")
-        data_dpoc = get_atendimentos_individuais_problema(estado, regiao, municipio, "DPOC")
+        data_asma_dpoc = get_asma_dpoc_json(estado, regiao, municipio)
         data_dengue = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Dengue")
         data_tuberculose = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Tuberculose")
         data_dst = get_atendimentos_individuais_problema(estado, regiao, municipio, "Doenças transmissíveis - DST")
@@ -98,8 +96,7 @@ def register_callbacks_nao_programaticos(app):
         # vi. Número de atendimentos individuais por mil habitantes que tiveram como CID/CIAP a palavra Febre
         
         return (
-            data_asma,
-            data_dpoc,
+            data_asma_dpoc,
             data_dengue,
             data_tuberculose,
             data_dst,
@@ -111,9 +108,9 @@ def register_callbacks_nao_programaticos(app):
 
     @app.callback(
         [
-            # Output("indicador-asma_dpoc-brasil", "children"),
-            # Output("indicador-asma_dpoc-estado", "children"),
-            # Output("big-asma_dpoc", "children"),
+            Output("indicador-asma-dpoc-brasil", "children"),
+            Output("indicador-asma-dpoc-estado", "children"),
+            Output("big-asma-dpoc", "children"),
             Output("indicador-dengue-brasil", "children"),
             Output("indicador-dengue-estado", "children"),
             Output("big-dengue", "children"),
@@ -137,8 +134,7 @@ def register_callbacks_nao_programaticos(app):
             Output("big-tosse", "children"),
         ],
         [
-            # Input("store-data-asma", "data"),
-            # Input("store-data-dpoc", "data"),
+            Input("store-data-asma-dpoc", "data"),
             Input("store-data-dengue", "data"),
             Input("store-data-tuberculose", "data"),
             Input("store-data-dst", "data"),
@@ -156,8 +152,7 @@ def register_callbacks_nao_programaticos(app):
         ],
     )
     def update_programatico_big_numbers(
-        # asma,
-        # dpoc,
+        asma_dpoc,
         dengue,
         tuberculose,
         dst,
@@ -183,10 +178,10 @@ def register_callbacks_nao_programaticos(app):
         # Inicializa a lista para armazenar os números grandes
         big_numbers = []
 
-        # # Add asma_dpoc
-        # big_numbers.append(
-        #     gera_big_numbers("asma_dpoc", asma_dpoc, populacao, nivel_geo, ano)
-        # )
+        # Add asma_dpoc
+        big_numbers.append(
+            gera_big_numbers("asma_dpoc", asma_dpoc, populacao, nivel_geo, ano)
+        )
         # Add dengue
         big_numbers.append(
             gera_big_numbers("dengue", dengue, populacao, nivel_geo, ano)
@@ -226,27 +221,21 @@ def register_callbacks_nao_programaticos(app):
             Output("chart_asma_dpoc_by_quarter", "figure"),
         ],
         [
-            Input("store-data-asma", "data"),
-            Input("store-data-dpoc", "data"),
+            Input("store-data-asma-dpoc", "data"),
             Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ]
     )
-    def update_asma_dpoc_charts(data_asma, data_dpoc, populacao, estado, regiao, municipio):
+    def update_asma_dpoc_charts(data_asma, populacao, estado, regiao, municipio):
         if data_asma is None:
             raise dash.exceptions.PreventUpdate
         titulo = "ASMA e DPOC"
-        
-        df_asma = get_df_from_json(data_asma, populacao, qtd_hab)
-        df_dpoc = get_df_from_json(data_dpoc, populacao, qtd_hab)
-        df =  pd.merge(df_asma, df_dpoc, on=['ano', 'ano_trimestre', 'trimestre', 'mes'], suffixes=('_1', '_2'))
-        df['valor'] = df['valor_1'] + df['valor_2']
-
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+        df = get_df_from_json(data_asma, populacao, qtd_hab)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter( df, titulo, nivel)
         
         return (chart_by_year, chart_by_quarter)
 
@@ -342,11 +331,11 @@ def register_callbacks_nao_programaticos(app):
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "Hanseníase"
-        
+
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, type)
         chart_by_quarter = get_chart_by_quarter( df, titulo, type)
-        
+
         return (chart_by_year, chart_by_quarter)
     

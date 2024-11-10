@@ -43,8 +43,7 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-puericultura"),
                         dcc.Store(id="store-data-gravidez"),
                         # Não Programático
-                        dcc.Store(id="store-data-asma"),
-                        dcc.Store(id="store-data-dpoc"),
+                        dcc.Store(id="store-data-asma-dpoc"),
                         dcc.Store(id="store-data-dengue"),
                         dcc.Store(id="store-data-tuberculose"),
                         dcc.Store(id="store-data-dst"),

@@ -154,9 +154,9 @@ layout = html.Div(
                                     [
                                         indicator_component(
                                             "ASMA e DPOC",
-                                            "indicador-asma_dpoc-brasil",
-                                            "indicador-asma_dpoc-estado",
-                                            "big-asma_dpoc",
+                                            "indicador-asma-dpoc-brasil",
+                                            "indicador-asma-dpoc-estado",
+                                            "big-asma-dpoc",
                                         ),
                                         slash_column,
                                         indicator_component(
