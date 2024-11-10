@@ -3,7 +3,7 @@
 import dash
 import pandas as pd
 
-from callbacks.api_requests import get_collection, get_collection_atributes, get_atendimentos_individuais_problema
+from callbacks.api_requests import get_collection, get_collection_atributes, get_atendimentos_individuais_problema, get_febres
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -216,10 +216,9 @@ def get_cids_json(estado, regiao, municipio):
     febre = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (A03) Febre')
     dor_cabeca = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (N01) Cefaléia')
     tosse = get_collection(estado, regiao, municipio, 'CIDS', 'CIAP (R05) Tosse')
-    # atributos_febre = get_atributos_febre()
-    # palavra_febre = get_collection(estado, regiao, municipio, 'CIDS', atributos_febre)
+    palavra_febre = get_febres(estado, regiao, municipio)
 
-    return febre, dor_cabeca, tosse
+    return febre, dor_cabeca, tosse, palavra_febre
 
 
 def get_asma_dpoc_json(estado, regiao, municipio):

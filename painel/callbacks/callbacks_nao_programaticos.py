@@ -18,6 +18,7 @@ hist_hanseniase = {}
 hist_febre = {}
 hist_cefaleia = {}
 hist_tosse = {}
+hist_febres = {}
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
@@ -58,6 +59,10 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
         global hist_tosse
         hist_tosse = store_nivel(hist_tosse, df, populacao, nivel_geo, anos, qtd_hab)
         values = get_values(hist_tosse, ano, nivel_geo)
+    elif tipo == "febres":
+        global hist_febres
+        hist_febres = store_nivel(hist_febres, df, populacao, nivel_geo, anos, qtd_hab)
+        values = get_values(hist_febres, ano, nivel_geo)
 
     return values[0], values[1], total
 
@@ -73,6 +78,7 @@ def register_callbacks_nao_programaticos(app):
             Output("store-data-febre", "data"),
             Output("store-data-cefaleia", "data"),
             Output("store-data-tosse", "data"),
+            Output("store-data-febres", "data"),
         ],
         [
             Input("dummy-div", "children"),
@@ -91,9 +97,7 @@ def register_callbacks_nao_programaticos(app):
         data_tuberculose = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Tuberculose")
         data_dst = get_atendimentos_individuais_problema(estado, regiao, municipio, "Doenças transmissíveis - DST")
         data_hanseniase = get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Hanseníase")
-        data_febre, data_cefaleia, data_tosse = get_cids_json(estado, regiao, municipio)
-        #TODO
-        # vi. Número de atendimentos individuais por mil habitantes que tiveram como CID/CIAP a palavra Febre
+        data_febre, data_cefaleia, data_tosse, data_febres = get_cids_json(estado, regiao, municipio)
         
         return (
             data_asma_dpoc,
@@ -104,6 +108,7 @@ def register_callbacks_nao_programaticos(app):
             data_febre,
             data_cefaleia,
             data_tosse,
+            data_febres,
         )
 
     @app.callback(
@@ -132,6 +137,9 @@ def register_callbacks_nao_programaticos(app):
             Output("indicador-tosse-brasil", "children"),
             Output("indicador-tosse-estado", "children"),
             Output("big-tosse", "children"),
+            Output("indicador-febres-brasil", "children"),
+            Output("indicador-febres-estado", "children"),
+            Output("big-febres", "children"),
         ],
         [
             Input("store-data-asma-dpoc", "data"),
@@ -142,6 +150,7 @@ def register_callbacks_nao_programaticos(app):
             Input("store-data-febre", "data"),
             Input("store-data-cefaleia", "data"),
             Input("store-data-tosse", "data"),
+            Input("store-data-febres", "data"),
             Input("store-populacao", "data"),
             Input("nivel-geo", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
@@ -160,6 +169,7 @@ def register_callbacks_nao_programaticos(app):
         febre,
         cefaleia,
         tosse,
+        febres,
         populacao,
         nivel_geo,
         *args,
@@ -209,6 +219,10 @@ def register_callbacks_nao_programaticos(app):
         # Add tosse
         big_numbers.append(
             gera_big_numbers("tosse", tosse, populacao, nivel_geo, ano)
+        )
+        # Add febres
+        big_numbers.append(
+            gera_big_numbers("febres", febres, populacao, nivel_geo, ano)
         )
 
         big_numbers = [item for sublist in big_numbers for item in sublist]
@@ -414,3 +428,27 @@ def register_callbacks_nao_programaticos(app):
 
         return (chart_by_year, chart_by_quarter)
     
+    @app.callback(
+        [
+            Output("chart_febres_by_year", "figure"),
+            Output("chart_febres_by_quarter", "figure"),
+        ],
+        [
+            Input("store-data-febres", "data"),
+            Input("store-populacao", "data"),
+            Input("dropdown-estado", "value"),
+            Input("dropdown-regiao", "value"),
+            Input("dropdown-municipio", "value"),
+        ]
+    )
+    def update_febres_charts(data, populacao, estado, regiao, municipio):
+        if data is None:
+            raise dash.exceptions.PreventUpdate
+        titulo = "Febres"
+
+        df = get_df_from_json(data, populacao, qtd_hab)
+        type = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, type)
+        chart_by_quarter = get_chart_by_quarter( df, titulo, type)
+
+        return (chart_by_year, chart_by_quarter)
