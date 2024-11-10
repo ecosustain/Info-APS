@@ -1,16 +1,17 @@
 #indicators {
   display: flex;
+  align-items: center;
 }
 
 #indicator-content {
   background-color: white;
   border-radius: 8px;
-  padding: 12px 20px;
+  padding: 15px 20px;
 }
 
 #overview {
-  font-size: 18px;
-  margin-bottom: 6px !important;
+  font-size: 20px;
+  margin-bottom: 10px !important;
   margin-left: 2px;
   font-weight: bold;
 }
@@ -18,7 +19,7 @@
 .time-visualization-content {
   background-color: white;
   border-radius: 8px;
-  padding: 24px;
+  padding: 15px 20px;
 }
 
 #atendimentos-title {

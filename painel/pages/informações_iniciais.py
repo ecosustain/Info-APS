@@ -259,7 +259,7 @@ layout = html.Div(
         html.H2(
             "Visão ao decorrer do tempo",
             id="overview",
-            className="mt-5"
+            className="mt-3"
         ),
         html.Div (
             id="year-content",
