@@ -152,12 +152,12 @@ layout = html.Div(
                                 ),
                                 dbc.Row(
                                     [
-                                        # indicator_component(
-                                        #     "ASMA e DPOC",
-                                        #     "indicador-asma_dpoc-brasil",
-                                        #     "indicador-asma_dpoc-estado",
-                                        #     "big-asma_dpoc",
-                                        # ),
+                                        indicator_component(
+                                            "ASMA e DPOC",
+                                            "indicador-asma_dpoc-brasil",
+                                            "indicador-asma_dpoc-estado",
+                                            "big-asma_dpoc",
+                                        ),
                                         slash_column,
                                         indicator_component(
                                             "Dengue",
@@ -190,13 +190,13 @@ layout = html.Div(
                                             "indicador-hanseniase-estado",
                                             "big-hanseniase",
                                         ),
-                                        # slash_column,
-                                        # indicator_component(
-                                        #     "Grávidas",
-                                        #     "indicador-gravidas-brasil",
-                                        #     "indicador-gravidas-estado",
-                                        #     "big-gravidas",
-                                        # ),
+                                        slash_column,
+                                        indicator_component(
+                                            "Febres",
+                                            "indicador-febres-brasil",
+                                            "indicador-febres-estado",
+                                            "big-febres",
+                                        ),
                                     ],
                                     className="mb-3",
                                 ),
