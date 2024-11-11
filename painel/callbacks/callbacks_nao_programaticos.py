@@ -23,6 +23,32 @@ hist_cefaleia = {}
 hist_tosse = {}
 hist_febres = {}
 
+data_inputs = [
+        Input("dummy-div", "children"),
+        Input("dropdown-estado", "value"),
+        Input("dropdown-regiao", "value"),
+        Input("dropdown-municipio", "value"),
+        Input("url", "pathname"),
+    ]
+
+common_inputs = [
+    Input("store-populacao", "data"),
+    Input("nivel-geo", "data"),
+    *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
+common_states = [
+    State("store-data", "data"),
+    *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
+
+# Função auxiliar para identificar o ano selecionado
+def get_selected_year(ctx):
+    ano = anos[0]  # Define o primeiro ano como padrão
+    if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+        prop_id = ctx.triggered[0]["prop_id"]
+        if "btn-ano" in prop_id:
+            ano = int(prop_id.split(".")[0].split("-")[-1])
+    return ano
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
@@ -90,181 +116,234 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
 
 def register_callbacks_nao_programaticos(app):
-    # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
+    # Callback para fazer a requisição à API e armazenar os dados de asma e DPOC no dcc.Store
     @app.callback(
-        [
-            Output("store-data-asma-dpoc", "data"),
-            Output("store-data-dengue", "data"),
-            Output("store-data-tuberculose", "data"),
-            Output("store-data-dst", "data"),
-            Output("store-data-hanseniase", "data"),
-            Output("store-data-febre", "data"),
-            Output("store-data-cefaleia", "data"),
-            Output("store-data-tosse", "data"),
-            Output("store-data-febres", "data"),
-        ],
-        [
-            Input("dummy-div", "children"),
-            Input("dropdown-estado", "value"),
-            Input("dropdown-regiao", "value"),
-            Input("dropdown-municipio", "value"),
-            Input("url", "pathname"),
-        ],
+        Output("store-data-asma-dpoc", "data"),
+        data_inputs,
     )
-    def fetch_data(dummy, estado, regiao, municipio, url):
-        """Função para fazer a requisição à API e armazenar os dados no Store"""
+    def fetch_data_asma_dpoc(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de asma e DPOC no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        data_asma_dpoc = get_asma_dpoc_json(estado, regiao, municipio)
-        data_dengue = get_atendimentos_individuais_problema(
-            estado, regiao, municipio, "DTransmissíveis - Dengue"
-        )
-        data_tuberculose = get_atendimentos_individuais_problema(
-            estado, regiao, municipio, "DTransmissíveis - Tuberculose"
-        )
-        data_dst = get_atendimentos_individuais_problema(
-            estado, regiao, municipio, "Doenças transmissíveis - DST"
-        )
-        data_hanseniase = get_atendimentos_individuais_problema(
-            estado, regiao, municipio, "DTransmissíveis - Hanseníase"
-        )
-        data_febre, data_cefaleia, data_tosse, data_febres = get_cids_json(
-            estado, regiao, municipio
-        )
+        return get_asma_dpoc_json(estado, regiao, municipio)
 
-        return (
-            data_asma_dpoc,
-            data_dengue,
-            data_tuberculose,
-            data_dst,
-            data_hanseniase,
-            data_febre,
-            data_cefaleia,
-            data_tosse,
-            data_febres,
-        )
+    # Callback para fazer a requisição à API e armazenar os dados de dengue no dcc.Store
+    @app.callback(
+        Output("store-data-dengue", "data"),
+        data_inputs,
+    )
+    def fetch_data_dengue(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de dengue no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        return get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Dengue")
 
+    # Callback para fazer a requisição à API e armazenar os dados de tuberculose no dcc.Store
+    @app.callback(
+        Output("store-data-tuberculose", "data"),
+        data_inputs,
+    )
+    def fetch_data_tuberculose(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de tuberculose no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        return get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Tuberculose")
+
+    # Callback para fazer a requisição à API e armazenar os dados de DST no dcc.Store
+    @app.callback(
+        Output("store-data-dst", "data"),
+        data_inputs,
+    )
+    def fetch_data_dst(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de DST no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Doenças transmissíveis - DST")
+
+    # Callback para fazer a requisição à API e armazenar os dados de hanseníase no dcc.Store
+    @app.callback(
+        Output("store-data-hanseniase", "data"),
+        data_inputs,
+    )
+    def fetch_data_hanseniase(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de hanseníase no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        return get_atendimentos_individuais_problema(estado, regiao, municipio, "DTransmissíveis - Hanseníase")
+
+    # Callback para fazer a requisição à API e armazenar os dados de febre no dcc.Store
+    @app.callback(
+        Output("store-data-febre", "data"),
+        data_inputs,
+    )
+    def fetch_data_febre(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de febre no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        data_febre, _, _, _ = get_cids_json(estado, regiao, municipio)
+        return data_febre
+
+    # Callback para fazer a requisição à API e armazenar os dados de cefaleia no dcc.Store
+    @app.callback(
+        Output("store-data-cefaleia", "data"),
+        data_inputs,
+    )
+    def fetch_data_cefaleia(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de cefaleia no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        _, data_cefaleia, _, _ = get_cids_json(estado, regiao, municipio)
+        return data_cefaleia
+
+    # Callback para fazer a requisição à API e armazenar os dados de tosse no dcc.Store
+    @app.callback(
+        Output("store-data-tosse", "data"),
+        data_inputs,
+    )
+    def fetch_data_tosse(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de tosse no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        _, _, data_tosse, _ = get_cids_json(estado, regiao, municipio)
+        return data_tosse
+
+    # Callback para fazer a requisição à API e armazenar os dados de febres no dcc.Store
+    @app.callback(
+        Output("store-data-febres", "data"),
+        data_inputs,
+    )
+    def fetch_data_febres(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de febres no Store"""
+        if url != "/atendimentos-nao-programaticos":
+            raise dash.exceptions.PreventUpdate
+        _, _, _, data_febres = get_cids_json(estado, regiao, municipio)
+        return data_febres
+
+    # Callback para atualizar os números grandes de asma e DPOC
     @app.callback(
         [
             Output("indicador-asma-dpoc-brasil", "children"),
             Output("indicador-asma-dpoc-estado", "children"),
             Output("big-asma-dpoc", "children"),
+        ],
+        [Input("store-data-asma-dpoc", "data")] + common_inputs,
+        common_states,
+    )
+    def update_asma_dpoc_big_numbers(asma_dpoc, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("asma_dpoc", asma_dpoc, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de dengue
+    @app.callback(
+        [
             Output("indicador-dengue-brasil", "children"),
             Output("indicador-dengue-estado", "children"),
             Output("big-dengue", "children"),
+        ],
+        [Input("store-data-dengue", "data")] + common_inputs,
+        common_states,
+    )
+    def update_dengue_big_numbers(dengue, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("dengue", dengue, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de tuberculose
+    @app.callback(
+        [
             Output("indicador-tuberculose-brasil", "children"),
             Output("indicador-tuberculose-estado", "children"),
             Output("big-tuberculose", "children"),
+        ],
+        [Input("store-data-tuberculose", "data")] + common_inputs,
+        common_states,
+    )
+    def update_tuberculose_big_numbers(tuberculose, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("tuberculose", tuberculose, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de DST
+    @app.callback(
+        [
             Output("indicador-dst-brasil", "children"),
             Output("indicador-dst-estado", "children"),
             Output("big-dst", "children"),
+        ],
+        [Input("store-data-dst", "data")] + common_inputs,
+        common_states,
+    )
+    def update_dst_big_numbers(dst, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("dst", dst, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de hanseníase
+    @app.callback(
+        [
             Output("indicador-hanseniase-brasil", "children"),
             Output("indicador-hanseniase-estado", "children"),
             Output("big-hanseniase", "children"),
+        ],
+        [Input("store-data-hanseniase", "data")] + common_inputs,
+        common_states,
+    )
+    def update_hanseniase_big_numbers(hanseniase, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("hanseniase", hanseniase, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de febre
+    @app.callback(
+        [
             Output("indicador-febre-brasil", "children"),
             Output("indicador-febre-estado", "children"),
             Output("big-febre", "children"),
+        ],
+        [Input("store-data-febre", "data")] + common_inputs,
+        common_states,
+    )
+    def update_febre_big_numbers(febre, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("febre", febre, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de cefaleia
+    @app.callback(
+        [
             Output("indicador-cefaleia-brasil", "children"),
             Output("indicador-cefaleia-estado", "children"),
             Output("big-cefaleia", "children"),
+        ],
+        [Input("store-data-cefaleia", "data")] + common_inputs,
+        common_states,
+    )
+    def update_cefaleia_big_numbers(cefaleia, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("cefaleia", cefaleia, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de tosse
+    @app.callback(
+        [
             Output("indicador-tosse-brasil", "children"),
             Output("indicador-tosse-estado", "children"),
             Output("big-tosse", "children"),
+        ],
+        [Input("store-data-tosse", "data")] + common_inputs,
+        common_states,
+    )
+    def update_tosse_big_numbers(tosse, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("tosse", tosse, populacao, nivel_geo, ano)
+
+    # Callback para atualizar os números grandes de febres
+    @app.callback(
+        [
             Output("indicador-febres-brasil", "children"),
             Output("indicador-febres-estado", "children"),
             Output("big-febres", "children"),
         ],
-        [
-            Input("store-data-asma-dpoc", "data"),
-            Input("store-data-dengue", "data"),
-            Input("store-data-tuberculose", "data"),
-            Input("store-data-dst", "data"),
-            Input("store-data-hanseniase", "data"),
-            Input("store-data-febre", "data"),
-            Input("store-data-cefaleia", "data"),
-            Input("store-data-tosse", "data"),
-            Input("store-data-febres", "data"),
-            Input("store-populacao", "data"),
-            Input("nivel-geo", "data"),
-            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
-        [
-            State("store-data", "data"),
-            *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
+        [Input("store-data-febres", "data")] + common_inputs,
+        common_states,
     )
-    def update_programatico_big_numbers(
-        asma_dpoc,
-        dengue,
-        tuberculose,
-        dst,
-        hanseniase,
-        febre,
-        cefaleia,
-        tosse,
-        febres,
-        populacao,
-        nivel_geo,
-        *args,
-    ):
-        """Função para atualizar os números grandes dos indicadores programáticos"""
-        ctx = dash.callback_context
-        # Identificar o ano selecionado
-        ano = anos[0]  # Define o primeiro ano como padrão
-        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
-            prop_id = ctx.triggered[0]["prop_id"]
-            if "btn-ano" in prop_id:
-                ano = int(
-                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
-                )  # Extrai o ano do ID do botão
-
-        # Inicializa a lista para armazenar os números grandes
-        big_numbers = []
-
-        # Add asma_dpoc
-        big_numbers.append(
-            gera_big_numbers("asma_dpoc", asma_dpoc, populacao, nivel_geo, ano)
-        )
-        # Add dengue
-        big_numbers.append(
-            gera_big_numbers("dengue", dengue, populacao, nivel_geo, ano)
-        )
-        # Add tuberculose
-        big_numbers.append(
-            gera_big_numbers(
-                "tuberculose", tuberculose, populacao, nivel_geo, ano
-            )
-        )
-        # Add dst
-        big_numbers.append(
-            gera_big_numbers("dst", dst, populacao, nivel_geo, ano)
-        )
-        # Add hanseniase
-        big_numbers.append(
-            gera_big_numbers(
-                "hanseniase", hanseniase, populacao, nivel_geo, ano
-            )
-        )
-        # Add febre
-        big_numbers.append(
-            gera_big_numbers("febre", febre, populacao, nivel_geo, ano)
-        )
-        # Add cefaleia
-        big_numbers.append(
-            gera_big_numbers("cefaleia", cefaleia, populacao, nivel_geo, ano)
-        )
-        # Add tosse
-        big_numbers.append(
-            gera_big_numbers("tosse", tosse, populacao, nivel_geo, ano)
-        )
-        # Add febres
-        big_numbers.append(
-            gera_big_numbers("febres", febres, populacao, nivel_geo, ano)
-        )
-
-        big_numbers = [item for sublist in big_numbers for item in sublist]
-
-        return big_numbers
+    def update_febres_big_numbers(febres, populacao, nivel_geo, *args):
+        ano = get_selected_year(dash.callback_context)
+        return gera_big_numbers("febres", febres, populacao, nivel_geo, ano)
 
     @app.callback(
         [
