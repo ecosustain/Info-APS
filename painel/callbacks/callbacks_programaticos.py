@@ -17,6 +17,22 @@ hist_saude_mental = {}
 hist_puericultura = {}
 hist_gravidez = {}
 
+data_inputs = [
+    Input("dummy-div", "children"),
+    Input("dropdown-estado", "value"),
+    Input("dropdown-regiao", "value"),
+    Input("dropdown-municipio", "value"),
+    Input("url", "pathname"),
+]
+big_numbers_inputs = [
+    Input("store-populacao", "data"),
+    Input("nivel-geo", "data"),
+    *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
+big_numbers_states = [
+    State("store-data", "data"),
+    *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
@@ -67,18 +83,16 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
     return values[0], values[1], total
 
-
-
-
+# Função auxiliar para identificar o ano selecionado
+def get_selected_year(ctx):
+    ano = anos[0]  # Define o primeiro ano como padrão
+    if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+        prop_id = ctx.triggered[0]["prop_id"]
+        if "btn-ano" in prop_id:
+            ano = int(prop_id.split(".")[0].split("-")[-1])
+    return ano
 
 def register_callbacks_programaticos(app):
-    data_inputs = [
-        Input("dummy-div", "children"),
-        Input("dropdown-estado", "value"),
-        Input("dropdown-regiao", "value"),
-        Input("dropdown-municipio", "value"),
-        Input("url", "pathname"),
-    ]
 
     # Callback para fazer a requisição à API e armazenar os dados de hipertensão no dcc.Store
     @app.callback(
@@ -140,25 +154,6 @@ def register_callbacks_programaticos(app):
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_gravidez_json(estado, regiao, municipio)
-    
-    big_numbers_inputs = [
-        Input("store-populacao", "data"),
-        Input("nivel-geo", "data"),
-        *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-    ]
-    big_numbers_states = [
-        State("store-data", "data"),
-        *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-    ]
-
-    # Função auxiliar para identificar o ano selecionado
-    def get_selected_year(ctx):
-        ano = anos[0]  # Define o primeiro ano como padrão
-        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
-            prop_id = ctx.triggered[0]["prop_id"]
-            if "btn-ano" in prop_id:
-                ano = int(prop_id.split(".")[0].split("-")[-1])
-        return ano
 
     # Callback para atualizar os números grandes de hipertensão
     @app.callback(

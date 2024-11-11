@@ -58,6 +58,27 @@ warnings.filterwarnings(
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 
+# Função auxiliar para identificar o ano selecionado
+def get_selected_year(ctx):
+    """Retorna o ano atual"""
+    ano = anos[0]  # Define o primeiro ano como padrão
+    if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
+        prop_id = ctx.triggered[0]["prop_id"]
+        if "btn-ano" in prop_id:
+            ano = int(prop_id.split(".")[0].split("-")[-1])
+    return ano
+
+data_states = [
+    State("store-data", "data"),
+    *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
+
+big_numbers_input = [
+        Input("store-populacao-api", "data"),
+        Input("nivel-geo", "data"),
+        *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+]
+
 def register_callbacks(app):
     """Função para registrar os callbacks do painel principal"""
 
@@ -69,10 +90,8 @@ def register_callbacks(app):
         # Função para atualizar as opções do dropdown de municipios
         if estado is None:
             raise dash.exceptions.PreventUpdate
-
         # Filtrar as municipios do estado selecionado
         regioes = get_regioes(estado)
-
         # Transformar em um formato aceito pelo dropdown a partir de um dicionário
         options = [
             {"label": regiao, "value": regiao} for regiao in regioes.values()
@@ -121,18 +140,18 @@ def register_callbacks(app):
         nivel = get_type(estado, regiao, municipio)
         return populacao, populacao_api, nivel
 
+    data_inputs = [
+                    Input("dummy-div", "children"),
+                    Input("dropdown-estado", "value"),
+                    Input("dropdown-regiao", "value"),
+                    Input("dropdown-municipio", "value"),
+                    Input("url", "pathname"),
+                ]
 
 # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
     @app.callback(
-        
         Output("store-data", "data"),
-        [
-            Input("dummy-div", "children"),
-            Input("dropdown-estado", "value"),
-            Input("dropdown-regiao", "value"),
-            Input("dropdown-municipio", "value"),
-            Input("url", "pathname"),
-        ],
+        data_inputs,
     )
     def fetch_data_atendimentos(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
@@ -142,38 +161,38 @@ def register_callbacks(app):
         return data_atendimentos
 
 
-    # Callback para fazer a requisição à API e armazenar os dados no dcc.Store
+    # Callback para fazer a requisição à API e armazenar os dados de visitas domiciliares no dcc.Store
     @app.callback(
-        [
-            Output("store-data-visita", "data"),
-            Output("store-data-odonto", "data"),
-            Output("store-data-enc", "data"),
-        ],
-        [
-            Input("dummy-div", "children"),
-            Input("dropdown-estado", "value"),
-            Input("dropdown-regiao", "value"),
-            Input("dropdown-municipio", "value"),
-            Input("url", "pathname"),
-        ],
+        Output("store-data-visita", "data"),
+        data_inputs,
     )
-    def fetch_data(dummy, estado, regiao, municipio, url):
-        """Função para fazer a requisição à API e armazenar os dados no Store"""
+    def fetch_data_visita(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de visitas domiciliares no Store"""
         if url != "/":
             raise dash.exceptions.PreventUpdate
-        data_visitas_domiciliar = get_visitas_domiciliar(
-            estado, regiao, municipio
-        )
-        data_atendimentos_odontologicos = get_atendimentos_odontologicos(
-            estado, regiao, municipio
-        )
-        data_encaminhamentos = get_encaminhamentos(estado, regiao, municipio)
+        return get_visitas_domiciliar(estado, regiao, municipio)
 
-        return (
-            data_visitas_domiciliar,
-            data_atendimentos_odontologicos,
-            data_encaminhamentos,
-        )
+    # Callback para fazer a requisição à API e armazenar os dados de atendimentos odontológicos no dcc.Store
+    @app.callback(
+        Output("store-data-odonto", "data"),
+        data_inputs,
+    )
+    def fetch_data_odonto(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de atendimentos odontológicos no Store"""
+        if url != "/":
+            raise dash.exceptions.PreventUpdate
+        return get_atendimentos_odontologicos(estado, regiao, municipio)
+
+    # Callback para fazer a requisição à API e armazenar os dados de encaminhamentos no dcc.Store
+    @app.callback(
+        Output("store-data-enc", "data"),
+        data_inputs,
+    )
+    def fetch_data_enc(dummy, estado, regiao, municipio, url):
+        """Função para fazer a requisição à API e armazenar os dados de encaminhamentos no Store"""
+        if url != "/":
+            raise dash.exceptions.PreventUpdate
+        return get_encaminhamentos(estado, regiao, municipio)
 
     @app.callback(
         [
@@ -183,32 +202,14 @@ def register_callbacks(app):
             Output("normalizado-atendimentos", "children"),
             Output("big-medicos", "children"),
         ],
-        [
-            Input("store-data", "data"),
-            Input("store-populacao-api", "data"),
-            Input("nivel-geo", "data"),
-            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
-        [
-            State("store-data", "data"),
-            *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
+        [Input("store-data", "data")] + big_numbers_input,
+        data_states,
     )
     def update_big_numbers_atend(data, populacao, nivel, *args):
         """Função para atualizar os big numbers com base nos dados armazenados"""
-        ctx = dash.callback_context
-        # Identificar o ano selecionado
-        ano = anos[0]  # Define o primeiro ano como padrão
-        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
-            prop_id = ctx.triggered[0]["prop_id"]
-            if "btn-ano" in prop_id:
-                ano = int(
-                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
-                )  # Extrai o ano do ID do botão
-
         if data is None:
             raise dash.exceptions.PreventUpdate
-
+        ano = get_selected_year(dash.callback_context)
         populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
@@ -218,102 +219,98 @@ def register_callbacks(app):
         total_populacao = populacao / 1000
         total_atendimentos = big_numbers[0]
         total_atendimentos = formatar_numero(total_atendimentos)
-
         # Dividir cada big number por 1000 para facilitar a leitura
         big_numbers = [int(num / total_populacao) for num in big_numbers]
         # Inserir o total de atendimentos no primeiro lugar
         big_numbers.insert(0, total_atendimentos)
-
         values = get_values(hist_atend, ano, nivel)
-
         big_numbers.insert(0, values[1])
         big_numbers.insert(0, values[0])
 
         return big_numbers
 
-
-
+    # Callback para atualizar os números grandes de visitas domiciliares
     @app.callback(
         [
             Output("indicador-visita-brasil", "children"),
             Output("indicador-visita-estado", "children"),
-            Output("indicador-odont-brasil", "children"),
-            Output("indicador-odont-estado", "children"),
-            Output("big-encaminhamentos", "children"),
             Output("big-visitas", "children"),
-            Output("big-odontologicos", "children"),
         ],
-        [
-            Input("store-data", "data"),
-            Input("store-data-enc", "data"),
-            Input("store-data-visita", "data"),
-            Input("store-data-odonto", "data"),
-            Input("store-populacao-api", "data"),
-            Input("nivel-geo", "data"),
-            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
-        [
-            State("store-data", "data"),
-            *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
-        ],
+        [Input("store-data-visita", "data")] + big_numbers_input,
+        data_states,
     )
-    def update_big_numbers(
-        data, data_enc, data_visita, data_odonto, populacao, nivel, *args
-    ):
-        """Função para atualizar os big numbers com base nos dados armazenados"""
-        ctx = dash.callback_context
-        # Identificar o ano selecionado
-        ano = anos[0]  # Define o primeiro ano como padrão
-        if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
-            prop_id = ctx.triggered[0]["prop_id"]
-            if "btn-ano" in prop_id:
-                ano = int(
-                    ctx.triggered[0]["prop_id"].split(".")[0].split("-")[-1]
-                )  # Extrai o ano do ID do botão
-
-        if data is None:
-            raise dash.exceptions.PreventUpdate
-
+    def update_visita_big_numbers(
+        data_visita, populacao, nivel, *args):
+        ano = get_selected_year(dash.callback_context)
         populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
-
-        big_numbers = []
-
-        # Add encaminhamento
-        df_enc = get_df_from_json(data_enc)
-        total_enc_ano = df_enc[df_enc["ano"] == ano]["valor"].sum()
-        big_numbers.append(total_enc_ano)
 
         # Add visitas domiciliar
         df_visita = get_df_from_json(data_visita)
         total_visita_ano = df_visita[df_visita["ano"] == ano]["valor"].sum()
-        big_numbers.append(total_visita_ano)
         global hist_visita
-        hist_visita = store_nivel(
-            hist_visita, df_visita, populacao, nivel, anos
-        )
+        hist_visita = store_nivel(hist_visita, df_visita, populacao, nivel, anos)
+
+        # Normalizar os valores pelo total da população
+        total_populacao = populacao / 1000
+        big_numbers = [round(total_visita_ano / total_populacao)]
+
+        values = get_values(hist_visita, ano, nivel)
+        big_numbers.insert(0, values[1])
+        big_numbers.insert(0, values[0])
+
+        return big_numbers
+
+    # Callback para atualizar os números grandes de atendimentos odontológicos
+    @app.callback(
+        [
+            Output("indicador-odont-brasil", "children"),
+            Output("indicador-odont-estado", "children"),
+            Output("big-odontologicos", "children"),
+        ],
+        [Input("store-data-odonto", "data")] + big_numbers_input,
+        data_states,
+    )
+    def update_odont_big_numbers(data_odonto, populacao, nivel, *args):
+        ano = get_selected_year(dash.callback_context)
+        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
 
         # Add atendimentos odontologicos
         df_odonto = get_df_from_json(data_odonto)
         total_odonto_ano = df_odonto[df_odonto["ano"] == ano]["valor"].sum()
-        big_numbers.append(total_odonto_ano)
         global hist_odont
         hist_odont = store_nivel(hist_odont, df_odonto, populacao, nivel, anos)
 
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
-
-        # Dividir cada big number por 1000 para facilitar a leitura
-        big_numbers = [int(num / total_populacao) for num in big_numbers]
+        big_numbers = [round(total_odonto_ano / total_populacao)]
 
         values = get_values(hist_odont, ano, nivel)
-
         big_numbers.insert(0, values[1])
         big_numbers.insert(0, values[0])
 
-        values = get_values(hist_visita, ano, nivel)
+        return big_numbers
 
-        big_numbers.insert(0, values[1])
-        big_numbers.insert(0, values[0])
+    # Callback para atualizar os números grandes de encaminhamentos
+    @app.callback(
+        Output("big-encaminhamentos", "children"),
+        [
+            Input("store-data-enc", "data"),
+            Input("store-populacao-api", "data"),
+            *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
+        ],
+        data_states,
+    )
+    def update_encaminhamentos_big_numbers(data_enc, populacao, *args):
+        ano = get_selected_year(dash.callback_context)
+        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
+
+        # Add encaminhamento
+        df_enc = get_df_from_json(data_enc)
+        total_enc_ano = df_enc[df_enc["ano"] == ano]["valor"].sum()
+
+        # Normalizar os valores pelo total da população
+        total_populacao = populacao / 1000
+        big_numbers = [round(total_enc_ano / total_populacao)]
 
         return big_numbers
 
@@ -331,8 +328,6 @@ def register_callbacks(app):
         Input("dropdown-municipio", "value"),
     )
     def update_charts(data, populacao, estado, regiao, municipio):
-        if data is None:
-            raise dash.exceptions.PreventUpdate
         df_atendimentos = get_df_atendimentos(data, populacao)
 
         nivel = get_type(estado, regiao, municipio)
