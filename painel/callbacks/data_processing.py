@@ -1,6 +1,5 @@
 """Módulo para processar os dados obtidos da API e transformá-los para gerar os gráficos"""
 
-import dash
 import pandas as pd
 from callbacks.api_requests import (
     get_atendimentos_individuais_problema,

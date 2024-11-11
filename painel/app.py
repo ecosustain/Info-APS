@@ -33,6 +33,7 @@ app.layout = dbc.Container(
                     id="content",
                     children=[
                         Header(),
+                        dcc.Store(id="store-populacao-api"),
                         dcc.Store(id="store-data"),
                         dcc.Store(id="store-data-enc"),
                         dcc.Store(id="store-data-visita"),
