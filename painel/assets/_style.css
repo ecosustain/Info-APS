@@ -125,3 +125,7 @@ label {
 .bartext {
     font-weight: bold !important;
 }
+
+.point:hover {
+    fill: #3B032F !important;
+}

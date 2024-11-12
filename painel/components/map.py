@@ -12,6 +12,7 @@ def Map():
                 },
                 id="mapa",
                 style={"height": "300px", "width": "520px"},
+                clear_on_unhover=True,
             ),
             html.Div(id="output-state"),  # Div para mostrar o estado clicado
         ],

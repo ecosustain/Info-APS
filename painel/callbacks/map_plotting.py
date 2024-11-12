@@ -76,9 +76,6 @@ def get_mapa_brasil():
         marker_line_color="white",
         marker_line_width=0.5,
     )
-    fig.on_hover(
-        
-    )
 
     return fig
 

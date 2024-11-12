@@ -317,15 +317,17 @@ def register_callbacks(app):
     # Callback para atualizar os gráficos de atendimentos com base nos dados armazenados
     @app.callback(
         [
-            Output("chart_by_year", "figure"),
-            Output("chart_by_year_profissionais", "figure"),
-            Output("chart_by_quarter", "figure"),
+            Output("chart_by_year", "figure", allow_duplicate=True),
+            Output("chart_by_year_profissionais", "figure", allow_duplicate=True),
+            Output("chart_by_quarter", "figure", allow_duplicate=True),
         ],
         Input("store-data", "data"),
         Input("store-populacao", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
+        allow_duplicate=True,
+        prevent_initial_call=True
     )
     def update_charts(data, populacao, estado, regiao, municipio):
         df_atendimentos = get_df_atendimentos(data, populacao)
@@ -342,7 +344,6 @@ def register_callbacks(app):
         chart_by_quarter = get_chart_forecast_by_quarter(
             df_atendimentos, "Atendimentos por mil habitantes", nivel
         )
-
 
         return (
             chart_by_year,
@@ -569,24 +570,33 @@ def register_callbacks(app):
             estilos.append(estilo)
         return estilos
     
-    # @app.callback(
-    #     [Output('chart_by_quarter', 'figure')],
-    #     [Input('chart_by_quarter', 'hoverData')],
-    #     [State('chart_by_quarter', 'figure')],
-    #     allow_duplicate=True
-    # )
-    # def holver_event(data, current_figure):
-    #     hover_point = data["points"][0]["pointIndex"]
+    def hover_event_template(id_chart):
+        @app.callback(
+            Output(id_chart, "figure", allow_duplicate=True),
+            [Input(id_chart, 'hoverData')],
+            [State(id_chart, 'figure')],
+            allow_duplicate=True,
+            prevent_initial_call=True
+        )
+        def hover_event(data, current_figure):
+            traces = current_figure['data']
 
-    # # extract traces
-    #     traces = current_figure['data']
+            if data:
+                hover_point = data["points"][0]["pointIndex"]
 
-    #     # loop over all traces
-    #     for idx, trace in enumerate(traces):
+                for idx, trace in enumerate(traces):
+                    trace.update({'selectedpoints': [hover_point]})
+                    current_figure['data'][idx].update(trace)
+            else:
+                for idx, trace in enumerate(traces):
+                    trace.update({'selectedpoints': None})
+                    current_figure['data'][idx].update(trace)
 
-    #         if trace == hover_point:
-    #             current_figure['data'][traces]['marker']['opacity'] = 1  # new color
-    #         else:
-    #             current_figure['data'][traces]['marker']['opacity'] = 0.1
-
-    #     return current_figure
+            return current_figure
+        
+    hover_event_template("chart_by_year")
+    hover_event_template("chart_encaminhamentos")
+    hover_event_template("chart_odonto_by_year")
+    hover_event_template("chart_visitas_by_year")
+    hover_event_template("chart_by_year_profissionais")
+    hover_event_template("mapa")
