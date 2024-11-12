@@ -67,7 +67,9 @@
 }
 
 .indicator-legend-box {
+  height: 17px;
   display: flex;
+  align-items: center;
   margin: 6px 0px 12px 0px;
 }
 
@@ -114,6 +116,7 @@
 
 .content-chart-wrapper {
   gap: 15px;
+  --bs-gutter-x: 0;
 }
 
 .content-chart-box {

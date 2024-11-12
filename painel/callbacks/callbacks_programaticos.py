@@ -1,12 +1,12 @@
 import dash
-from callbacks.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.chart_plotting import (
+from api.api_requests import anos, get_atendimentos_individuais_problema
+from callbacks.utils.chart_plotting import (
     get_chart_by_quarter,
     get_chart_by_year,
     get_chart_percentage_by_year,
 )
-from callbacks.data_processing import get_df_from_json, get_gravidez_json
-from callbacks.utils import get_type, get_values, store_nivel
+from callbacks.utils.data_processing import get_df_from_json, get_gravidez_json
+from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
 # Dicionários para armazenar os históricos dos atendimentos

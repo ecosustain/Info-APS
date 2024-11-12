@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.api_requests import get_anos
+from api.api_requests import get_anos
 from components.map import Map
 from dash import dcc, html
 
@@ -88,14 +88,19 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
                         html.Div(
                             [
                                 html.Span(
+                                    id=f"indicator-icon-{icon}",
                                     className=f"fa fa-{icon}",
                                     style={
-                                        "color": "white",
+                                        "color": "#632956",
                                         "font-size": "10px",
+                                        "padding": "5px",
+                                        "border-radius": "50%",
+                                        "background-color": "#6329561a",
+                                        "border": "1px solid #632956"
                                     },
                                 )
                             ],
-                            className="icon-content",
+                            # className="icon-content",
                         ),
                     ],
                 ),
@@ -371,11 +376,11 @@ layout = html.Div(
                                 dcc.Graph(
                                     id="chart_by_quarter",
                                     style={"height": "35vh"},
+                                    clear_on_unhover=True
                                 ),
                             ],
                             className="content-chart-box"
                         ),
-                        dbc.Col(),
                     ],
                     className="content-chart-wrapper"
                 ),
@@ -390,6 +395,7 @@ layout = html.Div(
                                 dcc.Graph(
                                     id="chart_odonto_by_quarter",
                                     style={"height": "35vh"},
+                                    clear_on_unhover=True
                                 ),
                             ],
                             className="content-chart-box"
@@ -403,6 +409,7 @@ layout = html.Div(
                                 dcc.Graph(
                                     id="chart_visitas_by_quarter",
                                     style={"height": "35vh"},
+                                    clear_on_unhover=True
                                 ),
                             ],
                             className="content-chart-box"

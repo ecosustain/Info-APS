@@ -2,7 +2,7 @@
 
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.api_requests import anos
+from api.api_requests import anos
 from dash import dcc, html
 
 dash.register_page(

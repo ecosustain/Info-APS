@@ -3,7 +3,7 @@
 import geopandas as gpd
 import pandas as pd
 import plotly.express as px
-from callbacks.utils import get_regioes, municipios
+from callbacks.utils.utils import get_regioes, municipios
 
 
 def remove_internal_polygons(gdf, estado):

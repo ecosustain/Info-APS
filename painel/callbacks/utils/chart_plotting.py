@@ -2,7 +2,7 @@
 
 import plotly.express as px
 import plotly.graph_objects as go
-from callbacks.forecast import forecast_sarima
+from callbacks.utils.forecast import forecast_sarima
 
 type_color_map = {
     "brasil": ["#B36CA3", "#632956", "#3B032F"],

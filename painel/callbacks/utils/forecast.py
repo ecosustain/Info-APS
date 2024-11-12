@@ -1,7 +1,7 @@
 """Módulo para gerar previsões com SARIMA"""
 
 import pandas as pd
-from callbacks.data_processing import trimestre_map_num
+from callbacks.utils.data_processing import trimestre_map_num
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 

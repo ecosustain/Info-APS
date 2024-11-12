@@ -2,7 +2,7 @@
 
 import pandas as pd
 import requests
-from callbacks.utils import get_code_regiao, get_ibge_code
+from callbacks.utils.utils import get_code_regiao, get_ibge_code
 
 API_URL = "https://dash-saude-mongo.elsvital.dev/api/v1"
 

@@ -1,6 +1,5 @@
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.api_requests import anos, get_anos
 from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_nao_programaticos import register_callbacks_nao_programaticos

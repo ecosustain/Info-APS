@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-from callbacks.utils import estados_brasileiros
+from callbacks.utils.utils import estados_brasileiros
 from constants import time_division
 from dash import dcc, html
 
