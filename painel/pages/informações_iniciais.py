@@ -286,7 +286,8 @@ layout = html.Div(
                                     id="chart_by_year",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                         dbc.Col(
                             [
@@ -298,9 +299,11 @@ layout = html.Div(
                                     id="chart_encaminhamentos",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
-                    ]
+                    ],
+                    className="content-chart-wrapper"
                 ),
                 dbc.Row(
                     [
@@ -314,7 +317,8 @@ layout = html.Div(
                                     id="chart_odonto_by_year",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                         dbc.Col(
                             [
@@ -326,7 +330,8 @@ layout = html.Div(
                                     id="chart_visitas_by_year",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ], 
+                            className="content-chart-box"
                         ),
                         dbc.Col(
                             [
@@ -338,9 +343,11 @@ layout = html.Div(
                                     id="chart_by_year_profissionais",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                     ],
+                    className="content-chart-wrapper"
                 ),
             ],
         ),
@@ -360,10 +367,12 @@ layout = html.Div(
                                     id="chart_by_quarter",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                         dbc.Col(),
                     ],
+                    className="content-chart-wrapper"
                 ),
                 dbc.Row(
                     [
@@ -377,7 +386,8 @@ layout = html.Div(
                                     id="chart_odonto_by_quarter",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                         dbc.Col(
                             [
@@ -389,9 +399,11 @@ layout = html.Div(
                                     id="chart_visitas_by_quarter",
                                     style={"height": "35vh"},
                                 ),
-                            ]
+                            ],
+                            className="content-chart-box"
                         ),
                     ],
+                    className="content-chart-wrapper"
                 ),
             ],
         ),

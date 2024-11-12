@@ -334,14 +334,15 @@ def register_callbacks(app):
 
         # Gerar os gráficos
         chart_by_year = get_chart_by_year(
-            df_atendimentos, "Atendimentos por mil hab.", nivel
+            df_atendimentos, "Atendimentos por mil habitantes", nivel
         )
         chart_by_year_profissionais = get_chart_by_year_profissionais(
-            df_atendimentos, "Atendimentos por profissionais", nivel
+            df_atendimentos, "Atendimentos", nivel
         )
         chart_by_quarter = get_chart_forecast_by_quarter(
-            df_atendimentos, "Atendimentos por mil hab.", nivel
+            df_atendimentos, "Atendimentos por mil habitantes", nivel
         )
+
 
         return (
             chart_by_year,
@@ -562,8 +563,30 @@ def register_callbacks(app):
         estilos = []
         for id_graphic in ids:
             if id_graphic.find(dict_division[selecionado]) != -1:
-                estilo = {"display": "block"}
+                estilo = {"display": "flex"}
             else:
                 estilo = {"display": "none"}
             estilos.append(estilo)
         return estilos
+    
+    # @app.callback(
+    #     [Output('chart_by_quarter', 'figure')],
+    #     [Input('chart_by_quarter', 'hoverData')],
+    #     [State('chart_by_quarter', 'figure')],
+    #     allow_duplicate=True
+    # )
+    # def holver_event(data, current_figure):
+    #     hover_point = data["points"][0]["pointIndex"]
+
+    # # extract traces
+    #     traces = current_figure['data']
+
+    #     # loop over all traces
+    #     for idx, trace in enumerate(traces):
+
+    #         if trace == hover_point:
+    #             current_figure['data'][traces]['marker']['opacity'] = 1  # new color
+    #         else:
+    #             current_figure['data'][traces]['marker']['opacity'] = 0.1
+
+    #     return current_figure

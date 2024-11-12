@@ -16,12 +16,6 @@
   font-weight: bold;
 }
 
-.time-visualization-content {
-  background-color: white;
-  border-radius: 8px;
-  padding: 15px 20px;
-}
-
 #atendimentos-title {
   font-size: 16px;
   margin-bottom: 3px !important;
@@ -110,4 +104,20 @@
   margin-right: 16px !important;
   font-size: 10px;
   padding: 2px 8px !important;
+}
+
+
+.time-visualization-content {
+  flex-direction: column;
+  gap: 15px;
+}
+
+.content-chart-wrapper {
+  gap: 15px;
+}
+
+.content-chart-box {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px 20px;
 }

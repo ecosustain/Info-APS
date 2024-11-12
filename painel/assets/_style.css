@@ -121,3 +121,7 @@ label {
         padding: 15px 0;
     }
 }
+
+.bartext {
+    font-weight: bold !important;
+}

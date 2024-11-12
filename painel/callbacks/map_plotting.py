@@ -72,8 +72,12 @@ def get_mapa_brasil():
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         marker_line_color="white",
         marker_line_width=0.5,
+    )
+    fig.on_hover(
+        
     )
 
     return fig
@@ -115,6 +119,7 @@ def get_mapa_estado(estado):
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         marker_line_color="white",
         marker_line_width=0.5,
     )
@@ -165,6 +170,7 @@ def get_mapa_regiao(estado, regiao):
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         marker_line_color="white",
         marker_line_width=0.5,
     )
@@ -213,6 +219,7 @@ def get_mapa_municipio(estado, municipio):
     )
     fig.update_traces(
         hovertemplate="<b>%{hovertext}</b><extra></extra>",
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         marker_line_color="white",
         marker_line_width=0.5,
     )

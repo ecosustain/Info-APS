@@ -24,7 +24,7 @@ def update_layout_chart(chart, title, tipo):
     chart.update_traces(
         textposition="outside",
         marker_color=color,
-        hoverlabel=dict(bgcolor="#FFFFFF", font_color="#343A40", font_size=12),
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         hovertemplate=f"<b>%{{y:,.0f}}</b><br>{title} em %{{x}}<extra></extra>",
     )
 
@@ -36,7 +36,7 @@ def update_layout_chart(chart, title, tipo):
         yaxis=dict(
             showticklabels=False, range=[0, chart.data[0].y.max() * 1.2]
         ),
-        margin=dict(l=35, r=35, t=60, b=40),
+        margin=dict(l=0, r=0, t=0, b=0),
     )
 
     return chart
@@ -52,7 +52,7 @@ def update_layout_chart_profissionais(chart, title):
     # Aplicar as duas cores alternadamente
     chart.update_traces(
         textposition="outside",
-        hoverlabel=dict(bgcolor="#FFFFFF", font_color="#343A40", font_size=12),
+        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         hovertemplate=f"<b>%{{y:,.0f}}</b><br>{title} por %{{fullData.name}} em %{{x}}<extra></extra>",
     )
 
@@ -66,7 +66,7 @@ def update_layout_chart_profissionais(chart, title):
             showticklabels=False,
             range=[0, (chart.data[0].y.max() + chart.data[1].y.max()) * 1.2],
         ),
-        margin=dict(l=35, r=35, t=60, b=40),
+        margin=dict(l=0, r=0, t=0, b=0),
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -106,7 +106,7 @@ def get_chart_by_year_profissionais(df, title, tipo):
         y="valor",
         color="profissional",  # Agrupar por profissional
         text_auto=".2s",
-        title=f"{title.capitalize()} por Ano",
+        # title=f"{title.capitalize()} por Ano",
         labels={
             "ano": "Ano",
             "valor": "Valor",
@@ -229,9 +229,7 @@ def add_forecast_to_chart(chart, forecast_df, tipo):
                 color=type_color_map.get(tipo, [None])[1], width=2, dash="dash"
             ),
             hovertemplate="<b>%{{y:,.0f}}</b><br>Previsão para o %{{x}}<extra></extra>",
-            hoverlabel=dict(
-                bgcolor="#FFFFFF", font_color="#343A40", font_size=12
-            ),
+            hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
         )
     )
     # Mudando a legenda da previsão
