@@ -23,18 +23,32 @@ def SideBar():
                     "margin-bottom": "60px",
                 },
             ),
-            html.Div(
+            html.Div (
                 [
                     html.Div(
+                        [
+                            html.Div(
+                                dcc.Link(
+                                    f"{page['name']}",
+                                    href=page["relative_path"],
+                                    className="btn",
+                                )
+                            )
+                            for page in dash.page_registry.values()
+                        ]
+                    ),
+                    html.Div(
                         dcc.Link(
-                            f"{page['name']}",
-                            href=page["relative_path"],
+                            "Serviços de dados",
+                            href="https://dash-saude-mongo.elsvital.dev/",
                             className="btn",
-                        )
+                            target="_blank",
+                        ),
+                        style={"margin-top": "60px"}
                     )
-                    for page in dash.page_registry.values()
-                ]
-            ),
+                ],
+                style={"display": "flex", "flex-direction": "column", "justify-content": "space-between"}
+            )
         ],
         className="p-0",
     )

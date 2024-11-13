@@ -163,3 +163,7 @@ label {
         height: 100vh;
     }
 }
+
+#loading-graphics {
+    padding-bottom: 200px;
+}
