@@ -80,6 +80,9 @@ def callback(app):
             *[
                 Input("year-content", "id"),
                 Input("quarter-content", "id"),
+                Input("dropdown-estado", "value"),
+                Input("dropdown-regiao", "value"),
+                Input("dropdown-municipio", "value"),
             ],
             *[
                 Input(f"btn-{division}", "n_clicks")

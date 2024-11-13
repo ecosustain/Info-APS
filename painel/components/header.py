@@ -80,8 +80,6 @@ def Header():
                                     dbc.Button(
                                         str(division),
                                         id=f"btn-{division}",
-                                        color="primary",
-                                        outline=True,
                                         active=(
                                             division
                                             == time_division.graphic_division[
