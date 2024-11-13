@@ -129,3 +129,37 @@ label {
 .point:hover {
     fill: #3B032F !important;
 }
+
+#only-desktop {
+    display: none;
+}
+
+.message-screen {
+    color: #ffffffc4;
+    text-align: center;
+    font-size: 16px;
+}
+
+.message-description {
+    color: #ffffffc4;
+    text-align: center;
+    font-size: 12px;
+}
+
+.icon-message {
+    color: #ffffffc4;
+    font-size: 45px;
+}
+
+@media screen and (max-width: 860px) {
+    #platform {
+        display: none;
+    }
+
+    #only-desktop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+}

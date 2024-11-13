@@ -3,6 +3,12 @@
   align-items: center;
 }
 
+@media screen and (max-width: 1200px) {
+  #indicators {
+    flex-direction: column;
+  }
+}
+
 #indicator-content {
   background-color: white;
   border-radius: 8px;

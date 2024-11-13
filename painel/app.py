@@ -26,7 +26,8 @@ app.layout = dbc.Container(
         # dbc.Col(html.Div(id="page-content"), width=10),
         # Add dropdown of states here
         html.Div(
-            [
+            id="platform",
+            children=[
                 SideBar(),
                 html.Div(
                     id="content",
@@ -70,6 +71,29 @@ app.layout = dbc.Container(
                 ),
             ],
         ),
+        html.Div(
+            id="only-desktop",
+            children=[
+                html.Div(
+                    [
+                        html.H2("É preciso um dispositvo maior", className="message-screen"),
+                        html.P("tente em um dispositivo com mais de 860 pixels de largura", className="message-description"),
+                        html.Span(
+                            className=f"fa fa-heart-crack icon-message",
+                        )
+                    ],
+                    style={
+                        "display": "flex",
+                        "flex-direction": "column",
+                        "align-items": "center",
+                        "margin": "20px"
+                    },
+                )
+            ],
+            style={
+                "background-color": "#343A40",
+            },
+        )
     ],
     className="p-0 mx-auto",
     style={"max-width": "100%"},
