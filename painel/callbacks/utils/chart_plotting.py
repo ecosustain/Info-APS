@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from callbacks.utils.forecast import forecast_sarima
 
 type_color_map = {
-    "brasil": ["#B36CA3", "#632956", "#3B032F"],
+    "brasil": ["#dea8d1", "#632956", "#3B032F"],
     "estado": ["#80B0DC", "#34679A", "#11173F"],
     "regiao": ["#97C471", "#2B7B6F", "#11302B"],
     "municipio": ["#FFC20D", "#F7941C", "#A7620E"],

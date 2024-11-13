@@ -108,6 +108,15 @@
   padding: 2px 8px !important;
 }
 
+.tag {
+  background-color: #6329561a;
+  border: 1px solid #632956;
+  color: #632956;
+  font-weight: bold;
+  margin-right: 16px !important;
+  font-size: 10px;
+  padding: 4px 10px !important;
+}
 
 .time-visualization-content {
   flex-direction: column;
@@ -123,4 +132,10 @@
   background-color: white;
   border-radius: 8px;
   padding: 15px 20px;
+}
+
+.icon-indicator {
+  font-size: 10px;
+  padding: 5px;
+  border-radius: 50%;
 }

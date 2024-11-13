@@ -89,12 +89,9 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
                             [
                                 html.Span(
                                     id=f"indicator-icon-{icon}",
-                                    className=f"fa fa-{icon}",
+                                    className=f"fa fa-{icon} icon-indicator",
                                     style={
                                         "color": "#632956",
-                                        "font-size": "10px",
-                                        "padding": "5px",
-                                        "border-radius": "50%",
                                         "background-color": "#6329561a",
                                         "border": "1px solid #632956"
                                     },
@@ -279,6 +276,13 @@ layout = html.Div(
             id="year-content",
             className="time-visualization-content",
             children=[
+                html.Div(
+                    html.Span(
+                        "Ano",
+                        id="tag-ano",
+                        className="tag rounded",
+                    ),
+                ),
                 dbc.Row(
                     [
                         dbc.Col(
@@ -365,6 +369,13 @@ layout = html.Div(
             id="quarter-content",
             className="time-visualization-content",
             children=[
+                html.Div(
+                    html.Span(
+                        "Trimestre",
+                        id="tag-trimestre",
+                        className="tag rounded",
+                    ),
+                ),
                 dbc.Row(
                     [
                         dbc.Col(
