@@ -3,8 +3,9 @@ from dash import Input, Output, State
 def callback(app):
     def hover_event_template(id_chart):
         @app.callback(
-            Output(id_chart, "figure", allow_duplicate=True),
-            [Input(id_chart, 'hoverData')],
+            Output(id_chart, "figure", allow_duplicate=True), 
+            Output("loading-graphics", "display", allow_duplicate=True),
+            Input(id_chart, 'hoverData'), 
             [State(id_chart, 'figure')],
             allow_duplicate=True,
             prevent_initial_call=True
@@ -23,7 +24,7 @@ def callback(app):
                     trace.update({'selectedpoints': None})
                     current_figure['data'][idx].update(trace)
 
-            return current_figure
+            return current_figure, "hide"
         
     hover_event_template("mapa")
     hover_event_template("chart_by_year")

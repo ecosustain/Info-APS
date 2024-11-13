@@ -15,6 +15,7 @@ from callbacks.map_chart import (
 import callbacks.hover_chart_callback as hover_chart
 import callbacks.population_callback as population
 import callbacks.static_style_callback as static_style
+import callbacks.loading_callback as loading
 
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
@@ -41,3 +42,4 @@ def register_callbacks(app):
 
     static_style.callback(app)
     hover_chart.callback(app)
+    loading.callback(app)
