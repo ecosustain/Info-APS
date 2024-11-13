@@ -1,15 +1,9 @@
-from core.models.data_import import (
-    DataImportCategory,
-    DataImportLog,
-    DataImportParam,
-    DataImportProfile,
-)
+from core.models.data_import import (DataImportCategory, DataImportLog,
+                                     DataImportParam, DataImportProfile)
 from core.models.geo_unit import GeoUnit, GeoUnitType
-from core.models.individual_care import (
-    IndividualCare,
-    IndividualCareCategory,
-    IndividualCategory,
-)
+from core.models.individual_care import (IndividualCare,
+                                         IndividualCareCategory,
+                                         IndividualCategory)
 from django import forms
 from django.contrib import admin
 from django_admin_hstore_widget.forms import HStoreFormField

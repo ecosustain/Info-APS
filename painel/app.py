@@ -2,7 +2,8 @@ import dash
 import dash_bootstrap_components as dbc
 from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
-from callbacks.callbacks_nao_programaticos import register_callbacks_nao_programaticos
+from callbacks.callbacks_nao_programaticos import \
+    register_callbacks_nao_programaticos
 from callbacks.callbacks_programaticos import register_callbacks_programaticos
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
 from components.header import Header
@@ -76,24 +77,30 @@ app.layout = dbc.Container(
             children=[
                 html.Div(
                     [
-                        html.H2("É preciso um dispositvo maior", className="message-screen"),
-                        html.P("tente em um dispositivo com mais de 860 pixels de largura", className="message-description"),
+                        html.H2(
+                            "É preciso um dispositvo maior",
+                            className="message-screen",
+                        ),
+                        html.P(
+                            "tente em um dispositivo com mais de 860 pixels de largura",
+                            className="message-description",
+                        ),
                         html.Span(
                             className=f"fa fa-heart-crack icon-message",
-                        )
+                        ),
                     ],
                     style={
                         "display": "flex",
                         "flex-direction": "column",
                         "align-items": "center",
-                        "margin": "20px"
+                        "margin": "20px",
                     },
                 )
             ],
             style={
                 "background-color": "#343A40",
             },
-        )
+        ),
     ],
     className="p-0 mx-auto",
     style={"max-width": "100%"},

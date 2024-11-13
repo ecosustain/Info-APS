@@ -1,12 +1,7 @@
+from api.api_requests import get_collection
+from callbacks.utils.utils import get_population, get_type
 from dash import Input, Output
 
-from api.api_requests import (
-    get_collection,
-)
-from callbacks.utils.utils import (
-    get_population,
-    get_type,
-)
 
 def callback(app):
     @app.callback(
@@ -25,6 +20,8 @@ def callback(app):
     def fetch_population(dummy, estado, regiao, municipio):
         """Função para buscar a populacao do local selecionado"""
         populacao = get_population(estado, regiao, municipio)
-        populacao_api = get_collection(estado, regiao, municipio, 'População', 'Cadastros')
+        populacao_api = get_collection(
+            estado, regiao, municipio, "População", "Cadastros"
+        )
         nivel = get_type(estado, regiao, municipio)
         return populacao, populacao_api, nivel

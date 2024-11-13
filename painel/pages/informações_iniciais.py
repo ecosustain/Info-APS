@@ -93,7 +93,7 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
                                     style={
                                         "color": "#632956",
                                         "background-color": "#6329561a",
-                                        "border": "1px solid #632956"
+                                        "border": "1px solid #632956",
                                     },
                                 )
                             ],
@@ -273,7 +273,11 @@ layout = html.Div(
                         ),
                     ],
                 ),
-                html.H2("Visão ao decorrer do tempo", id="overview", className="mt-3"),
+                html.H2(
+                    "Visão ao decorrer do tempo",
+                    id="overview",
+                    className="mt-3",
+                ),
                 html.Div(
                     id="year-content",
                     className="time-visualization-content",
@@ -296,10 +300,10 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_by_year",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                                 dbc.Col(
                                     [
@@ -310,13 +314,13 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_encaminhamentos",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                             ],
-                            className="content-chart-wrapper"
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
@@ -329,10 +333,10 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_odonto_by_year",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                                 dbc.Col(
                                     [
@@ -343,10 +347,10 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_visitas_by_year",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
-                                    ], 
-                                    className="content-chart-box"
+                                    ],
+                                    className="content-chart-box",
                                 ),
                                 dbc.Col(
                                     [
@@ -357,13 +361,13 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_by_year_profissionais",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                             ],
-                            className="content-chart-wrapper"
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
@@ -389,13 +393,13 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_by_quarter",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                             ],
-                            className="content-chart-wrapper"
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
@@ -408,10 +412,10 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_odonto_by_quarter",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                                 dbc.Col(
                                     [
@@ -422,20 +426,19 @@ layout = html.Div(
                                         dcc.Graph(
                                             id="chart_visitas_by_quarter",
                                             style={"height": "35vh"},
-                                            clear_on_unhover=True
+                                            clear_on_unhover=True,
                                         ),
                                     ],
-                                    className="content-chart-box"
+                                    className="content-chart-box",
                                 ),
                             ],
-                            className="content-chart-wrapper"
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
-                
             ],
             id="loading-graphics",
-            overlay_style={"visibility":"visible", "filter": "blur(2px)"},
+            overlay_style={"visibility": "visible", "filter": "blur(2px)"},
             style={"height": "100vh"},
             color="#632956",
             type="circle",

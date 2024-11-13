@@ -1,19 +1,11 @@
 import dash
+from api.api_requests import anos
+from callbacks.utils.data_processing import (get_big_numbers_atendimentos,
+                                             get_df_atendimentos,
+                                             get_df_from_json)
+from callbacks.utils.utils import formatar_numero, get_values, store_nivel
 from dash import Input, Output, State
 
-from api.api_requests import (
-    anos,
-)
-from callbacks.utils.data_processing import (
-    get_big_numbers_atendimentos,
-    get_df_atendimentos,
-    get_df_from_json,
-)
-from callbacks.utils.utils import (
-    formatar_numero,
-    get_values,
-    store_nivel,
-)
 
 def get_selected_year(ctx):
     """Retorna o ano atual"""
@@ -23,6 +15,7 @@ def get_selected_year(ctx):
         if "btn-ano" in prop_id:
             ano = int(prop_id.split(".")[0].split("-")[-1])
     return ano
+
 
 data_states = [
     State("store-data", "data"),
@@ -39,6 +32,7 @@ hist_atend = {}
 hist_odont = {}
 hist_visita = {}
 
+
 def callback(app):
     @app.callback(
         Output("big-encaminhamentos", "children"),
@@ -51,7 +45,9 @@ def callback(app):
     )
     def update_encaminhamentos_big_numbers(data_enc, populacao, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
+        populacao = round(
+            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
+        )
 
         # Add encaminhamento
         df_enc = get_df_from_json(data_enc)
@@ -73,16 +69,19 @@ def callback(app):
         [Input("store-data-visita", "data")] + big_numbers_input,
         data_states,
     )
-    def update_visita_big_numbers(
-        data_visita, populacao, nivel, *args):
+    def update_visita_big_numbers(data_visita, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
+        populacao = round(
+            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
+        )
 
         # Add visitas domiciliar
         df_visita = get_df_from_json(data_visita)
         total_visita_ano = df_visita[df_visita["ano"] == ano]["valor"].sum()
         global hist_visita
-        hist_visita = store_nivel(hist_visita, df_visita, populacao, nivel, anos)
+        hist_visita = store_nivel(
+            hist_visita, df_visita, populacao, nivel, anos
+        )
 
         # Normalizar os valores pelo total da população
         total_populacao = populacao / 1000
@@ -106,7 +105,9 @@ def callback(app):
     )
     def update_odont_big_numbers(data_odonto, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
+        populacao = round(
+            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
+        )
 
         # Add atendimentos odontologicos
         df_odonto = get_df_from_json(data_odonto)
@@ -140,7 +141,9 @@ def callback(app):
         if data is None:
             raise dash.exceptions.PreventUpdate
         ano = get_selected_year(dash.callback_context)
-        populacao = round(sum(populacao[str(ano)].values()) / len(populacao[str(ano)]))
+        populacao = round(
+            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
+        )
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
         global hist_atend

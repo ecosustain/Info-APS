@@ -1,10 +1,8 @@
 import pandas as pd
 from core.models.geo_unit import GeoUnit, GeoUnitType
-from core.models.individual_care import (
-    IndividualCare,
-    IndividualCareCategory,
-    IndividualCategory,
-)
+from core.models.individual_care import (IndividualCare,
+                                         IndividualCareCategory,
+                                         IndividualCategory)
 from django.core.management.base import BaseCommand
 from django.db import transaction
 

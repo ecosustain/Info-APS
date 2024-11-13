@@ -4,12 +4,8 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 from data.database import Database
 from sklearn.preprocessing import MinMaxScaler
-from utils.queries import (
-    GET_DATA_BY_CATEGORY,
-    GET_DATA_BY_CITY,
-    GET_DATA_BY_REGION,
-    GET_DATA_BY_STATE,
-)
+from utils.queries import (GET_DATA_BY_CATEGORY, GET_DATA_BY_CITY,
+                           GET_DATA_BY_REGION, GET_DATA_BY_STATE)
 
 
 def register_callbacks(app):

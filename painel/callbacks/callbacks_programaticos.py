@@ -1,10 +1,8 @@
 import dash
 from api.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.utils.chart_plotting import (
-    get_chart_by_quarter,
-    get_chart_by_year,
-    get_chart_percentage_by_year,
-)
+from callbacks.utils.chart_plotting import (get_chart_by_quarter,
+                                            get_chart_by_year,
+                                            get_chart_percentage_by_year)
 from callbacks.utils.data_processing import get_df_from_json, get_gravidez_json
 from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
@@ -33,6 +31,7 @@ big_numbers_states = [
     State("store-data", "data"),
     *[State(f"btn-ano-{ano}", "n_clicks") for ano in anos],
 ]
+
 
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
@@ -83,6 +82,7 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
     return values[0], values[1], total
 
+
 # Função auxiliar para identificar o ano selecionado
 def get_selected_year(ctx):
     ano = anos[0]  # Define o primeiro ano como padrão
@@ -91,6 +91,7 @@ def get_selected_year(ctx):
         if "btn-ano" in prop_id:
             ano = int(prop_id.split(".")[0].split("-")[-1])
     return ano
+
 
 def register_callbacks_programaticos(app):
 
@@ -103,7 +104,9 @@ def register_callbacks_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de hipertensão no Store"""
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
-        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Hipertensão arterial")
+        return get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Hipertensão arterial"
+        )
 
     @app.callback(
         Output("store-data-diabetes", "data"),
@@ -113,7 +116,9 @@ def register_callbacks_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de diabetes no Store"""
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
-        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Diabetes")
+        return get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Diabetes"
+        )
 
     @app.callback(
         Output("store-data-saude-sexual", "data"),
@@ -123,7 +128,9 @@ def register_callbacks_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de saúde sexual no Store"""
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
-        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Saúde sexual e reprodutiva")
+        return get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Saúde sexual e reprodutiva"
+        )
 
     @app.callback(
         Output("store-data-saude-mental", "data"),
@@ -133,7 +140,9 @@ def register_callbacks_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de saúde mental no Store"""
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
-        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Saúde mental")
+        return get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Saúde mental"
+        )
 
     @app.callback(
         Output("store-data-puericultura", "data"),
@@ -143,7 +152,9 @@ def register_callbacks_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de puericultura no Store"""
         if url != "/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
-        return get_atendimentos_individuais_problema(estado, regiao, municipio, "Puericultura")
+        return get_atendimentos_individuais_problema(
+            estado, regiao, municipio, "Puericultura"
+        )
 
     @app.callback(
         Output("store-data-gravidez", "data"),
@@ -165,9 +176,13 @@ def register_callbacks_programaticos(app):
         [Input("store-data-hipertensao", "data")] + big_numbers_inputs,
         big_numbers_states,
     )
-    def update_hipertensao_big_numbers(hipertensao, populacao, nivel_geo, *args):
+    def update_hipertensao_big_numbers(
+        hipertensao, populacao, nivel_geo, *args
+    ):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("hipertensao", hipertensao, populacao, nivel_geo, ano)
+        return gera_big_numbers(
+            "hipertensao", hipertensao, populacao, nivel_geo, ano
+        )
 
     # Callback para atualizar os números grandes de diabetes
     @app.callback(
@@ -181,7 +196,9 @@ def register_callbacks_programaticos(app):
     )
     def update_diabetes_big_numbers(diabetes, populacao, nivel_geo, *args):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("diabetes", diabetes, populacao, nivel_geo, ano)
+        return gera_big_numbers(
+            "diabetes", diabetes, populacao, nivel_geo, ano
+        )
 
     # Callback para atualizar os números grandes de saúde sexual
     @app.callback(
@@ -195,7 +212,9 @@ def register_callbacks_programaticos(app):
     )
     def update_sexual_big_numbers(saude_sexual, populacao, nivel_geo, *args):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("saude_sexual", saude_sexual, populacao, nivel_geo, ano)
+        return gera_big_numbers(
+            "saude_sexual", saude_sexual, populacao, nivel_geo, ano
+        )
 
     # Callback para atualizar os números grandes de saúde mental
     @app.callback(
@@ -209,7 +228,9 @@ def register_callbacks_programaticos(app):
     )
     def update_mental_big_numbers(saude_mental, populacao, nivel_geo, *args):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("saude_mental", saude_mental, populacao, nivel_geo, ano)
+        return gera_big_numbers(
+            "saude_mental", saude_mental, populacao, nivel_geo, ano
+        )
 
     # Callback para atualizar os números grandes de puericultura
     @app.callback(
@@ -221,9 +242,13 @@ def register_callbacks_programaticos(app):
         [Input("store-data-puericultura", "data")] + big_numbers_inputs,
         big_numbers_states,
     )
-    def update_puericultura_big_numbers(puericultura, populacao, nivel_geo, *args):
+    def update_puericultura_big_numbers(
+        puericultura, populacao, nivel_geo, *args
+    ):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("puericultura", puericultura, populacao, nivel_geo, ano)
+        return gera_big_numbers(
+            "puericultura", puericultura, populacao, nivel_geo, ano
+        )
 
     # Callback para atualizar os números grandes de gravidez
     @app.callback(

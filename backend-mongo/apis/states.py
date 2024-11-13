@@ -1,8 +1,5 @@
-from database.states import (
-    get_collection_sum_states,
-    get_collection_sum_states_year,
-    get_state,
-)
+from database.states import (get_collection_sum_states,
+                             get_collection_sum_states_year, get_state)
 from flask import jsonify, make_response
 from flask_restx import Namespace, Resource
 

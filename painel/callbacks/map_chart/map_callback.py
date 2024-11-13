@@ -1,11 +1,7 @@
+from callbacks.map_chart.plotting import (get_mapa_brasil, get_mapa_estado,
+                                          get_mapa_municipio, get_mapa_regiao)
 from dash import Input, Output
 
-from callbacks.map_chart.plotting import (
-    get_mapa_brasil,
-    get_mapa_estado,
-    get_mapa_municipio,
-    get_mapa_regiao,
-)
 
 def callback(app):
     @app.callback(

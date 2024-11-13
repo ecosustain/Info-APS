@@ -4,10 +4,7 @@ from flask import flash, jsonify, make_response, render_template, request
 from flask_restx import Resource
 from helpers.collections import get_all_collections
 from helpers.utils import (  # Importando funções utilitárias
-    is_collection_empty,
-    process_csv_file,
-    update_collections_attributes,
-)
+    is_collection_empty, process_csv_file, update_collections_attributes)
 
 
 class DownloadFile(Resource):

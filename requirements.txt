@@ -10,3 +10,4 @@ dash
 dash_bootstrap_components
 geopandas
 pyyaml
+pylint

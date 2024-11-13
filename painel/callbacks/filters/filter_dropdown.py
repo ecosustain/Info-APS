@@ -1,21 +1,12 @@
 import dash
+from api.api_requests import get_municipios
+from callbacks.map_chart.plotting import (get_mapa_brasil, get_mapa_estado,
+                                          get_mapa_municipio, get_mapa_regiao)
+from callbacks.utils.utils import (get_municipios_regiao, get_regiao_municipio,
+                                   get_regioes)
 from dash import Input, Output
 from dash import callback_context as ctx
 
-from api.api_requests import (
-    get_municipios,
-)
-from callbacks.map_chart.plotting import (
-    get_mapa_brasil,
-    get_mapa_estado,
-    get_mapa_municipio,
-    get_mapa_regiao,
-)
-from callbacks.utils.utils import (
-    get_municipios_regiao,
-    get_regiao_municipio,
-    get_regioes,
-)
 
 def callback(app):
     @app.callback(
@@ -23,7 +14,7 @@ def callback(app):
         Output("loading-graphics", "display", allow_duplicate=True),
         Input("dropdown-estado", "value"),
         allow_duplicate=True,
-        prevent_initial_call=True
+        prevent_initial_call=True,
     )
     def update_dropdown_regiao(estado):
         # Função para atualizar as opções do dropdown de municipios
@@ -46,7 +37,7 @@ def callback(app):
             Input("dropdown-regiao", "value"),
         ],
         allow_duplicate=True,
-        prevent_initial_call=True
+        prevent_initial_call=True,
     )
     def update_dropdown_municipios(estado, regiao):
         # Função para atualizar as opções do dropdown de municipios
@@ -75,7 +66,7 @@ def callback(app):
             Input("dropdown-municipio", "value"),
         ],
         allow_duplicate=True,
-        prevent_initial_call=True
+        prevent_initial_call=True,
     )
     def update_dropdowns(clickData, estado, regiao, municipio):
         """Função para atualizar os dropdowns com base na seleção no mapa"""

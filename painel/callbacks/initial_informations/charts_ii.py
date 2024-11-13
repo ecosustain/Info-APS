@@ -1,32 +1,24 @@
 import dash
+from api.api_requests import (anos, get_atendimentos,
+                              get_atendimentos_odontologicos,
+                              get_encaminhamentos, get_visitas_domiciliar)
+from callbacks.utils.chart_plotting import (get_chart_by_year,
+                                            get_chart_by_year_profissionais,
+                                            get_chart_forecast_by_quarter,
+                                            get_chart_percentage_by_year)
+from callbacks.utils.data_processing import (get_df_atendimentos,
+                                             get_df_encaminhamentos)
+from callbacks.utils.utils import get_type
 from dash import Input, Output
 
-from api.api_requests import (
-    anos,
-    get_atendimentos,
-    get_atendimentos_odontologicos,
-    get_encaminhamentos,
-    get_visitas_domiciliar,
-)
-from callbacks.utils.chart_plotting import (
-    get_chart_by_year,
-    get_chart_by_year_profissionais,
-    get_chart_forecast_by_quarter,
-    get_chart_percentage_by_year,
-)
-from callbacks.utils.data_processing import (
-    get_df_atendimentos,
-    get_df_encaminhamentos,
-)
-from callbacks.utils.utils import (
-    get_type,
-)
 
 def callback(app):
     @app.callback(
         [
             Output("chart_by_year", "figure", allow_duplicate=True),
-            Output("chart_by_year_profissionais", "figure", allow_duplicate=True),
+            Output(
+                "chart_by_year_profissionais", "figure", allow_duplicate=True
+            ),
             Output("chart_by_quarter", "figure", allow_duplicate=True),
         ],
         Input("store-data", "data"),
@@ -35,7 +27,7 @@ def callback(app):
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
         allow_duplicate=True,
-        prevent_initial_call=True
+        prevent_initial_call=True,
     )
     def update_charts(data, populacao, estado, regiao, municipio):
         df_atendimentos = get_df_atendimentos(data, populacao)
@@ -78,7 +70,6 @@ def callback(app):
             raise dash.exceptions.PreventUpdate
         data_atendimentos = get_atendimentos(estado, regiao, municipio)
         return data_atendimentos
-
 
     # Callback para fazer a requisição à API e armazenar os dados de visitas domiciliares no dcc.Store
     @app.callback(

@@ -24,7 +24,12 @@ def update_layout_chart(chart, title, tipo):
     chart.update_traces(
         textposition="outside",
         marker_color=color,
-        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
+        hoverlabel=dict(
+            bgcolor="#343A40",
+            font_color="white",
+            font_size=12,
+            bordercolor="#343A40",
+        ),
         hovertemplate=f"<b>%{{y:,.0f}}</b><br>{title} em %{{x}}<extra></extra>",
     )
 
@@ -52,7 +57,12 @@ def update_layout_chart_profissionais(chart, title):
     # Aplicar as duas cores alternadamente
     chart.update_traces(
         textposition="outside",
-        hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
+        hoverlabel=dict(
+            bgcolor="#343A40",
+            font_color="white",
+            font_size=12,
+            bordercolor="#343A40",
+        ),
         hovertemplate=f"<b>%{{y:,.0f}}</b><br>{title} por %{{fullData.name}} em %{{x}}<extra></extra>",
     )
 
@@ -229,7 +239,12 @@ def add_forecast_to_chart(chart, forecast_df, tipo):
                 color=type_color_map.get(tipo, [None])[1], width=2, dash="dash"
             ),
             hovertemplate="<b>%{{y:,.0f}}</b><br>Previsão para o %{{x}}<extra></extra>",
-            hoverlabel=dict(bgcolor="#343A40", font_color="white", font_size=12, bordercolor="#343A40"),
+            hoverlabel=dict(
+                bgcolor="#343A40",
+                font_color="white",
+                font_size=12,
+                bordercolor="#343A40",
+            ),
         )
     )
     # Mudando a legenda da previsão

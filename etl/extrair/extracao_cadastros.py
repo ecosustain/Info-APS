@@ -1,13 +1,7 @@
 import transformar.transformacao as transformacao
-from extrair.extracao import (
-    carregar_xpaths,
-    cria_driver,
-    fazer_download,
-    get_logger,
-    seleciona_competencias,
-    seleciona_xpath,
-    verifica_arquivo,
-)
+from extrair.extracao import (carregar_xpaths, cria_driver, fazer_download,
+                              get_logger, seleciona_competencias,
+                              seleciona_xpath, verifica_arquivo)
 from selenium.webdriver.common.by import By
 
 logger = get_logger("cadastro.log")

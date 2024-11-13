@@ -1,10 +1,9 @@
 import dash
+from callbacks.utils.utils import get_type
+from constants import time_division
 from dash import Input, Output, State
 from dash import callback_context as ctx
 
-from constants import time_division
-
-from callbacks.utils.utils import get_type
 
 def callback(app):
     @app.callback(
@@ -34,30 +33,22 @@ def callback(app):
                     -1
                 ]  # Extrai o ano do ID do botão
 
-
         tipo = get_type(estado, regiao, municipio)
 
-        style_by_type= {
-            "brasil": {
-                "background-color": "#632956"
-            },
-            "estado": {
-                "background-color": "#34679A"
-            },
-            "regiao": {
-                "background-color": "#2B7B6F"
-            },
-            "municipio": {
-                "background-color": "#F7941C"
-            }
+        style_by_type = {
+            "brasil": {"background-color": "#632956"},
+            "estado": {"background-color": "#34679A"},
+            "regiao": {"background-color": "#2B7B6F"},
+            "municipio": {"background-color": "#F7941C"},
         }
-
 
         estilos = []
         for division in time_division.graphic_division:
             if division == selecionado:
                 estilo = {
-                    "background-color": style_by_type[tipo]["background-color"],  # Fundo preto
+                    "background-color": style_by_type[tipo][
+                        "background-color"
+                    ],  # Fundo preto
                     "border": "none",
                     "color": "#fff",  # Cor do texto
                 }
@@ -69,7 +60,6 @@ def callback(app):
                 }
             estilos.append(estilo)
         return estilos
-
 
     @app.callback(
         [

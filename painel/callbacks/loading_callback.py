@@ -1,7 +1,7 @@
 import time
 
-from dash import Input, Output, no_update
 from callbacks.utils.utils import get_type
+from dash import Input, Output, no_update
 
 
 def callback(app):
@@ -9,14 +9,14 @@ def callback(app):
         Output("loading-graphics", "display", allow_duplicate=True),
         Input("loading-graphics", "display"),
         allow_duplicate=True,
-        prevent_initial_call=True
+        prevent_initial_call=True,
     )
     def loading_trigger(value):
-        if (value == "show"):
+        if value == "show":
             time.sleep(2.5)
             return "hide"
         return no_update
-    
+
     @app.callback(
         Output("loading-graphics", "color"),
         Input("dropdown-estado", "value"),
@@ -25,15 +25,12 @@ def callback(app):
     )
     def loading_trigger(estado, regiao, municipio):
         tipo = get_type(estado, regiao, municipio)
-        
-        style_loading= {
+
+        style_loading = {
             "brasil": "#632956",
             "estado": "#34679A",
-            "regiao":  "#2B7B6F",
+            "regiao": "#2B7B6F",
             "municipio": "#F7941C",
         }
 
         return style_loading[tipo]
-
-            
-

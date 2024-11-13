@@ -1,12 +1,9 @@
 """Módulo para processar os dados obtidos da API e transformá-los para gerar os gráficos"""
 
 import pandas as pd
-from api.api_requests import (
-    get_atendimentos_individuais_problema,
-    get_collection,
-    get_collection_atributes,
-    get_febres,
-)
+from api.api_requests import (get_atendimentos_individuais_problema,
+                              get_collection, get_collection_atributes,
+                              get_febres)
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {

@@ -1,11 +1,8 @@
 import dash
+from api.api_requests import anos
+from callbacks.utils.utils import get_type
 from dash import Input, Output
 
-from api.api_requests import (
-    anos,
-)
-
-from callbacks.utils.utils import get_type
 
 def callback(app):
     @app.callback(
@@ -28,27 +25,21 @@ def callback(app):
                 )  # Extrai o ano do ID do botão
 
         tipo = get_type(estado, regiao, municipio)
-        
-        style_by_type= {
-            "brasil": {
-                "background-color": "#632956"
-            },
-            "estado": {
-                "background-color": "#34679A"
-            },
-            "regiao": {
-                "background-color": "#2B7B6F"
-            },
-            "municipio": {
-                "background-color": "#F7941C"
-            }
+
+        style_by_type = {
+            "brasil": {"background-color": "#632956"},
+            "estado": {"background-color": "#34679A"},
+            "regiao": {"background-color": "#2B7B6F"},
+            "municipio": {"background-color": "#F7941C"},
         }
 
         estilos = []
         for ano in anos:
             if ano == ano_selecionado:
                 estilo = {
-                    "background-color":  style_by_type[tipo]["background-color"],  # Fundo preto
+                    "background-color": style_by_type[tipo][
+                        "background-color"
+                    ],  # Fundo preto
                     "border": "none",
                     "color": "#fff",  # Cor do texto
                 }
