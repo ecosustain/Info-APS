@@ -71,7 +71,6 @@ def callback(app):
     )
     def update_visita_big_numbers(data_visita, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = populacao[str(ano)]
 
         # Add visitas domiciliar
         df_visita = get_df_from_json(data_visita)
@@ -82,7 +81,7 @@ def callback(app):
         )
 
         # Normalizar os valores pelo total da população
-        total_populacao = populacao / 1000
+        total_populacao = populacao[str(ano)] / 1000
         big_numbers = [round(total_visita_ano / total_populacao)]
 
         values = get_values(hist_visita, ano, nivel)
@@ -103,7 +102,6 @@ def callback(app):
     )
     def update_odont_big_numbers(data_odonto, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = populacao[str(ano)]
 
         # Add atendimentos odontologicos
         df_odonto = get_df_from_json(data_odonto)
@@ -112,7 +110,7 @@ def callback(app):
         hist_odont = store_nivel(hist_odont, df_odonto, populacao, nivel, anos)
 
         # Normalizar os valores pelo total da população
-        total_populacao = populacao / 1000
+        total_populacao = populacao[str(ano)] / 1000
         big_numbers = [round(total_odonto_ano / total_populacao)]
 
         values = get_values(hist_odont, ano, nivel)
@@ -137,13 +135,12 @@ def callback(app):
         if data is None:
             raise dash.exceptions.PreventUpdate
         ano = get_selected_year(dash.callback_context)
-        populacao = populacao[str(ano)]
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
         global hist_atend
         hist_atend = store_nivel(hist_atend, df, populacao, nivel, anos)
         # Normalizar os valores pelo total da população
-        total_populacao = populacao / 1000
+        total_populacao = populacao[str(ano)] / 1000
         total_atendimentos = big_numbers[0]
         total_atendimentos = formatar_numero(total_atendimentos)
         # Dividir cada big number por 1000 para facilitar a leitura

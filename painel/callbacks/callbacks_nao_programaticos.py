@@ -32,7 +32,7 @@ data_inputs = [
 ]
 
 common_inputs = [
-    Input("store-populacao", "data"),
+    Input("store-populacao-api", "data"),
     Input("nivel-geo", "data"),
     *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
 ]
@@ -57,7 +57,7 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     # Add asma_dpoc
     df = get_df_from_json(json)
     total = df[df["ano"] == ano]["valor"].sum()
-    total = round(total / populacao * qtd_hab)
+    total = round(total / populacao[str(ano)] * qtd_hab)
 
     if tipo == "asma_dpoc":
         global hist_asma_dpoc

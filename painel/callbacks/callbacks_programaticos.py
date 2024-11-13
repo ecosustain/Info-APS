@@ -25,7 +25,7 @@ data_inputs = [
     Input("url", "pathname"),
 ]
 big_numbers_inputs = [
-    Input("store-populacao", "data"),
+    Input("store-populacao-api", "data"),
     Input("nivel-geo", "data"),
     *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
 ]
@@ -41,7 +41,7 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     df = get_df_from_json(json)
     if populacao is not None:
         total = df[df["ano"] == ano]["valor"].sum()
-        total = round(total / populacao * 1000)
+        total = round(total / populacao[str(ano)] * 1000)
     else:
         total = round(df[df["ano"] == ano]["valor"].mean(), 2)
 

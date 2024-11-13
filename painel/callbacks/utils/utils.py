@@ -166,8 +166,10 @@ def store_nivel(hist, df, populacao, nivel, anos, qtd_hab=1000):
     df = df[df["ano"].isin(anos)]
     if populacao is not None:
         # normalizar df pelo total da população (1000 habitantes)
-        populacao = populacao / qtd_hab
-        df["valor"] = round(df["valor"] / populacao)
+        df["valor"] = df.apply(
+            lambda row: row["valor"] / (populacao[str(row["ano"])] / qtd_hab),
+            axis=1,
+        )
 
     hist[nivel] = df
 
