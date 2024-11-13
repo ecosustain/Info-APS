@@ -1,5 +1,4 @@
-from flask import (flash, make_response, redirect, render_template, request,
-                   url_for)
+from flask import flash, make_response, redirect, render_template, request, url_for
 from flask_restx import Resource
 
 

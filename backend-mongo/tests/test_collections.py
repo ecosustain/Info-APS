@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 import pytest
+
 # Import the Collection class from the correct module
 from apis.collections import Collection
 from flask import Flask, jsonify

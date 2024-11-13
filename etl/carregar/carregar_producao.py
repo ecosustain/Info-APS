@@ -1,10 +1,17 @@
 """Módulo para carregar os dados de produção no banco de dados."""
 
 import pandas as pd
-from carregar.carregar import (ajusta_producao, carrega_banco, ler_producao,
-                               tipo_producao, transform_data,
-                               valida_colunas_bd, valida_grupos_bd,
-                               valida_producao, valida_tipo_atendimento_bd)
+from carregar.carregar import (
+    ajusta_producao,
+    carrega_banco,
+    ler_producao,
+    tipo_producao,
+    transform_data,
+    valida_colunas_bd,
+    valida_grupos_bd,
+    valida_producao,
+    valida_tipo_atendimento_bd,
+)
 from extrair.extracao import carregar_xpaths
 
 

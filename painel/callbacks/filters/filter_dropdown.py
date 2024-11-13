@@ -1,9 +1,16 @@
 import dash
 from api.api_requests import get_municipios
-from callbacks.map_chart.plotting import (get_mapa_brasil, get_mapa_estado,
-                                          get_mapa_municipio, get_mapa_regiao)
-from callbacks.utils.utils import (get_municipios_regiao, get_regiao_municipio,
-                                   get_regioes)
+from callbacks.map_chart.plotting import (
+    get_mapa_brasil,
+    get_mapa_estado,
+    get_mapa_municipio,
+    get_mapa_regiao,
+)
+from callbacks.utils.utils import (
+    get_municipios_regiao,
+    get_regiao_municipio,
+    get_regioes,
+)
 from dash import Input, Output
 from dash import callback_context as ctx
 

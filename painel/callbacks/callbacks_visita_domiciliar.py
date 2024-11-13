@@ -1,6 +1,5 @@
 import dash
-from callbacks.utils.chart_plotting import (get_chart_by_quarter,
-                                            get_chart_by_year)
+from callbacks.utils.chart_plotting import get_chart_by_quarter, get_chart_by_year
 from callbacks.utils.data_processing import get_df_from_json
 from callbacks.utils.utils import get_type
 from dash import Input, Output
@@ -14,7 +13,7 @@ def register_callbacks_visita(app):
         ],
         Input("store-data", "data"),
         Input("store-data-visita", "data"),
-        Input("store-populacao", "data"),
+        Input("store-populacao-api", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),

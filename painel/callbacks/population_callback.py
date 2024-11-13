@@ -23,5 +23,9 @@ def callback(app):
         populacao_api = get_collection(
             estado, regiao, municipio, "População", "Cadastros"
         )
+        for ano, meses in populacao_api.items():
+            media = sum(meses.values()) / len(meses)
+            populacao_api[ano] = round(media)
+
         nivel = get_type(estado, regiao, municipio)
         return populacao, populacao_api, nivel

@@ -1,8 +1,10 @@
 import dash
 from api.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.utils.chart_plotting import (get_chart_by_quarter,
-                                            get_chart_by_year,
-                                            get_chart_percentage_by_year)
+from callbacks.utils.chart_plotting import (
+    get_chart_by_quarter,
+    get_chart_by_year,
+    get_chart_percentage_by_year,
+)
 from callbacks.utils.data_processing import get_df_from_json, get_gravidez_json
 from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
@@ -271,7 +273,7 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-hipertensao", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -296,7 +298,7 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-diabetes", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -321,7 +323,7 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-saude-sexual", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -346,7 +348,7 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-saude-mental", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -371,7 +373,7 @@ def register_callbacks_programaticos(app):
         ],
         [
             Input("store-data-puericultura", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),

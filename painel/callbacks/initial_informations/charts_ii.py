@@ -1,13 +1,18 @@
 import dash
-from api.api_requests import (anos, get_atendimentos,
-                              get_atendimentos_odontologicos,
-                              get_encaminhamentos, get_visitas_domiciliar)
-from callbacks.utils.chart_plotting import (get_chart_by_year,
-                                            get_chart_by_year_profissionais,
-                                            get_chart_forecast_by_quarter,
-                                            get_chart_percentage_by_year)
-from callbacks.utils.data_processing import (get_df_atendimentos,
-                                             get_df_encaminhamentos)
+from api.api_requests import (
+    anos,
+    get_atendimentos,
+    get_atendimentos_odontologicos,
+    get_encaminhamentos,
+    get_visitas_domiciliar,
+)
+from callbacks.utils.chart_plotting import (
+    get_chart_by_year,
+    get_chart_by_year_profissionais,
+    get_chart_forecast_by_quarter,
+    get_chart_percentage_by_year,
+)
+from callbacks.utils.data_processing import get_df_atendimentos, get_df_encaminhamentos
 from callbacks.utils.utils import get_type
 from dash import Input, Output
 
@@ -22,7 +27,7 @@ def callback(app):
             Output("chart_by_quarter", "figure", allow_duplicate=True),
         ],
         Input("store-data", "data"),
-        Input("store-populacao", "data"),
+        Input("store-populacao-api", "data"),
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),

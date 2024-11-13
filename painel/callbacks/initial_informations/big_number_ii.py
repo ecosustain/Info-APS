@@ -1,8 +1,10 @@
 import dash
 from api.api_requests import anos
-from callbacks.utils.data_processing import (get_big_numbers_atendimentos,
-                                             get_df_atendimentos,
-                                             get_df_from_json)
+from callbacks.utils.data_processing import (
+    get_big_numbers_atendimentos,
+    get_df_atendimentos,
+    get_df_from_json,
+)
 from callbacks.utils.utils import formatar_numero, get_values, store_nivel
 from dash import Input, Output, State
 
@@ -45,9 +47,7 @@ def callback(app):
     )
     def update_encaminhamentos_big_numbers(data_enc, populacao, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(
-            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
-        )
+        populacao = populacao[str(ano)]
 
         # Add encaminhamento
         df_enc = get_df_from_json(data_enc)
@@ -71,9 +71,7 @@ def callback(app):
     )
     def update_visita_big_numbers(data_visita, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(
-            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
-        )
+        populacao = populacao[str(ano)]
 
         # Add visitas domiciliar
         df_visita = get_df_from_json(data_visita)
@@ -105,9 +103,7 @@ def callback(app):
     )
     def update_odont_big_numbers(data_odonto, populacao, nivel, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = round(
-            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
-        )
+        populacao = populacao[str(ano)]
 
         # Add atendimentos odontologicos
         df_odonto = get_df_from_json(data_odonto)
@@ -141,9 +137,7 @@ def callback(app):
         if data is None:
             raise dash.exceptions.PreventUpdate
         ano = get_selected_year(dash.callback_context)
-        populacao = round(
-            sum(populacao[str(ano)].values()) / len(populacao[str(ano)])
-        )
+        populacao = populacao[str(ano)]
         df = get_df_atendimentos(data)
         big_numbers = get_big_numbers_atendimentos(df, ano)
         global hist_atend

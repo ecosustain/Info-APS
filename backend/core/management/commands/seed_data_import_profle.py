@@ -1,8 +1,11 @@
 import json
 import os
 
-from core.models.data_import import (DataImportCategory, DataImportParam,
-                                     DataImportProfile)
+from core.models.data_import import (
+    DataImportCategory,
+    DataImportParam,
+    DataImportProfile,
+)
 from django.conf import settings
 from django.core.management.base import BaseCommand
 

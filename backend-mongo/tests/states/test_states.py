@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from apis.states import (State, StateSumByCollection,  # Módulo 'api'
-                         StateSumByCollectionYear)
+from apis.states import StateSumByCollection  # Módulo 'api'
+from apis.states import State, StateSumByCollectionYear
 from flask import Flask
 from flask_restx import Api
 

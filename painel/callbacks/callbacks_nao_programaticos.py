@@ -1,10 +1,12 @@
 import dash
 import pandas as pd
 from api.api_requests import anos, get_atendimentos_individuais_problema
-from callbacks.utils.chart_plotting import (get_chart_by_quarter,
-                                            get_chart_by_year)
-from callbacks.utils.data_processing import (get_asma_dpoc_json, get_cids_json,
-                                             get_df_from_json)
+from callbacks.utils.chart_plotting import get_chart_by_quarter, get_chart_by_year
+from callbacks.utils.data_processing import (
+    get_asma_dpoc_json,
+    get_cids_json,
+    get_df_from_json,
+)
 from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
@@ -370,7 +372,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-asma-dpoc", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -396,7 +398,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-dengue", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -421,7 +423,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-tuberculose", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -446,7 +448,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-dst", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -471,7 +473,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-hanseniase", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -496,7 +498,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-febre", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -521,7 +523,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-cefaleia", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -546,7 +548,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-tosse", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
@@ -571,7 +573,7 @@ def register_callbacks_nao_programaticos(app):
         ],
         [
             Input("store-data-febres", "data"),
-            Input("store-populacao", "data"),
+            Input("store-populacao-api", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),

@@ -4,9 +4,15 @@ import configparser
 from datetime import datetime
 
 import transformar.transf_producao as transf_producao
-from extrair.extracao import (carregar_xpaths, cria_driver, fazer_download,
-                              get_logger, seleciona_competencias,
-                              seleciona_xpath, verifica_arquivo)
+from extrair.extracao import (
+    carregar_xpaths,
+    cria_driver,
+    fazer_download,
+    get_logger,
+    seleciona_competencias,
+    seleciona_xpath,
+    verifica_arquivo,
+)
 from selenium.webdriver.common.by import By
 
 logger = get_logger("producao_gravidas.log")

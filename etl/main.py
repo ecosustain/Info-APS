@@ -1,7 +1,11 @@
 """Fluxo principal do ETL."""
 
-from extrair import (extracao_cadastros, extracao_codigos, extracao_gravidas,
-                     extracao_producao)
+from extrair import (
+    extracao_cadastros,
+    extracao_codigos,
+    extracao_gravidas,
+    extracao_producao,
+)
 from extrair.extracao import carregar_xpaths, get_logger
 from transformar import transf_producao, transformacao
 

@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from apis.collections import (Collection, CollectionSum,  # Módulo 'api'
-                              CollectionSumByKey)
+from apis.collections import CollectionSum  # Módulo 'api'
+from apis.collections import Collection, CollectionSumByKey
 from flask import Flask
 from flask_restx import Api
 

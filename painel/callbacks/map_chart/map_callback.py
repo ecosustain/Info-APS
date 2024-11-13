@@ -1,5 +1,9 @@
-from callbacks.map_chart.plotting import (get_mapa_brasil, get_mapa_estado,
-                                          get_mapa_municipio, get_mapa_regiao)
+from callbacks.map_chart.plotting import (
+    get_mapa_brasil,
+    get_mapa_estado,
+    get_mapa_municipio,
+    get_mapa_regiao,
+)
 from dash import Input, Output
 
 

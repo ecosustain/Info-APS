@@ -1,9 +1,12 @@
 """Módulo para processar os dados obtidos da API e transformá-los para gerar os gráficos"""
 
 import pandas as pd
-from api.api_requests import (get_atendimentos_individuais_problema,
-                              get_collection, get_collection_atributes,
-                              get_febres)
+from api.api_requests import (
+    get_atendimentos_individuais_problema,
+    get_collection,
+    get_collection_atributes,
+    get_febres,
+)
 
 # Mapeamento dos meses para seus números correspondentes
 mes_map = {
@@ -52,7 +55,7 @@ trimestre_map_num = {
 }
 
 
-def get_df_atendimentos(json_data, populacao=None):
+def get_df_atendimentos(json_data, populacao=None, qtd_hab=1000):
     """Função para transformar um json de atendimento em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
     #    json_data -> json que contem os dados de atendimento
@@ -87,9 +90,14 @@ def get_df_atendimentos(json_data, populacao=None):
 
     # normalizar valores pelo total da população (1000 habitantes)
     if populacao is not None:
-        populacao = populacao / 1000
-        df["valor"] = df["valor"] / populacao
-        df["valor"] = df["valor"].astype(int)
+        # filtrar df pelos ultimos 6 anos
+        df_filtrado = df[df["ano"] >= (df["ano"].max() - 6)]
+        # normalizar valor pela populacao pra cada ano
+        df_filtrado["valor"] = df_filtrado.apply(
+            lambda row: row["valor"] / (populacao[str(row["ano"])] / qtd_hab),
+            axis=1,
+        )
+        df = df_filtrado
 
     return df
 
@@ -125,8 +133,14 @@ def get_df_from_json(json_data, populacao=None, qtd_hab=1000):
 
     # normalizar valores pelo total da população (1000 habitantes)
     if populacao is not None:
-        populacao = populacao / qtd_hab
-        df["valor"] = round(df["valor"] / populacao)
+        # filtrar df pelos ultimos 6 anos
+        df_filtrado = df[df["ano"] >= (df["ano"].max() - 6)]
+        # normalizar valor pela populacao pra cada ano
+        df_filtrado["valor"] = df_filtrado.apply(
+            lambda row: row["valor"] / (populacao[str(row["ano"])] / qtd_hab),
+            axis=1,
+        )
+        df = df_filtrado
 
     return df
 

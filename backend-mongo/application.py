@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
+
 # Importando a função init_app de routes.py
 from routes import init_app
 
