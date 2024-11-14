@@ -38,6 +38,7 @@
 #content-header {
   display: flex;
   padding: 15px 25px;
+  justify-content: space-between;
   background-color: #f8f9fa;
 }
 
