@@ -119,17 +119,6 @@ layout = html.Div(
     [
         dcc.Loading(
             [
-                html.Div ([
-                    html.H2 (
-                        "Atendimentos totais",
-                        id="overview",
-                        style={"font-size": "20px"}
-                    ),
-                    html.Small (
-                        "Atendimentos totais realizados nas unidades de atenção primária",
-                        style={"font-size": "12px"}
-                    ),
-                ], style={"margin-bottom": "20px"}),
                 html.Div(
                     id="indicators",
                     children=[
