@@ -19,11 +19,16 @@
 }
 
 .btn:hover {
-  background-color: #f8f9fa !important;
-  color: #343A40 !important;
+  background-color: #f8f9fa;
+  color: #343A40;
 }
 
-.btn:active {
-  background-color: #F8F9FA !important;
-  color: #343A40 !important;
+.btn-check:checked+.btn,
+.btn.show,
+.btn.active,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+  background-color: #6329561a;
+  border: 1px solid #632956;
+  color: #632956;
 }

@@ -44,6 +44,12 @@ def callback(app):
         "indicator-icon-house",
         "indicator-icon-user-doctor",
         "indicator-icon-hand-point-right",
+        "chart_encaminhamentos-icon",
+        "chart_by_year_profissionais-icon",
+        "chart_odonto_by_year-icon",
+        "chart_visitas_by_year-icon",
+        "chart_odonto_by_quarter-icon",
+        "chart_visitas_by_quarter-icon",
         "tag-trimestre",
         "tag-ano",
     ]

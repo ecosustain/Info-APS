@@ -20,7 +20,6 @@ def callback(app):
             return no_update
     
     loading_trigger("loading-graphics")
-    loading_trigger("loading-page")
 
     @app.callback(
         Output("loading-graphics", "color"),

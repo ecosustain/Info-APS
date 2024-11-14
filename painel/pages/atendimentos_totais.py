@@ -160,15 +160,15 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component("Atendimentos Totais", "chart_by_year", "por mil habitantes"),
-                                chart_component("Encaminhamentos", "chart_encaminhamentos", "% atendimentos totais"),
-                                chart_component("Atendimentos por profissionais", "chart_by_year_profissionais", "por mil habitantes"),
+                                chart_component("Encaminhamentos", "chart_encaminhamentos", "% atendimentos totais", "hand-point-right"),
+                                chart_component("Atendimentos por profissionais", "chart_by_year_profissionais", "por mil habitantes", "user-doctor"),
                             ],
                             className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos odontológicos", "chart_odonto_by_year", "por mil habitantes"),
-                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_year", "por mil habitantes"),
+                                chart_component("Atendimentos odontológicos", "chart_odonto_by_year", "por mil habitantes", "tooth"),
+                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_year", "por mil habitantes", "house"),
                             ],
                             className="content-chart-wrapper",
                         ),
@@ -193,8 +193,8 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos odontológicos", "chart_odonto_by_quarter", "por mil habitantes"),
-                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_quarter", "por mil habitantes"),
+                                chart_component("Atendimentos odontológicos", "chart_odonto_by_quarter", "por mil habitantes", "tooth"),
+                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_quarter", "por mil habitantes", "house"),
                             ],
                             className="content-chart-wrapper",
                         ),
