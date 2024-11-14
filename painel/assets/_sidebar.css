@@ -4,6 +4,7 @@
   width: 220px;
   position: fixed;
   background-color: #343A40;
+  padding: 25px 0px !important;
 }
 
 .btn {
