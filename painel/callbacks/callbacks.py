@@ -5,6 +5,7 @@ import callbacks.loading_callback as loading
 import callbacks.population_callback as population
 import callbacks.static_style_callback as static_style
 import callbacks.sidebar_callback as sidebar 
+import callbacks.header_callback as header
 from callbacks.filters import filter_dropdown, filter_season, filter_year
 from callbacks.initial_informations import big_number_ii, charts_ii
 from callbacks.map_chart import map_callback
@@ -32,6 +33,7 @@ def register_callbacks(app):
 
     population.callback(app)
 
+    header.callback(app)
     sidebar.callback(app)
     static_style.callback(app)
     hover_chart.callback(app)

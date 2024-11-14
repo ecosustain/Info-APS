@@ -6,6 +6,12 @@
   width: calc(100% - 220px);
 }
 
+#content-title {
+  font-size: 18px;
+  margin-bottom: 2px !important;
+  font-weight: bold;
+}
+
 #header-title {
   display: flex;
   justify-content: space-between;

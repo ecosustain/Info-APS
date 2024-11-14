@@ -44,12 +44,13 @@ def Header():
                     html.Div ([
                         html.H2 (
                             "Atendimentos totais",
-                            id="overview",
+                            id="content-title",
                             style={"font-size": "20px"}
                         ),
                         html.P (
                             "Atendimentos totais realizados nas unidades de atenção primária",
-                            style={"font-size": "12px", "line-height": "14px", "color": "#212529bf", "margin": "0px"}
+                            id="content-description",
+                            style={"font-size": "11px", "line-height": "14px", "color": "#212529bf", "margin": "0px"}
                         ),
                     ], style=
                     {    "display": "flex", "flex-direction": "column", "justify-content": "center"}),

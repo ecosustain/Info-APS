@@ -7,7 +7,10 @@ def callback(app):
             Output(f"{path}", "style"),
             Input('_pages_location', 'pathname'),
         )
-        def modify_sidebar_selection(value):
+        def modify_sidebar_selection(value, l):
+
+            print("l----------------")
+            print(l)
 
             if path == value: 
                 return {
