@@ -1,9 +1,18 @@
 """Módulo para página de atendimentos programáticos"""
 
 import dash
-import dash_bootstrap_components as dbc
-from api.api_requests import anos
 from dash import dcc, html
+
+import dash_bootstrap_components as dbc
+
+from api.api_requests import get_anos
+from api.api_requests import anos
+
+from components.map import Map
+from components.geometric_elements import square_legend, rhombus_legend
+from components.slash_column import slash_column
+from components.indicator_component import indicator_component
+from components.chart_component import chart_component
 
 dash.register_page(
     __name__,
@@ -12,7 +21,6 @@ dash.register_page(
     name="Atendimentos Programáticos",
 )
 
-from components.map import Map
 
 square_legend = html.Span(
     style={
@@ -24,401 +32,228 @@ square_legend = html.Span(
     }
 )
 
-rhombus_legend = html.Span(
-    style={
-        "display": "inline-block",
-        "width": "8px",
-        "height": "8px",
-        "background-color": "#34679A",
-        "transform": "rotate(45deg)",
-        "margin-right": "5px",
-    }
-)
-
-slash_column = dbc.Col(
-    [
-        html.Span(
-            style={
-                "display": "inline-block",
-                "width": "1px",
-                "height": "100%",
-                "background-color": "#212529bf",
-            }
-        )
-    ],
-    className="slash",
-)
-
-
-def indicator_component(title, ind_brasil, ind_estado, ind):
-    legend = html.Div([])
-
-    if ind_brasil != None:
-        legend = html.Div(
-            className="indicator-legend-box",
-            children=[
-                html.Div(
-                    className="indicator-legend",
-                    children=[
-                        square_legend,
-                        html.P(id=ind_brasil, className="legend-text"),
-                    ],
-                ),
-                html.Div(
-                    className="indicator-legend",
-                    children=[
-                        rhombus_legend,
-                        html.P(id=ind_estado, className="legend-text"),
-                    ],
-                ),
-            ],
-        )
-
-    return dbc.Col(
-        [
-            dbc.Row(
-                html.H4(
-                    title,
-                    className="description-indicator-small",
-                ),
-            ),
-            legend,
-            dbc.Row(
-                html.Div(
-                    className="indicator-footer",
-                    children=[
-                        html.H2(
-                            id=ind,
-                            className="indicator-number-small",
-                        ),
-                    ],
-                ),
-            ),
-        ],
-        className="indicator-column",
-    )
-
-
 layout = html.Div(
     [
-        html.Div(
-            id="indicators",
-            children=[
-                Map(),
+        dcc.Loading(
+            [
                 html.Div(
-                    [
-                        html.H2(
-                            "Atendimentos Programáticos",
-                            id="chart-title",
-                        ),
+                    id="indicators",
+                    children=[
+                        Map(),
                         html.Div(
-                            id="indicator-content",
-                            children=[
-                                dbc.ButtonGroup(
-                                    [
-                                        dbc.Button(
-                                            str(ano),
-                                            id=f"btn-ano-{ano}",
-                                            color="primary",
-                                            outline=True,
-                                            active=(
-                                                ano == anos[0]
-                                            ),  # Define o primeiro ano como ativo
-                                            className="year-button rounded",
-                                        )
-                                        for ano in anos
-                                    ],
-                                    vertical=False,  # Para deixar os botões lado a lado
-                                ),
+                            [
                                 html.Div(
-                                    className="indicator-legend-box",
+                                    id="indicator-content",
                                     children=[
+                                        dbc.ButtonGroup(
+                                            [
+                                                dbc.Button(
+                                                    str(ano),
+                                                    id=f"btn-ano-{ano}",
+                                                    color="primary",
+                                                    outline=True,
+                                                    active=(
+                                                        ano == anos[0]
+                                                    ),  # Define o primeiro ano como ativo
+                                                    className="year-button rounded",
+                                                )
+                                                for ano in anos
+                                            ],
+                                            vertical=False,  # Para deixar os botões lado a lado
+                                        ),
                                         html.Div(
-                                            className="indicator-legend",
+                                            className="indicator-legend-box",
                                             children=[
-                                                square_legend,
-                                                html.P(
-                                                    "Brasil",
-                                                    className="legend-text",
+                                                html.Div(
+                                                    className="indicator-legend",
+                                                    children=[
+                                                        square_legend,
+                                                        html.P(
+                                                            "Brasil",
+                                                            className="legend-text",
+                                                        ),
+                                                    ],
+                                                ),
+                                                html.Div(
+                                                    className="indicator-legend",
+                                                    children=[
+                                                        rhombus_legend,
+                                                        html.P(
+                                                            "Estado",
+                                                            className="legend-text",
+                                                        ),
+                                                    ],
                                                 ),
                                             ],
                                         ),
-                                        html.Div(
-                                            className="indicator-legend",
-                                            children=[
-                                                rhombus_legend,
-                                                html.P(
-                                                    "Estado",
-                                                    className="legend-text",
+                                        dbc.Row(
+                                            [
+                                                indicator_component(
+                                                    "Hipertensão Arterial",
+                                                    "indicador-hipertensao-brasil",
+                                                    "indicador-hipertensao-estado",
+                                                    "big-hipertensao",
+                                                    None
+                                                ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Diabetes",
+                                                    "indicador-diabetes-brasil",
+                                                    "indicador-diabetes-estado",
+                                                    "big-diabetes",
+                                                    None
+                                                ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Saúde Sexual",
+                                                    "indicador-sexual-brasil",
+                                                    "indicador-sexual-estado",
+                                                    "big-sexual",
+                                                    None
                                                 ),
                                             ],
+                                            className="mb-3",
+                                        ),
+                                        dbc.Row(
+                                            [
+                                                indicator_component(
+                                                    "Saúde Mental",
+                                                    "indicador-mental-brasil",
+                                                    "indicador-mental-estado",
+                                                    "big-mental",
+                                                    None
+                                                ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Puericultura",
+                                                    "indicador-puericultura-brasil",
+                                                    "indicador-puericultura-estado",
+                                                    "big-puericultura",
+                                                    None
+                                                ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Grávidas",
+                                                    "indicador-gravidas-brasil",
+                                                    "indicador-gravidas-estado",
+                                                    "big-gravidas",
+                                                    None
+                                                ),
+                                            ],
+                                            className="mb-3",
                                         ),
                                     ],
                                 ),
-                                dbc.Row(
-                                    [
-                                        indicator_component(
-                                            "Hipertensão Arterial",
-                                            "indicador-hipertensao-brasil",
-                                            "indicador-hipertensao-estado",
-                                            "big-hipertensao",
-                                        ),
-                                        slash_column,
-                                        indicator_component(
-                                            "Diabetes",
-                                            "indicador-diabetes-brasil",
-                                            "indicador-diabetes-estado",
-                                            "big-diabetes",
-                                        ),
-                                        slash_column,
-                                        indicator_component(
-                                            "Saúde Sexual",
-                                            "indicador-sexual-brasil",
-                                            "indicador-sexual-estado",
-                                            "big-sexual",
-                                        ),
-                                    ],
-                                    className="mb-3",
-                                ),
-                                dbc.Row(
-                                    [
-                                        indicator_component(
-                                            "Saúde Mental",
-                                            "indicador-mental-brasil",
-                                            "indicador-mental-estado",
-                                            "big-mental",
-                                        ),
-                                        slash_column,
-                                        indicator_component(
-                                            "Puericultura",
-                                            "indicador-puericultura-brasil",
-                                            "indicador-puericultura-estado",
-                                            "big-puericultura",
-                                        ),
-                                        slash_column,
-                                        indicator_component(
-                                            "Grávidas",
-                                            "indicador-gravidas-brasil",
-                                            "indicador-gravidas-estado",
-                                            "big-gravidas",
-                                        ),
-                                    ],
-                                    className="mb-3",
-                                ),
-                            ],
+                            ]
                         ),
                     ],
-                    style={"width": "100%"},
                 ),
-            ],
-        ),
-        html.H2(
-                    [
-                        "Série Temporal ",
-                        html.Small("(por mil habitantes)", className="legend-text")
-                    ],
+                html.H2(
+                    "Série Temporal ",
                     id="overview",
                     className="mt-3",
                 ),
-        html.Div(
-            id="year-content",
-            className="time-visualization-content",
-            children=[
-                dbc.Row(
-                    [
-                        # Hipertensão por população por ano
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Hipertensão Arterial",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_hipertensao_by_year",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=4,
+                html.Div(
+                    id="year-content",
+                    className="time-visualization-content",
+                    children=[
+                        html.Div(
+                            html.Span(
+                                "Ano",
+                                id="tag-ano",
+                                className="tag rounded",
+                            ),
                         ),
-                        # Diabetes por população por ano
-                        dbc.Col(
+                        dbc.Row(
                             [
-                                html.H6(
-                                    "Atendimentos de Diabetes",
-                                    className="description-indicator",
+                                chart_component("Atendimentos de Hipertensão Arterial",
+                                    "chart_hipertensao_by_year",
+                                    "por mil habitantes"
+                                ),  
+                                chart_component("Atendimentos de Diabetes",
+                                    "chart_diabetes_by_year",
+                                    "por mil habitantes"
                                 ),
-                                dcc.Graph(
-                                    id="chart_diabetes_by_year",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=4,
+                                chart_component("Atendimentos de Saúde Sexual",
+                                    "chart_saude_sexual_by_year",
+                                    "por mil habitantes"
+                                )
+                            ], className="content-chart-wrapper",
                         ),
-                        # Saude Sexual por população por ano
-                        dbc.Col(
+                        dbc.Row(
                             [
-                                html.H6(
-                                    "Atendimentos de Saúde Sexual",
-                                    className="description-indicator",
+                                chart_component("Atendimentos de Saúde Mental",
+                                    "chart_saude_mental_by_year",
+                                    "por mil habitantes"
                                 ),
-                                dcc.Graph(
-                                    id="chart_saude_sexual_by_year",
-                                    style={"height": "40vh"},
+                                chart_component("Atendimentos de Puericultura",
+                                    "chart_puericultura_by_year",
+                                    "por mil habitantes"
                                 ),
-                            ],
-                            width=4,
+                                chart_component("Atendimentos de Gravidez Adequados",
+                                    "chart_gravidez_by_year",
+                                    "por mil habitantes"
+                                )
+                            ], className="content-chart-wrapper",
                         ),
                     ],
                 ),
-                dbc.Row(
-                    [
-                        # Saude Mental por população por ano
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Saúde Mental",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_saude_mental_by_year",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=4,
+                html.Div(
+                    id="quarter-content",
+                    className="time-visualization-content",
+                    children=[
+                        html.Div(
+                            html.Span(
+                                "Trimestre",
+                                id="tag-trimestre",
+                                className="tag rounded",
+                            ),
                         ),
-                        # Puericultura por população por ano
-                        dbc.Col(
+                        dbc.Row(
                             [
-                                html.H6(
-                                    "Atendimentos de Puericultura",
-                                    className="description-indicator",
+                                chart_component("Atendimentos de Hipertensão Arterial",
+                                    "chart_hipertensao_by_quarter",
+                                    "por mil habitantes"
                                 ),
-                                dcc.Graph(
-                                    id="chart_puericultura_by_year",
-                                    style={"height": "40vh"},
+                                chart_component("Atendimentos de Diabetes",
+                                    "chart_diabetes_by_quarter",
+                                    "por mil habitantes"
                                 ),
-                            ],
-                            width=4,
+                            ], className="content-chart-wrapper",
                         ),
-                        # Gravidez por população por ano
-                        dbc.Col(
+                        dbc.Row(
                             [
-                                html.H6(
-                                    "Atendimentos de Gravidez Adequados",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_gravidez_by_year",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=4,
+                                chart_component("Atendimentos de Saúde Sexual",
+                                    "chart_saude_sexual_by_quarter",
+                                    "por mil habitantes"
+                                ),       
+                                chart_component("Atendimentos de Saúde Mental",
+                                    "chart_saude_mental_by_quarter",
+                                    "por mil habitantes"
+                                )     
+                            ], className="content-chart-wrapper",
                         ),
-                    ],
-                ),
-            ],
-        ),
-        html.Div(
-            id="quarter-content",
-            className="time-visualization-content",
-            children=[
-                dbc.Row(
-                    [
-                        # Hipertensão por trimestre
-                        dbc.Col(
+                        dbc.Row(
                             [
-                                html.H6(
-                                    "Atendimentos de Hipertensão Arterial",
-                                    className="description-indicator",
+                                chart_component("Atendimentos de Puericultura",
+                                    "chart_puericultura_by_quarter",
+                                    "por mil habitantes"
                                 ),
-                                dcc.Graph(
-                                    id="chart_hipertensao_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
-                        ),
-                        # Diabetes por trimestre
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Diabetes",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_diabetes_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
+                                chart_component("Atendimentos adequados de Gravidez",
+                                    "chart_gravidez_by_quarter",
+                                    "por mil habitantes"
+                                )                   
+                            ], className="content-chart-wrapper",
                         ),
                     ],
                 ),
-                dbc.Row(
-                    [
-                        # Saude Sexual por trimestre
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Saúde Sexual",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_saude_sexual_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
-                        ),
-                        # Saude Mental por trimestre
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Saúde Mental",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_saude_mental_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
-                        ),
-                    ],
-                ),
-                dbc.Row(
-                    [
-                        # Puericultura por trimestre
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos de Puericultura",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_puericultura_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
-                        ),
-                        # Gravidez por trimestre
-                        dbc.Col(
-                            [
-                                html.H6(
-                                    "Atendimentos adequados de Gravidez",
-                                    className="description-indicator",
-                                ),
-                                dcc.Graph(
-                                    id="chart_gravidez_by_quarter",
-                                    style={"height": "40vh"},
-                                ),
-                            ],
-                            width=6,
-                        ),
-                    ],
-                ),
-            ],
-        ),
+            ], 
+            id="loading-graphics",
+            overlay_style={"visibility":"visible", "filter": "blur(2px)", "height": "100vh"},
+            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center", "padding-bottom": "175px"},
+            color="#632956",
+            type="circle",
+        )
     ],
+    style={"padding": "0px 25px"},
 )

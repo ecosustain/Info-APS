@@ -3,14 +3,13 @@ from dash import dcc, html
 
 import dash_bootstrap_components as dbc
 
-from api.api_requests import get_anos
+from api.api_requests import anos
 
 from components.map import Map
 from components.geometric_elements import square_legend, rhombus_legend
 from components.slash_column import slash_column
 from components.indicator_component import indicator_component
 from components.chart_component import chart_component
-
 
 dash.register_page(__name__, path="/")
 dash.register_page(
@@ -19,8 +18,6 @@ dash.register_page(
     title="Atendimentos Totais",
     name="Atendimentos Totais",
 )
-anos = get_anos(6)
-
 
 layout = html.Div(
     [
@@ -145,10 +142,7 @@ layout = html.Div(
                     ],
                 ),
                 html.H2(
-                    [
-                        "Série Temporal ",
-                        # html.Small("(por mil habitantes)", className="legend-text")
-                    ],
+                    "Série Temporal ",
                     id="overview",
                     className="mt-3",
                 ),
