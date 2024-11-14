@@ -5,7 +5,6 @@ from dash import dcc, html
 
 import dash_bootstrap_components as dbc
 
-from api.api_requests import get_anos
 from api.api_requests import anos
 
 from components.map import Map
@@ -166,15 +165,18 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos de Hipertensão Arterial",
+                                chart_component(
+                                    "Atendimentos de Hipertensão Arterial",
                                     "chart_hipertensao_by_year",
                                     "por mil habitantes"
                                 ),  
-                                chart_component("Atendimentos de Diabetes",
+                                chart_component(
+                                    "Atendimentos de Diabetes",
                                     "chart_diabetes_by_year",
                                     "por mil habitantes"
                                 ),
-                                chart_component("Atendimentos de Saúde Sexual",
+                                chart_component(
+                                    "Atendimentos de Saúde Sexual",
                                     "chart_saude_sexual_by_year",
                                     "por mil habitantes"
                                 )
@@ -182,15 +184,18 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos de Saúde Mental",
+                                chart_component(
+                                    "Atendimentos de Saúde Mental",
                                     "chart_saude_mental_by_year",
                                     "por mil habitantes"
                                 ),
-                                chart_component("Atendimentos de Puericultura",
+                                chart_component(
+                                    "Atendimentos de Puericultura",
                                     "chart_puericultura_by_year",
                                     "por mil habitantes"
                                 ),
-                                chart_component("Atendimentos de Gravidez Adequados",
+                                chart_component(
+                                    "Atendimentos de Gravidez Adequados",
                                     "chart_gravidez_by_year",
                                     "por mil habitantes"
                                 )
@@ -211,11 +216,13 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos de Hipertensão Arterial",
+                                chart_component(
+                                    "Atendimentos de Hipertensão Arterial",
                                     "chart_hipertensao_by_quarter",
                                     "por mil habitantes"
                                 ),
-                                chart_component("Atendimentos de Diabetes",
+                                chart_component(
+                                    "Atendimentos de Diabetes",
                                     "chart_diabetes_by_quarter",
                                     "por mil habitantes"
                                 ),
@@ -223,11 +230,13 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos de Saúde Sexual",
+                                chart_component(
+                                    "Atendimentos de Saúde Sexual",
                                     "chart_saude_sexual_by_quarter",
                                     "por mil habitantes"
                                 ),       
-                                chart_component("Atendimentos de Saúde Mental",
+                                chart_component(
+                                    "Atendimentos de Saúde Mental",
                                     "chart_saude_mental_by_quarter",
                                     "por mil habitantes"
                                 )     
@@ -235,11 +244,13 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos de Puericultura",
+                                chart_component(
+                                    "Atendimentos de Puericultura",
                                     "chart_puericultura_by_quarter",
                                     "por mil habitantes"
                                 ),
-                                chart_component("Atendimentos adequados de Gravidez",
+                                chart_component(
+                                    "Atendimentos adequados de Gravidez",
                                     "chart_gravidez_by_quarter",
                                     "por mil habitantes"
                                 )                   

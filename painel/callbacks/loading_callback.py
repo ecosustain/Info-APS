@@ -1,21 +1,26 @@
 import time
+import dash
 
 from callbacks.utils.utils import get_type
 from dash import Input, Output, no_update
 
 
 def callback(app):
-    @app.callback(
-        Output("loading-graphics", "display", allow_duplicate=True),
-        Input("loading-graphics", "display"),
-        allow_duplicate=True,
-        prevent_initial_call=True,
-    )
-    def loading_trigger(value):
-        if value == "show":
-            time.sleep(2.5)
-            return "hide"
-        return no_update
+    def loading_trigger(id):
+        @app.callback(
+            Output(id, "display", allow_duplicate=True),
+            Input(id, "display"),
+            allow_duplicate=True,
+            prevent_initial_call=True,
+        )
+        def loading_trigger(value):
+            if value == "show":
+                time.sleep(2.5)
+                return "hide"
+            return no_update
+    
+    loading_trigger("loading-graphics")
+    loading_trigger("loading-page")
 
     @app.callback(
         Output("loading-graphics", "color"),

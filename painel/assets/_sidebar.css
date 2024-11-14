@@ -1,4 +1,5 @@
 #side-bar {
+  z-index: 200;
   left: 0;
   height: 100vh;
   width: 220px;
