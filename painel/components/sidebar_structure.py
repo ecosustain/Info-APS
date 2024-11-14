@@ -31,7 +31,7 @@ def SideBar():
                                 dcc.Link(
                                     f"{page['name']}",
                                     href=page["relative_path"],
-                                    id=f"{page["path"]}",
+                                    id=page["path"],
                                     className=f"btn",
                                 )
                             )
