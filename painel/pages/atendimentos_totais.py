@@ -51,6 +51,7 @@ slash_column = dbc.Col(
 
 def indicator_component(title, ind_brasil, ind_estado, ind, icon):
     legend = html.Div([])
+    icon_content = html.Div([])
 
     if ind_brasil != None:
         legend = html.Div(
@@ -73,6 +74,21 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
             ],
         )
 
+    if icon != None:
+        icon_content = html.Div(
+            [
+                html.Span(
+                    id=f"indicator-icon-{icon}",
+                    className=f"fa fa-{icon} icon-indicator",
+                    style={
+                        "color": "#632956",
+                        "background-color": "#6329561a",
+                        "border": "1px solid #632956",
+                    },
+                )
+            ],
+        )
+
     return dbc.Col(
         [
             dbc.Row(
@@ -90,20 +106,7 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
                             id=ind,
                             className="indicator-number-small",
                         ),
-                        html.Div(
-                            [
-                                html.Span(
-                                    id=f"indicator-icon-{icon}",
-                                    className=f"fa fa-{icon} icon-indicator",
-                                    style={
-                                        "color": "#632956",
-                                        "background-color": "#6329561a",
-                                        "border": "1px solid #632956",
-                                    },
-                                )
-                            ],
-                            # className="icon-content",
-                        ),
+                        icon_content
                     ],
                 ),
             ),
@@ -116,26 +119,26 @@ layout = html.Div(
     [
         dcc.Loading(
             [
+                html.Div ([
+                    html.H2 (
+                        "Atendimentos totais",
+                        id="overview",
+                        style={"font-size": "20px"}
+                    ),
+                    html.Small (
+                        "Atendimentos totais realizados nas unidades de atenção primária",
+                        style={"font-size": "12px"}
+                    ),
+                ]),
                 html.Div(
                     id="indicators",
                     children=[
                         Map(),
                         html.Div(
                             [
-                                html.H2(
-                                    "Atendimentos Totais",
-                                    id="overview",
-                                ),
-                                html.Small("Atendimentos totais realizados nas unidades de atenção primária", 
-                                           className="legend-text"),
-                                
                                 html.Div(
                                     id="indicator-content",
                                     children=[
-                                        # html.H2(
-                                        #     "Atendimentos individuais",
-                                        #     id="atendimentos-title",
-                                        # ),
                                         dbc.ButtonGroup(
                                             [
                                                 dbc.Button(
@@ -193,47 +196,12 @@ layout = html.Div(
                                                     className="indicator-column",
                                                 ),
                                                 slash_column,
-                                                dbc.Col(
-                                                    [
-                                                        dbc.Row(
-                                                            html.H4(
-                                                                "Atendimentos por mil hab. no ano",
-                                                                className="description-indicator",
-                                                            ),
-                                                        ),
-                                                        html.Div(
-                                                            className="indicator-legend-box",
-                                                            children=[
-                                                                html.Div(
-                                                                    className="indicator-legend",
-                                                                    children=[
-                                                                        square_legend,
-                                                                        html.P(
-                                                                            id="indicador-atend-brasil",
-                                                                            className="legend-text",
-                                                                        ),
-                                                                    ],
-                                                                ),
-                                                                html.Div(
-                                                                    className="indicator-legend",
-                                                                    children=[
-                                                                        rhombus_legend,
-                                                                        html.P(
-                                                                            id="indicador-atend-estado",
-                                                                            className="legend-text",
-                                                                        ),
-                                                                    ],
-                                                                ),
-                                                            ],
-                                                        ),
-                                                        dbc.Row(
-                                                            html.H2(
-                                                                id="normalizado-atendimentos",
-                                                                className="indicator-number",
-                                                            ),
-                                                        ),
-                                                    ],
-                                                    className="px-4 indicator-column",
+                                                indicator_component(
+                                                    "Atendimentos por mil hab. no ano",
+                                                    "indicador-atend-brasil",
+                                                    "indicador-atend-estado",
+                                                    "normalizado-atendimentos",
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -270,22 +238,6 @@ layout = html.Div(
                                                     "indicador-visita-estado",
                                                     "big-visitas",
                                                     "house",
-                                                ),
-                                                slash_column,
-                                                indicator_component(
-                                                    "Atendimentos feitos por médicos",
-                                                    None,
-                                                    None,
-                                                    "big-medicos",
-                                                    "user-doctor",
-                                                ),
-                                                slash_column,
-                                                indicator_component(
-                                                    "Encaminhamentos",
-                                                    None,
-                                                    None,
-                                                    "big-encaminhamentos",
-                                                    "hand-point-right",
                                                 ),
                                             ],
                                             className="mb-1",
