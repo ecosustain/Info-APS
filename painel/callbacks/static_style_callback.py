@@ -39,17 +39,14 @@ def callback(app):
         },
     }
 
-    update_button_style_template(
-        "indicator-icon-tooth", style_by_type_indicators
-    )
-    update_button_style_template(
-        "indicator-icon-house", style_by_type_indicators
-    )
-    update_button_style_template(
-        "indicator-icon-user-doctor", style_by_type_indicators
-    )
-    update_button_style_template(
-        "indicator-icon-hand-point-right", style_by_type_indicators
-    )
-    update_button_style_template("tag-ano", style_by_type_indicators)
-    update_button_style_template("tag-trimestre", style_by_type_indicators)
+    ids=[
+        "indicator-icon-tooth",
+        "indicator-icon-house",
+        "indicator-icon-user-doctor",
+        "indicator-icon-hand-point-right",
+        "tag-trimestre",
+        "tag-ano",
+    ]
+
+    for id in ids:
+        update_button_style_template(id, style_by_type_indicators)

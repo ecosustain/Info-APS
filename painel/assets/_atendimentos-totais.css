@@ -22,7 +22,7 @@
   font-weight: bold;
 }
 
-#atendimentos-title {
+#chart-title {
   font-size: 16px;
   margin-bottom: 3px !important;
   font-weight: medium;
@@ -121,6 +121,16 @@
   margin-right: 16px !important;
   font-size: 10px;
   padding: 4px 10px !important;
+}
+
+.tag-chart {
+  background-color: #21252914;
+  border: 1px solid #212529bf;
+  color: #212529bf;
+  font-weight: bold;
+  margin-right: 16px !important;
+  font-size: 10px;
+  padding: 2px 6px !important;
 }
 
 .time-visualization-content {

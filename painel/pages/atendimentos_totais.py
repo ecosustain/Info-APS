@@ -1,8 +1,16 @@
 import dash
-import dash_bootstrap_components as dbc
-from api.api_requests import get_anos
-from components.map import Map
 from dash import dcc, html
+
+import dash_bootstrap_components as dbc
+
+from api.api_requests import get_anos
+
+from components.map import Map
+from components.geometric_elements import square_legend, rhombus_legend
+from components.slash_column import slash_column
+from components.indicator_component import indicator_component
+from components.chart_component import chart_component
+
 
 dash.register_page(__name__, path="/")
 dash.register_page(
@@ -12,107 +20,6 @@ dash.register_page(
     name="Atendimentos Totais",
 )
 anos = get_anos(6)
-
-square_legend = html.Span(
-    style={
-        "display": "inline-block",
-        "width": "8px",
-        "height": "8px",
-        "background-color": "#632956",
-        "margin-right": "5px",
-    }
-)
-
-rhombus_legend = html.Span(
-    style={
-        "display": "inline-block",
-        "width": "8px",
-        "height": "8px",
-        "background-color": "#34679A",
-        "transform": "rotate(45deg)",
-        "margin-right": "5px",
-    }
-)
-
-slash_column = dbc.Col(
-    [
-        html.Span(
-            style={
-                "display": "inline-block",
-                "width": "1px",
-                "height": "100%",
-                "background-color": "#212529bf",
-            }
-        )
-    ],
-    className="slash",
-)
-
-
-def indicator_component(title, ind_brasil, ind_estado, ind, icon):
-    legend = html.Div([])
-    icon_content = html.Div([])
-
-    if ind_brasil != None:
-        legend = html.Div(
-            className="indicator-legend-box",
-            children=[
-                html.Div(
-                    className="indicator-legend",
-                    children=[
-                        square_legend,
-                        html.P(id=ind_brasil, className="legend-text"),
-                    ],
-                ),
-                html.Div(
-                    className="indicator-legend",
-                    children=[
-                        rhombus_legend,
-                        html.P(id=ind_estado, className="legend-text"),
-                    ],
-                ),
-            ],
-        )
-
-    if icon != None:
-        icon_content = html.Div(
-            [
-                html.Span(
-                    id=f"indicator-icon-{icon}",
-                    className=f"fa fa-{icon} icon-indicator",
-                    style={
-                        "color": "#632956",
-                        "background-color": "#6329561a",
-                        "border": "1px solid #632956",
-                    },
-                )
-            ],
-        )
-
-    return dbc.Col(
-        [
-            dbc.Row(
-                html.H4(
-                    title,
-                    className="description-indicator-small",
-                ),
-            ),
-            legend,
-            dbc.Row(
-                html.Div(
-                    className="indicator-footer",
-                    children=[
-                        html.H2(
-                            id=ind,
-                            className="indicator-number-small",
-                        ),
-                        icon_content
-                    ],
-                ),
-            ),
-        ],
-        className="indicator-column",
-    )
 
 
 layout = html.Div(
@@ -240,7 +147,7 @@ layout = html.Div(
                 html.H2(
                     [
                         "Série Temporal ",
-                        html.Small("(por mil habitantes)", className="legend-text")
+                        # html.Small("(por mil habitantes)", className="legend-text")
                     ],
                     id="overview",
                     className="mt-3",
@@ -258,84 +165,16 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos Totais",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_by_year",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            [
-                                                "Encaminhamentos ",
-                                                html.Small("(% atendimentos totais)", className="legend-text")
-                                            ],
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_encaminhamentos",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos por profissionais",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_by_year_profissionais",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
+                                chart_component("Atendimentos Totais", "chart_by_year", "por mil habitantes"),
+                                chart_component("Encaminhamentos", "chart_encaminhamentos", "% atendimentos totais"),
+                                chart_component("Atendimentos por profissionais", "chart_by_year_profissionais", "por mil habitantes"),
                             ],
                             className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos odontológicos",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_odonto_by_year",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos feitos em visita domiciliar",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_visitas_by_year",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
+                                chart_component("Atendimentos odontológicos", "chart_odonto_by_year", "por mil habitantes"),
+                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_year", "por mil habitantes"),
                             ],
                             className="content-chart-wrapper",
                         ),
@@ -354,53 +193,14 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos por mil habitantes",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_by_quarter",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
+                                chart_component("Atendimentos por mil habitantes", "chart_by_quarter", "por mil habitantes"),
                             ],
                             className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos odontológicos",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_odonto_by_quarter",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos feitos em visita domiciliar",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_visitas_by_quarter",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
+                                chart_component("Atendimentos odontológicos", "chart_odonto_by_quarter", "por mil habitantes"),
+                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_quarter", "por mil habitantes"),
                             ],
                             className="content-chart-wrapper",
                         ),
@@ -409,7 +209,7 @@ layout = html.Div(
             ],
             id="loading-graphics",
             overlay_style={"visibility":"visible", "filter": "blur(2px)", "height": "100vh"},
-            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center"},
+            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center", "padding-bottom": "175px"},
             color="#632956",
             type="circle",
         ),

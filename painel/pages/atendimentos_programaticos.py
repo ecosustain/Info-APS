@@ -109,7 +109,7 @@ layout = html.Div(
                     [
                         html.H2(
                             "Atendimentos Programáticos",
-                            id="atendimentos-title",
+                            id="chart-title",
                         ),
                         html.Div(
                             id="indicator-content",
