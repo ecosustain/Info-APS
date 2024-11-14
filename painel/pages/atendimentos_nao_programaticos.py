@@ -6,8 +6,8 @@ from dash import dcc, html
 dash.register_page(
     __name__,
     path="/atendimentos-nao-programaticos",
-    title="Não Programáticos",
-    name="Não Programáticos",
+    title="Atendimentos Não Programáticos",
+    name="Ateindimentos Não Programáticos",
 )
 from components.map import Map
 
@@ -234,7 +234,14 @@ layout = html.Div(
                 ),
             ],
         ),
-        html.H2("Visão ao decorrer do tempo", id="overview", className="mt-3"),
+        html.H2(
+                    [
+                        "Série Temporal ",
+                        html.Small("(por mil habitantes)", className="legend-text")
+                    ],
+                    id="overview",
+                    className="mt-3",
+                ),
         html.Div(
             id="year-content",
             className="time-visualization-content",

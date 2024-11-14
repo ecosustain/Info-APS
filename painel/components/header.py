@@ -16,12 +16,12 @@ def Header():
                         id="header-description",
                         children=[
                             html.H3(
-                                "DASHBOARD",
+                                "Info-APS",
                                 className="text-start ms-0, mb-3",
                                 id="dashboard-title",
                             ),
                             html.P(
-                                "Esse dashboard tem como objetivo democratizar as informações da saúde pública do Brasil coletadas pelo SISAB.",
+                                "Informações de produção da atenção primária brasileira.",
                                 className="text-start ms-0, mb-3",
                                 id="dashboard-description",
                             ),
