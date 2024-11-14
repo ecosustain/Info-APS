@@ -31,7 +31,8 @@ def SideBar():
                                 dcc.Link(
                                     f"{page['name']}",
                                     href=page["relative_path"],
-                                    className="btn",
+                                    id=f"{page["path"]}",
+                                    className=f"btn",
                                 )
                             )
                             for page in dash.page_registry.values()

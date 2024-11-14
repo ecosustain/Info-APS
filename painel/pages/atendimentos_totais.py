@@ -277,7 +277,6 @@ layout = html.Div(
                                     ],
                                 ),
                             ],
-                            style={"width": "100%"},
                         ),
                     ],
                 ),

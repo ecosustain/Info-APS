@@ -17,11 +17,11 @@
 }
 
 .btn:hover {
-  background-color: #ffffff;
-  color: #343A40;
+  background-color: #f8f9fa !important;
+  color: #343A40 !important;
 }
 
 .btn:active {
-  background-color: #F8F9FA;
-  color: #343A40;
+  background-color: #F8F9FA !important;
+  color: #343A40 !important;
 }
