@@ -95,7 +95,11 @@ lista = [
     "producao_condicao",
     "producao_tipo",
 ]
-
+"""
+"producao_conduta",
+    "producao_condicao",
+    "producao_tipo",
+"""
 
 if __name__ == "__main__":
     for producao in lista:
@@ -107,7 +111,7 @@ if __name__ == "__main__":
             xpaths[producao]["coluna"],  # Acessa o XPath da coluna
             xpaths[producao]["checkbox"],  # Acessa o XPath do checkbox
             producao,
-            3,
+            1000,
         )
         transf_producao.main()
     logger.info("Script Finalizado")

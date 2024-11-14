@@ -40,6 +40,8 @@ def process_csv(file_path, file_type="producao"):
             mes, ano = extract_mes_ano_cadastro(df)
             # Renomear e preencher a última coluna para mes
             df.rename(columns={df.columns[-1]: "Cadastros"}, inplace=True)
+            # renomear a coluna IBGE para Ibge
+            df.rename(columns={"IBGE": "Ibge"}, inplace=True)
 
         # Adicionar as colunas de mês e ano
         df["Mes"] = mes

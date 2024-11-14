@@ -3,6 +3,7 @@ import configparser
 import itertools
 import os
 from datetime import datetime
+import re
 
 import pandas as pd
 
@@ -19,7 +20,7 @@ def process_csv(file_path):
 
     try:
         temp_df = pd.read_csv(
-            file_path, nrows=10, header=None, encoding="ISO-8859-1"
+            file_path, nrows=10, thousands='.', header=None, encoding="ISO-8859-1"
         )
     except Exception as e:
         print("ERRO", file_path, e)
@@ -40,7 +41,7 @@ def process_csv(file_path):
 
     # Ler o arquivo inteiro e remover as 7 primeiras e 4 últimas linhas
     df = pd.read_csv(
-        file_path, skiprows=7, encoding="ISO-8859-1", sep=";"
+        file_path, skiprows=7, thousands='.', encoding="ISO-8859-1", sep=";"
     )  # Ignorar as 7 primeiras linhas
     df = df[:-2]  # Remover as 2 últimas linhas
 
@@ -102,72 +103,27 @@ def list_files(directory="."):
 
     return files
 
+# Função para remover o .0 no final do número
+def remove_trailing_dot_zero(value):
+    # Substitui apenas se o valor termina com ".0"
+    return re.sub(r'\.0$', '', value)
 
 def concat_final_csv(name, dir="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
     for file in list_files(dir):
-        df_temp = pd.read_csv(file, dtype=str)
+        df_temp = pd.read_csv(file, dtype=str, thousands='.')
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
-    # Ajustar as colunas para inteiros
-    try:
-        for col in df.columns:
-            if col not in ["Uf", "Municipio", "Mes"]:
-                df[col] = df[col].str.replace(".", "").astype(int)
-    except Exception as e:
-        print(f"Erro ao converter a coluna {col} para inteiro: {e}")
+    df = df.applymap(remove_trailing_dot_zero)
+    # Remover ponto dos anos e transformar em inteiro
+    df["Ano"] = df["Ano"].str.replace(".", "").astype(int)
+
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df
-
-
-def ausentes(df):
-    """Função para contar os valores ausentes em um DataFrame"""
-
-    now = datetime.now()
-    ano_atual = now.year + 1
-    mes_atual = now.month + 1
-
-    anos = list(range(2021, ano_atual))
-    mes = list(range(1, mes_atual))
-
-    combinacoes = list(
-        itertools.product(df["Uf"].unique(), df["Mes"].unique(), anos)
-    )
-    combinacoes_24 = list(itertools.product(df["Uf"].unique(), mes, [2024]))
-
-    combinacoes = combinacoes + combinacoes_24
-
-    # Filtrar as combinações que já existem no DataFrame
-    combinacoes_existentes = set(zip(df["Uf"], df["Mes"], df["Ano"]))
-
-    # Identificar as combinações ausentes
-    combinacoes_ausentes = [
-        comb for comb in combinacoes if comb not in combinacoes_existentes
-    ]
-    return combinacoes_ausentes
-
-
-def existentes(df):
-    """Função para contar os valores existentes em um DataFrame"""
-
-    # Filtrar as combinações que já existem no DataFrame
-    combinacoes_existentes = set(zip(df["Uf"], df["Mes"], df["Ano"]))
-
-    return combinacoes_existentes
-
-
-def atualiza_controle(combinacoes_existentes):
-    """Função para atualizar o controle de combinações"""
-    with open("controle/producao.txt", "w") as f:
-        for comb in combinacoes_existentes:
-            if comb[1] < 10:
-                f.write(f"{comb[0]}_0{comb[1]}/{comb[2]}\n")
-            else:
-                f.write(f"{comb[0]}_{comb[1]}/{comb[2]}\n")
 
 
 def remove_temp_files(transformacao_dir):
