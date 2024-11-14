@@ -49,8 +49,9 @@ def test_ano(file_path):
     """Vários testes para o campo Ano"""
     df = pd.read_csv(file_path)
     assert df["Ano"].dtype == "int64", "Ano não é inteiro"
-    assert df["Ano"].max() < 2100, "Ano maior que 2100"
-    assert df["Ano"].min() > 2000, "Ano menor que 2000"
+    assert df["Ano"].max() <= 2025, "Ano maior que 2025"
+    assert df["Ano"].min() >= 2013, "Não tem anos antes de 2018"
+    assert df["Ano"].min() <= 2018, "Não tem anos antes de 2018"
 
 
 @pytest.mark.parametrize("file_path", file_list)
