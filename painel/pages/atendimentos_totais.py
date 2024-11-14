@@ -129,7 +129,7 @@ layout = html.Div(
                         "Atendimentos totais realizados nas unidades de atenção primária",
                         style={"font-size": "12px"}
                     ),
-                ]),
+                ], style={"margin-bottom": "20px"}),
                 html.Div(
                     id="indicators",
                     children=[
