@@ -4,6 +4,7 @@
   width: 220px;
   position: fixed;
   background-color: #343A40;
+  padding: 25px 0px !important;
 }
 
 .btn {
@@ -17,11 +18,11 @@
 }
 
 .btn:hover {
-  background-color: #ffffff;
-  color: #343A40;
+  background-color: #f8f9fa !important;
+  color: #343A40 !important;
 }
 
 .btn:active {
-  background-color: #F8F9FA;
-  color: #343A40;
+  background-color: #F8F9FA !important;
+  color: #343A40 !important;
 }

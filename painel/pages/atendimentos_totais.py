@@ -5,7 +5,12 @@ from components.map import Map
 from dash import dcc, html
 
 dash.register_page(__name__, path="/")
-
+dash.register_page(
+    __name__,
+    path="/",
+    title="Atendimentos Totais",
+    name="Atendimentos Totais",
+)
 anos = get_anos(6)
 
 square_legend = html.Span(
@@ -118,16 +123,19 @@ layout = html.Div(
                         html.Div(
                             [
                                 html.H2(
-                                    "Panorama geral",
+                                    "Atendimentos Totais",
                                     id="overview",
                                 ),
+                                html.Small("Atendimentos totais realizados nas unidades de atenção primária", 
+                                           className="legend-text"),
+                                
                                 html.Div(
                                     id="indicator-content",
                                     children=[
-                                        html.H2(
-                                            "Atendimentos individuais",
-                                            id="atendimentos-title",
-                                        ),
+                                        # html.H2(
+                                        #     "Atendimentos individuais",
+                                        #     id="atendimentos-title",
+                                        # ),
                                         dbc.ButtonGroup(
                                             [
                                                 dbc.Button(
@@ -227,6 +235,22 @@ layout = html.Div(
                                                     ],
                                                     className="px-4 indicator-column",
                                                 ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Atendimentos feitos por médicos",
+                                                    None,
+                                                    None,
+                                                    "big-medicos",
+                                                    "user-doctor",
+                                                ),
+                                                slash_column,
+                                                indicator_component(
+                                                    "Encaminhamentos",
+                                                    None,
+                                                    None,
+                                                    "big-encaminhamentos",
+                                                    "hand-point-right",
+                                                ),
                                             ],
                                             className="mb-4",
                                         ),
@@ -269,12 +293,14 @@ layout = html.Div(
                                     ],
                                 ),
                             ],
-                            style={"width": "100%"},
                         ),
                     ],
                 ),
                 html.H2(
-                    "Visão ao decorrer do tempo",
+                    [
+                        "Série Temporal ",
+                        html.Small("(por mil habitantes)", className="legend-text")
+                    ],
                     id="overview",
                     className="mt-3",
                 ),
@@ -294,7 +320,7 @@ layout = html.Div(
                                 dbc.Col(
                                     [
                                         html.H2(
-                                            "Atendimentos por mil habitantes",
+                                            "Atendimentos Totais",
                                             id="atendimentos-title",
                                         ),
                                         dcc.Graph(
@@ -308,11 +334,28 @@ layout = html.Div(
                                 dbc.Col(
                                     [
                                         html.H2(
-                                            "Encaminhamentos",
+                                            [
+                                                "Encaminhamentos ",
+                                                html.Small("(% atendimentos totais)", className="legend-text")
+                                            ],
                                             id="atendimentos-title",
                                         ),
                                         dcc.Graph(
                                             id="chart_encaminhamentos",
+                                            style={"height": "35vh"},
+                                            clear_on_unhover=True,
+                                        ),
+                                    ],
+                                    className="content-chart-box",
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.H2(
+                                            "Atendimentos por profissionais",
+                                            id="atendimentos-title",
+                                        ),
+                                        dcc.Graph(
+                                            id="chart_by_year_profissionais",
                                             style={"height": "35vh"},
                                             clear_on_unhover=True,
                                         ),
@@ -346,20 +389,6 @@ layout = html.Div(
                                         ),
                                         dcc.Graph(
                                             id="chart_visitas_by_year",
-                                            style={"height": "35vh"},
-                                            clear_on_unhover=True,
-                                        ),
-                                    ],
-                                    className="content-chart-box",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.H2(
-                                            "Atendimentos por profissionais",
-                                            id="atendimentos-title",
-                                        ),
-                                        dcc.Graph(
-                                            id="chart_by_year_profissionais",
                                             style={"height": "35vh"},
                                             clear_on_unhover=True,
                                         ),

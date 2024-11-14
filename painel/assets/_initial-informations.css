@@ -1,6 +1,7 @@
 #indicators {
   display: flex;
   align-items: center;
+  justify-content: space-around;
 }
 
 @media screen and (max-width: 1200px) {
