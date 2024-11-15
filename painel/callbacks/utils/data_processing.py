@@ -159,7 +159,7 @@ def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
         df = pd.merge(
             df,
             atendimento,
-            on=["ano", "trimestre", "mes", "ano_mes"],
+            on=["ano", "ano_trimestre", "trimestre", "mes", "ano_mes"],
             suffixes=("_1", "_2"),
         )
         df["valor"] = df["valor_1"]
@@ -187,27 +187,6 @@ def get_big_numbers_atendimentos(df, ano):
     return [total_ano, medico]
 
 
-def calcular_indice(adequado, inadequado):
-    """Função para calcular o índice de Atendimentos adequados de gravidez
-    indice = atendimentos adequados / (atendimentos adequados + atendimentos inadequados)
-    """
-    indice = {}
-    for ano in adequado:
-        indice[ano] = {}
-        for mes in adequado[ano]:
-            if mes in inadequado[ano]:
-                valor_adequado = adequado[ano][mes]
-                valor_inadequado = inadequado[ano][mes]
-                if valor_adequado + valor_inadequado > 0:
-                    indice[ano][mes] = valor_adequado / (
-                        valor_adequado + valor_inadequado
-                    )
-                    indice[ano][mes] = round(indice[ano][mes] * 100, 2)
-                else:
-                    indice[ano][mes] = None  # Evitar divisão por zero
-    return indice
-
-
 def get_gravidez_json(estado, regiao, municipio):
     """Função para obter o indice de gravidez"""
     adequado = get_collection(
@@ -220,9 +199,30 @@ def get_gravidez_json(estado, regiao, municipio):
         "Gravidez",
         "De 1 a 3 atendimentos,De 4 a 5 atendimentos",
     )
-    indice = calcular_indice(adequado, inadequado)
-    return indice
+    return adequado, inadequado
 
+
+
+def get_df_gravidez(json_adequado, json_inadequado):
+    """Função para transformar um json de gravidez adequado e inadequado em um df que será utilizado para gerar os gráficos"""
+    # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
+    #    json_adequado -> json que contem os dados de gravidez adequado
+    #    json_inadequado -> json que contem os dados de gravidez inadequado
+    # retorna o df
+    df_adequado = get_df_from_json(json_adequado)
+    df_inadequado = get_df_from_json(json_inadequado)
+
+    df = pd.merge(
+        df_adequado,
+        df_inadequado,
+        on=["ano", "ano_trimestre", "trimestre", "mes", "ano_mes"],
+        suffixes=("_1", "_inadequado"),
+    )
+    
+    df["valor_2"] = df["valor_1"] + df["valor_inadequado"] 
+    df["valor"] = df["valor_1"]
+
+    return df
 
 def get_atributos_febre():
     """Função para obter os atributos de febre"""
@@ -237,9 +237,6 @@ def get_atributos_febre():
 
 def get_cids_json(estado, regiao, municipio):
     """Função para obter os jsons de cids"""
-    febre = get_collection(
-        estado, regiao, municipio, "CIDS", "CIAP (A03) Febre"
-    )
     dor_cabeca = get_collection(
         estado, regiao, municipio, "CIDS", "CIAP (N01) Cefaléia"
     )
@@ -248,7 +245,7 @@ def get_cids_json(estado, regiao, municipio):
     )
     palavra_febre = get_febres(estado, regiao, municipio)
 
-    return febre, dor_cabeca, tosse, palavra_febre
+    return dor_cabeca, tosse, palavra_febre
 
 
 def get_asma_dpoc_json(estado, regiao, municipio):

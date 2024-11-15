@@ -4,8 +4,9 @@ from callbacks.utils.chart_plotting import (
     get_chart_by_quarter,
     get_chart_by_year,
     get_chart_percentage_by_year,
+    get_chart_percentage_by_quarter,
 )
-from callbacks.utils.data_processing import get_df_from_json, get_gravidez_json
+from callbacks.utils.data_processing import get_df_from_json, get_gravidez_json, get_df_gravidez
 from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
@@ -38,6 +39,17 @@ big_numbers_states = [
 def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     """Função para gerar os números grandes dos indicadores programáticos"""
 
+    if tipo == "gravidez":
+        df = get_df_gravidez(json[0], json[1])
+        total = df[df["ano"] == ano]["valor"].sum()
+        df_filtered = df[df["ano"] == ano]
+        total = df_filtered["valor"].sum() / df_filtered["valor_2"].sum() if df_filtered["valor_2"].sum() != 0 else 0
+        total = round(total*100)
+        global hist_gravidez
+        hist_gravidez = store_nivel(hist_gravidez, df, None, nivel_geo, anos)
+        values = get_values(hist_gravidez, ano, nivel_geo, "mean")
+        return values[0], values[1], total
+    
     df = get_df_from_json(json)
     if populacao is not None:
         total = df[df["ano"] == ano]["valor"].sum()
@@ -75,10 +87,6 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
             hist_puericultura, df, populacao, nivel_geo, anos
         )
         values = get_values(hist_puericultura, ano, nivel_geo)
-    elif tipo == "gravidez":
-        global hist_gravidez
-        hist_gravidez = store_nivel(hist_gravidez, df, None, nivel_geo, anos)
-        values = get_values(hist_gravidez, ano, nivel_geo, "mean")
     else:
         return None, None, None
 
@@ -159,7 +167,8 @@ def register_callbacks_programaticos(app):
         )
 
     @app.callback(
-        Output("store-data-gravidez", "data"),
+        Output("store-data-gravidez-adequado", "data"),
+        Output("store-data-gravidez-inadequado", "data"),
         data_inputs,
     )
     def fetch_data_gravidez(dummy, estado, regiao, municipio, url):
@@ -259,12 +268,12 @@ def register_callbacks_programaticos(app):
             Output("indicador-gravidas-estado", "children"),
             Output("big-gravidas", "children"),
         ],
-        [Input("store-data-gravidez", "data")] + big_numbers_inputs,
+        [Input("store-data-gravidez-adequado", "data"), Input("store-data-gravidez-inadequado", "data")] + big_numbers_inputs,
         big_numbers_states,
     )
-    def update_gravidez_big_numbers(gravidez, populacao, nivel_geo, *args):
+    def update_gravidez_big_numbers(gravidez_adequado, gravidez_inadequado, populacao, nivel_geo, *args):
         ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("gravidez", gravidez, None, nivel_geo, ano)
+        return gera_big_numbers("gravidez", [gravidez_adequado, gravidez_inadequado], None, nivel_geo, ano)
 
     @app.callback(
         [
@@ -397,19 +406,20 @@ def register_callbacks_programaticos(app):
             Output("chart_gravidez_by_quarter", "figure"),
         ],
         [
-            Input("store-data-gravidez", "data"),
+            Input("store-data-gravidez-adequado", "data"),
+            Input("store-data-gravidez-inadequado", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ],
     )
-    def update_gravidez_charts(data, estado, regiao, municipio):
-        if data is None:
+    def update_gravidez_charts(data_adequado, data_inadequado, estado, regiao, municipio):
+        if data_adequado is None:
             raise dash.exceptions.PreventUpdate
         titulo = "% de Atendimentos Adequados de Gravidez"
-        df = get_df_from_json(data)
+        df = get_df_gravidez(data_adequado,data_inadequado)
         nivel = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_percentage_by_year(df, titulo, nivel, "mean")
-        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel, "mean")
+        chart_by_year = get_chart_percentage_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_percentage_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
