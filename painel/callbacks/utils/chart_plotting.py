@@ -103,6 +103,7 @@ def get_chart_by_year_profissionais(df, title, tipo):
         .sum()
         .reset_index()
     )
+    df_grouped["ano"] = df_grouped["ano"].astype(str)
     df_grouped = df_grouped.sort_values("ano")
     df_filtered = df_grouped.tail(6 * df_grouped["profissional"].nunique())
 
@@ -151,6 +152,7 @@ def get_chart_by_year(df, title, tipo, calculo="sum"):
         df_grouped = (
             df.groupby(["ano"], observed=True)["valor"].mean().reset_index()
         )
+    df_grouped["ano"] = df_grouped["ano"].astype(str)
     df_grouped = df_grouped.sort_values("ano")
     df_filtered = df_grouped.tail(6)
 
