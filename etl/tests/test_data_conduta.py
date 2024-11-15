@@ -14,3 +14,8 @@ def test_sum_encaminhamentos_for_sp():
     result = df[(df["Uf"] == "SP") & (df["Ano"] == ANO)]["Retorno para consulta agendada"].sum()
     expected_value = 20641920
     assert result == expected_value, f"Esperado {expected_value}, mas obteve {result}"
+
+
+if __name__ == "__main__":
+    # Executa os testes e imprime os resultados
+    pytest.main([__file__])

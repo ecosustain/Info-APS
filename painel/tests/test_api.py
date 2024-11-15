@@ -78,3 +78,8 @@ def test_get_codigos_brasil():
     assert result['2023'] == 0
     assert result['2023'] == 0
     """
+
+
+if __name__ == "__main__":
+    # Executa os testes e imprime os resultados
+    pytest.main([__file__])
