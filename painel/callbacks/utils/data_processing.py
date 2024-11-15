@@ -145,7 +145,7 @@ def get_df_from_json(json_data, populacao=None, qtd_hab=1000):
     return df
 
 
-def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
+def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None, total=False):
     """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
     #    json_data -> json que contem os dados de encaminhamento
@@ -155,7 +155,10 @@ def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None):
     df = get_df_from_json(json_data)
 
     if json_atendimentos is not None:
-        atendimento = get_df_atendimentos(json_atendimentos)
+        if total:
+            atendimento = get_df_from_json(json_atendimentos)
+        else:
+            atendimento = get_df_atendimentos(json_atendimentos)
         df = pd.merge(
             df,
             atendimento,
@@ -262,3 +265,20 @@ def get_asma_dpoc_json(estado, regiao, municipio):
             if mes in dpoc[ano]:
                 asma[ano][mes] += dpoc[ano][mes]
     return asma
+
+
+def soma_atendimentos(atendimentos):
+    """Função para somar os atendimentos"""
+    # Inicializar um dicionário para armazenar os totais
+    total_atendimentos = {}
+
+    # Iterar sobre os anos e meses para somar os valores
+    for profissional, anos in atendimentos.items():
+        for ano, meses in anos.items():
+            if ano not in total_atendimentos:
+                total_atendimentos[ano] = {}
+            for mes, valor in meses.items():
+                if mes not in total_atendimentos[ano]:
+                    total_atendimentos[ano][mes] = 0
+                total_atendimentos[ano][mes] += valor
+    return total_atendimentos

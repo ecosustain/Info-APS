@@ -12,7 +12,7 @@ from callbacks.utils.chart_plotting import (
     get_chart_forecast_by_quarter,
     get_chart_percentage_by_year,
 )
-from callbacks.utils.data_processing import get_df_atendimentos, get_df_encaminhamentos
+from callbacks.utils.data_processing import get_df_atendimentos, get_df_encaminhamentos, soma_atendimentos
 from callbacks.utils.utils import get_type
 from dash import Input, Output
 
@@ -125,9 +125,11 @@ def callback(app):
     ):
         if data is None or atendimentos is None:
             raise dash.exceptions.PreventUpdate
+        total_atendimentos = soma_atendimentos(atendimentos)
         df_encaminhamentos = get_df_encaminhamentos(
-            data, atendimentos, populacao
+            data, total_atendimentos, None, True
         )
+
         tipo = get_type(estado, regiao, municipio)
         # Gerar o gráfico
         chart_encaminhamentos = get_chart_percentage_by_year(
