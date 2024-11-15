@@ -53,7 +53,6 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-tuberculose"),
                         dcc.Store(id="store-data-dst"),
                         dcc.Store(id="store-data-hanseniase"),
-                        dcc.Store(id="store-data-febre"),
                         dcc.Store(id="store-data-cefaleia"),
                         dcc.Store(id="store-data-tosse"),
                         dcc.Store(id="store-data-febres"),

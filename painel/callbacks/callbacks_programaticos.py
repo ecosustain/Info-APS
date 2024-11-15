@@ -409,7 +409,7 @@ def register_callbacks_programaticos(app):
         titulo = "% de Atendimentos Adequados de Gravidez"
         df = get_df_from_json(data)
         nivel = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, nivel, "mean")
+        chart_by_year = get_chart_percentage_by_year(df, titulo, nivel, "mean")
         chart_by_quarter = get_chart_by_quarter(df, titulo, nivel, "mean")
 
         return (chart_by_year, chart_by_quarter)

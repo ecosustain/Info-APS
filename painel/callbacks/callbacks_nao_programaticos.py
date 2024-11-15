@@ -18,7 +18,6 @@ hist_dengue = {}
 hist_tuberculose = {}
 hist_dst = {}
 hist_hanseniase = {}
-hist_febre = {}
 hist_cefaleia = {}
 hist_tosse = {}
 hist_febres = {}
@@ -89,12 +88,6 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
             hist_hanseniase, df, populacao, nivel_geo, anos, qtd_hab
         )
         values = get_values(hist_hanseniase, ano, nivel_geo)
-    elif tipo == "febre":
-        global hist_febre
-        hist_febre = store_nivel(
-            hist_febre, df, populacao, nivel_geo, anos, qtd_hab
-        )
-        values = get_values(hist_febre, ano, nivel_geo)
     elif tipo == "cefaleia":
         global hist_cefaleia
         hist_cefaleia = store_nivel(
@@ -181,18 +174,6 @@ def register_callbacks_nao_programaticos(app):
             estado, regiao, municipio, "DTransmissíveis - Hanseníase"
         )
 
-    # Callback para fazer a requisição à API e armazenar os dados de febre no dcc.Store
-    @app.callback(
-        Output("store-data-febre", "data"),
-        data_inputs,
-    )
-    def fetch_data_febre(dummy, estado, regiao, municipio, url):
-        """Função para fazer a requisição à API e armazenar os dados de febre no Store"""
-        if url != "/atendimentos-nao-programaticos":
-            raise dash.exceptions.PreventUpdate
-        data_febre, _, _, _ = get_cids_json(estado, regiao, municipio)
-        return data_febre
-
     # Callback para fazer a requisição à API e armazenar os dados de cefaleia no dcc.Store
     @app.callback(
         Output("store-data-cefaleia", "data"),
@@ -202,7 +183,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de cefaleia no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        _, data_cefaleia, _, _ = get_cids_json(estado, regiao, municipio)
+        data_cefaleia, _, _ = get_cids_json(estado, regiao, municipio)
         return data_cefaleia
 
     # Callback para fazer a requisição à API e armazenar os dados de tosse no dcc.Store
@@ -214,7 +195,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de tosse no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        _, _, data_tosse, _ = get_cids_json(estado, regiao, municipio)
+        _, data_tosse, _ = get_cids_json(estado, regiao, municipio)
         return data_tosse
 
     # Callback para fazer a requisição à API e armazenar os dados de febres no dcc.Store
@@ -226,7 +207,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de febres no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        _, _, _, data_febres = get_cids_json(estado, regiao, municipio)
+        _, _, data_febres = get_cids_json(estado, regiao, municipio)
         return data_febres
 
     # Callback para atualizar os números grandes de asma e DPOC
@@ -306,20 +287,6 @@ def register_callbacks_nao_programaticos(app):
         return gera_big_numbers(
             "hanseniase", hanseniase, populacao, nivel_geo, ano
         )
-
-    # Callback para atualizar os números grandes de febre
-    @app.callback(
-        [
-            Output("indicador-febre-brasil", "children"),
-            Output("indicador-febre-estado", "children"),
-            Output("big-febre", "children"),
-        ],
-        [Input("store-data-febre", "data")] + common_inputs,
-        common_states,
-    )
-    def update_febre_big_numbers(febre, populacao, nivel_geo, *args):
-        ano = get_selected_year(dash.callback_context)
-        return gera_big_numbers("febre", febre, populacao, nivel_geo, ano)
 
     # Callback para atualizar os números grandes de cefaleia
     @app.callback(
@@ -483,31 +450,6 @@ def register_callbacks_nao_programaticos(app):
         if data is None:
             raise dash.exceptions.PreventUpdate
         titulo = "Hanseníase"
-
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
-
-        return (chart_by_year, chart_by_quarter)
-
-    @app.callback(
-        [
-            Output("chart_febre_by_year", "figure"),
-            Output("chart_febre_by_quarter", "figure"),
-        ],
-        [
-            Input("store-data-febre", "data"),
-            Input("store-populacao-api", "data"),
-            Input("dropdown-estado", "value"),
-            Input("dropdown-regiao", "value"),
-            Input("dropdown-municipio", "value"),
-        ],
-    )
-    def update_febre_charts(data, populacao, estado, regiao, municipio):
-        if data is None:
-            raise dash.exceptions.PreventUpdate
-        titulo = "Febre"
 
         df = get_df_from_json(data, populacao, qtd_hab)
         type = get_type(estado, regiao, municipio)

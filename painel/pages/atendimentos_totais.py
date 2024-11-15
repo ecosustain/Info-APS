@@ -106,7 +106,7 @@ layout = html.Div(
                                                 ),
                                                 slash_column,
                                                 indicator_component(
-                                                    "Encaminhamentos",
+                                                    "% de Encaminhamentos",
                                                     None,
                                                     None,
                                                     "big-encaminhamentos",

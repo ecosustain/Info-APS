@@ -132,7 +132,7 @@ layout = html.Div(
                                                 ),
                                                 slash_column,
                                                 indicator_component(
-                                                    "Grávidas",
+                                                    "% de Grávidas",
                                                     "indicador-gravidas-brasil",
                                                     "indicador-gravidas-estado",
                                                     "big-gravidas",
@@ -197,7 +197,7 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos de Gravidez Adequados",
                                     "chart_gravidez_by_year",
-                                    "por mil habitantes"
+                                    "% atendimentos de gravidez"
                                 )
                             ], className="content-chart-wrapper",
                         ),
@@ -252,7 +252,7 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos adequados de Gravidez",
                                     "chart_gravidez_by_quarter",
-                                    "por mil habitantes"
+                                    "% atendimentos de gravidez"
                                 )                   
                             ], className="content-chart-wrapper",
                         ),
