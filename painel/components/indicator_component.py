@@ -1,8 +1,7 @@
+import dash_bootstrap_components as dbc
+from components.geometric_elements import rhombus_legend, square_legend
 from dash import html
 
-import dash_bootstrap_components as dbc
-
-from components.geometric_elements import square_legend, rhombus_legend
 
 def indicator_component(title, ind_brasil, ind_estado, ind, icon):
     legend = html.Div([])
@@ -61,7 +60,7 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon):
                             id=ind,
                             className="indicator-number-small",
                         ),
-                        icon_content
+                        icon_content,
                     ],
                 ),
             ),

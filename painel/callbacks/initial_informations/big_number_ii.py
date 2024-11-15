@@ -4,7 +4,7 @@ from callbacks.utils.data_processing import (
     get_big_numbers_atendimentos,
     get_df_atendimentos,
     get_df_from_json,
-    soma_atendimentos
+    soma_atendimentos,
 )
 from callbacks.utils.utils import formatar_numero, get_values, store_nivel
 from dash import Input, Output, State
@@ -55,9 +55,11 @@ def callback(app):
 
         total_atend = soma_atendimentos(data_atend)
         df_atendimentos = get_df_from_json(total_atend)
-        total_atend_ano = df_atendimentos[df_atendimentos["ano"] == ano]["valor"].sum()
+        total_atend_ano = df_atendimentos[df_atendimentos["ano"] == ano][
+            "valor"
+        ].sum()
 
-        big_numbers = [round((total_enc_ano / total_atend_ano)*100, 2)]
+        big_numbers = [round((total_enc_ano / total_atend_ano) * 100, 2)]
 
         return big_numbers
 

@@ -41,22 +41,33 @@ def Header():
             html.Div(
                 id="content-header",
                 children=[
-                    html.Div ([
-                        html.H2 (
-                            "Atendimentos totais",
-                            id="content-title",
-                            style={"font-size": "20px"}
-                        ),
-                        html.P (
-                            "Atendimentos totais realizados nas unidades de atenção primária",
-                            id="content-description",
-                            style={"font-size": "11px", "line-height": "14px", "color": "#212529bf", "margin": "0px"}
-                        ),
-                    ], style=
-                    {    "display": "flex", "flex-direction": "column", "justify-content": "center"}),
+                    html.Div(
+                        [
+                            html.H2(
+                                "Atendimentos totais",
+                                id="content-title",
+                                style={"font-size": "20px"},
+                            ),
+                            html.P(
+                                "Atendimentos totais realizados nas unidades de atenção primária",
+                                id="content-description",
+                                style={
+                                    "font-size": "11px",
+                                    "line-height": "14px",
+                                    "color": "#212529bf",
+                                    "margin": "0px",
+                                },
+                            ),
+                        ],
+                        style={
+                            "display": "flex",
+                            "flex-direction": "column",
+                            "justify-content": "center",
+                        },
+                    ),
                     html.Div(
                         id="header-filter",
-                        children= [
+                        children=[
                             html.Div(
                                 id="filter-dropdown",
                                 children=[
@@ -111,8 +122,8 @@ def Header():
                                     ),
                                 ),
                             ),
-                        ]
-                    )
+                        ],
+                    ),
                 ],
             ),
         ],

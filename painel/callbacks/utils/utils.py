@@ -187,12 +187,12 @@ def get_values(hist, ano, nivel, calculo="sum"):
             values.append(round(df[df["ano"] == ano]["valor"].sum()))
         elif calculo == "mean":
             values.append(
-                    round(
-                        df[df["ano"] == ano]["valor_1"].sum() / 
-                        (df[df["ano"] == ano]["valor_2"].sum() or 1), 
-                        2
-                    )
+                round(
+                    df[df["ano"] == ano]["valor_1"].sum()
+                    / (df[df["ano"] == ano]["valor_2"].sum() or 1),
+                    2,
                 )
+            )
     if nivel == "estado":
         return [values[0], None]
     return values

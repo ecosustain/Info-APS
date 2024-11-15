@@ -12,7 +12,11 @@ from callbacks.utils.chart_plotting import (
     get_chart_forecast_by_quarter,
     get_chart_percentage_by_year,
 )
-from callbacks.utils.data_processing import get_df_atendimentos, get_df_encaminhamentos, soma_atendimentos
+from callbacks.utils.data_processing import (
+    get_df_atendimentos,
+    get_df_encaminhamentos,
+    soma_atendimentos,
+)
 from callbacks.utils.utils import get_type
 from dash import Input, Output
 

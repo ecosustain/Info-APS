@@ -1,17 +1,14 @@
 """Módulo para página de atendimentos programáticos"""
 
 import dash
-from dash import dcc, html
-
 import dash_bootstrap_components as dbc
-
 from api.api_requests import anos
-
-from components.map import Map
-from components.geometric_elements import square_legend, rhombus_legend
-from components.slash_column import slash_column
-from components.indicator_component import indicator_component
 from components.chart_component import chart_component
+from components.geometric_elements import rhombus_legend, square_legend
+from components.indicator_component import indicator_component
+from components.map import Map
+from components.slash_column import slash_column
+from dash import dcc, html
 
 dash.register_page(
     __name__,
@@ -92,7 +89,7 @@ layout = html.Div(
                                                     "indicador-hipertensao-brasil",
                                                     "indicador-hipertensao-estado",
                                                     "big-hipertensao",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -100,7 +97,7 @@ layout = html.Div(
                                                     "indicador-diabetes-brasil",
                                                     "indicador-diabetes-estado",
                                                     "big-diabetes",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -108,7 +105,7 @@ layout = html.Div(
                                                     "indicador-sexual-brasil",
                                                     "indicador-sexual-estado",
                                                     "big-sexual",
-                                                    None
+                                                    None,
                                                 ),
                                             ],
                                             className="mb-3",
@@ -120,7 +117,7 @@ layout = html.Div(
                                                     "indicador-mental-brasil",
                                                     "indicador-mental-estado",
                                                     "big-mental",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -128,7 +125,7 @@ layout = html.Div(
                                                     "indicador-puericultura-brasil",
                                                     "indicador-puericultura-estado",
                                                     "big-puericultura",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -136,7 +133,7 @@ layout = html.Div(
                                                     "indicador-gravidas-brasil",
                                                     "indicador-gravidas-estado",
                                                     "big-gravidas",
-                                                    None
+                                                    None,
                                                 ),
                                             ],
                                             className="mb-3",
@@ -168,38 +165,40 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos de Hipertensão Arterial",
                                     "chart_hipertensao_by_year",
-                                    "por mil habitantes"
-                                ),  
+                                    "por mil habitantes",
+                                ),
                                 chart_component(
                                     "Atendimentos de Diabetes",
                                     "chart_diabetes_by_year",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Saúde Sexual",
                                     "chart_saude_sexual_by_year",
-                                    "por mil habitantes"
-                                )
-                            ], className="content-chart-wrapper",
+                                    "por mil habitantes",
+                                ),
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Saúde Mental",
                                     "chart_saude_mental_by_year",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Puericultura",
                                     "chart_puericultura_by_year",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Gravidez Adequados",
                                     "chart_gravidez_by_year",
-                                    "% atendimentos de gravidez"
-                                )
-                            ], className="content-chart-wrapper",
+                                    "% atendimentos de gravidez",
+                                ),
+                            ],
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
@@ -219,49 +218,62 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos de Hipertensão Arterial",
                                     "chart_hipertensao_by_quarter",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Diabetes",
                                     "chart_diabetes_by_quarter",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Saúde Sexual",
                                     "chart_saude_sexual_by_quarter",
-                                    "por mil habitantes"
-                                ),       
+                                    "por mil habitantes",
+                                ),
                                 chart_component(
                                     "Atendimentos de Saúde Mental",
                                     "chart_saude_mental_by_quarter",
-                                    "por mil habitantes"
-                                )     
-                            ], className="content-chart-wrapper",
+                                    "por mil habitantes",
+                                ),
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Puericultura",
                                     "chart_puericultura_by_quarter",
-                                    "por mil habitantes"
+                                    "por mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos adequados de Gravidez",
                                     "chart_gravidez_by_quarter",
-                                    "% atendimentos de gravidez"
-                                )                   
-                            ], className="content-chart-wrapper",
+                                    "% atendimentos de gravidez",
+                                ),
+                            ],
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
-            ], 
+            ],
             id="loading-graphics",
-            overlay_style={"visibility":"visible", "filter": "blur(2px)", "height": "100vh"},
-            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center", "padding-bottom": "175px"},
+            overlay_style={
+                "visibility": "visible",
+                "filter": "blur(2px)",
+                "height": "100vh",
+            },
+            style={
+                "height": "100%",
+                "position": "fixed",
+                "display": "flex",
+                "align-items": "center",
+                "padding-bottom": "175px",
+            },
             color="#632956",
             type="circle",
         )

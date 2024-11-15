@@ -39,7 +39,7 @@ def callback(app):
         },
     }
 
-    ids=[
+    ids = [
         "indicator-icon-tooth",
         "indicator-icon-house",
         "indicator-icon-user-doctor",

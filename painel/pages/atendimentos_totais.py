@@ -1,15 +1,12 @@
 import dash
-from dash import dcc, html
-
 import dash_bootstrap_components as dbc
-
 from api.api_requests import anos
-
-from components.map import Map
-from components.geometric_elements import square_legend, rhombus_legend
-from components.slash_column import slash_column
-from components.indicator_component import indicator_component
 from components.chart_component import chart_component
+from components.geometric_elements import rhombus_legend, square_legend
+from components.indicator_component import indicator_component
+from components.map import Map
+from components.slash_column import slash_column
+from dash import dcc, html
 
 dash.register_page(__name__, path="/")
 dash.register_page(
@@ -159,16 +156,40 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos Totais", "chart_by_year", "por mil habitantes"),
-                                chart_component("Encaminhamentos", "chart_encaminhamentos", "% atendimentos totais", "hand-point-right"),
-                                chart_component("Atendimentos por profissionais", "chart_by_year_profissionais", "por mil habitantes", "user-doctor"),
+                                chart_component(
+                                    "Atendimentos Totais",
+                                    "chart_by_year",
+                                    "por mil habitantes",
+                                ),
+                                chart_component(
+                                    "Encaminhamentos",
+                                    "chart_encaminhamentos",
+                                    "% atendimentos totais",
+                                    "hand-point-right",
+                                ),
+                                chart_component(
+                                    "Atendimentos por profissionais",
+                                    "chart_by_year_profissionais",
+                                    "por mil habitantes",
+                                    "user-doctor",
+                                ),
                             ],
                             className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos odontológicos", "chart_odonto_by_year", "por mil habitantes", "tooth"),
-                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_year", "por mil habitantes", "house"),
+                                chart_component(
+                                    "Atendimentos odontológicos",
+                                    "chart_odonto_by_year",
+                                    "por mil habitantes",
+                                    "tooth",
+                                ),
+                                chart_component(
+                                    "Atendimentos feitos em visita domiciliar",
+                                    "chart_visitas_by_year",
+                                    "por mil habitantes",
+                                    "house",
+                                ),
                             ],
                             className="content-chart-wrapper",
                         ),
@@ -187,14 +208,28 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos por mil habitantes", "chart_by_quarter", "por mil habitantes"),
+                                chart_component(
+                                    "Atendimentos por mil habitantes",
+                                    "chart_by_quarter",
+                                    "por mil habitantes",
+                                ),
                             ],
                             className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
-                                chart_component("Atendimentos odontológicos", "chart_odonto_by_quarter", "por mil habitantes", "tooth"),
-                                chart_component("Atendimentos feitos em visita domiciliar", "chart_visitas_by_quarter", "por mil habitantes", "house"),
+                                chart_component(
+                                    "Atendimentos odontológicos",
+                                    "chart_odonto_by_quarter",
+                                    "por mil habitantes",
+                                    "tooth",
+                                ),
+                                chart_component(
+                                    "Atendimentos feitos em visita domiciliar",
+                                    "chart_visitas_by_quarter",
+                                    "por mil habitantes",
+                                    "house",
+                                ),
                             ],
                             className="content-chart-wrapper",
                         ),
@@ -202,8 +237,18 @@ layout = html.Div(
                 ),
             ],
             id="loading-graphics",
-            overlay_style={"visibility":"visible", "filter": "blur(2px)", "height": "100vh"},
-            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center", "padding-bottom": "175px"},
+            overlay_style={
+                "visibility": "visible",
+                "filter": "blur(2px)",
+                "height": "100vh",
+            },
+            style={
+                "height": "100%",
+                "position": "fixed",
+                "display": "flex",
+                "align-items": "center",
+                "padding-bottom": "175px",
+            },
             color="#632956",
             type="circle",
         ),

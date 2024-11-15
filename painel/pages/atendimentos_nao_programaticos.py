@@ -1,15 +1,12 @@
 import dash
-from dash import dcc, html
-
 import dash_bootstrap_components as dbc
-
 from api.api_requests import anos
-
-from components.map import Map
-from components.geometric_elements import square_legend, rhombus_legend
-from components.slash_column import slash_column
-from components.indicator_component import indicator_component
 from components.chart_component import chart_component
+from components.geometric_elements import rhombus_legend, square_legend
+from components.indicator_component import indicator_component
+from components.map import Map
+from components.slash_column import slash_column
+from dash import dcc, html
 
 dash.register_page(
     __name__,
@@ -79,7 +76,7 @@ layout = html.Div(
                                                     "indicador-asma-dpoc-brasil",
                                                     "indicador-asma-dpoc-estado",
                                                     "big-asma-dpoc",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -87,7 +84,7 @@ layout = html.Div(
                                                     "indicador-dengue-brasil",
                                                     "indicador-dengue-estado",
                                                     "big-dengue",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -95,7 +92,7 @@ layout = html.Div(
                                                     "indicador-tuberculose-brasil",
                                                     "indicador-tuberculose-estado",
                                                     "big-tuberculose",
-                                                    None
+                                                    None,
                                                 ),
                                             ],
                                             className="mb-3",
@@ -107,7 +104,7 @@ layout = html.Div(
                                                     "indicador-dst-brasil",
                                                     "indicador-dst-estado",
                                                     "big-dst",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -115,7 +112,7 @@ layout = html.Div(
                                                     "indicador-hanseniase-brasil",
                                                     "indicador-hanseniase-estado",
                                                     "big-hanseniase",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -123,7 +120,7 @@ layout = html.Div(
                                                     "indicador-febres-brasil",
                                                     "indicador-febres-estado",
                                                     "big-febres",
-                                                    None
+                                                    None,
                                                 ),
                                             ],
                                             className="mb-3",
@@ -136,7 +133,7 @@ layout = html.Div(
                                                     "indicador-cefaleia-brasil",
                                                     "indicador-cefaleia-estado",
                                                     "big-cefaleia",
-                                                    None
+                                                    None,
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -144,7 +141,7 @@ layout = html.Div(
                                                     "indicador-tosse-brasil",
                                                     "indicador-tosse-estado",
                                                     "big-tosse",
-                                                    None
+                                                    None,
                                                 ),
                                             ],
                                             className="mb-3",
@@ -156,10 +153,10 @@ layout = html.Div(
                     ],
                 ),
                 html.H2(
-                            "Série Temporal ",
-                            id="overview",
-                            className="mt-3",
-                        ),
+                    "Série Temporal ",
+                    id="overview",
+                    className="mt-3",
+                ),
                 html.Div(
                     id="year-content",
                     className="time-visualization-content",
@@ -176,52 +173,55 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos de Asma e DPOC",
                                     "chart_asma_dpoc_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Dengue",
                                     "chart_dengue_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Tuberculose",
                                     "chart_tuberculose_by_year",
-                                    "por 100 mil habitantes"
-                                ),                            
-                            ], className="content-chart-wrapper",
+                                    "por 100 mil habitantes",
+                                ),
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de DST",
                                     "chart_dst_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Hanseníase",
                                     "chart_hanseniase_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Febres",
                                     "chart_febres_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Cefaleia",
                                     "chart_cefaleia_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Tosse",
                                     "chart_tosse_by_year",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
@@ -241,63 +241,77 @@ layout = html.Div(
                                 chart_component(
                                     "Atendimentos de Asma e DPOC por Trimestre",
                                     "chart_asma_dpoc_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Dengue por Trimestre",
                                     "chart_dengue_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Tuberculose por Trimestre",
                                     "chart_tuberculose_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de DST por Trimestre",
                                     "chart_dst_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Hanseníase por Trimestre",
                                     "chart_hanseniase_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Febres por Trimestre",
                                     "chart_febres_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                         dbc.Row(
                             [
                                 chart_component(
                                     "Atendimentos de Cefaleia por Trimestre",
                                     "chart_cefaleia_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
                                 chart_component(
                                     "Atendimentos de Tosse por Trimestre",
                                     "chart_tosse_by_quarter",
-                                    "por 100 mil habitantes"
+                                    "por 100 mil habitantes",
                                 ),
-                            ], className="content-chart-wrapper",
+                            ],
+                            className="content-chart-wrapper",
                         ),
                     ],
                 ),
-            ], 
+            ],
             id="loading-graphics",
-            overlay_style={"visibility":"visible", "filter": "blur(2px)", "height": "100vh"},
-            style={"height": "100%", "position": "fixed", "display": "flex", "align-items": "center", "padding-bottom": "175px"},
+            overlay_style={
+                "visibility": "visible",
+                "filter": "blur(2px)",
+                "height": "100vh",
+            },
+            style={
+                "height": "100%",
+                "position": "fixed",
+                "display": "flex",
+                "align-items": "center",
+                "padding-bottom": "175px",
+            },
             color="#632956",
             type="circle",
         )

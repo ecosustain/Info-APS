@@ -188,6 +188,7 @@ def get_chart_percentage_by_year(df, title, tipo):
     chart = get_chart_by_year(df_grouped, title, tipo)
     return chart.update_traces(texttemplate="%{y:.0f}%")
 
+
 def get_chart_percentage_by_quarter(df, title, tipo):
     """Retorna o gráfico de barras com o percentual entre os dois valores acumulado dos últimos 6 anos de dados
     #    df -> dados para gerar o gráfico que deve conter ['ano', 'valor1', 'valor2']

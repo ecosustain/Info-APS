@@ -23,7 +23,9 @@ def test_estado(file_path):
     assert df["Uf"].nunique() == 27, "Número de estados incorreto"
     assert df["Uf"].str.len().max() == 2, "Estado com mais de 2 caracteres"
     assert df["Uf"].str.isupper().all(), "Estado com letras minúsculas"
-    assert df["Uf"].str.isalpha().all(), "Estado com caracteres não alfabéticos"
+    assert (
+        df["Uf"].str.isalpha().all()
+    ), "Estado com caracteres não alfabéticos"
 
 
 @pytest.mark.parametrize("file_path", file_list)

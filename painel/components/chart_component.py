@@ -1,6 +1,6 @@
+import dash_bootstrap_components as dbc
 from dash import dcc, html
 
-import dash_bootstrap_components as dbc
 
 def chart_component(title, chart_id, tag_text, icon=None):
     icon_content = html.Div([])
@@ -15,7 +15,7 @@ def chart_component(title, chart_id, tag_text, icon=None):
                 "border": "1px solid #632956",
             },
         )
-        
+
     return dbc.Col(
         [
             html.Div(
@@ -24,8 +24,9 @@ def chart_component(title, chart_id, tag_text, icon=None):
                         title,
                         id="chart-title",
                     ),
-                    icon_content
-                ], style= {"display": "flex", "justify-content": "space-between"}
+                    icon_content,
+                ],
+                style={"display": "flex", "justify-content": "space-between"},
             ),
             html.Span(
                 tag_text,

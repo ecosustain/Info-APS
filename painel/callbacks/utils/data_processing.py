@@ -145,7 +145,9 @@ def get_df_from_json(json_data, populacao=None, qtd_hab=1000):
     return df
 
 
-def get_df_encaminhamentos(json_data, json_atendimentos, populacao=None, total=False):
+def get_df_encaminhamentos(
+    json_data, json_atendimentos, populacao=None, total=False
+):
     """Função para transformar um json de encaminhamentos em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
     #    json_data -> json que contem os dados de encaminhamento
@@ -205,7 +207,6 @@ def get_gravidez_json(estado, regiao, municipio):
     return adequado, inadequado
 
 
-
 def get_df_gravidez(json_adequado, json_inadequado):
     """Função para transformar um json de gravidez adequado e inadequado em um df que será utilizado para gerar os gráficos"""
     # Para transformar um json de atendimento em um df que será utilizado para gerar os gráficos
@@ -221,11 +222,12 @@ def get_df_gravidez(json_adequado, json_inadequado):
         on=["ano", "ano_trimestre", "trimestre", "mes", "ano_mes"],
         suffixes=("_1", "_inadequado"),
     )
-    
-    df["valor_2"] = df["valor_1"] + df["valor_inadequado"] 
+
+    df["valor_2"] = df["valor_1"] + df["valor_inadequado"]
     df["valor"] = df["valor_1"]
 
     return df
+
 
 def get_atributos_febre():
     """Função para obter os atributos de febre"""

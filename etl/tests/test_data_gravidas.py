@@ -17,7 +17,9 @@ def test_sum_gravidas_for_sp():
         "De 1 a 3 atendimentos"
     ].sum()
     expected_value = 15943
-    assert result == expected_value, f"Esperado {expected_value}, mas obteve {result}"
+    assert (
+        result == expected_value
+    ), f"Esperado {expected_value}, mas obteve {result}"
 
 
 def test_sum_gravidas_for_br():
@@ -26,7 +28,9 @@ def test_sum_gravidas_for_br():
         "De 1 a 3 atendimentos"
     ].sum()
     expected_value = 92360
-    assert result == expected_value, f"Esperado {expected_value}, mas obteve {result}"
+    assert (
+        result == expected_value
+    ), f"Esperado {expected_value}, mas obteve {result}"
 
 
 def test_sum_gravidas_for_araras():
@@ -35,7 +39,9 @@ def test_sum_gravidas_for_araras():
         (df["Municipio"] == "ARARAS") & (df["Ano"] == ANO) & (df["Mes"] == MES)
     ]["De 1 a 3 atendimentos"].sum()
     expected_value = 23
-    assert result == expected_value, f"Esperado {expected_value}, mas obteve {result}"
+    assert (
+        result == expected_value
+    ), f"Esperado {expected_value}, mas obteve {result}"
 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@
 import configparser
 import itertools
 import os
-from datetime import datetime
 import re
+from datetime import datetime
 
 import pandas as pd
 
@@ -20,7 +20,11 @@ def process_csv(file_path):
 
     try:
         temp_df = pd.read_csv(
-            file_path, nrows=10, thousands='.', header=None, encoding="ISO-8859-1"
+            file_path,
+            nrows=10,
+            thousands=".",
+            header=None,
+            encoding="ISO-8859-1",
         )
     except Exception as e:
         print("ERRO", file_path, e)
@@ -41,7 +45,7 @@ def process_csv(file_path):
 
     # Ler o arquivo inteiro e remover as 7 primeiras e 4 últimas linhas
     df = pd.read_csv(
-        file_path, skiprows=7, thousands='.', encoding="ISO-8859-1", sep=";"
+        file_path, skiprows=7, thousands=".", encoding="ISO-8859-1", sep=";"
     )  # Ignorar as 7 primeiras linhas
     df = df[:-2]  # Remover as 2 últimas linhas
 
@@ -103,17 +107,19 @@ def list_files(directory="."):
 
     return files
 
+
 # Função para remover o .0 no final do número
 def remove_trailing_dot_zero(value):
     # Substitui apenas se o valor termina com ".0"
-    return re.sub(r'\.0$', '', value)
+    return re.sub(r"\.0$", "", value)
+
 
 def concat_final_csv(name, dir="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
     for file in list_files(dir):
-        df_temp = pd.read_csv(file, dtype=str, thousands='.')
+        df_temp = pd.read_csv(file, dtype=str, thousands=".")
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)

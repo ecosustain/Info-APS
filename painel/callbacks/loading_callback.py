@@ -1,6 +1,6 @@
 import time
-import dash
 
+import dash
 from callbacks.utils.utils import get_type
 from dash import Input, Output, no_update
 
@@ -18,7 +18,7 @@ def callback(app):
                 time.sleep(2.5)
                 return "hide"
             return no_update
-    
+
     loading_trigger("loading-graphics")
 
     @app.callback(
