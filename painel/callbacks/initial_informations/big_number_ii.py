@@ -4,6 +4,7 @@ from callbacks.utils.data_processing import (
     get_big_numbers_atendimentos,
     get_df_atendimentos,
     get_df_from_json,
+    soma_atendimentos
 )
 from callbacks.utils.utils import formatar_numero, get_values, store_nivel
 from dash import Input, Output, State
@@ -40,22 +41,23 @@ def callback(app):
         Output("big-encaminhamentos", "children"),
         [
             Input("store-data-enc", "data"),
-            Input("store-populacao-api", "data"),
+            Input("store-data", "data"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
         data_states,
     )
-    def update_encaminhamentos_big_numbers(data_enc, populacao, *args):
+    def update_encaminhamentos_big_numbers(data_enc, data_atend, *args):
         ano = get_selected_year(dash.callback_context)
-        populacao = populacao[str(ano)]
 
         # Add encaminhamento
         df_enc = get_df_from_json(data_enc)
         total_enc_ano = df_enc[df_enc["ano"] == ano]["valor"].sum()
 
-        # Normalizar os valores pelo total da população
-        total_populacao = populacao / 1000
-        big_numbers = [round(total_enc_ano / total_populacao)]
+        total_atend = soma_atendimentos(data_atend)
+        df_atendimentos = get_df_from_json(total_atend)
+        total_atend_ano = df_atendimentos[df_atendimentos["ano"] == ano]["valor"].sum()
+
+        big_numbers = [round((total_enc_ano / total_atend_ano)*100, 2)]
 
         return big_numbers
 
