@@ -145,6 +145,8 @@ def store_nivel(hist, df, populacao, nivel, anos, qtd_hab=1000):
     """Função para armazenar dados historicos"""
     if nivel == "municipio" or nivel == "regiao_saude":
         return hist
+    if nivel == "brasil":
+        hist = {}
     # filtrar df para os ultimos 5 anos
     df = df[df["ano"].isin(anos)]
     if populacao is not None:
