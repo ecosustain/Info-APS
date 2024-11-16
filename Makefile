@@ -24,12 +24,16 @@ mypy:
 
 # Executar testes com pytest
 test:
-	pytest --cov=etl --ignore=postgresql
+	cd painel && pytest --cov=. tests/test_big_numbers.py
 
 # Executar git add, status
 git:
 	git add .
 	git status
+
+
+# Executar pipeline git
+all: format lint test clean git
 
 # Executar criacao db
 create_db:
