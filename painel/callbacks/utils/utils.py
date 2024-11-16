@@ -122,12 +122,11 @@ def get_type(estado: str, regiao: str, municipio: str) -> str:
     """
     if municipio:
         return "municipio"
-    elif regiao:
+    if regiao:
         return "regiao"
-    elif estado:
+    if estado:
         return "estado"
-    else:
-        return "brasil"
+    return "brasil"
 
 
 # Função para formatar números grandes

@@ -1,3 +1,5 @@
+"""Módulo para callbacks dos filtros de anos."""
+
 import dash
 from api.api_requests import anos
 from callbacks.utils.utils import get_type
@@ -5,6 +7,8 @@ from dash import Input, Output
 
 
 def callback(app):
+    """Função para registrar os callbacks dos filtros de anos"""
+
     @app.callback(
         [Output(f"btn-ano-{ano}", "style") for ano in anos],
         Input("dropdown-estado", "value"),
@@ -13,6 +17,7 @@ def callback(app):
         [Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
     )
     def update_button_styles_ano(estado, regiao, municipio, *n_clicks):
+        """Função para atualizar o estilo dos botões de ano"""
         ctx = dash.callback_context
 
         # Identificar o ano selecionado

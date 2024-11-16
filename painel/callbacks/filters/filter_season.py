@@ -1,3 +1,5 @@
+"""Modulo para atualizar os botões de divisão de tempo."""
+
 import dash
 from callbacks.utils.utils import get_type
 from constants import time_division
@@ -20,6 +22,7 @@ def callback(app):
         ],
     )
     def update_button_styles_division(estado, regiao, municipio, *n_clicks):
+        """Função para atualizar o estilo dos botões de divisão"""
         ctx = dash.callback_context
 
         # Identificar o ano selecionado

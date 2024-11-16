@@ -85,17 +85,6 @@ def test_get_encaminhamentos_sp():
     assert sum(result[ANO].values()) == 6335699
 
 
-"""
-def test_get_codigos_brasil():
-    """  # Testa a função get_codigos para o Brasil"""
-"""
-    result = api_requests.get_codigos(None, None, None)
-    assert result is not None, "Erro ao fazer a requisição"
-    assert result['2023'] == 0
-    assert result['2023'] == 0
-    """
-
-
 if __name__ == "__main__":
     # Executa os testes e imprime os resultados
     pytest.main([__file__])

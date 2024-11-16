@@ -1,6 +1,5 @@
 """Módulo para requisições à API do painel"""
 
-import pandas as pd
 import requests
 from callbacks.utils.utils import get_code_regiao, get_ibge_code
 
@@ -128,11 +127,11 @@ def get_anos(num):
     """Retorna uma lista com os anos a serem utilizados"""
     url = f"{API_URL}/years"
 
-    anos = make_request(url)
-    anos = anos[-num:]
-    anos.sort(reverse=True)
+    anos_api = make_request(url)
+    anos_api = anos_api[-num:]
+    anos_api.sort(reverse=True)
 
-    return anos
+    return anos_api
 
 
 anos = get_anos(6)

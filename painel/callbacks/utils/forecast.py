@@ -29,6 +29,7 @@ def fit_sarima_model(df_sarima, steps):
 
 
 def get_n_months(last_month):
+    """Função para obter o número de meses para a previsão."""
     resto = last_month % 3
     if resto == 0:
         return 6

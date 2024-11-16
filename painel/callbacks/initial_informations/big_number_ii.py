@@ -1,3 +1,5 @@
+"""Módulo para callbacks dos big numbers de atendimentos"""
+
 import dash
 from api.api_requests import anos
 from callbacks.utils.data_processing import (
@@ -37,6 +39,8 @@ hist_visita = {}
 
 
 def callback(app):
+    """Função para registrar os callbacks dos big numbers de atendimentos"""
+
     @app.callback(
         Output("big-encaminhamentos", "children"),
         [
@@ -47,6 +51,7 @@ def callback(app):
         data_states,
     )
     def update_encaminhamentos_big_numbers(data_enc, data_atend, *args):
+        """Função para atualizar os big numbers de encaminhamentos"""
         ano = get_selected_year(dash.callback_context)
 
         # Add encaminhamento

@@ -1,9 +1,13 @@
+"""Módulo para callbacks da população."""
+
 from api.api_requests import get_collection
 from callbacks.utils.utils import get_type
 from dash import Input, Output
 
 
 def callback(app):
+    """Função para registrar os callbacks da população"""
+
     @app.callback(
         [
             Output("store-populacao-api", "data"),

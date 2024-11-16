@@ -1,8 +1,11 @@
-import dash
+"""Módulo para callbacks do header."""
+
 from dash import Input, Output
 
 
 def callback(app):
+    """Função para registrar os callbacks do header."""
+
     @app.callback(
         [
             Output("content-title", "children"),
@@ -11,7 +14,7 @@ def callback(app):
         Input("_pages_location", "pathname"),
     )
     def modify_header_title(value):
-
+        """Função para modificar o título e descrição do conteúdo."""
         titles_and_descriptions = {
             "/": [
                 "Atendimentos totais",

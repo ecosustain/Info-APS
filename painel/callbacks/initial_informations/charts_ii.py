@@ -1,6 +1,7 @@
+"""Módulo para callbacks dos gráficos de atendimentos"""
+
 import dash
 from api.api_requests import (
-    anos,
     get_atendimentos,
     get_atendimentos_odontologicos,
     get_encaminhamentos,
@@ -22,6 +23,8 @@ from dash import Input, Output
 
 
 def callback(app):
+    """Função para registrar os callbacks dos gráficos de atendimentos"""
+
     @app.callback(
         [
             Output("chart_by_year", "figure", allow_duplicate=True),
@@ -39,6 +42,7 @@ def callback(app):
         prevent_initial_call=True,
     )
     def update_charts(data, populacao, estado, regiao, municipio):
+        """Função para atualizar os gráficos de atendimentos"""
         df_atendimentos = get_df_atendimentos(data, populacao)
 
         nivel = get_type(estado, regiao, municipio)
@@ -118,14 +122,13 @@ def callback(app):
         [
             Input("store-data-enc", "data"),
             Input("store-data", "data"),
-            Input("store-populacao", "data"),
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
         ],
     )
     def update_chart_encaminhamentos(
-        data, atendimentos, populacao, estado, regiao, municipio
+        data, atendimentos, estado, regiao, municipio
     ):
         if data is None or atendimentos is None:
             raise dash.exceptions.PreventUpdate

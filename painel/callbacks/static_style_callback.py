@@ -1,3 +1,5 @@
+"""Módulo para callbacks do estilo estático."""
+
 from callbacks.utils.utils import get_type
 from dash import Input, Output
 
@@ -11,7 +13,7 @@ def callback(app):
             Input("dropdown-municipio", "value"),
         )
         def update_button_style(estado, regiao, municipio):
-
+            """Função para atualizar o estilo dos botões de acordo com o estado, região ou município selecionado"""
             tipo = get_type(estado, regiao, municipio)
 
             return style[tipo]

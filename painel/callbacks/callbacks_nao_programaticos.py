@@ -1,5 +1,6 @@
+"""Módulo para callbacks dos indicadores não programáticos."""
+
 import dash
-import pandas as pd
 from api.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.utils.chart_plotting import get_chart_by_quarter, get_chart_by_year
 from callbacks.utils.data_processing import (
@@ -10,7 +11,7 @@ from callbacks.utils.data_processing import (
 from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
-qtd_hab = 100000
+QTD_HAB = 100000
 
 # Dicionários para armazenar os históricos dos atendimentos
 hist_asma_dpoc = {}
@@ -43,6 +44,7 @@ common_states = [
 
 # Função auxiliar para identificar o ano selecionado
 def get_selected_year(ctx):
+    """Retorna o ano atual"""
     ano = anos[0]  # Define o primeiro ano como padrão
     if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
         prop_id = ctx.triggered[0]["prop_id"]
@@ -56,54 +58,54 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     # Add asma_dpoc
     df = get_df_from_json(json)
     total = df[df["ano"] == ano]["valor"].sum()
-    total = round(total / populacao[str(ano)] * qtd_hab)
+    total = round(total / populacao[str(ano)] * QTD_HAB)
 
     if tipo == "asma_dpoc":
         global hist_asma_dpoc
         hist_asma_dpoc = store_nivel(
-            hist_asma_dpoc, df, populacao, nivel_geo, anos, qtd_hab
+            hist_asma_dpoc, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_asma_dpoc, ano, nivel_geo)
     elif tipo == "dengue":
         global hist_dengue
         hist_dengue = store_nivel(
-            hist_dengue, df, populacao, nivel_geo, anos, qtd_hab
+            hist_dengue, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_dengue, ano, nivel_geo)
     elif tipo == "tuberculose":
         global hist_tuberculose
         hist_tuberculose = store_nivel(
-            hist_tuberculose, df, populacao, nivel_geo, anos, qtd_hab
+            hist_tuberculose, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_tuberculose, ano, nivel_geo)
     elif tipo == "dst":
         global hist_dst
         hist_dst = store_nivel(
-            hist_dst, df, populacao, nivel_geo, anos, qtd_hab
+            hist_dst, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_dst, ano, nivel_geo)
     elif tipo == "hanseniase":
         global hist_hanseniase
         hist_hanseniase = store_nivel(
-            hist_hanseniase, df, populacao, nivel_geo, anos, qtd_hab
+            hist_hanseniase, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_hanseniase, ano, nivel_geo)
     elif tipo == "cefaleia":
         global hist_cefaleia
         hist_cefaleia = store_nivel(
-            hist_cefaleia, df, populacao, nivel_geo, anos, qtd_hab
+            hist_cefaleia, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_cefaleia, ano, nivel_geo)
     elif tipo == "tosse":
         global hist_tosse
         hist_tosse = store_nivel(
-            hist_tosse, df, populacao, nivel_geo, anos, qtd_hab
+            hist_tosse, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_tosse, ano, nivel_geo)
     elif tipo == "febres":
         global hist_febres
         hist_febres = store_nivel(
-            hist_febres, df, populacao, nivel_geo, anos, qtd_hab
+            hist_febres, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_febres, ano, nivel_geo)
 
@@ -111,7 +113,8 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
 
 def register_callbacks_nao_programaticos(app):
-    # Callback para fazer a requisição à API e armazenar os dados de asma e DPOC no dcc.Store
+    """Callback para fazer a requisição à API e armazenar os dados de asma e DPOC no dcc.Store"""
+
     @app.callback(
         Output("store-data-asma-dpoc", "data"),
         data_inputs,
@@ -351,7 +354,7 @@ def register_callbacks_nao_programaticos(app):
         if data_asma is None:
             raise dash.exceptions.PreventUpdate
         titulo = "ASMA e DPOC"
-        df = get_df_from_json(data_asma, populacao, qtd_hab)
+        df = get_df_from_json(data_asma, populacao, QTD_HAB)
         nivel = get_type(estado, regiao, municipio)
         chart_by_year = get_chart_by_year(df, titulo, nivel)
         chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
@@ -376,10 +379,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Dengue"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -401,10 +404,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Tuberculose"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -426,10 +429,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "DST"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -451,10 +454,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Hanseníase"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -476,10 +479,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Cefaleia"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -501,10 +504,10 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Tosse"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)
 
@@ -526,9 +529,9 @@ def register_callbacks_nao_programaticos(app):
             raise dash.exceptions.PreventUpdate
         titulo = "Febres"
 
-        df = get_df_from_json(data, populacao, qtd_hab)
-        type = get_type(estado, regiao, municipio)
-        chart_by_year = get_chart_by_year(df, titulo, type)
-        chart_by_quarter = get_chart_by_quarter(df, titulo, type)
+        df = get_df_from_json(data, populacao, QTD_HAB)
+        nivel = get_type(estado, regiao, municipio)
+        chart_by_year = get_chart_by_year(df, titulo, nivel)
+        chart_by_quarter = get_chart_by_quarter(df, titulo, nivel)
 
         return (chart_by_year, chart_by_quarter)

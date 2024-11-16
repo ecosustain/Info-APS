@@ -1,3 +1,5 @@
+"""Módulo para testes dos números grandes."""
+
 from unittest.mock import patch
 
 import pytest
@@ -8,6 +10,7 @@ from selenium.webdriver.support.ui import Select
 
 @pytest.fixture
 def app():
+    """Fixture para o aplicativo Dash."""
     # Importar o aplicativo do arquivo app.py
     app = import_app("app")
     return app
@@ -27,6 +30,7 @@ cadastro = round(379197375 / 12)
 def test_update_big_numbers_atend(
     mock_get_selected_year, app, dash_duo, expected_output
 ):
+    """Testa a atualização dos números grandes de atendimentos"""
     # Inicie o servidor do app e espere até ele carregar
     dash_duo.start_server(app)
 

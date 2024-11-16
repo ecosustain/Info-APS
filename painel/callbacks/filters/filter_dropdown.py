@@ -1,11 +1,7 @@
+"""Módulo para callbacks dos filtros do painel"""
+
 import dash
 from api.api_requests import get_municipios
-from callbacks.map_chart.plotting import (
-    get_mapa_brasil,
-    get_mapa_estado,
-    get_mapa_municipio,
-    get_mapa_regiao,
-)
 from callbacks.utils.utils import (
     get_municipios_regiao,
     get_regiao_municipio,
@@ -16,6 +12,8 @@ from dash import callback_context as ctx
 
 
 def callback(app):
+    """Função para registrar os callbacks dos filtros do painel"""
+
     @app.callback(
         Output("dropdown-regiao", "options"),
         Output("loading-graphics", "display", allow_duplicate=True),
@@ -24,6 +22,7 @@ def callback(app):
         prevent_initial_call=True,
     )
     def update_dropdown_regiao(estado):
+        """Função para atualizar as opções do dropdown de regiões"""
         # Função para atualizar as opções do dropdown de municipios
         if estado is None:
             raise dash.exceptions.PreventUpdate
@@ -75,7 +74,7 @@ def callback(app):
         allow_duplicate=True,
         prevent_initial_call=True,
     )
-    def update_dropdowns(clickData, estado, regiao, municipio):
+    def update_dropdowns(click_data, estado, regiao, municipio):
         """Função para atualizar os dropdowns com base na seleção no mapa"""
         if not ctx.triggered:
             raise dash.exceptions.PreventUpdate
@@ -94,10 +93,10 @@ def callback(app):
                 regiao = get_regiao_municipio(estado, municipio)
                 return estado, regiao, municipio, "show"
 
-        if clickData is None:
+        if click_data is None:
             raise dash.exceptions.PreventUpdate
 
-        location = clickData["points"][0]["hovertext"]
+        location = click_data["points"][0]["hovertext"]
 
         if estado is None and len(location) == 2:
             return location, None, None, "show"

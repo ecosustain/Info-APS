@@ -1,3 +1,5 @@
+"""Módulo para callbacks dos indicadores programáticos"""
+
 import dash
 from api.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.utils.chart_plotting import (
@@ -103,6 +105,7 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
 # Função auxiliar para identificar o ano selecionado
 def get_selected_year(ctx):
+    """Função para identificar o ano selecionado"""
     ano = anos[0]  # Define o primeiro ano como padrão
     if ctx.triggered and ctx.triggered[0]["prop_id"] != ".":
         prop_id = ctx.triggered[0]["prop_id"]
@@ -112,6 +115,7 @@ def get_selected_year(ctx):
 
 
 def register_callbacks_programaticos(app):
+    """Função para registrar os callbacks dos indicadores programáticos"""
 
     # Callback para fazer a requisição à API e armazenar os dados de hipertensão no dcc.Store
     @app.callback(
