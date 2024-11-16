@@ -69,6 +69,7 @@ app.layout = dbc.Container(
                         "left": "0",
                         "padding": "200px 0px 0px 220px",
                         "background-color": "#F8F9FA",
+                        "min-height": "100vh",
                     },
                 ),
                 html.Div(

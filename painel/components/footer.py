@@ -54,7 +54,7 @@ def Footer():
                     ),
                     html.P (
                         "copyleft",
-                        style={"margin-bottom": "0px", "color": "white", "font-size": "10px", "padding-left": "5px"}
+                        style={"margin-bottom": "0px", "color": "#ffffffab", "font-size": "10px", "padding-left": "5px"}
                     )
                 ], style={"padding-top": "15px", "display": "flex", "align-items": "center"}
             )
