@@ -1,3 +1,5 @@
+import os
+
 import dash
 import dash_bootstrap_components as dbc
 from callbacks.callbacks import register_callbacks
@@ -85,7 +87,7 @@ app.layout = dbc.Container(
                             className="message-description",
                         ),
                         html.Span(
-                            className=f"fa fa-heart-crack icon-message",
+                            className="fa fa-heart-crack icon-message",
                         ),
                     ],
                     style={
@@ -114,10 +116,17 @@ register_callbacks_nao_programaticos(app)
 
 # Rodar o servidor
 if __name__ == "__main__":
-    app.run(
+    host = os.getenv(
+        "HOST", "127.0.0.1"
+    )  # Usar variável de ambiente para configurar o host
+    port = os.getenv(
+        "PORT", 8050
+    )  # Usar variável de ambiente para configurar a porta
+    app.run_server(
         debug=True,
         dev_tools_silence_routes_logging=False,
         dev_tools_prune_errors=False,
         dev_tools_hot_reload=False,
-        host="0.0.0.0",
+        host=host,
+        port=port,
     )

@@ -11,7 +11,7 @@ def make_request(url):
     """Função para fazer uma requisição à API"""
     headers = {"accept": "application/json"}
     print("Fazendo request para:", url)
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=20)
 
     if response.status_code == 200:
         return response.json()

@@ -10,6 +10,10 @@ COPY . .
 # Instale as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Variaveis de ambiente
+ENV HOST='0.0.0.0'
+ENV PORT=8050
+
 # Exponha a porta em que a aplicação irá rodar
 EXPOSE 8050
 
