@@ -40,7 +40,7 @@ layout = html.Div(
                 html.H2(
                     "Sobre o Instituto - IEPS",
                     className="about-title",
-                    style={"color": "#ffc20dcc"}
+                    style={"color": "#ffc20d"}
                 ),
                 html.P(
                     "O Instituto de Estudos para Políticas de Saúde (IEPS) é uma organização sem fins lucrativos, independente e apartidária. Nosso objetivo é contribuir para o aprimoramento das políticas públicas para a saúde no Brasil. Defendemos a ideia de que toda a população brasileira deva ter acesso à saúde de qualidade e que o uso de recursos e a regulação do sistema de saúde sejam os mais efetivos possíveis. Defendemos também que o acesso à saúde respeite o princípio da equidade, tendo o Estado Brasileiro um papel relevante, de natureza distributiva, neste processo.  Acreditamos que a melhor maneira de alcançar o nosso propósito é por meio de políticas públicas baseadas em evidências, desenhadas, implementadas e monitoradas de maneira transparente – sempre buscando o apoio da sociedade.",
@@ -51,7 +51,7 @@ layout = html.Div(
                     html.H2(
                         "Equipe IEPS",
                         className="about-title",
-                        style={"font-size": "20px", "color": "#ffc20dcc", "padding": "20px 0px 8px"}
+                        style={"font-size": "20px", "color": "#ffc20d", "padding": "20px 0px 8px"}
                     ),
                     html.Div([
                         html.Div([

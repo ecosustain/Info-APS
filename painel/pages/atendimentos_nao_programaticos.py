@@ -304,13 +304,11 @@ layout = html.Div(
             overlay_style={
                 "visibility": "visible",
                 "filter": "blur(2px)",
-                "height": "100vh",
             },
             style={
                 "height": "100%",
                 "position": "fixed",
                 "display": "flex",
-                "align-items": "center",
                 "padding-bottom": "175px",
             },
             color="#632956",

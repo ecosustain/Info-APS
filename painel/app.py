@@ -64,6 +64,7 @@ app.layout = dbc.Container(
                         dcc.Store(id="store-data-febres"),
                         # Menu em abas
                         dash.page_container,
+                        Footer(),
                     ],
                     style={
                         "left": "0",
@@ -75,7 +76,6 @@ app.layout = dbc.Container(
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}
                 ),
-                Footer(),
             ],
         ),
         html.Div(

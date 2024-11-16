@@ -1,8 +1,7 @@
 #footer {
   padding: 25px;
   position: absolute;
-  margin-left: 220px;
-  width: calc(100% - 220px);
+  width: 100%;
   background-color: #343A40;
 }
 
