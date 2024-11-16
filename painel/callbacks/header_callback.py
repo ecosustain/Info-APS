@@ -1,10 +1,21 @@
 """Módulo para callbacks do header."""
 
-from dash import Input, Output
+from dash import Input, Output, no_update
 
 
 def callback(app):
     """Função para registrar os callbacks do header."""
+    @app.callback(
+        Output("header", "style"),
+        Input("_pages_location", "pathname"),
+    )
+    def hide_header(value):
+
+        if value == "/sobre_o_projeto":
+            return {"display": "none"}
+        
+        return {"display": "block"}
+
 
     @app.callback(
         [
@@ -27,6 +38,10 @@ def callback(app):
             "/atendimentos-nao-programaticos": [
                 "Atendimentos não programáticos",
                 "Atendimentos não programáticos na Atenção Primária à Saúde (APS) referem-se a consultas e cuidados que não estão vinculados a programas específicos de saúde",
+            ],
+            "/sobre_o_projeto": [
+                "Sobre o projeto",
+                "",
             ],
         }
 

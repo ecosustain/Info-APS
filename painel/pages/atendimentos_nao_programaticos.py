@@ -102,7 +102,7 @@ layout = html.Div(
                                         dbc.Row(
                                             [
                                                 indicator_component(
-                                                    "DST",
+                                                    "IST",
                                                     "indicador-dst-brasil",
                                                     "indicador-dst-estado",
                                                     "big-dst",
@@ -192,7 +192,7 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component(
-                                    "Atendimentos de DST",
+                                    "Atendimentos de IST",
                                     "chart_dst_by_year",
                                     "por 100 mil habitantes",
                                 ),
@@ -240,12 +240,12 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component(
-                                    "Atendimentos de Asma e DPOC por Trimestre",
+                                    "Atendimentos de Asma e DPOC",
                                     "chart_asma_dpoc_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
                                 chart_component(
-                                    "Atendimentos de Dengue por Trimestre",
+                                    "Atendimentos de Dengue",
                                     "chart_dengue_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
@@ -255,12 +255,12 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component(
-                                    "Atendimentos de Tuberculose por Trimestre",
+                                    "Atendimentos de Tuberculose",
                                     "chart_tuberculose_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
                                 chart_component(
-                                    "Atendimentos de DST por Trimestre",
+                                    "Atendimentos de IST",
                                     "chart_dst_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
@@ -270,12 +270,12 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component(
-                                    "Atendimentos de Hanseníase por Trimestre",
+                                    "Atendimentos de Hanseníase",
                                     "chart_hanseniase_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
                                 chart_component(
-                                    "Atendimentos de Febres por Trimestre",
+                                    "Atendimentos de Febres",
                                     "chart_febres_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
@@ -285,12 +285,12 @@ layout = html.Div(
                         dbc.Row(
                             [
                                 chart_component(
-                                    "Atendimentos de Cefaleia por Trimestre",
+                                    "Atendimentos de Cefaleia",
                                     "chart_cefaleia_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
                                 chart_component(
-                                    "Atendimentos de Tosse por Trimestre",
+                                    "Atendimentos de Tosse",
                                     "chart_tosse_by_quarter",
                                     "por 100 mil habitantes",
                                 ),
@@ -317,5 +317,5 @@ layout = html.Div(
             type="circle",
         )
     ],
-    style={"padding": "0px 25px 50px 25px"},
+    style={"padding": "200px 25px 50px 25px"},
 )

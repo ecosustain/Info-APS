@@ -1,0 +1,49 @@
+.about-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.about-description {
+  color: #4f4f4f;
+  font-size: 14px;
+  padding: 0px 25px;
+  text-align: justify;
+}
+
+.site-image {
+  height: 50vh;
+  border-radius: 8px 0px 0px 8px;
+  box-shadow: rgba(0, 0, 0, 0.21) 0px 10px 40px;
+}
+
+.about-ieps {
+  padding: 30px 40px;
+  background-color: #343A40;
+}
+
+.ieps-people {
+  border-radius: 50%;
+  border: 5px solid #ffc20dcc;
+}
+
+.people-name {
+  background-color: #ffc20dcc;
+  color: #343A40;
+  padding: 3px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin: 0px;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.people-function {
+  color: #ffffffab;
+  font-size: 10px;
+  margin: 0px;
+  padding: 3px 0px;
+  display: flex;
+  justify-content: center;
+
+}

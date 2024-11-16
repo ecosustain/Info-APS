@@ -16,6 +16,7 @@ dash.register_page(
     path="/",
     title="Atendimentos Totais",
     name="Atendimentos Totais",
+    order=1
 )
 
 layout = html.Div(
@@ -255,5 +256,5 @@ layout = html.Div(
             type="circle",
         ),
     ],
-    style={"padding": "0px 25px 50px 25px"},
+    style={"padding": "200px 25px 50px 25px"},
 )
