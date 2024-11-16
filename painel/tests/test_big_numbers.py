@@ -5,7 +5,6 @@ from unittest.mock import patch
 import pytest
 from dash.testing.application_runners import import_app
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 
 
 @pytest.fixture

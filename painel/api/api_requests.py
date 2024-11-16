@@ -14,10 +14,10 @@ def make_request(url):
 
     if response.status_code == 200:
         return response.json()
-    else:
-        print(response.status_code)
-        print(response.text)
-        return None
+
+    print(response.status_code)
+    print(response.text)
+    return None
 
 
 def get_municipios(estado):

@@ -5,6 +5,8 @@ from dash import Input, Output
 
 
 def callback(app):
+    """Função para registrar os callbacks do estilo estático"""
+
     def update_button_style_template(id, style):
         @app.callback(
             Output(id, "style"),

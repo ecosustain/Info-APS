@@ -1,9 +1,8 @@
-# código para criar a leitura dos dados armazenados em csv
+"""Módulos para criar a leitura dos dados armazenados em csv."""
+
 import configparser
-import itertools
 import os
 import re
-from datetime import datetime
 
 import pandas as pd
 
@@ -96,7 +95,6 @@ def concat_csv_files(files):
 # Função para listar os arquivos CSV
 def list_files(directory="."):
     """Função para listar os arquivos CSV em um diretório"""
-    import os
 
     # Listar os arquivos com o diretório
     files = [
@@ -108,17 +106,17 @@ def list_files(directory="."):
     return files
 
 
-# Função para remover o .0 no final do número
 def remove_trailing_dot_zero(value):
+    """Função para remover o .0 no final do número"""
     # Substitui apenas se o valor termina com ".0"
     return re.sub(r"\.0$", "", value)
 
 
-def concat_final_csv(name, dir="."):
+def concat_final_csv(name, diretorio="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
-    for file in list_files(dir):
+    for file in list_files(diretorio):
         df_temp = pd.read_csv(file, dtype=str, thousands=".")
         df = pd.concat([df, df_temp])
     # Remove duplicados
@@ -132,14 +130,14 @@ def concat_final_csv(name, dir="."):
     return df
 
 
-def remove_temp_files(transformacao_dir):
+def remove_temp_files(transf_dir):
     """Função para remover os arquivos temporários"""
     for file in os.listdir("."):
         if file.startswith("partial_"):
             os.remove(file)
-    for file in os.listdir(transformacao_dir):
+    for file in os.listdir(transf_dir):
         if file.endswith(".csv"):
-            os.remove(os.path.join(transformacao_dir, file))
+            os.remove(os.path.join(transf_dir, file))
 
 
 def main():

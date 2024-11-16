@@ -24,16 +24,16 @@ def get_logger(nome_arq):
         format="%(asctime)s - %(levelname)s - %(message)s",
         handlers=[logging.FileHandler(nome_arq), logging.StreamHandler()],
     )
-    logger = logging.getLogger()
-    return logger
+    logger_temp = logging.getLogger()
+    return logger_temp
 
 
 def carregar_xpaths():
     """Carrega os XPaths a partir de um arquivo YAML"""
     # Carregar o dicionário de um arquivo YAML
     with open("xpaths.yaml", "r") as file:
-        xpaths = yaml.safe_load(file)
-    return xpaths
+        xpaths_temp = yaml.safe_load(file)
+    return xpaths_temp
 
 
 def carregar_configuracoes():
@@ -42,9 +42,9 @@ def carregar_configuracoes():
     config = configparser.ConfigParser()
     config.read("config.ini")
     # Diretórios de destino e download
-    transformacao_dir = config["Paths"]["transformacao_dir"]
-    download_dir = config["Paths"]["download_dir"]
-    return transformacao_dir, download_dir
+    transf_dir = config["Paths"]["transformacao_dir"]
+    down_dir = config["Paths"]["download_dir"]
+    return transf_dir, down_dir
 
 
 # Configurar o logger
@@ -211,7 +211,7 @@ def fazer_download(
     driver,
     mes,
     nome_arq,
-    download_dir=download_dir,
+    down_dir=download_dir,
     expected_filename=PRODUCAO_FILENAME,
     xpath='//*[@id="j_idt44"]/div/div[1]/div/div[2]/div[2]/div[5]/div/div/div[2]/button',
 ):
@@ -222,7 +222,7 @@ def fazer_download(
     clica_download(driver, xpath)
 
     # Aguarda o arquivo ser baixado
-    if not espera_download(mes, nome_arq, download_dir, expected_filename):
+    if not espera_download(mes, nome_arq, down_dir, expected_filename):
         return False
     return True
 

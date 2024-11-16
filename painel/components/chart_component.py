@@ -1,11 +1,14 @@
+"""Módulo com a função para retornar o layout de um gráfico"""
+
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
 
 def chart_component(title, chart_id, tag_text, icon=None):
+    """Função para retornar o layout de um gráfico"""
     icon_content = html.Div([])
 
-    if icon != None:
+    if icon is not None:
         icon_content = html.Span(
             id=f"{chart_id}-icon",
             className=f"fa fa-{icon} icon-indicator",

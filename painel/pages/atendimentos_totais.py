@@ -1,3 +1,5 @@
+"""Módulo HTML para a página de atendimentos totais."""
+
 import dash
 import dash_bootstrap_components as dbc
 from api.api_requests import anos

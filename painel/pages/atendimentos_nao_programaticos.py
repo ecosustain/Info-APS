@@ -1,3 +1,5 @@
+"""Módulo para a página de atendimentos não programáticos"""
+
 import dash
 import dash_bootstrap_components as dbc
 from api.api_requests import anos

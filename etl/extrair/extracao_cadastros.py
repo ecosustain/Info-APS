@@ -1,4 +1,5 @@
-import transformar.transformacao as transformacao
+"""Módulo para realizar a extração dos cadastros de produção."""
+
 from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
@@ -9,6 +10,7 @@ from extrair.extracao import (
     verifica_arquivo,
 )
 from selenium.webdriver.common.by import By
+from transformar import transformacao
 
 logger = get_logger("cadastro.log")
 xpaths = carregar_xpaths()

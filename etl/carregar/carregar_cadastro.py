@@ -1,3 +1,5 @@
+"""Módulo para carregar os dados de cadastro no banco de dados."""
+
 import pandas as pd
 from database import conectar_db
 
@@ -6,6 +8,7 @@ from etl.carregar.carregar import transform_data
 
 # Função para validar os dados do CSV
 def validar_cadastro(df):
+    """Função para validar os dados do CSV."""
     required_columns = ["Uf", "IBGE", "Municipio", "Cadastros", "Mes", "Ano"]
     for column in required_columns:
         if column not in df.columns:

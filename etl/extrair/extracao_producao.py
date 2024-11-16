@@ -3,7 +3,6 @@
 import configparser
 from datetime import datetime
 
-import transformar.transf_producao as transf_producao
 from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
@@ -16,6 +15,7 @@ from extrair.extracao import (
     verifica_grupo,
 )
 from selenium.webdriver.common.by import By
+from transformar import transf_producao
 
 logger = get_logger("producao.log")
 
@@ -30,9 +30,9 @@ def carregar_configuracoes():
     config = configparser.ConfigParser()
     config.read("config.ini")
     # Diretórios de destino e download
-    transformacao_dir = config["Paths"]["transformacao_dir"]
-    download_dir = config["Paths"]["download_dir"]
-    return transformacao_dir, download_dir
+    transf_dir = config["Paths"]["transformacao_dir"]
+    downl_dir = config["Paths"]["download_dir"]
+    return transf_dir, downl_dir
 
 
 # Carregar as configurações

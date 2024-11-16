@@ -1,3 +1,5 @@
+"""Módulo para criar o layout do header do painel."""
+
 import dash
 import dash_bootstrap_components as dbc
 from callbacks.utils.utils import estados_brasileiros
@@ -6,6 +8,7 @@ from dash import dcc, html
 
 
 def Header():
+    """Função para retornar o layout do header"""
     return html.Div(
         id="header",
         children=[

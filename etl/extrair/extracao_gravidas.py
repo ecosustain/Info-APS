@@ -3,7 +3,6 @@
 import configparser
 from datetime import datetime
 
-import transformar.transf_producao as transf_producao
 from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
@@ -14,6 +13,7 @@ from extrair.extracao import (
     verifica_arquivo,
 )
 from selenium.webdriver.common.by import By
+from transformar import transf_producao
 
 logger = get_logger("producao_gravidas.log")
 
@@ -29,9 +29,9 @@ def carregar_configuracoes():
     config = configparser.ConfigParser()
     config.read("config.ini")
     # Diretórios de destino e download
-    transformacao_dir = config["Paths"]["transformacao_dir"]
-    download_dir = config["Paths"]["download_dir"]
-    return transformacao_dir, download_dir
+    transf_dir = config["Paths"]["transformacao_dir"]
+    down_dir = config["Paths"]["download_dir"]
+    return transf_dir, down_dir
 
 
 # Carregar as configurações
@@ -90,10 +90,10 @@ def executar_downloads_mes(linha, coluna, nome_arq, num_meses=1000):
 
 if __name__ == "__main__":
     logger.info(" -- Extraindo grávidas-- ")
-    """executar_downloads_mes(
+    executar_downloads_mes(
         xpaths["gravidas"]["municipio"],
         xpaths["gravidas"]["coluna"],
-        PRODUCAO_FILENAME
-    )"""
+        PRODUCAO_FILENAME,
+    )
     transf_producao.main()
     logger.info("Script Finalizado")

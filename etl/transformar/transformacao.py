@@ -1,4 +1,5 @@
-# código para criar a leitura dos dados armazenados em csv
+"""Módulo para transformação dos dados."""
+
 import configparser
 import os
 
@@ -30,7 +31,7 @@ def process_csv(file_path, file_type="producao"):
             )
             df = df[:-2]  # Remover as 2 últimas linhas
 
-        elif file_type == "cadastro":
+        else:
             # Processamento específico para o arquivo de cadastro
             df = pd.read_csv(
                 file_path, skiprows=7, encoding="ISO-8859-1", sep=";"
@@ -108,8 +109,6 @@ def concat_csv_files(files, file_type="producao"):
 # Função para listar os arquivos CSV
 def list_files(directory="."):
     """Função para listar os arquivos CSV em um diretório"""
-    import os
-
     # Listar os arquivos com o diretório
     files = [
         os.path.join(directory, file)
@@ -120,11 +119,11 @@ def list_files(directory="."):
     return files
 
 
-def concat_final_csv(name, dir="."):
+def concat_final_csv(name, diretorio="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
     df = pd.DataFrame()
-    for file in list_files(dir):
+    for file in list_files(diretorio):
         df_temp = pd.read_csv(file)
         df = pd.concat([df, df_temp])
     # Remove duplicados
@@ -134,14 +133,14 @@ def concat_final_csv(name, dir="."):
     return df
 
 
-def remove_temp_files(transformacao_dir):
+def remove_temp_files(transf_dir):
     """Função para remover os arquivos temporários"""
     for file in os.listdir("."):
         if file.startswith("partial_"):
             os.remove(file)
-    for file in os.listdir(transformacao_dir):
+    for file in os.listdir(transf_dir):
         if file.endswith(".csv"):
-            os.remove(os.path.join(transformacao_dir, file))
+            os.remove(os.path.join(transf_dir, file))
 
 
 def main(file_type="producao"):

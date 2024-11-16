@@ -1,9 +1,12 @@
+"""Módulo para o componente de indicadores"""
+
 import dash_bootstrap_components as dbc
 from components.geometric_elements import rhombus_legend, square_legend
 from dash import html
 
 
 def indicator_component(title, ind_brasil, ind_estado, ind, icon):
+    """Função para retornar o componente de indicador"""
     legend = html.Div([])
     icon_content = html.Div([])
 

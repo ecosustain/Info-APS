@@ -8,6 +8,8 @@ from dash import callback_context as ctx
 
 
 def callback(app):
+    """Função para registrar os callbacks dos botões de divisão de tempo"""
+
     @app.callback(
         [
             Output(f"btn-{division}", "style")

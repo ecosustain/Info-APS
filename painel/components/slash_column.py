@@ -1,3 +1,5 @@
+"""Componente que representa uma barra vertical de divisão."""
+
 import dash_bootstrap_components as dbc
 from dash import html
 

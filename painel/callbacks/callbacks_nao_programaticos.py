@@ -108,6 +108,8 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
             hist_febres, df, populacao, nivel_geo, anos, QTD_HAB
         )
         values = get_values(hist_febres, ano, nivel_geo)
+    else:
+        values = [None, None]
 
     return values[0], values[1], total
 

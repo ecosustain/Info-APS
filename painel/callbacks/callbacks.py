@@ -1,3 +1,5 @@
+"""Módulo para callbacks do painel principal"""
+
 import warnings
 
 import callbacks.header_callback as header

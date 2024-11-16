@@ -1,8 +1,11 @@
+"""Módulo com a função para retornar o layout da sidebar."""
+
 import dash
 from dash import dcc, html
 
 
 def SideBar():
+    """Função para retornar o layout da sidebar"""
     return html.Div(
         id="side-bar",
         children=[

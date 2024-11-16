@@ -1,3 +1,5 @@
+"""Módulo para elementos geométricos do painel"""
+
 from dash import html
 
 square_legend = html.Span(

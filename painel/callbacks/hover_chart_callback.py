@@ -1,8 +1,14 @@
+"""Função para registrar os callbacks de hover nos gráficos"""
+
 from dash import Input, Output, State
 
 
 def callback(app):
+    """Função para registrar os callbacks de hover nos gráficos"""
+
     def hover_event_template(id_chart):
+        """Função para criar o callback de hover nos gráficos"""
+
         @app.callback(
             Output(id_chart, "figure", allow_duplicate=True),
             Output("loading-graphics", "display", allow_duplicate=True),

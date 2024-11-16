@@ -1,10 +1,5 @@
 """Módulo para extrair os cids e ciaps do site do SISAB."""
 
-import configparser
-from datetime import datetime
-from time import sleep
-
-import transformar.transf_producao as transf_producao
 from extrair.extracao import (
     carregar_xpaths,
     cria_driver,
@@ -16,6 +11,7 @@ from extrair.extracao import (
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from transformar import transf_producao as transf_producao
 
 logger = get_logger("codigos.log")
 

@@ -1,3 +1,5 @@
+"""Módulo principal da aplicação."""
+
 import os
 
 import dash
