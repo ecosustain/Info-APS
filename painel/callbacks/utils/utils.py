@@ -108,17 +108,26 @@ def get_code_regiao(estado, regiao):
     return cod.values[0]
 
 
-def get_type(estado, regiao, municipio):
-    """Função para obter o tipo de localidade"""
-    if estado is None and regiao is None and municipio is None:
-        return "brasil"
-    elif estado is not None and regiao is None and municipio is None:
-        return "estado"
-    elif estado is not None and regiao is not None and municipio is None:
-        return "regiao"
-    elif estado is not None and municipio is not None:
+def get_type(estado: str, regiao: str, municipio: str) -> str:
+    """
+    Função para determinar o tipo de nível geográfico com base nos parâmetros fornecidos.
+
+    Args:
+        estado (str): O estado.
+        regiao (str): A região.
+        municipio (str): O município.
+
+    Returns:
+        str: O tipo de nível geográfico.
+    """
+    if municipio:
         return "municipio"
-    return None
+    elif regiao:
+        return "regiao"
+    elif estado:
+        return "estado"
+    else:
+        return "brasil"
 
 
 def get_population(estado, regiao, mun):
