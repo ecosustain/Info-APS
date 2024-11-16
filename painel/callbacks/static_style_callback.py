@@ -13,9 +13,11 @@ def callback(app):
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
             Input("dropdown-municipio", "value"),
+            Input(id, "style"),
         )
-        def update_button_style(estado, regiao, municipio):
+        def update_button_style(estado, regiao, municipio, args):
             """Função para atualizar o estilo dos botões de acordo com o estado, região ou município selecionado"""
+
             tipo = get_type(estado, regiao, municipio)
 
             return style[tipo]

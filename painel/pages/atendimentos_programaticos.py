@@ -278,5 +278,5 @@ layout = html.Div(
             type="circle",
         )
     ],
-    style={"padding": "0px 25px"},
+    style={"padding": "0px 25px 50px 25px"},
 )

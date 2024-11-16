@@ -10,6 +10,7 @@ from callbacks.callbacks_nao_programaticos import register_callbacks_nao_program
 from callbacks.callbacks_programaticos import register_callbacks_programaticos
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
 from components.header import Header
+from components.footer import Footer
 from components.sidebar_structure import SideBar
 from dash import dcc, html
 
@@ -73,6 +74,7 @@ app.layout = dbc.Container(
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}
                 ),
+                Footer(),
             ],
         ),
         html.Div(

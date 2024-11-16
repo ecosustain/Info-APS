@@ -129,7 +129,6 @@ layout = html.Div(
                                         ),
                                         dbc.Row(
                                             [
-                                                slash_column,
                                                 indicator_component(
                                                     "Cefaléia",
                                                     "indicador-cefaleia-brasil",
@@ -318,5 +317,5 @@ layout = html.Div(
             type="circle",
         )
     ],
-    style={"padding": "0px 25px"},
+    style={"padding": "0px 25px 50px 25px"},
 )

@@ -18,12 +18,13 @@ def callback(app):
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
+        Input('_pages_location', 'pathname'),
         [
             Input(f"btn-{division}", "n_clicks")
             for division in time_division.graphic_division
         ],
     )
-    def update_button_styles_division(estado, regiao, municipio, *n_clicks):
+    def update_button_styles_division(estado, regiao, municipio, path, *n_clicks):
         """Função para atualizar o estilo dos botões de divisão"""
         ctx = dash.callback_context
 
