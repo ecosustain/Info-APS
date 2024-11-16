@@ -1,5 +1,8 @@
 """Módulo para processar os dados obtidos da API e transformá-los para gerar os gráficos"""
 
+from collections import defaultdict
+from typing import Dict
+
 import pandas as pd
 from api.api_requests import (
     get_atendimentos_individuais_problema,
@@ -269,18 +272,26 @@ def get_asma_dpoc_json(estado, regiao, municipio):
     return asma
 
 
-def soma_atendimentos(atendimentos):
-    """Função para somar os atendimentos"""
-    # Inicializar um dicionário para armazenar os totais
-    total_atendimentos = {}
+def soma_atendimentos(
+    atendimentos: Dict[str, Dict[str, Dict[str, int]]]
+) -> Dict[str, Dict[str, int]]:
+    """
+    Função para somar os atendimentos.
+
+    Args:
+        atendimentos (Dict[str, Dict[str, Dict[str, int]]]): Dicionário contendo os atendimentos.
+
+    Returns:
+        Dict[str, Dict[str, int]]: Dicionário com os totais de atendimentos por ano e mês.
+    """
+    # Inicializar um defaultdict para armazenar os totais
+    total_atendimentos = defaultdict(lambda: defaultdict(int))
 
     # Iterar sobre os anos e meses para somar os valores
-    for profissional, anos in atendimentos.items():
+    for anos in atendimentos.values():
         for ano, meses in anos.items():
-            if ano not in total_atendimentos:
-                total_atendimentos[ano] = {}
             for mes, valor in meses.items():
-                if mes not in total_atendimentos[ano]:
-                    total_atendimentos[ano][mes] = 0
                 total_atendimentos[ano][mes] += valor
-    return total_atendimentos
+
+    # Converter defaultdict para dict antes de retornar
+    return {ano: dict(meses) for ano, meses in total_atendimentos.items()}

@@ -130,31 +130,6 @@ def get_type(estado: str, regiao: str, municipio: str) -> str:
         return "brasil"
 
 
-def get_population(estado, regiao, mun):
-    """Função para obter a população de um município, estado ou do Brasil"""
-    # TODO implementar via API
-    if estado is None and regiao is None and mun is None:
-        # soma de todas as populações
-        total = municipios["cadastros"].sum()
-        return total
-    if regiao is None and mun is None:
-        # soma da população da estado
-        total = municipios[municipios["uf"] == estado]["cadastros"].sum()
-        return total
-    if mun is None:
-        # soma da população do regiao
-        total = municipios[municipios["no_regiao"] == regiao][
-            "cadastros"
-        ].sum()
-        return total
-
-    # população do município específico
-    total = municipios[
-        (municipios["uf"] == estado) & (municipios["municipio"] == mun)
-    ]["cadastros"].sum()
-    return total
-
-
 # Função para formatar números grandes
 def formatar_numero(numero):
     """Função para formatar números grandes"""
