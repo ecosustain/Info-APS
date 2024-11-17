@@ -127,8 +127,9 @@ if __name__ == "__main__":
     port = os.getenv(
         "PORT", 8050
     )  # Usar variável de ambiente para configurar a porta
+    debug = os.getenv("DEBUG", True)  # Usar variável de ambiente para debug
     app.run_server(
-        debug=True,
+        debug=debug,
         dev_tools_silence_routes_logging=False,
         dev_tools_prune_errors=False,
         dev_tools_hot_reload=False,

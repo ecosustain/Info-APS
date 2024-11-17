@@ -1,10 +1,10 @@
-dash
-plotly
-geopandas
-statsmodels
-flask~=2.3.2
-dash_bootstrap_components
+dash==2.18.1
+plotly==5.24.1
+geopandas==1.0.1
+statsmodels==0.14.4
+flask==3.0.3
+dash-bootstrap-components==1.6.0
 pandas~=2.2.3
 pymongo~=4.5.0
 requests==2.31.0
-pyyaml
+gunicorn==23.0.0

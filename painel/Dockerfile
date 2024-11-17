@@ -13,9 +13,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Variaveis de ambiente
 ENV HOST='0.0.0.0'
 ENV PORT=8050
+ENV DEBUG=False
 
 # Exponha a porta em que a aplicação irá rodar
 EXPOSE 8050
 
 # Comando para rodar a aplicação
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:8050", "wsgi:server", "--threads", "10"]
