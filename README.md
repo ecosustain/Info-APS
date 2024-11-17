@@ -5,7 +5,12 @@ Projeto destinado à estruturação e análise de dados abertos de saúde públi
 O objetivo principal do projeto é disponibilizar informações sobre a saúde pública no Brasil de forma clara e acessível, promovendo a transparência e a democratização dos dados. Para isso, utilizamos ferramentas de análise de dados e visualização para criar dashboards interativos e relatórios analíticos que permitam a compreensão dos dados e a extração de insights valiosos.
 
 ## Metodologia
-Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares: coleta, análise e visualização de dados. A coleta de dados é realizada a partir de fontes abertas disponíveis no site sisab.saude.gov.br, que disponibiliza informações sobre diversos indicadores de saúde pública. Em seguida, realizamos a análise dos dados, identificando padrões, tendências e relações entre as variáveis. Por fim, utilizamos ferramentas de visualização de dados para criar dashboards interativos e relatórios analíticos que permitam a compreensão dos dados e a extração de insights valiosos.
+Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares: coleta, análise e visualização de dados.
+
+1. **Coleta de Dados**: Realizada a partir de fontes abertas disponíveis no site [SISAB](https://sisab.saude.gov.br/), que fornece informações sobre os atendimentos de atenção básica.
+2. **Análise de Dados**: Comparação dos valores entre diferentes níveis geográficos (nacional, estadual e municipal) e ao longo de trimestres e anos.
+3. **Visualização de Dados**: Utilização de ferramentas de visualização de dados para criar dashboards interativos e visualizações personalizadas.
+
 
 ## Pré-requisitos
 Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados em seu sistema:
@@ -49,10 +54,10 @@ Para executar o projeto, siga os passos abaixo:
     make run
     ```
 
-5. Acesse o painel do projeto no navegador:
-    ```
-    http://localhost:8050
-    ```
+5. **Acesse o link do painel no navegador:**
+
+    👉 [**Link do Painel**](http://localhost:8050)
+    
 
 
 ## Estrutura de diretórios
