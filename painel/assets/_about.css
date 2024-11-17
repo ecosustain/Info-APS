@@ -17,8 +17,13 @@
 }
 
 .about-ieps {
-  padding: 30px 40px;
+  padding: 60px;
   background-color: #343A40;
+}
+
+.about-dev {
+  padding: 60px;
+  padding-bottom: 120px;
 }
 
 .ieps-people {
@@ -29,7 +34,7 @@
 .people-name {
   background-color: #ffc20d;
   color: #343A40;
-  padding: 3px;
+  padding: 2px 12px;
   border-radius: 5px;
   font-size: 12px;
   margin: 0px;
@@ -45,5 +50,31 @@
   padding: 3px 0px;
   display: flex;
   justify-content: center;
+}
 
+.ieps-people.usp {
+  border-color: #2b7b6f;
+}
+
+.people-name.usp {
+  background-color: #2b7b6f;
+  color: white
+}
+
+.people-function.usp {
+  color: #343A40;
+}
+
+.image-bottom {
+  width: 100%;
+  height: 200px;
+  padding: 0px 100px;
+  opacity: 10%;
+}
+
+.image-bottom img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: top;
 }
