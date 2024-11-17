@@ -14,7 +14,7 @@ dash.register_page(
     __name__,
     path="/atendimentos-nao-programaticos",
     title="Atendimentos Não Programáticos",
-    name="Ateindimentos Não Programáticos",
+    name="Atendimentos Não Programáticos",
 )
 
 layout = html.Div(
