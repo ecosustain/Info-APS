@@ -7,15 +7,53 @@ O objetivo principal do projeto é disponibilizar informações sobre a saúde p
 ## Metodologia
 Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares: coleta, análise e visualização de dados. A coleta de dados é realizada a partir de fontes abertas disponíveis no site sisab.saude.gov.br, que disponibiliza informações sobre diversos indicadores de saúde pública. Em seguida, realizamos a análise dos dados, identificando padrões, tendências e relações entre as variáveis. Por fim, utilizamos ferramentas de visualização de dados para criar dashboards interativos e relatórios analíticos que permitam a compreensão dos dados e a extração de insights valiosos.
 
+## Pré-requisitos
+Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados em seu sistema:
 
-## Instalação
-Para instalar os requisitos do projeto, siga os passos abaixo:
-``` make install ```
+- **Make**: Ferramenta de automação de compilação. Você pode instalar o `make` usando o gerenciador de pacotes do seu sistema operacional.
+  - **Ubuntu/Debian**:
+    ```sh
+    sudo apt-get install make
+    ```
+  - **Fedora**:
+    ```sh
+    sudo dnf install make
+    ```
+  - **macOS**:
+    ```sh
+    brew install make
+    ```
 
-## Configuração
-Para configurar o projeto, siga os passos abaixo:
+- **Docker**: Plataforma para desenvolvimento, envio e execução de aplicações em containers. Você pode instalar o `Docker` seguindo as instruções no site oficial: [Docker Installation](https://docs.docker.com/get-docker/).
 
-- Crie o arquivo de configuração config.ini a partir do arquivo de exemplo config.ini.example
+## Execução
+Para executar o projeto, siga os passos abaixo:
+
+1. Clone o repositório:
+   ```sh
+   git clone https://gitlab.com/schulzdanielf/saude-basica.git
+    ```
+
+2. Acesse o diretório do projeto:
+    ```sh
+    cd saude-basica
+    ```
+
+3. Construa o container do projeto:
+    ```sh
+    make build
+    ```
+
+4. Execute o container do projeto:
+    ```sh
+    make run
+    ```
+
+5. Acesse o painel do projeto no navegador:
+    ```
+    http://localhost:8050
+    ```
+
 
 ## Estrutura de diretórios
 ```
@@ -23,32 +61,11 @@ Para configurar o projeto, siga os passos abaixo:
 ├── Makefile # Arquivo de automação de tarefas
 ├── README.md # Documentação do projeto
 ├── analises # Análises de dados
-├── dash-app
-│   ├── README.md
-│   ├── app.py
-│   ├── callbacks
-│   ├── components
-│   ├── config
-│   ├── data
-│   ├── requirements.txt
-│   └── utils
 ├── docker-compose.yml # Arquivo de configuração do Docker Compose
 ├── docs # Documentação do projeto
 │   └── variaveis-validacao.md
 ├── etl # Extração, transformação e carregamento dos dados
-│   ├── config_example.ini # Arquivo de configuração
-│   ├── data # Diretório de dados extraídos
-│   ├── database.py # Conexão com o banco de dados
-│   ├── extracao_CID.ipynb # Extração de dados de CID
-│   ├── extracao_codigos.py
-│   ├── extracao_producao.py # Extração de dados de produção
-│   ├── extracao_validacao.py # Extração de dados de validação
-│   ├── transf_producao.py # Transformação de dados de produção
-│   └── transf_validacao.py # Transformação de dados de validação
-├── mapas
-│   ├── BR_Municipios_2022 # Shapefiles dos municípios brasileiros
-│   ├── BR_UF_2022 # Shapefiles das unidades federativas brasileiras
-│   └── SP_Municipios_2022 # Shapefiles dos municípios de São Paulo
+│   ├── main.py # Script principal para iniciar o ETL
 ├── modelos
 │   └── database
 ├── painel # Aplicação Web com Dash para visualização dos dados
@@ -57,12 +74,9 @@ Para configurar o projeto, siga os passos abaixo:
 │   ├── assets # Diretório de arquivos estáticos
 │   ├── callbacks # Diretório de callbacks
 │   ├── data # Diretório de dados
-│   ├── funcoes.py # Funções auxiliares
-│   ├── paginas # Diretório de páginas
+│   ├── pages # Diretório de páginas
 │   ├── requirements.txt # Requisitos do projeto
 │   └── static # Diretório de arquivos estáticos
-├── postgresql # Diretório do banco de dados
-│   └── data:
 ├── requirements.txt # Requisitos do projeto
 └── tests # Testes do projeto
 ```

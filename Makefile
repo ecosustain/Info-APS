@@ -36,9 +36,8 @@ build:
 	cd painel && docker build -t painel .
 
 # Executar o painel
-run: build
+run:
 	cd painel && docker run -p 8050:8050 painel
-
 
 # Executar pipeline git
 all: format lint test clean git

@@ -1,28 +1,14 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:14
-    container_name: sb-postgres
-    environment:
-      POSTGRES_USER: saude_basica
-      POSTGRES_PASSWORD: saude_basica
-      POSTGRES_DB: saude_basica
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  dashboard:
+    build:
+      context: .
+    container_name: dashboard
     ports:
-      - "5432:5432"
+      - "8000:8050"
     networks:
-      - my_network
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"           # Limite de CPU
-          memory: "2G"          # Limite de memória
-
-volumes:
-  postgres_data:
-
+      - app_network
 networks:
-  my_network:
+  app_network:
     driver: bridge
