@@ -31,3 +31,6 @@ backend-mongo/.pytest_cache/*
 backend-mongo/uploads/*
 
 .venv/*
+
+.coverage
+.pylintrc
