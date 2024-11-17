@@ -83,7 +83,7 @@ layout = html.Div(
                     className="about-title",
                 ),
                 html.P(
-                    "Sobre Info-APS",
+                    "Informações de produção da atenção primária brasileira, utilizando os dados disponibilizados pelo governo brasileiro, no sistema de informação em saúde para a atenção básica (SISAB)",
                     className="about-description",
                 ),
             ], style={"padding": "0px 25px 0px 60px"}),
@@ -147,7 +147,7 @@ layout = html.Div(
                     style={"color": "#343A40"}
                 ),
                 html.P(
-                    "Sobre o desenvolvimento",
+                    "Esse site foi desenvolvido durante a disciplina de Laboratório Avançado em Ciência de Dados, oferecida pelo Instituto de Matemática e Estatística (IME) da Universidade de São Paulo (USP), no segundo semestre de 2024, ministrada pelo professor Dr. Fábio Kon, em parceria com o IESP.",
                     className="about-description",
                 ),
             ]),
