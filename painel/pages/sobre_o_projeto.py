@@ -137,7 +137,7 @@ layout = html.Div(
                 html.H2(
                     "Sobre o desenvolvimento",
                     className="about-title",
-                    style={"color": "#2b7b6f"}
+                    style={"color": "#343A40"}
                 ),
                 html.P(
                     "Sobre o desenvolvimento",
@@ -148,7 +148,7 @@ layout = html.Div(
                 html.H2(
                     "Equipe de analistas de dados",
                     className="about-title",
-                    style={"font-size": "20px", "color": "#2b7b6f", "padding": "20px 0px 8px"}
+                    style={"font-size": "20px", "color": "#343A40", "padding": "20px 0px 8px"}
                 ),
                 dbc.Row([
                     usp_people("Daniel Schulz", "Analista de dados", "daniel.png"),
