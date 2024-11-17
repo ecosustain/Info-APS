@@ -30,8 +30,9 @@ def callback(app):
         Input("dropdown-estado", "value"),
         Input("dropdown-regiao", "value"),
         Input("dropdown-municipio", "value"),
+        Input("loading-graphics", "style"),
     )
-    def loading_trigger_2(estado, regiao, municipio):
+    def loading_trigger_2(estado, regiao, municipio, style):
         tipo = get_type(estado, regiao, municipio)
 
         style_loading = {

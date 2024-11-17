@@ -248,7 +248,7 @@ layout = html.Div(
                 "height": "100%",
                 "position": "fixed",
                 "display": "flex",
-                "padding-bottom": "175px",
+                "padding-top": "25vh",
             },
             color="#632956",
             type="circle",
