@@ -251,7 +251,11 @@ def get_cids_json(estado, regiao, municipio):
     tosse = get_collection(
         estado, regiao, municipio, "CIDS", "CIAP (R05) Tosse"
     )
-    palavra_febre = get_febres(estado, regiao, municipio)
+    # TODO Ajustar febre
+    # palavra_febre = get_febres(estado, regiao, municipio)
+    palavra_febre = get_collection(
+        estado, regiao, municipio, "CIDS", "CIAP (A03) Febre"
+    )
 
     return dor_cabeca, tosse, palavra_febre
 

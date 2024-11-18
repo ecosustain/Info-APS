@@ -7,11 +7,7 @@ Capturar os dados de saúde básica disponíveis na base dados e prever os valor
 
 ## Metodologia
 
-- Após finalização do ETL, atualizar os modelos e prever os valores futuros com base nos dados disponíveis.
+Analisadas diferentes estratégias para treinamento de modelos, onde verificou-se que o uso de modelos locais para a previsão das séries temporais apresentou um melhor desemepenho.
+Foi utilizado o modelo SARIMA para a previsão dos dados de saúde básica, que é um modelo de séries temporais que leva em consideração a sazonalidade e a tendência dos dados.
 
-- Avaliar os últimos 3 meses disponíveis e extrair a combinação de categoria, grupo e municipio.
-
-- Para cada registro de combinação extrair os dados dos últimos X meses.
-
-    - Treinar o modelo com os dados disponíveis e prever os valores futuros.
-    - Apagar os registros antigos e inserir os novos registros previstos.
+O modelo foi otimizado e os resultados foram avaliados com base em métricas de erro, como o erro médio quadrático (MSE).
