@@ -5,7 +5,7 @@ from components.geometric_elements import rhombus_legend, square_legend
 from dash import html
 
 
-def indicator_component(title, ind_brasil, ind_estado, ind, icon, sufixo):
+def indicator_component(title, ind_brasil, ind_estado, ind, icon):
     """Função para retornar o componente de indicador"""
     legend = html.Div([])
     icon_content = html.Div([])
@@ -60,7 +60,6 @@ def indicator_component(title, ind_brasil, ind_estado, ind, icon, sufixo):
                     className="indicator-footer",
                     children=[
                         html.H2(
-                            sufixo,
                             id=ind,
                             className="indicator-number-small",
                         ),

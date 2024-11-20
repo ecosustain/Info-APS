@@ -5,7 +5,9 @@ from api.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.utils.chart_plotting import get_chart_by_quarter, get_chart_by_year
 from callbacks.utils.data_processing import (
     get_asma_dpoc_json,
-    get_cids_json,
+    get_cids_json_cefaleia,
+    get_cids_json_febre,
+    get_cids_json_tosse,
     get_df_from_json,
 )
 from callbacks.utils.utils import get_type, get_values, store_nivel
@@ -188,7 +190,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de cefaleia no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        data_cefaleia, _, _ = get_cids_json(estado, regiao, municipio)
+        data_cefaleia = get_cids_json_cefaleia(estado, regiao, municipio)
         return data_cefaleia
 
     # Callback para fazer a requisição à API e armazenar os dados de tosse no dcc.Store
@@ -200,7 +202,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de tosse no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        _, data_tosse, _ = get_cids_json(estado, regiao, municipio)
+        data_tosse = get_cids_json_tosse(estado, regiao, municipio)
         return data_tosse
 
     # Callback para fazer a requisição à API e armazenar os dados de febres no dcc.Store
@@ -212,7 +214,7 @@ def register_callbacks_nao_programaticos(app):
         """Função para fazer a requisição à API e armazenar os dados de febres no Store"""
         if url != "/atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
-        _, _, data_febres = get_cids_json(estado, regiao, municipio)
+        data_febres = get_cids_json_febre(estado, regiao, municipio)
         return data_febres
 
     # Callback para atualizar os números grandes de asma e DPOC

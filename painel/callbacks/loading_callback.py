@@ -9,21 +9,19 @@ from dash import Input, Output, no_update
 def callback(app):
     """Função para registrar os callbacks do loading."""
 
-    def loading_trigger(id):
-        @app.callback(
-            Output(id, "display", allow_duplicate=True),
-            Input(id, "display"),
-            allow_duplicate=True,
-            prevent_initial_call=True,
-        )
-        def loading_trigger(value):
-            """Função para atualizar o loading"""
-            if value == "show":
-                time.sleep(2.5)
-                return "hide"
-            return no_update
+    @app.callback(
+        Output("loading-graphics", "display", allow_duplicate=True),
+        Input("loading-graphics", "display"),
+        allow_duplicate=True,
+        prevent_initial_call=True,
+    )
+    def loading_trigger(value):
+        """Função para atualizar o loading"""
+        if value == "show":
+            time.sleep(2.5)
+            return "hide"
+        return no_update
 
-    loading_trigger("loading-graphics")
 
     @app.callback(
         Output("loading-graphics", "color"),
@@ -43,3 +41,4 @@ def callback(app):
         }
 
         return style_loading[tipo]
+    

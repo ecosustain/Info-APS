@@ -79,7 +79,6 @@ layout = html.Div(
                                                     "indicador-asma-dpoc-estado",
                                                     "big-asma-dpoc",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -88,7 +87,6 @@ layout = html.Div(
                                                     "indicador-dengue-estado",
                                                     "big-dengue",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -97,7 +95,6 @@ layout = html.Div(
                                                     "indicador-tuberculose-estado",
                                                     "big-tuberculose",
                                                     None,
-                                                    ""
                                                 ),
                                             ],
                                             className="mb-3",
@@ -110,7 +107,6 @@ layout = html.Div(
                                                     "indicador-dst-estado",
                                                     "big-dst",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -119,7 +115,6 @@ layout = html.Div(
                                                     "indicador-hanseniase-estado",
                                                     "big-hanseniase",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -128,7 +123,6 @@ layout = html.Div(
                                                     "indicador-febres-estado",
                                                     "big-febres",
                                                     None,
-                                                    ""
                                                 ),
                                             ],
                                             className="mb-3",
@@ -141,7 +135,6 @@ layout = html.Div(
                                                     "indicador-cefaleia-estado",
                                                     "big-cefaleia",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -150,7 +143,6 @@ layout = html.Div(
                                                     "indicador-tosse-estado",
                                                     "big-tosse",
                                                     None,
-                                                    ""
                                                 ),
                                             ],
                                             className="mb-3",
@@ -164,7 +156,7 @@ layout = html.Div(
                 html.H2(
                     "Série Temporal ",
                     id="overview",
-                    className="mt-3",
+                    className="mt-4",
                 ),
                 html.Div(
                     id="year-content",

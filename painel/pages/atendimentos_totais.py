@@ -95,7 +95,6 @@ layout = html.Div(
                                                     "indicador-atend-estado",
                                                     "normalizado-atendimentos",
                                                     None,
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -104,7 +103,6 @@ layout = html.Div(
                                                     None,
                                                     "big-medicos",
                                                     "user-doctor",
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -113,7 +111,6 @@ layout = html.Div(
                                                     None,
                                                     "big-encaminhamentos",
                                                     "hand-point-right",
-                                                    "%"
                                                 ),
                                             ],
                                             className="mb-4",
@@ -126,7 +123,6 @@ layout = html.Div(
                                                     "indicador-odont-estado",
                                                     "big-odontologicos",
                                                     "tooth",
-                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -135,7 +131,6 @@ layout = html.Div(
                                                     "indicador-visita-estado",
                                                     "big-visitas",
                                                     "house",
-                                                    ""
                                                 ),
                                             ],
                                             className="mb-1",
@@ -149,7 +144,7 @@ layout = html.Div(
                 html.H2(
                     "Série Temporal ",
                     id="overview",
-                    className="mt-3",
+                    className="mt-4",
                 ),
                 html.Div(
                     id="year-content",

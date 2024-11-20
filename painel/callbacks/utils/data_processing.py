@@ -8,7 +8,6 @@ from api.api_requests import (
     get_atendimentos_individuais_problema,
     get_collection,
     get_collection_atributes,
-    get_febres,
 )
 
 # Mapeamento dos meses para seus números correspondentes
@@ -243,21 +242,29 @@ def get_atributos_febre():
     return atributos
 
 
-def get_cids_json(estado, regiao, municipio):
-    """Função para obter os jsons de cids"""
+def get_cids_json_cefaleia(estado, regiao, municipio):
+    """Função para obter os jsons de cids Cefaléia"""
     dor_cabeca = get_collection(
         estado, regiao, municipio, "CIDS", "CIAP (N01) Cefaléia"
     )
+
+    return dor_cabeca
+
+def get_cids_json_tosse(estado, regiao, municipio):
+    """Função para obter os jsons de cids Tosse"""
     tosse = get_collection(
         estado, regiao, municipio, "CIDS", "CIAP (R05) Tosse"
     )
-    # TODO Ajustar febre
-    # palavra_febre = get_febres(estado, regiao, municipio)
+
+    return tosse
+
+def get_cids_json_febre(estado, regiao, municipio):
+    """Função para obter os jsons de cids Febre"""
     palavra_febre = get_collection(
         estado, regiao, municipio, "CIDS", "CIAP (A03) Febre"
     )
 
-    return dor_cabeca, tosse, palavra_febre
+    return palavra_febre
 
 
 def get_asma_dpoc_json(estado, regiao, municipio):

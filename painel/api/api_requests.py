@@ -142,19 +142,3 @@ def get_collection_atributes(collection):
     url = f"{API_URL}/collections/{collection}/attributes"
 
     return make_request(url)
-
-
-def get_febres(estado, regiao, municipio):
-    """Função para obter as palavras relacionadas à febre"""
-    if municipio:
-        ibge_code = get_ibge_code(estado, municipio)
-        url = f"{API_URL}/cids_febre/cities/{ibge_code}"
-    elif regiao:
-        regiao_code = get_code_regiao(estado, regiao)
-        url = f"{API_URL}/cids_febre/regions/{regiao_code}"
-    elif estado:
-        url = f"{API_URL}/cids_febre/states/{estado}"
-    else:
-        url = f"{API_URL}/cids_febre"
-
-    return make_request(url)
