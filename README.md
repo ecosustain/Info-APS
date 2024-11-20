@@ -1,5 +1,5 @@
-# Saúde Básica em Dados
-Projeto destinado à estruturação e análise de dados abertos de saúde pública do site sisab.saude.gov.br. 
+# Info-APS
+Informações de produção da atenção primária brasileira, utilizando os dados disponibilizados pelo governo brasileiro, no sistema de informação em saúde para a atenção básica (SISAB)
 
 ## Introdução
 
