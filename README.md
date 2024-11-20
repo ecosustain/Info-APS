@@ -69,8 +69,69 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 Para suporte ou dúvidas, entre em contato conosco:
 
+<div style="display: flex; justify-content: space-around;">
+  <div style="text-align: center;">
+    <img src="painel/assets/daniel.png" alt="Foto do Integrante 1" style="border-radius: 50%; width: 100px;">
+    <p><strong>Daniel Schulz</strong></p>
+    <p>
+      <a href="mailto:danielfs0@hotmail.com">
+        <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.linkedin.com/in/daniel-schulz-ab59a0150/">
+        <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;">
+      </a>
+    </p>
+  </div>
+  <div style="text-align: center;">
+    <img src="painel/assets/vital.png" alt="Foto do Integrante 2" style="border-radius: 50%; width: 100px;">
+    <p><strong>Elinilson Vital</strong></p>
+    <p>
+      <a href="mailto:vital@usp.br">
+        <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.linkedin.com/in/elinilson-vital-437b81/">
+        <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;">
+      </a>
+    </p>
+  </div>
+  <div style="text-align: center;">
+    <img src="painel/assets/leonardo.png" alt="Foto do Integrante 3" style="border-radius: 50%; width: 100px;">
+    <p><strong>Leonardo Gomes</strong></p>
+    <p>
+      <a href="mailto:leonardogomes@ime.usp.br">
+        <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.linkedin.com/in/leosilvagomes/">
+        <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;">
+      </a>
+    </p>
+  </div>
+  <div style="text-align: center;">
+    <img src="painel/assets/lucas.png" alt="Foto do Integrante 4" style="border-radius: 50%; width: 100px;">
+    <p><strong>Lucas Macedo</strong></p>
+    <p>
+      <a href="mailto:lucnunmacedo@usp.br">
+        <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.linkedin.com/in/lucnun/">
+        <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;">
+      </a>
+    </p>
+  </div>
+  <div style="text-align: center;">
+    <img src="painel/assets/mariana.png" alt="Foto do Integrante 5" style="border-radius: 50%; width: 100px;">
+    <p><strong>Mariana Cruvinel</strong></p>
+    <p>
+      <a href="mailto:mariana.valerio2@hotmail.com">
+        <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;">
+      </a>
+      <a href="https://www.linkedin.com/in/mariana-cruvinel/">
+        <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;">
+      </a>
+    </p>
+  </div>
+</div>
 
-<div style="display: flex; justify-content: space-around;"> <div style="text-align: center;"> <img src="painel/assets/daniel.png" alt="Foto do Integrante 1" style="border-radius: 50%; width: 100px;"> <p><strong>Daniel Schulz</strong></p> <p> <a href="mailto:danielfs0@hotmail.com"> <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;"> </a> <a href="https://www.linkedin.com/in/daniel-schulz-ab59a0150/ "> <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;"> </a> </p> </div> <div style="text-align: center;"> <img src="painel/assets/vital.png" alt="Foto do Integrante 2" style="border-radius: 50%; width: 100px;"> <p><strong>Elinilson Vital</strong></p> <p> <a href="mailto:vital@usp.br"> <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;"> </a> <a href="https://www.linkedin.com/in/elinilson-vital-437b81/ "> <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;"> </a> </p> </div> <div style="text-align: center;"> <img src="painel/assets/leonardo.png" alt="Foto do Integrante 3" style="border-radius: 50%; width: 100px;"> <p><strong>Leonardo Gomes</strong></p> <p> <a href="mailto:leonardogomes@ime.usp.br"> <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;"> </a> <a href="https://www.linkedin.com/in/leosilvagomes/"> <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;"> </a> </p> </div> <div style="text-align: center;"> <img src="painel/assets/lucas.png" alt="Foto do Integrante 4" style="border-radius: 50%; width: 100px;"> <p><strong>Lucas Macedo</strong></p> <p> <a href="mailto:lucnunmacedo@usp.br "> <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;"> </a> <a href="https://www.linkedin.com/in/lucnun/"> <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;"> </a> </p> </div> <div style="text-align: center;"> <img src="painel/assets/mariana.png" alt="Foto do Integrante 5" style="border-radius: 50%; width: 100px;"> <p><strong>Mariana Cruvinel</strong></p> <p> <a href="mailto:mariana.valerio2@hotmail.com"> <img src="painel/assets/email.png" alt="Email" style="width: 24px; margin-right: 10px;"> </a> <a href="https://www.linkedin.com/in/mariana-cruvinel/"> <img src="painel/assets/linkedin.png" alt="LinkedIn" style="width: 24px;"> </a> </p> </div> </div>
 
 
 ## Estrutura de diretórios
