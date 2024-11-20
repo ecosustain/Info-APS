@@ -70,11 +70,13 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 Para suporte ou dúvidas, entre em contato conosco:
 
-| ![Daniel Schulz](painel/assets/daniel.png) | ![Elinilson Vital](painel/assets/vital.png) | ![Leonardo Gomes](painel/assets/leonardo.png) | ![Lucas Macedo](painel/assets/lucas.png) | ![Mariana Cruvinel](painel/assets/mariana.png) |
+| <img src="painel/assets/daniel.png" width="100" height="100"> | <img src="painel/assets/vital.png" width="100" height="100"> | <img src="painel/assets/leonardo.png" width="100" height="100"> | <img src="painel/assets/lucas.png" width="100" height="100"> | <img src="painel/assets/mariana.png" width="100" height="100"> |
 |:------------------------------------------:|:-------------------------------------------:|:---------------------------------------------:|:-----------------------------------------:|:---------------------------------------------:|
 | **Daniel Schulz**                          | **Elinilson Vital**                         | **Leonardo Gomes**                            | **Lucas Macedo**                          | **Mariana Cruvinel**                          |
 | danielfs0@hotmail.com                      | vital@usp.br                                | leonardogomes@ime.usp.br                      | lucnunmacedo@usp.br                        | mariana.valerio2@hotmail.com                  |
 | [LinkedIn](https://www.linkedin.com/in/daniel-schulz-ab59a0150/) | [LinkedIn](https://www.linkedin.com/in/elinilson-vital-437b81/) | [LinkedIn](https://www.linkedin.com/in/leosilvagomes/) | [LinkedIn](https://www.linkedin.com/in/lucnun/) | [LinkedIn](https://www.linkedin.com/in/mariana-cruvinel/) |
+
+
 
 
 
