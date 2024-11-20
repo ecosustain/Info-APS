@@ -129,7 +129,7 @@ layout = html.Div(
                                                 ),
                                                 slash_column,
                                                 indicator_component(
-                                                    "% Gravidez Adequada",
+                                                    "Gravidez Adequada",
                                                     "indicador-gravidas-brasil",
                                                     "indicador-gravidas-estado",
                                                     "big-gravidas",

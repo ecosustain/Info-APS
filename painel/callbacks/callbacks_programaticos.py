@@ -58,7 +58,14 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
         global hist_gravidez
         hist_gravidez = store_nivel(hist_gravidez, df, None, nivel_geo, anos)
         values = get_values(hist_gravidez, ano, nivel_geo, "mean")
-        return values[0], values[1], total
+
+        if values[1]:
+            return f"{int(values[0]*100)} %", f"{int(values[1]*100)} %", f"{total} %"
+        
+        if values[0]:
+            return f"{int(values[0]*100)} %", "", f"{total} %"
+        
+        return "", "", f"{total} %"
 
     df = get_df_from_json(json)
     if populacao is not None:
@@ -99,8 +106,15 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
         values = get_values(hist_puericultura, ano, nivel_geo)
     else:
         return None, None, None
+    
+    if values[1]:
+        return values[0], values[1], total
+    
+    if values[0]:
+        return values[0], "", total
+    
+    return "", "", total
 
-    return values[0], values[1], total
 
 
 # Função auxiliar para identificar o ano selecionado

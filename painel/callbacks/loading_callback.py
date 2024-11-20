@@ -3,7 +3,7 @@
 import time
 
 from callbacks.utils.utils import get_type
-from dash import Input, Output, no_update
+from dash import Input, Output, State, no_update
 
 
 def callback(app):
@@ -41,4 +41,3 @@ def callback(app):
         }
 
         return style_loading[tipo]
-    

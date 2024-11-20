@@ -166,8 +166,11 @@ def get_values(hist, ano, nivel, calculo="sum"):
     if nivel == "brasil":
         return [None, None]
     values = []
-    for nivel in hist.keys():
-        df = hist[nivel]
+
+    for nivel_hist in hist.keys():
+        if nivel == nivel_hist:
+            continue
+        df = hist[nivel_hist]
         if calculo == "sum":
             values.append(round(df[df["ano"] == ano]["valor"].sum()))
         elif calculo == "mean":
@@ -178,6 +181,9 @@ def get_values(hist, ano, nivel, calculo="sum"):
                     2,
                 )
             )
+            
+    if not values:
+        return [None, None]
     if nivel == "estado":
         return [values[0], None]
     return values
