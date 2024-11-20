@@ -1,6 +1,6 @@
 """Extração dos relatórios de produção do SISAB."""
 
-import configparser
+import os
 from datetime import datetime
 
 from extrair.extracao import (
@@ -24,19 +24,9 @@ xpaths = carregar_xpaths()
 LINK = xpaths["producao"]["link"]
 
 
-def carregar_configuracoes():
-    """Carrega as configurações do arquivo config.ini"""
-    # Carregar o arquivo de configuração
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    # Diretórios de destino e download
-    transf_dir = config["Paths"]["transformacao_dir"]
-    downl_dir = config["Paths"]["download_dir"]
-    return transf_dir, downl_dir
-
-
 # Carregar as configurações
-transformacao_dir, download_dir = carregar_configuracoes()
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+download_dir = os.getenv("DOWNLOAD_DIR", "data/download")
 
 # Gerar o nome do arquivo esperado dinamicamente
 today = datetime.today().strftime("%Y-%m-%d")
@@ -87,31 +77,3 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, num_meses=1000):
     logger.info("Script Finalizado")
     driver.quit()
 
-
-# Lista de produções a serem extraídas - Incluir aqui as produções que deseja extrair
-lista = [
-    "producao_profissionais_individual",
-    "producao_conduta",
-    "producao_condicao",
-    "producao_tipo",
-]
-"""
-"producao_conduta",
-    "producao_condicao",
-    "producao_tipo",
-"""
-
-if __name__ == "__main__":
-    for producao in lista:
-        logger.info(f" -- Processando a produção {producao}  -- ")
-        executar_downloads_mes(
-            xpaths["producao"][
-                "municipio"
-            ],  # Acessa o XPath da linha (Município)
-            xpaths[producao]["coluna"],  # Acessa o XPath da coluna
-            xpaths[producao]["checkbox"],  # Acessa o XPath do checkbox
-            producao,
-            1000,
-        )
-        transf_producao.main()
-    logger.info("Script Finalizado")

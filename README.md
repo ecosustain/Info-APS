@@ -34,7 +34,7 @@ Para executar o projeto, siga os passos abaixo:
 
 3. Construa o container do projeto:
     ```sh
-    docker-compose build . 
+    docker-compose build
     ```
 
 4. Execute o container do projeto:

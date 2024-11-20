@@ -1,6 +1,7 @@
 """Extração dos relatórios de grávidas do SISAB."""
 
 import configparser
+import os
 from datetime import datetime
 
 from extrair.extracao import (
@@ -22,20 +23,9 @@ xpaths = carregar_xpaths()
 LINK = xpaths["gravidas"]["link"]
 FILENAME = xpaths["gravidas"]["nome_arq"]
 
-
-def carregar_configuracoes():
-    """Carrega as configurações do arquivo config.ini"""
-    # Carregar o arquivo de configuração
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    # Diretórios de destino e download
-    transf_dir = config["Paths"]["transformacao_dir"]
-    down_dir = config["Paths"]["download_dir"]
-    return transf_dir, down_dir
-
-
 # Carregar as configurações
-transformacao_dir, download_dir = carregar_configuracoes()
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+download_dir = os.getenv("DOWNLOAD_DIR", "data/download")
 
 # Gerar o nome do arquivo esperado dinamicamente
 today = datetime.today().strftime("%Y-%m-%d")

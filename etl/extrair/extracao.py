@@ -15,7 +15,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-
 def get_logger(nome_arq):
     """Cria e retorna o logger."""
     # Configura o logger
@@ -36,23 +35,13 @@ def carregar_xpaths():
     return xpaths_temp
 
 
-def carregar_configuracoes():
-    """Carrega as configurações do arquivo config.ini"""
-    # Carregar o arquivo de configuração
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    # Diretórios de destino e download
-    transf_dir = config["Paths"]["transformacao_dir"]
-    global down_dir
-    down_dir = os.getenv("DOWNLOAD_DIR", config["Paths"]["download_dir"])
-    return transf_dir, down_dir
-
+# Carregar as configurações
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+download_dir = os.getenv("DOWNLOAD_DIR", "data/download")
 
 # Configurar o logger
 logger = get_logger("producao.log")
 
-# Carregar as configurações
-transformacao_dir, download_dir = carregar_configuracoes()
 xpaths = carregar_xpaths()
 
 # Gerar o nome do arquivo esperado dinamicamente
@@ -75,12 +64,10 @@ def configurar_driver():
             "download.directory_upgrade": True,  # Atualiza o diretório automaticamente
             "safebrowsing.enabled": True,  # Habilita o Safe Browsing
             "profile.default_content_setting_values.automatic_downloads": 1,  # Permite múltiplos downloads
-            "download.default_directory":  down_dir,  # Diretório de download
+            "download.default_directory": download_dir,  # Diretório de download
         },
     )
-    driver = webdriver.Chrome(
-        service=service, options=options
-    )
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 

@@ -9,8 +9,8 @@ from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_nao_programaticos import register_callbacks_nao_programaticos
 from callbacks.callbacks_programaticos import register_callbacks_programaticos
 from callbacks.callbacks_visita_domiciliar import register_callbacks_visita
-from components.header import Header
 from components.footer import Footer
+from components.header import Header
 from components.sidebar_structure import SideBar
 from dash import dcc, html
 

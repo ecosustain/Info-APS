@@ -1,7 +1,9 @@
 # Use a imagem oficial do Python como base
 FROM python:3.9-slim
 
+# Defina as variáveis de ambiente
 ENV DOWNLOAD_DIR='/etl/data/download'
+ENV TRANSFORMACAO_DIR='/etl/data/transformacao'
 
 # Instale as dependências do SO
 RUN apt-get update && apt-get install -y \
@@ -81,7 +83,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN touch /var/log/cron.log
 
 # Adicionar a tarefa cron ao crontab
-RUN echo "0 0 * * 0 [ $(date +\%d) -le 07 ] && python /app/main.py >> /var/log/cron.log 2>&1" >> /etc/crontab
+RUN echo "0 0 15 * * python /etl/main.py >> /var/log/cron.log 2>&1" >> /etc/crontab
 
 # Iniciar o cron e o script Python
 CMD cron && tail -f /var/log/cron.log
