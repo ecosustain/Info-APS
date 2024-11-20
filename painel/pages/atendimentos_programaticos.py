@@ -90,6 +90,7 @@ layout = html.Div(
                                                     "indicador-hipertensao-estado",
                                                     "big-hipertensao",
                                                     None,
+                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -98,6 +99,7 @@ layout = html.Div(
                                                     "indicador-diabetes-estado",
                                                     "big-diabetes",
                                                     None,
+                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -106,6 +108,7 @@ layout = html.Div(
                                                     "indicador-sexual-estado",
                                                     "big-sexual",
                                                     None,
+                                                    ""
                                                 ),
                                             ],
                                             className="mb-3",
@@ -118,6 +121,7 @@ layout = html.Div(
                                                     "indicador-mental-estado",
                                                     "big-mental",
                                                     None,
+                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -126,6 +130,7 @@ layout = html.Div(
                                                     "indicador-puericultura-estado",
                                                     "big-puericultura",
                                                     None,
+                                                    ""
                                                 ),
                                                 slash_column,
                                                 indicator_component(
@@ -134,6 +139,7 @@ layout = html.Div(
                                                     "indicador-gravidas-estado",
                                                     "big-gravidas",
                                                     None,
+                                                    ""
                                                 ),
                                             ],
                                             className="mb-3",

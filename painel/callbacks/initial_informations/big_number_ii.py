@@ -46,11 +46,12 @@ def callback(app):
         [
             Input("store-data-enc", "data"),
             Input("store-data", "data"),
+            Input("big-encaminhamentos", "children"),
             *[Input(f"btn-ano-{ano}", "n_clicks") for ano in anos],
         ],
         data_states,
     )
-    def update_encaminhamentos_big_numbers(data_enc, data_atend, *args):
+    def update_encaminhamentos_big_numbers(data_enc, data_atend, children, *args):
         """Função para atualizar os big numbers de encaminhamentos"""
         ano = get_selected_year(dash.callback_context)
 
@@ -66,7 +67,7 @@ def callback(app):
 
         big_numbers = [round((total_enc_ano / total_atend_ano) * 100, 2)]
 
-        return big_numbers
+        return f"{str(big_numbers[0])} {children}"
 
     # Callback para atualizar os números grandes de visitas domiciliares
     @app.callback(
