@@ -7,7 +7,8 @@ clean:
 	find $(SRC_DIR) -type d -name "__pycache__" -delete 
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	rm -rf .mypy_cache
-	rm -rf .pytest_cache
+	find $(SRC_DIR) -type d -name "*.pytest_cache" -exec rm -rf {} +
+	find $(SRC_DIR) -type f -name "*.log" -delete 
 
 # Formatar código usando black
 format:

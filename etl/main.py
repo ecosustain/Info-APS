@@ -22,7 +22,7 @@ lista = [
 
 if __name__ == "__main__":
     # Número de meses de download
-    N_MONTHS = 1000
+    N_MONTHS = 3
     logger.info(" -- Iniciando a extracao Cadastros  -- ")
     extracao_cadastros.download_cadastro(N_MONTHS)
     transformacao.main("cadastro")

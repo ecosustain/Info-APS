@@ -13,7 +13,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+
 
 
 def get_logger(nome_arq):
@@ -43,7 +43,8 @@ def carregar_configuracoes():
     config.read("config.ini")
     # Diretórios de destino e download
     transf_dir = config["Paths"]["transformacao_dir"]
-    down_dir = config["Paths"]["download_dir"]
+    global down_dir
+    down_dir = os.getenv("DOWNLOAD_DIR", config["Paths"]["download_dir"])
     return transf_dir, down_dir
 
 
@@ -60,7 +61,9 @@ PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 
 def configurar_driver():
     """Configura e retorna o driver do Chrome."""
+    # get donwload_env
     options = Options()
+    service = Service("/usr/local/bin/chromedriver")
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -72,10 +75,11 @@ def configurar_driver():
             "download.directory_upgrade": True,  # Atualiza o diretório automaticamente
             "safebrowsing.enabled": True,  # Habilita o Safe Browsing
             "profile.default_content_setting_values.automatic_downloads": 1,  # Permite múltiplos downloads
+            "download.default_directory":  down_dir,  # Diretório de download
         },
     )
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
+        service=service, options=options
     )
     return driver
 

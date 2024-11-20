@@ -121,7 +121,7 @@ def concat_final_csv(name, diretorio="."):
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
-    df = df.applymap(remove_trailing_dot_zero)
+    df = df.map(remove_trailing_dot_zero)
     # Remover ponto dos anos e transformar em inteiro
     df["Ano"] = df["Ano"].str.replace(".", "").astype(int)
 
