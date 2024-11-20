@@ -70,7 +70,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 Para suporte ou dúvidas, entre em contato conosco:
 
-| <img src="painel/assets/daniel.png" width="100" height="100"> | <img src="painel/assets/vital.png" width="100" height="100"> | <img src="painel/assets/leonardo.png" width="100" height="100"> | <img src="painel/assets/lucas.png" width="100" height="100"> | <img src="painel/assets/mariana.png" width="100" height="100"> |
+| <div style="text-align: center;"><img src="painel/assets/daniel.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/vital.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/leonardo.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/lucas.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/mariana.png" width="100" height="100"></div> |
 |:------------------------------------------:|:-------------------------------------------:|:---------------------------------------------:|:-----------------------------------------:|:---------------------------------------------:|
 | **Daniel Schulz**                          | **Elinilson Vital**                         | **Leonardo Gomes**                            | **Lucas Macedo**                          | **Mariana Cruvinel**                          |
 | danielfs0@hotmail.com                      | vital@usp.br                                | leonardogomes@ime.usp.br                      | lucnunmacedo@usp.br                        | mariana.valerio2@hotmail.com                  |
