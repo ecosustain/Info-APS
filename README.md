@@ -1,9 +1,9 @@
 # Info-APS
-Informações de produção da atenção primária brasileira, utilizando os dados disponibilizados pelo governo brasileiro, no sistema de informação em saúde para a atenção básica (SISAB)
+Informações de produção da atenção primária brasileira, utilizando os dados disponibilizados pelo governo brasileiro, no sistema de informação em saúde para a atenção básica (SISAB).
 
 ## Introdução
 
-Este projeto tem como objetivo disponibilizar informações sobre a atenção básica na saúde pública no Brasil de forma clara e acessível, promovendo a transparência e a democratização dos dados. Utilizamos ferramentas de análise de dados e visualização para criar dashboards interativos e relatórios analíticos que permitem a compreensão dos dados e a extração de insights valiosos.
+Este projeto tem como objetivo disponibilizar informações sobre a atenção básica na saúde pública no Brasil de forma clara e acessível, promovendo a transparência e a democratização dos dados. Utilizamos ferramentas de análise de dados e visualização para criar dashboards interativos que permitem a melhor compreensão dos dados.
 
 
 ## Metodologia
