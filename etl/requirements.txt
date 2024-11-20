@@ -1,0 +1,4 @@
+pandas==2.2.3
+requests
+pyyaml
+selenium==4.2.0

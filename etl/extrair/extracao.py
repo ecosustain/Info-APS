@@ -13,7 +13,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
 
 
 def get_logger(nome_arq):
@@ -36,22 +35,13 @@ def carregar_xpaths():
     return xpaths_temp
 
 
-def carregar_configuracoes():
-    """Carrega as configurações do arquivo config.ini"""
-    # Carregar o arquivo de configuração
-    config = configparser.ConfigParser()
-    config.read("config.ini")
-    # Diretórios de destino e download
-    transf_dir = config["Paths"]["transformacao_dir"]
-    down_dir = config["Paths"]["download_dir"]
-    return transf_dir, down_dir
-
+# Carregar as configurações
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+download_dir = os.getenv("DOWNLOAD_DIR", "data/download")
 
 # Configurar o logger
 logger = get_logger("producao.log")
 
-# Carregar as configurações
-transformacao_dir, download_dir = carregar_configuracoes()
 xpaths = carregar_xpaths()
 
 # Gerar o nome do arquivo esperado dinamicamente
@@ -60,7 +50,9 @@ PRODUCAO_FILENAME = "RelatorioSaudeProducao.csv"
 
 def configurar_driver():
     """Configura e retorna o driver do Chrome."""
+    # get donwload_env
     options = Options()
+    service = Service("/usr/local/bin/chromedriver")
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -72,11 +64,10 @@ def configurar_driver():
             "download.directory_upgrade": True,  # Atualiza o diretório automaticamente
             "safebrowsing.enabled": True,  # Habilita o Safe Browsing
             "profile.default_content_setting_values.automatic_downloads": 1,  # Permite múltiplos downloads
+            "download.default_directory": download_dir,  # Diretório de download
         },
     )
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
-    )
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 

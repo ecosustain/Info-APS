@@ -16,7 +16,7 @@ dash.register_page(
     path="/",
     title="Atendimentos Totais",
     name="Atendimentos Totais",
-    order=1
+    order=1,
 )
 
 layout = html.Div(

@@ -1,33 +1,29 @@
-# Saúde Básica em Dados
-Projeto destinado à estruturação e análise de dados abertos de saúde pública do site sisab.saude.gov.br. 
+# Info-APS
+Informações de produção da atenção primária brasileira, utilizando os dados disponibilizados pelo governo brasileiro, no sistema de informação em saúde para a atenção básica (SISAB).
 
-## Objetivo
-O objetivo principal do projeto é disponibilizar informações sobre a saúde pública no Brasil de forma clara e acessível, promovendo a transparência e a democratização dos dados. Para isso, utilizamos ferramentas de análise de dados e visualização para criar dashboards interativos e relatórios analíticos que permitam a compreensão dos dados e a extração de insights valiosos.
+## Introdução
+
+Este projeto tem como objetivo disponibilizar informações sobre a atenção básica na saúde pública no Brasil de forma clara e acessível, promovendo a transparência e a democratização dos dados. Utilizamos ferramentas de análise de dados e visualização para criar dashboards interativos que permitem a melhor compreensão dos dados.
+
 
 ## Metodologia
-Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares: coleta, análise e visualização de dados. A coleta de dados é realizada a partir de fontes abertas disponíveis no site sisab.saude.gov.br, que disponibiliza informações sobre diversos indicadores de saúde pública. Em seguida, realizamos a análise dos dados, identificando padrões, tendências e relações entre as variáveis. Por fim, utilizamos ferramentas de visualização de dados para criar dashboards interativos e relatórios analíticos que permitam a compreensão dos dados e a extração de insights valiosos.
+Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares: coleta, análise e visualização de dados.
+
+1. **Coleta de Dados**: Realizada a partir de fontes abertas disponíveis no site [SISAB](https://sisab.saude.gov.br/), que fornece informações sobre os atendimentos de atenção básica.
+2. **Análise de Dados**: Comparação dos valores entre diferentes níveis geográficos (nacional, estadual e municipal) e ao longo de trimestres e anos.
+3. **Visualização de Dados**: Utilização de ferramentas de visualização de dados para criar dashboards interativos e visualizações personalizadas.
+
 
 ## Pré-requisitos
 Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados em seu sistema:
 
-- **Make**: Ferramenta de automação de compilação. Você pode instalar o `make` usando o gerenciador de pacotes do seu sistema operacional.
-  - **Ubuntu/Debian**:
-    ```sh
-    sudo apt-get install make
-    ```
-  - **Fedora**:
-    ```sh
-    sudo dnf install make
-    ```
-  - **macOS**:
-    ```sh
-    brew install make
-    ```
-
 - **Docker**: Plataforma para desenvolvimento, envio e execução de aplicações em containers. Você pode instalar o `Docker` seguindo as instruções no site oficial: [Docker Installation](https://docs.docker.com/get-docker/).
 
-## Execução
-Para executar o projeto, siga os passos abaixo:
+- **Docker Compose**: Ferramenta para definir e executar aplicativos Docker multi-container. Você pode instalar o `Docker Compose` seguindo as instruções no site oficial: [Docker Compose Installation](https://docs.docker.com/compose/install/).
+
+## Instalação
+
+Para instalar o projeto, siga os passos abaixo:
 
 1. Clone o repositório:
    ```sh
@@ -41,18 +37,47 @@ Para executar o projeto, siga os passos abaixo:
 
 3. Construa o container do projeto:
     ```sh
-    make build
+    docker-compose build
     ```
 
-4. Execute o container do projeto:
+## Execução
+
+1. Execute o container do projeto:
     ```sh
-    make run
+    docker-compose up
     ```
 
-5. Acesse o painel do projeto no navegador:
-    ```
-    http://localhost:8050
-    ```
+2. **Acesse o link do painel no navegador:**
+
+    👉 [**Link do Painel**](http://localhost:8000)
+    
+## Contribuição
+
+Contribuições são sempre bem-vindas! Se você deseja contribuir com o projeto, siga os passos abaixo:
+
+1. Faça um fork do projeto
+2. Crie uma nova branch (`git checkout -b feature/nova-feature`)
+3. Faça o commit das suas alterações (`git commit -am 'Adiciona nova feature'`)
+4. Faça o push para a branch (`git push origin feature/nova-feature`)
+5. Crie um novo Pull Request
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+
+## Contato
+
+Para suporte ou dúvidas, entre em contato conosco:
+
+| <div style="text-align: center;"><img src="painel/assets/daniel.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/vital.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/leonardo.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/lucas.png" width="100" height="100"></div> | <div style="text-align: center;"><img src="painel/assets/mariana.png" width="100" height="100"></div> |
+|:------------------------------------------:|:-------------------------------------------:|:---------------------------------------------:|:-----------------------------------------:|:---------------------------------------------:|
+| **Daniel Schulz**                          | **Elinilson Vital**                         | **Leonardo Gomes**                            | **Lucas Macedo**                          | **Mariana Cruvinel**                          |
+| danielfs0@hotmail.com                      | vital@usp.br                                | leonardogomes@ime.usp.br                      | lucnunmacedo@usp.br                        | mariana.valerio2@hotmail.com                  |
+| [LinkedIn](https://www.linkedin.com/in/daniel-schulz-ab59a0150/) | [LinkedIn](https://www.linkedin.com/in/elinilson-vital-437b81/) | [LinkedIn](https://www.linkedin.com/in/leosilvagomes/) | [LinkedIn](https://www.linkedin.com/in/lucnun/) | [LinkedIn](https://www.linkedin.com/in/mariana-cruvinel/) |
+
+
+
 
 
 ## Estrutura de diretórios
@@ -80,13 +105,3 @@ Para executar o projeto, siga os passos abaixo:
 ├── requirements.txt # Requisitos do projeto
 └── tests # Testes do projeto
 ```
-
-## Autores
- - Daniel Schulz
- - Elinilson Vital
- - Leonardo Gomes
- - Lucas Macedo
- - Mariana Cruvinel
-
-## Licença
-MIT License

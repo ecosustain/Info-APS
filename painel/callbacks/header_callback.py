@@ -5,6 +5,7 @@ from dash import Input, Output, no_update
 
 def callback(app):
     """Função para registrar os callbacks do header."""
+
     @app.callback(
         Output("header", "style"),
         Input("_pages_location", "pathname"),
@@ -13,9 +14,8 @@ def callback(app):
 
         if value == "/sobre_o_projeto":
             return {"display": "none"}
-        
-        return {"display": "block"}
 
+        return {"display": "block"}
 
     @app.callback(
         [

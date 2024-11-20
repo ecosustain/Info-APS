@@ -1,14 +1,22 @@
-version: '3.8'
-
 services:
   dashboard:
     build:
-      context: .
+      context: ./painel
     container_name: dashboard
     ports:
       - "8000:8050"
     networks:
       - app_network
+  etl:
+    build:
+      context: ./etl
+    container_name: etl
+    networks:
+      - app_network
+    volumes:
+      - shared_data:/shared_data
 networks:
   app_network:
     driver: bridge
+volumes:
+  shared_data:

@@ -12,7 +12,6 @@ producao_conduta:
   tipo_atendimento: 'Individual'
   grupo: 'Conduta'
 
-
 producao_aleitamento:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[1]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[1]/div/button'

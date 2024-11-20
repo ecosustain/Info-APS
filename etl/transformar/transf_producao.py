@@ -1,16 +1,13 @@
 """Módulos para criar a leitura dos dados armazenados em csv."""
 
-import configparser
 import os
 import re
+import shutil
 
 import pandas as pd
 
-# Carregar o arquivo de configuração
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-transformacao_dir = config["Paths"]["transformacao_dir"]
+# Carregar as configurações
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
 
 
 def process_csv(file_path):
@@ -121,7 +118,7 @@ def concat_final_csv(name, diretorio="."):
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
-    df = df.applymap(remove_trailing_dot_zero)
+    df = df.map(remove_trailing_dot_zero)
     # Remover ponto dos anos e transformar em inteiro
     df["Ano"] = df["Ano"].str.replace(".", "").astype(int)
 
@@ -157,10 +154,9 @@ def main():
     print("Removendo os arquivos temporários")
     if len(df) > 1000:
         remove_temp_files(transformacao_dir)
-        os.rename(
-            f"{nome_arq}.csv",
-            f"data/consolidado/{nome_arq}.csv",
-        )
+        # Copiar o arquivo final para o volume compartilhado
+        shutil.copy(f"{nome_arq}.csv", f"/shared_data/{nome_arq}.csv")
+        os.remove(f"{nome_arq}.csv")
         print("Transformação concluída")
     else:
         print("Erro na transformação")

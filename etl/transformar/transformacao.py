@@ -1,15 +1,12 @@
 """Módulo para transformação dos dados."""
 
-import configparser
 import os
+import shutil
 
 import pandas as pd
 
-# Carregar o arquivo de configuração
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-transformacao_dir = config["Paths"]["transformacao_dir"]
+# Carregar as configurações
+transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
 
 
 def process_csv(file_path, file_type="producao"):
@@ -160,10 +157,9 @@ def main(file_type="producao"):
     print("Removendo os arquivos temporários")
     if len(df) > 1000:
         remove_temp_files(transformacao_dir)
-        os.rename(
-            f"{nome_arq}.csv",
-            f"data/consolidado/{nome_arq}.csv",
-        )
+        # Copiar o arquivo final para o volume compartilhado
+        shutil.copy(f"{nome_arq}.csv", f"/shared_data/{nome_arq}.csv")
+        os.remove(f"{nome_arq}.csv")
         print("Transformação concluída")
     else:
         print("Erro na transformação")
