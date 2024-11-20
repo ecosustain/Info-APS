@@ -44,7 +44,7 @@ Para executar o projeto, siga os passos abaixo:
 
 5. **Acesse o link do painel no navegador:**
 
-    👉 [**Link do Painel**](http://localhost:8050)
+    👉 [**Link do Painel**](http://localhost:8000)
     
 
 
