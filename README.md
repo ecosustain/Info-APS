@@ -15,21 +15,9 @@ Para atingir nosso objetivo, utilizamos uma metodologia baseada em três pilares
 ## Pré-requisitos
 Antes de começar, certifique-se de ter os seguintes pré-requisitos instalados em seu sistema:
 
-- **Make**: Ferramenta de automação de compilação. Você pode instalar o `make` usando o gerenciador de pacotes do seu sistema operacional.
-  - **Ubuntu/Debian**:
-    ```sh
-    sudo apt-get install make
-    ```
-  - **Fedora**:
-    ```sh
-    sudo dnf install make
-    ```
-  - **macOS**:
-    ```sh
-    brew install make
-    ```
-
 - **Docker**: Plataforma para desenvolvimento, envio e execução de aplicações em containers. Você pode instalar o `Docker` seguindo as instruções no site oficial: [Docker Installation](https://docs.docker.com/get-docker/).
+
+- **Docker Compose**: Ferramenta para definir e executar aplicativos Docker multi-container. Você pode instalar o `Docker Compose` seguindo as instruções no site oficial: [Docker Compose Installation](https://docs.docker.com/compose/install/).
 
 ## Execução
 Para executar o projeto, siga os passos abaixo:
@@ -46,12 +34,12 @@ Para executar o projeto, siga os passos abaixo:
 
 3. Construa o container do projeto:
     ```sh
-    make build
+    docker-compose build . 
     ```
 
 4. Execute o container do projeto:
     ```sh
-    make run
+    docker-compose up
     ```
 
 5. **Acesse o link do painel no navegador:**
