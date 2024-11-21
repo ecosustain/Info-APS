@@ -16,7 +16,6 @@ def callback(app):
 
     @app.callback(
         Output("dropdown-regiao", "options"),
-        Output("loading-graphics", "display", allow_duplicate=True),
         Input("dropdown-estado", "value"),
         allow_duplicate=True,
         prevent_initial_call=True,
@@ -33,11 +32,10 @@ def callback(app):
             {"label": regiao, "value": regiao} for regiao in regioes.values()
         ]
 
-        return options, "show"
+        return options
 
     @app.callback(
         Output("dropdown-municipio", "options"),
-        Output("loading-graphics", "display", allow_duplicate=True),
         [
             Input("dropdown-estado", "value"),
             Input("dropdown-regiao", "value"),
@@ -57,14 +55,13 @@ def callback(app):
                 {"label": municipio, "value": municipio}
                 for municipio in municipios_regiao.values()
             ]
-        return options, "show"
+        return options
 
     # Callback para atualizar os dropdowns com base na seleção no mapa
     @app.callback(
         Output("dropdown-estado", "value"),
         Output("dropdown-regiao", "value"),
         Output("dropdown-municipio", "value"),
-        Output("loading-graphics", "display", allow_duplicate=True),
         [
             Input("mapa", "clickData"),
             Input("dropdown-estado", "value"),
@@ -82,16 +79,16 @@ def callback(app):
         input_id = ctx.triggered[0]["prop_id"].split(".")[0]
         if input_id == "dropdown-estado":
             if estado is None:
-                return None, None, None, "show"
+                return None, None, None
         if input_id == "dropdown-regiao":
             if regiao is None:
-                return estado, None, None, "show"
+                return estado, None, None
         if input_id == "dropdown-municipio":
             if municipio is None:
-                return estado, regiao, None, "show"
+                return estado, regiao, None
             if municipio is not None and regiao is None:
                 regiao = get_regiao_municipio(estado, municipio)
-                return estado, regiao, municipio, "show"
+                return estado, regiao, municipio
 
         if click_data is None:
             raise dash.exceptions.PreventUpdate
@@ -99,10 +96,10 @@ def callback(app):
         location = click_data["points"][0]["hovertext"]
 
         if estado is None and len(location) == 2:
-            return location, None, None, "show"
+            return location, None, None
         elif estado is not None and regiao is None:
-            return estado, location.upper(), None, "show"
+            return estado, location.upper(), None
         elif estado is not None and municipio is None:
-            return estado, regiao, location.upper(), "show"
+            return estado, regiao, location.upper()
         else:
             print("Erro no callback de atualização dos dropdowns")
