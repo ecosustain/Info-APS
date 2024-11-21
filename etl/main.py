@@ -1,5 +1,6 @@
 """Fluxo principal do ETL."""
 
+import os
 from extrair import (
     extracao_cadastros,
     extracao_codigos,
@@ -39,6 +40,15 @@ lista_extras = [
 ]
 
 
+def limpa_diretorios():
+    """Função para limpar os diretórios de downloads."""
+    down_dir = os.getenv("DOWNLOAD_DIR", "data/download")
+    transf_dir = os.getenv("TRANSFORM_DIR", "data/transformacao")
+    logger.info(" -- Limpando diretórios  -- ")
+    os.system(f"rm -rf {down_dir}/*")
+    os.system(f"rm -rf {transf_dir}/*")
+
+
 def loop_lista(lista, N_MONTHS):
     """Função para executar o loop da lista de arquivos."""
     for producao in lista:
@@ -58,6 +68,7 @@ def loop_lista(lista, N_MONTHS):
 if __name__ == "__main__":
     # Número de meses de download
     N_MONTHS = 3
+    limpa_diretorios()
     logger.info(" -- Iniciando a extracao Cadastros  -- ")
     extracao_cadastros.download_cadastro(N_MONTHS)
     transformacao.main("cadastro")

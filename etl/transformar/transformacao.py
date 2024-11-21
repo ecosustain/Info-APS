@@ -145,8 +145,10 @@ def main(file_type="producao"):
     print("Iniciando a transformação dos dados")
     # Listar os arquivos
     files = list_files(transformacao_dir)
+    # Pegar a posicao da ultima barra do primeiro arquivo
+    p = files[0].rfind("_")
     # Pega o nome do arquivo sem a data
-    nome_arq = files[0][:-13]
+    nome_arq = files[0][:p]
     print("Concatenando os arquivos")
     # Concatenar os arquivos
     concat_csv_files(files, file_type)

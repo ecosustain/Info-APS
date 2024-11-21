@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import pytest
 
-path = "../etl/data/consolidado/"
+path = "../shared_data/"
 # Lista de arquivos CSV a serem testados
 file_list = [
     f"{path}Cadastro.csv",
@@ -13,6 +13,21 @@ file_list = [
     f"{path}producao_conduta.csv",
     f"{path}producao_profissionais_individual.csv",
     f"{path}producao_tipo.csv",
+    f"{path}producao_procedimento.csv",
+    f"{path}producao_procedimentos_odontologicos.csv",
+    f"{path}producao_aleitamento.csv",
+    f"{path}producao_vacinacao.csv",
+    f"{path}producao_acoes.csv",
+    f"{path}producao_racionalidade.csv",
+    f"{path}producao_consulta_odontologica.csv",
+    f"{path}producao_vigilancia_bucal.csv",
+    f"{path}producao_conduta_odontologica.csv",
+    f"{path}producao_visita.csv",
+    f"{path}producao_desfecho_visita.csv",
+    f"{path}producao_imovel.csv",
+    f"{path}producao_profissionais_odontologico.csv",
+    f"{path}producao_profissionais_procedimentos.csv",
+    f"{path}producao_profissionais_visita.csv",
 ]
 
 
