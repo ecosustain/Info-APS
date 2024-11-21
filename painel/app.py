@@ -89,7 +89,7 @@ app.layout = dbc.Container(
                     color="#632956",
                     type="circle",
                 ),
-                Footer("footer"),
+                Footer(),
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}
                 ),
@@ -119,7 +119,6 @@ app.layout = dbc.Container(
                         "margin": "20px",
                     },
                 ),
-                Footer("footer-mobile"),
             ],
             style={
                 "background-color": "#343A40",

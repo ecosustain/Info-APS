@@ -6,15 +6,6 @@
   background-color: #343A40;
 }
 
-#footer-mobile {
-  padding: 25px;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  position: absolute;
-  background-color: #343A40;
-}
-
 .footer-institution-box {
   width: 100%;
   display: flex;
