@@ -1,6 +1,6 @@
 """Função para registrar os callbacks de hover nos gráficos"""
 
-from dash import Input, Output, State, clientside_callback
+from dash import Input, Output, State, clientside_callback, set_props
 
 
 def callback(app):

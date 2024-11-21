@@ -5,9 +5,9 @@ from constants import time_division
 from dash import dcc, html
 
 
-def Footer():
+def Footer(id):
     return html.Div(
-        id="footer",
+        id=id,
         children=[
             html.Div(
                 [

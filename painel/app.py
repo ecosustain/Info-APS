@@ -4,6 +4,7 @@ import os
 
 import dash
 import dash_bootstrap_components as dbc
+import dash_loading_spinners as dls
 from callbacks.callbacks import register_callbacks
 from callbacks.callbacks_atendimentos_odonto import register_callbacks_odonto
 from callbacks.callbacks_nao_programaticos import register_callbacks_nao_programaticos
@@ -28,51 +29,67 @@ app = dash.Dash(
 app.layout = dbc.Container(
     [
         dcc.Location(id="url", refresh=False),
-        # dbc.Col(html.Div(id="page-content"), width=10),
         # Add dropdown of states here
         html.Div(
             id="platform",
             children=[
                 SideBar(),
-                html.Div(
-                    id="content",
-                    children=[
-                        Header(),
-                        dcc.Store(id="store-populacao-api"),
-                        dcc.Store(id="store-data"),
-                        dcc.Store(id="store-data-enc"),
-                        dcc.Store(id="store-data-visita"),
-                        dcc.Store(id="store-data-odonto"),
-                        dcc.Store(id="store-populacao"),
-                        dcc.Store(id="nivel-geo"),
-                        # Programático
-                        dcc.Store(id="store-data-hipertensao"),
-                        dcc.Store(id="store-data-diabetes"),
-                        dcc.Store(id="store-data-saude-sexual"),
-                        dcc.Store(id="store-data-saude-mental"),
-                        dcc.Store(id="store-data-puericultura"),
-                        dcc.Store(id="store-data-gravidez-adequado"),
-                        dcc.Store(id="store-data-gravidez-inadequado"),
-                        # Não Programático
-                        dcc.Store(id="store-data-asma-dpoc"),
-                        dcc.Store(id="store-data-dengue"),
-                        dcc.Store(id="store-data-tuberculose"),
-                        dcc.Store(id="store-data-dst"),
-                        dcc.Store(id="store-data-hanseniase"),
-                        dcc.Store(id="store-data-cefaleia"),
-                        dcc.Store(id="store-data-tosse"),
-                        dcc.Store(id="store-data-febres"),
-                        # Menu em abas
-                        dash.page_container,
-                        Footer(),
+                Header(),
+                dcc.Loading(
+                    [
+                        html.Div(
+                            id="content",
+                            children=[
+                                dcc.Store(id="store-populacao-api"),
+                                dcc.Store(id="store-data"),
+                                dcc.Store(id="store-data-enc"),
+                                dcc.Store(id="store-data-visita"),
+                                dcc.Store(id="store-data-odonto"),
+                                dcc.Store(id="store-populacao"),
+                                dcc.Store(id="nivel-geo"),
+                                # Programático
+                                dcc.Store(id="store-data-hipertensao"),
+                                dcc.Store(id="store-data-diabetes"),
+                                dcc.Store(id="store-data-saude-sexual"),
+                                dcc.Store(id="store-data-saude-mental"),
+                                dcc.Store(id="store-data-puericultura"),
+                                dcc.Store(id="store-data-gravidez-adequado"),
+                                dcc.Store(id="store-data-gravidez-inadequado"),
+                                # Não Programático
+                                dcc.Store(id="store-data-asma-dpoc"),
+                                dcc.Store(id="store-data-dengue"),
+                                dcc.Store(id="store-data-tuberculose"),
+                                dcc.Store(id="store-data-dst"),
+                                dcc.Store(id="store-data-hanseniase"),
+                                dcc.Store(id="store-data-cefaleia"),
+                                dcc.Store(id="store-data-tosse"),
+                                dcc.Store(id="store-data-febres"),
+                                # Menu em abas
+                                dash.page_container,
+                            ],
+                            style={
+                                "left": "0",
+                                "padding-left": "220px",
+                                "background-color": "#F8F9FA",
+                                "min-height": "100vh",
+                            },
+                        ),
                     ],
-                    style={
-                        "left": "0",
-                        "padding-left": "220px",
-                        "background-color": "#F8F9FA",
-                        "min-height": "100vh",
+                    id="loading-graphics",
+                    overlay_style={
+                        "visibility": "visible",
+                        "filter": "blur(2px)",
                     },
+                    style={
+                        "height": "100%",
+                        "position": "fixed",
+                        "display": "flex",
+                        "align-items": "center",
+                    },
+                    color="#632956",
+                    type="circle",
                 ),
+                Footer("footer"),
                 html.Div(
                     id="dummy-div", children=[], style={"display": "none"}
                 ),
@@ -101,7 +118,8 @@ app.layout = dbc.Container(
                         "align-items": "center",
                         "margin": "20px",
                     },
-                )
+                ),
+                Footer("footer-mobile"),
             ],
             style={
                 "background-color": "#343A40",

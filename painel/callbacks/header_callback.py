@@ -6,9 +6,10 @@ from dash import Input, Output, clientside_callback
 def callback(app):
     """Função para registrar os callbacks do header."""
 
-    clientside_callback(
+    app.clientside_callback(
         """
         function(value) {
+            console.log(value)
             if (value == "/sobre_o_projeto") {
                 return {"display": "none"}
             }

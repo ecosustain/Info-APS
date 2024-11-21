@@ -2,7 +2,7 @@
 
 import time
 
-from dash import Input, Output, no_update, clientside_callback
+from dash import Input, Output, State, clientside_callback
 
 
 def callback(app):
@@ -12,11 +12,13 @@ def callback(app):
         """
         function(value) {
             if (value == "show") {
-                sleep(3)
+                setTimeout(3000)
                 return "hide"
             }
 
-            return "auto"
+            if (value == "auto") return "show"
+            
+            return null
         }
         """,
         Output("loading-graphics", "display"),

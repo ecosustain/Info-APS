@@ -163,3 +163,22 @@ label {
         height: 100vh;
     }
 }
+
+
+#loading {
+    z-index: 90;
+
+    position: fixed;
+    width: calc(100% - 220px) !important;
+
+    visibility: hidden !important;
+    backdrop-filter: blur(2px);
+}
+
+/* body:has(#_pages_content[data-dash-is-loading="true"]) #loading {
+    visibility: visible !important;
+} */
+
+body:has(._dash-loading-callback) #loading {
+    visibility: visible !important;
+}

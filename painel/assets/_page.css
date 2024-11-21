@@ -160,5 +160,8 @@
 }
 
 #loading-graphics {
+  z-index: 90 !important;
+  width: calc(100% - 220px) !important;
+  margin-left: 220px;
   align-items: flex-start !important;
 }
