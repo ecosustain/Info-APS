@@ -113,7 +113,13 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
     else:
         values = [None, None]
 
-    return values[0], values[1], total
+    if values[1]:
+        return values[0], values[1], total
+    
+    if values[0]:
+        return values[0], "", total
+    
+    return "", "", total
 
 
 def register_callbacks_nao_programaticos(app):

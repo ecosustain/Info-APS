@@ -167,8 +167,12 @@ def get_values(hist, ano, nivel, calculo="sum"):
         return [None, None]
     values = []
 
-    for nivel_hist in hist.keys():
+    niveis_mapped = hist.keys()
+
+    for nivel_hist in niveis_mapped:
         if nivel == nivel_hist:
+            continue
+        if nivel_hist != "brasil" and nivel_hist != "estado":
             continue
         df = hist[nivel_hist]
         if calculo == "sum":
@@ -181,9 +185,16 @@ def get_values(hist, ano, nivel, calculo="sum"):
                     2,
                 )
             )
-            
+
+    print("values11--------------------")
+    print(values)
+
     if not values:
         return [None, None]
-    if nivel == "estado":
-        return [values[0], None]
+    if len(values) == 1:
+        if "brasil" in niveis_mapped:
+            return [values[0], None]
+        if "estado" in niveis_mapped:
+            return [None, values[0]]
+
     return values

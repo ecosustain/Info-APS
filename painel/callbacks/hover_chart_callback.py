@@ -1,6 +1,6 @@
 """Função para registrar os callbacks de hover nos gráficos"""
 
-from dash import Input, Output, State
+from dash import Input, Output, State, clientside_callback
 
 
 def callback(app):
@@ -8,30 +8,27 @@ def callback(app):
 
     def hover_event_template(id_chart):
         """Função para criar o callback de hover nos gráficos"""
+        
+        clientside_callback(
+            """
+            function(hoverData, currentFigure) {
+                var figureChart = JSON.parse(JSON.stringify(currentFigure));
+                if (!hoverData || !hoverData.points || hoverData.points.length === 0) {
+                    figureChart.data[0].selectedpoints = null;
+                } else {
+                    const hoverPoint = hoverData.points[0].pointIndex;
+                    figureChart.data[0].selectedpoints = [hoverPoint];
+                }
 
-        @app.callback(
+                return figureChart
+            }
+            """,
             Output(id_chart, "figure", allow_duplicate=True),
-            Output("loading-graphics", "display", allow_duplicate=True),
             Input(id_chart, "hoverData"),
             [State(id_chart, "figure")],
             allow_duplicate=True,
             prevent_initial_call=True,
         )
-        def callback(data, current_figure):
-            traces = current_figure["data"]
-
-            if data:
-                hover_point = data["points"][0]["pointIndex"]
-
-                for idx, trace in enumerate(traces):
-                    trace.update({"selectedpoints": [hover_point]})
-                    current_figure["data"][idx].update(trace)
-            else:
-                for idx, trace in enumerate(traces):
-                    trace.update({"selectedpoints": None})
-                    current_figure["data"][idx].update(trace)
-
-            return current_figure, "hide"
 
     hover_event_template("mapa")
     hover_event_template("chart_by_year")
