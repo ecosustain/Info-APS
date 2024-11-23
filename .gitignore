@@ -34,3 +34,6 @@ backend-mongo/uploads/*
 
 .coverage
 .pylintrc
+
+database/data/
+database/backup/
