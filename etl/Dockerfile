@@ -1,9 +1,12 @@
 # Use a imagem oficial do Python como base
-FROM python:3.9-slim
+FROM apache/airflow:2.7.1-python3.10
+
+# Usuário root
+USER root
 
 # Defina as variáveis de ambiente
-ENV DOWNLOAD_DIR='/etl/data/download'
-ENV TRANSFORMACAO_DIR='/etl/data/transformacao'
+ENV DOWNLOAD_DIR='/opt/airflow/etl/data/download'
+ENV TRANSFORMACAO_DIR='/opt/airflow/etl/data/transformacao'
 
 # Instale as dependências do SO
 RUN apt-get update && apt-get install -y \
@@ -70,8 +73,11 @@ RUN unzip chromedriver-linux64.zip
 # Mova o driver do Chrome para o diretório de binários
 RUN mv chromedriver-linux64/chromedriver /usr/local/bin/
 
+# Usuário airflow
+USER airflow
+
 # Defina o diretório de trabalho dentro do container
-WORKDIR /etl
+WORKDIR /opt/airflow
 
 # Copie o conteúdo da pasta atual para o diretório de trabalho no container
 COPY . .
@@ -79,11 +85,8 @@ COPY . .
 # Instale as dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Criar o arquivo de log do cron
-RUN touch /var/log/cron.log
+# Configura o script de entrada
+ENTRYPOINT ["/opt/airflow/entrypoint.sh"]
 
-# Adicionar a tarefa cron ao crontab
-RUN echo "0 0 15 * * python /etl/main.py >> /var/log/cron.log 2>&1" >> /etc/crontab
-
-# Iniciar o cron e o script Python
-CMD cron && tail -f /var/log/cron.log
+# Define o comando padrão como webserver
+CMD ["webserver"]
