@@ -1,6 +1,7 @@
 """Fluxo principal do ETL."""
 
 import os
+
 from extrair import (
     extracao_cadastros,
     extracao_codigos,

@@ -8,7 +8,7 @@ def callback(app):
 
     def hover_event_template(id_chart):
         """Função para criar o callback de hover nos gráficos"""
-        
+
         clientside_callback(
             """
             function(hoverData, currentFigure) {

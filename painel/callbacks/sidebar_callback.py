@@ -26,4 +26,3 @@ def callback(app):
 
     for page in dash.page_registry.values():
         sidebar_style(page["path"])
-

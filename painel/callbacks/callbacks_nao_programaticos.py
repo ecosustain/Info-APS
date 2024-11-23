@@ -115,10 +115,10 @@ def gera_big_numbers(tipo, json, populacao, nivel_geo, ano):
 
     if values[1]:
         return values[0], values[1], total
-    
+
     if values[0]:
         return values[0], "", total
-    
+
     return "", "", total
 
 

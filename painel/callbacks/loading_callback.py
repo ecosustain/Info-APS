@@ -7,7 +7,7 @@ from dash import Input, Output, State, clientside_callback
 
 def callback(app):
     """Função para registrar os callbacks do loading."""
-    
+
     clientside_callback(
         """
         function(value) {

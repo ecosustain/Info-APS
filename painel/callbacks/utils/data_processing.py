@@ -250,6 +250,7 @@ def get_cids_json_cefaleia(estado, regiao, municipio):
 
     return dor_cabeca
 
+
 def get_cids_json_tosse(estado, regiao, municipio):
     """Função para obter os jsons de cids Tosse"""
     tosse = get_collection(
@@ -257,6 +258,7 @@ def get_cids_json_tosse(estado, regiao, municipio):
     )
 
     return tosse
+
 
 def get_cids_json_febre(estado, regiao, municipio):
     """Função para obter os jsons de cids Febre"""

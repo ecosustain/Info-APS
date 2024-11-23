@@ -1,5 +1,6 @@
 """Módulo para transformação dos dados."""
 
+import json
 import os
 import shutil
 
@@ -116,6 +117,17 @@ def list_files(directory="."):
     return files
 
 
+def add_regioes(df):
+    """Função para adicionar as regiões ao DataFrame"""
+    # ler o json
+    with open("transformar/reg_mun_ibge.json", "r", encoding="utf-8") as file:
+        regioes = json.load(file)
+    regioes = {int(k): v for k, v in regioes.items()}
+    # criar a coluna regiao
+    df["region"] = df["Ibge"].map(regioes)
+    return df
+
+
 def concat_final_csv(name, diretorio="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
@@ -125,6 +137,8 @@ def concat_final_csv(name, diretorio="."):
         df = pd.concat([df, df_temp])
     # Remove duplicados
     df.drop_duplicates(inplace=True)
+    # Adicionar as regiões
+    df = add_regioes(df)
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df

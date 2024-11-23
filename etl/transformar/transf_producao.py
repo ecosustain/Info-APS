@@ -1,5 +1,6 @@
 """Módulos para criar a leitura dos dados armazenados em csv."""
 
+import json
 import os
 import re
 import shutil
@@ -109,6 +110,17 @@ def remove_trailing_dot_zero(value):
     return re.sub(r"\.0$", "", value)
 
 
+def add_regioes(df):
+    """Função para adicionar as regiões ao DataFrame"""
+    print("Adicionando as regiões")
+    # ler o json
+    with open("transformar/reg_mun_ibge.json", "r", encoding="utf-8") as file:
+        regioes = json.load(file)
+    # criar a coluna regiao
+    df["region"] = df["Ibge"].map(regioes)
+    return df
+
+
 def concat_final_csv(name, diretorio="."):
     """Função para concatenar os arquivos CSV"""
     # Inicializar um DataFrame vazio
@@ -121,7 +133,8 @@ def concat_final_csv(name, diretorio="."):
     df = df.map(remove_trailing_dot_zero)
     # Remover ponto dos anos e transformar em inteiro
     df["Ano"] = df["Ano"].str.replace(".", "").astype(int)
-
+    # Adicionar as regiões
+    df = add_regioes(df)
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df

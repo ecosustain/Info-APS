@@ -76,4 +76,3 @@ def executar_downloads_mes(linha, coluna, checkbox, nome_arq, num_meses=1000):
             driver = cria_driver(LINK)
     logger.info("Script Finalizado")
     driver.quit()
-
