@@ -1,22 +1,85 @@
+version: '3.8'
+
 services:
-  dashboard:
+  sisab_database:
     build:
-      context: ./painel
-    container_name: dashboard
+      context: ./database
+    container_name: sisab_database
+    image: mongo:latest
     ports:
-      - "8000:8050"
+      - '27027:27017'
+    volumes:
+      - ~/sisab/database/data:/data/db #pasta onde ficara os arquivos de dados do mongo: host_folder:docker_folder
+      - ~/sisab/database/backup:/backup # pasta onde sera descarregado o backup inicial
+    environment:
+      MONGO_INITDB_DATABASE: sisab_v2
     networks:
       - app_network
-  etl:
+
+  sisab_backend:
     build:
-      context: ./etl
-    container_name: etl
+      context: ./backend
+    container_name: sisab_backend
+    ports:
+      - '8010:8010'
+    networks:
+      - app_network
+    depends_on:
+      - sisab_database
+      - sisab_redis
+    environment:
+      API_SERVER: http://localhost:8010/api/v1
+      DATABASE_URL: mongodb://sisab_database:27017
+      DATABASE_NAME: sisab_v2
+      REDIS_URL: redis://sisab_redis:6380
+
+  sisab_dashboard:
+    build:
+      context: ./painel
+    container_name: sisab_dashboard
+    ports:
+      - '8020:8050'
+    networks:
+      - app_network
+    depends_on:
+      - sisab_backend
+    environment:
+      API_URL: http://sisab_backend:8010/api/v1
+
+  sisab_redis:
+    build:
+      context: ./redis
+    image: redis:latest
+    container_name: sisab_redis
+    ports:
+      - '6380:6379'
     networks:
       - app_network
     volumes:
-      - shared_data:/shared_data
+      - redis_data:/data
+
+  airflow:
+    build:
+      context: ./airflow
+    container_name: airflow
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__WEBSERVER__WORKERS=1
+    entrypoint: >
+      sh -c "airflow db init &&
+             airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+             airflow webserver & airflow scheduler"
+    networks:
+      - app_network
+
 networks:
   app_network:
     driver: bridge
+
 volumes:
-  shared_data:
+  redis_data:
