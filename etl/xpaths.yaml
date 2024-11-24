@@ -69,6 +69,7 @@ producao_profissionais_individual:
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
   tipo_atendimento: 'Individual'
   grupo: 'Profissional'
+  collection: 'Atendimentos Hospitalares'
 
 producao_profissionais_odontologico:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
@@ -110,6 +111,7 @@ cadastro:
   municipio: '//*[@id="selectLinha"]/option[4]'
   competencia: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[1]/div/div[3]/div/button'
   download: '//*[@id="j_idt44"]/div[1]/div/div/div[2]/div[2]/div/div/div/button'
+  collection: 'População'
 
 gravidas:
   link: 'https://sisab.saude.gov.br/paginas/acessoPublico/relatorio/indicadores/IndicadorPrenatal.xhtml'
