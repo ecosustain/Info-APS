@@ -13,6 +13,9 @@ if [[ "$1" == "webserver" ]]; then
         --lastname User \
         --role Admin \
         --email admin@example.com || true
+    echo "Banco de dados inicializado."
+    airflow scheduler &
+    echo "Scheduler iniciado."
 fi
 
 # Executa o comando especificado

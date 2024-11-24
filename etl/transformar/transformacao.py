@@ -7,7 +7,8 @@ import shutil
 import pandas as pd
 
 # Carregar as configurações
-transformacao_dir = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+TRANSF_DIR = os.getenv("TRANSFORMACAO_DIR", "data/transformacao")
+FINAL_DIR = os.getenv("FINAL_DIR", "data/consolidado")
 
 
 def process_csv(file_path, file_type="producao"):
@@ -158,7 +159,7 @@ def main(file_type="producao"):
     """Função principal"""
     print("Iniciando a transformação dos dados")
     # Listar os arquivos
-    files = list_files(transformacao_dir)
+    files = list_files(TRANSF_DIR)
     # Pegar a posicao da ultima barra do primeiro arquivo
     p = files[0].rfind("_")
     # Pega o nome do arquivo sem a data
@@ -172,9 +173,9 @@ def main(file_type="producao"):
     df = concat_final_csv(nome_arq)
     print("Removendo os arquivos temporários")
     if len(df) > 1000:
-        remove_temp_files(transformacao_dir)
+        remove_temp_files(TRANSF_DIR)
         # Copiar o arquivo final para o volume compartilhado
-        shutil.copy(f"{nome_arq}.csv", f"/shared_data/{nome_arq}.csv")
+        shutil.copy(f"{nome_arq}.csv", f"{FINAL_DIR}/{nome_arq}.csv")
         os.remove(f"{nome_arq}.csv")
         print("Transformação concluída")
     else:

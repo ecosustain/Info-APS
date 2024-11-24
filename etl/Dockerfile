@@ -5,8 +5,11 @@ FROM apache/airflow:2.7.1-python3.10
 USER root
 
 # Defina as variáveis de ambiente
-ENV DOWNLOAD_DIR='/opt/airflow/etl/data/download'
-ENV TRANSFORMACAO_DIR='/opt/airflow/etl/data/transformacao'
+ENV DOWNLOAD_DIR='/opt/airflow/data/download'
+ENV TRANSFORMACAO_DIR='/opt/airflow/data/transformacao'
+ENV FINAL_DIR='/opt/airflow/data/consolidado'
+ENV PYTHONPATH="${PYTHONPATH}:/opt/airflow"
+
 
 # Instale as dependências do SO
 RUN apt-get update && apt-get install -y \
@@ -51,6 +54,7 @@ RUN apt-get update && apt-get install -y \
     libgbm1 \
     libxkbcommon0 \
     libasound2 \
+    vim \
     --no-install-recommends
 
 # Adicionar a chave do repositório do Google Chrome
@@ -84,6 +88,12 @@ COPY . .
 
 # Instale as dependências
 RUN pip install --no-cache-dir -r requirements.txt
+
+USER root
+
+RUN chown -R airflow: /opt/airflow
+
+USER airflow
 
 # Configura o script de entrada
 ENTRYPOINT ["/opt/airflow/entrypoint.sh"]
