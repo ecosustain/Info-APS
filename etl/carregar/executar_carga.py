@@ -1,13 +1,34 @@
 import pymongo
 import pandas as pd
 import os
+import yaml
+import logging
 
-def executar_carga(tipo):
+with open("xpaths.yaml", "r") as file:
+    xpaths = yaml.safe_load(file)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("carga.log"), logging.StreamHandler()],
+)
+logger = logging.getLogger()
+
+# Dicionário para mapear os meses em português para números
+mes_map = {
+    "JAN": "01", "FEV": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
+    "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
+}
+
+# Dicionário inverso para mapear números para meses em português
+mes_map_inverso = {v: k for k, v in mes_map.items()}
+
+def executar_carga(producao):
     """Realiza a carga incremental ou completa no MongoDB."""
     # Conexão com o MongoDB
-    mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-    db_name = os.getenv("MONGO_DB", "etl_database")
-    collection_name = f"{tipo}_collection"
+    mongo_uri = os.getenv("MONGO_URI", "mongodb://sisab_database:27027")
+    db_name = os.getenv("MONGO_DB", "sisab_v2")
+    collection_name = xpaths[producao]["collection"]
 
     # Conecta ao banco e obtém a collection
     client = pymongo.MongoClient(mongo_uri)
@@ -15,11 +36,12 @@ def executar_carga(tipo):
     collection = db[collection_name]
 
     # Caminho do arquivo transformado
-    transform_dir = os.getenv("TRANSFORM_DIR", "data/transformacao")
-    csv_path = os.path.join(transform_dir, f"{tipo}.csv")
+    final_dir = os.getenv("FINAL_DIR", "data/consolidado")
+    nome_arq = xpaths[producao]["nome_arq"]
+    csv_path = os.path.join(final_dir, f"{nome_arq}.csv")
 
     if not os.path.exists(csv_path):
-        logger.error(f"Arquivo transformado não encontrado para o tipo: {tipo}")
+        logger.error(f"Arquivo transformado não encontrado para o tipo: {producao}")
         return
 
     # Lê o arquivo CSV transformado
@@ -37,17 +59,26 @@ def executar_carga(tipo):
     else:
         logger.info(f"Collection '{collection_name}' encontrada. Realizando carga incremental...")
         # Identifica a menor data no dataset
-        if "data" not in df.columns:
-            logger.error("Coluna 'data' não encontrada no dataset. Verifique o formato do arquivo.")
+        if "Ano" not in df.columns or "Mes" not in df.columns:
+            logger.error("Colunas 'Ano' ou 'Mes' não encontradas no dataset. Verifique o formato do arquivo.")
             return
 
-        df["data"] = pd.to_datetime(df["data"])  # Converte a coluna para datetime
-        min_date = df["data"].min()
+        # Converte a coluna 'mes' para números
+        df["mes_num"] = df["Mes"].map(mes_map)
 
-        logger.info(f"Menor data no dataset: {min_date}")
+        # Ordena o DataFrame por ano e mês
+        df = df.sort_values(by=["Ano", "mes_num"])
 
-        # Remove dados existentes no banco com data >= menor data do novo dataset
-        result = collection.delete_many({"data": {"$gte": min_date}})
+        # Identifica os últimos 3 meses no dataset
+        ultimos_3_meses = df.drop_duplicates(subset=["Ano", "mes_num"], keep="last").tail(3)
+        logger.info(f"Últimos 3 meses no dataset: {ultimos_3_meses[['Ano', 'Mes']].values.tolist()}")
+
+        # Remove dados existentes no banco para os últimos 3 meses
+        delete_conditions = []
+        for _, row in ultimos_3_meses.iterrows():
+            delete_conditions.append({"Ano": row["Ano"], "Mes": mes_map_inverso[row["mes_num"]]})
+
+        result = collection.delete_many({"$or": delete_conditions})
         logger.info(f"{result.deleted_count} registros removidos da collection '{collection_name}'.")
 
         # Insere os novos dados

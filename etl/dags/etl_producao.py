@@ -10,8 +10,8 @@ from extrair import (
 )
 from extrair.extracao import carregar_xpaths, get_logger
 from transformar import transf_producao, transformacao
+from carregar.executar_carga import executar_carga as carregar_banco
 import os
-import logging
 
 # Configuração do logger
 logger = get_logger("etl.log")
@@ -25,7 +25,7 @@ default_args = {
     "email_on_failure": False,
     "email_on_retry": False,
     "retries": 2,
-    "retry_delay": timedelta(minutes=5),
+    "retry_delay": timedelta(minutes=1),
 }
 
 dag = DAG(
@@ -46,23 +46,7 @@ lista_site = [
     "producao_condicao",
     "producao_tipo",
 ]
-lista_extras = [
-    "producao_procedimento",
-    "producao_procedimentos_odontologicos",
-    "producao_aleitamento",
-    "producao_vacinacao",
-    "producao_acoes",
-    "producao_racionalidade",
-    "producao_consulta_odontologica",
-    "producao_vigilancia_bucal",
-    "producao_conduta_odontologica",
-    "producao_visita",
-    "producao_desfecho_visita",
-    "producao_imovel",
-    "producao_profissionais_odontologico",
-    "producao_profissionais_procedimentos",
-    "producao_profissionais_visita",
-]
+
 
 # Funções Python
 def limpa_diretorios():
@@ -111,8 +95,8 @@ def executar_carga(tipo):
     """Carrega os dados transformados no banco."""
     logger.info(f" -- Realizando carga para o tipo: {tipo} -- ")
     # Implementar lógica de carga no banco de dados aqui.
+    carregar_banco(tipo)
 
-# Tasks por grupo de dados
 # Cadastros
 limpar_cadastros = PythonOperator(
     task_id="limpar_diretorios_cadastros",

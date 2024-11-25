@@ -28,7 +28,7 @@ default_args = {
 }
 
 dag = DAG(
-    "etl_producao",
+    "etl_outros",
     default_args=default_args,
     description="ETL para extração, transformação e carga mensal de dados",
     schedule_interval="0 3 1 * *",  # Executa no dia 1 de cada mês às 3h
@@ -167,43 +167,3 @@ carregar_gravidas = PythonOperator(
 limpar_cadastros >> extrair_cadastros >> transformar_cadastros >> carregar_cadastros
 limpar_codigos >> extrair_codigos >> transformar_codigos >> carregar_codigos
 limpar_gravidas >> extrair_gravidas >> transformar_gravidas >> carregar_gravidas
-
-
-# Produção
-site_tasks = []
-for item in lista_site:
-    limpar = PythonOperator(
-        task_id=f"limpar_diretorios_{item}",
-        python_callable=limpa_diretorios,
-        dag=dag,
-    )
-
-    extrair = PythonOperator(
-        task_id=f"extrair_{item}",
-        python_callable=executar_extracao,
-        op_kwargs={"tipo": "lista", "lista": [item]},
-        dag=dag,
-    )
-
-    transformar = PythonOperator(
-        task_id=f"transformar_{item}",
-        python_callable=executar_transformacao,
-        op_kwargs={"tipo": item},
-        dag=dag,
-    )
-
-    carregar = PythonOperator(
-        task_id=f"carregar_{item}",
-        python_callable=executar_carga,
-        op_kwargs={"tipo": item},
-        dag=dag,
-    )
-
-    # Definir dependências
-    limpar >> extrair >> transformar >> carregar
-    site_tasks.append(carregar)
-
-# Definir dependências para que os sites sejam executados após cadastros, códigos e grávidas
-for task in [carregar_cadastros, carregar_codigos, carregar_gravidas]:
-    for site_task in site_tasks:
-        task >> site_task
