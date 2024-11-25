@@ -62,8 +62,6 @@ services:
     container_name: airflow
     ports:
       - "8080:8080"
-    volumes:
-      - ./etl/dags:/opt/airflow/dags
     environment:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__EXECUTOR=SequentialExecutor

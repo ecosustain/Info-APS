@@ -1,6 +1,8 @@
 producao_condicao:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[3]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[3]/div/button'
+  nome_arq: 'producao_condicao'
+  collection: 'Problemas'
 
 producao_procedimento:
   coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[1]'
@@ -11,6 +13,8 @@ producao_conduta:
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[5]/div/button'
   tipo_atendimento: 'Individual'
   grupo: 'Conduta'
+  nome_arq: 'producao_conduta'
+  collection: 'Produção Conduta'
 
 producao_aleitamento:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[1]'
@@ -69,7 +73,8 @@ producao_profissionais_individual:
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
   tipo_atendimento: 'Individual'
   grupo: 'Profissional'
-  collection: 'Atendimentos Hospitalares'
+  collection: 'Produção Profissionais Individual'
+  nome_arq: 'producao_profissionais_individual'
 
 producao_profissionais_odontologico:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
@@ -95,7 +100,8 @@ producao_tipo:
   checkbox: ''
   tipo_atendimento: 'Todos'
   grupo: 'Total'
-
+  nome_arq: 'producao_tipo'
+  collection: 'Tipo Produção'
 
 producao:
   link: "https://sisab.saude.gov.br/paginas/acessoRestrito/relatorio/federal/saude/RelSauProducao.xhtml"
@@ -116,7 +122,12 @@ cadastro:
 gravidas:
   link: 'https://sisab.saude.gov.br/paginas/acessoPublico/relatorio/indicadores/IndicadorPrenatal.xhtml'
   nome_arq: 'gravidas'
-  nome_arq_download: 'gravidas.csv'
+  nome_arq_download: 'gravidas'
   municipio: '//*[@id="selectLinha"]/optgroup/option[5]'
   coluna: '//*[@id="selectcoluna"]/optgroup/option[4]'
   competencia: '//*[@id="competencia"]/div/button'
+  collection: 'Gravidez'
+
+codigos:
+  nome_arq: 'producao_codigos'
+  collection: 'CIDS'
