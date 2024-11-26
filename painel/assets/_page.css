@@ -162,3 +162,14 @@
 #loading-graphics {
   display: block !important;
 }
+
+.loading-content {
+  width: calc(100% - 220px);
+  z-index: 90 !important;
+  align-items: center;
+  margin-left: 220px;
+  position: fixed;
+  display: flex;
+  height: 100%;
+  left: 0;
+}
