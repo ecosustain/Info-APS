@@ -49,7 +49,22 @@ Para instalar o projeto, siga os passos abaixo:
 
 2. **Acesse o link do painel no navegador:**
 
-    👉 [**Link do Painel**](http://localhost:8000)
+    👉 [**Link do Painel**](http://localhost:8020)
+
+
+## Carga Inicial dos Dados
+
+Para realizar uma carga completa na base de dados, siga os passos abaixo:
+
+1. Acesse o Airflow no navegador:
+
+    👉 [**Link do Airflow**](http://localhost:8080)
+
+2. Clique no botão `Trigger DAG` para iniciar a carga inicial dos dados.
+    ![alt text](image.png)
+    
+3. Aguarde, o processo de carga pode levar algumas horas.
+
     
 ## Contribuição
 
