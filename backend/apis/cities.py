@@ -1,9 +1,10 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify
-
 from database.cities import get_cities_by_state
+from flask import jsonify, make_response
+from flask_restx import Namespace, Resource
 
-ns_cidades = Namespace("Cidades", description="Operações sobre os atributos dos municípios")
+ns_cidades = Namespace(
+    "Cidades", description="Operações sobre os atributos dos municípios"
+)
 
 
 @ns_cidades.route("/cities/<state>", strict_slashes=False)
@@ -19,6 +20,13 @@ class City(Resource):
             if cities:
                 return jsonify(cities)
             else:
-                return make_response(jsonify({"error": "UF não encontrada ou sem municípios associados"}), 404)
+                return make_response(
+                    jsonify(
+                        {
+                            "error": "UF não encontrada ou sem municípios associados"
+                        }
+                    ),
+                    404,
+                )
         except Exception as e:
             return make_response(jsonify({"error": str(e)}), 500)

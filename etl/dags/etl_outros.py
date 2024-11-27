@@ -1,14 +1,13 @@
+import os
+from datetime import timedelta
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from datetime import timedelta
-from extrair import (
-    extracao_producao,
-)
+from carregar.executar_carga import executar_carga as carregar_banco
+from extrair import extracao_producao
 from extrair.extracao import carregar_xpaths, get_logger
 from transformar import transf_producao
-from carregar.executar_carga import executar_carga as carregar_banco
-import os
 
 # Configuração do logger
 logger = get_logger("etl_outros.log")
@@ -88,6 +87,7 @@ def executar_carga(tipo):
     logger.info(f" -- Realizando carga para o tipo: {tipo} -- ")
     # Implementar lógica de carga no banco de dados aqui.
     carregar_banco(tipo)
+
 
 dummy_task = PythonOperator(
     task_id="dummy_task",

@@ -1,8 +1,11 @@
-import redis
 import uuid
 
+import redis
+
 # Inicializa conexão com o Redis
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(
+    host="localhost", port=6379, db=0, decode_responses=True
+)
 
 
 class ProgressManagerRedis:
@@ -13,7 +16,9 @@ class ProgressManagerRedis:
     def start_progress(self):
         # Gera um ID único para a barra de progresso
         progress_id = str(uuid.uuid4())
-        self.redis.set(progress_id, 0)  # Inicializa a barra de progresso com valor 0
+        self.redis.set(
+            progress_id, 0
+        )  # Inicializa a barra de progresso com valor 0
         return progress_id
 
     def set_progress(self, progress_id, value):

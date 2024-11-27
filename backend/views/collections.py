@@ -1,20 +1,22 @@
-from flask import render_template, request, redirect, url_for, flash, make_response
-from flask_restx import Resource
-
 from database.collections import create_mongo_collection
-from helpers.collections import  get_all_collections
+from flask import flash, make_response, redirect, render_template, request, url_for
+from flask_restx import Resource
+from helpers.collections import get_all_collections
 
 
 class CreateCollection(Resource):
-
     def get(self):
         """
         :return: The method retrieves all collections from the database and renders the 'create_collection.html' template
                   with the collections list passed to it. Sets the 'Content-Type' response header to 'text/html'.
         """
-        collections = get_all_collections()  # Listar as coleções do banco de dados
-        response = make_response(render_template('create_collection.html', collections=collections))
-        response.headers['Content-Type'] = 'text/html'
+        collections = (
+            get_all_collections()
+        )  # Listar as coleções do banco de dados
+        response = make_response(
+            render_template("create_collection.html", collections=collections)
+        )
+        response.headers["Content-Type"] = "text/html"
         return response
 
     def post(self):
@@ -23,24 +25,29 @@ class CreateCollection(Resource):
         """
         try:
             # Obtém o nome da coleção a partir do formulário
-            collection_name = request.form['collection_name']
+            collection_name = request.form["collection_name"]
 
             # Verifica se a coleção existe ou a cria
             sucesso, mensagem = create_mongo_collection(collection_name)
 
             if sucesso:
-                flash(mensagem, 'success')
+                flash(mensagem, "success")
             else:
-                flash(mensagem, 'danger')
-            collections = get_all_collections()  # Listar as coleções do banco de dados
+                flash(mensagem, "danger")
+            collections = (
+                get_all_collections()
+            )  # Listar as coleções do banco de dados
 
-            response = make_response(render_template('create_collection.html', collections=collections))
-            response.headers['Content-Type'] = 'text/html'
+            response = make_response(
+                render_template(
+                    "create_collection.html", collections=collections
+                )
+            )
+            response.headers["Content-Type"] = "text/html"
             return response
 
             # return render_template('create_collection.html')
 
         except Exception as e:
-            flash(f'Erro ao criar a coleção: {str(e)}', 'danger')
-            return redirect(url_for('create_collection'))
-
+            flash(f"Erro ao criar a coleção: {str(e)}", "danger")
+            return redirect(url_for("create_collection"))

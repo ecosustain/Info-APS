@@ -1,11 +1,15 @@
-from flask_restx import Resource, Namespace
-from flask import make_response, jsonify, request
 from datetime import datetime
 
-ns_defaults = Namespace("Defaults endpoints", description="Operações para controlar processos gerais do sistema")
+from flask import jsonify, make_response, request
+from flask_restx import Namespace, Resource
+
+ns_defaults = Namespace(
+    "Defaults endpoints",
+    description="Operações para controlar processos gerais do sistema",
+)
 
 
-@ns_defaults.route('/years', strict_slashes=False)
+@ns_defaults.route("/years", strict_slashes=False)
 class YearInterval(Resource):
     def get(self):
         """

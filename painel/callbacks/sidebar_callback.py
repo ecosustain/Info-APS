@@ -8,7 +8,6 @@ def callback(app):
     """Função para registrar os callbacks do sidebar"""
 
     def sidebar_style(path):
-
         clientside_callback(
             """
             function(id, value) {

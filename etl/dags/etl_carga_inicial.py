@@ -1,9 +1,16 @@
 """DAG para extração, transformação e carga de dados mensais."""
 
+import os
+from datetime import timedelta
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from datetime import timedelta
+from carregar.executar_carga import executar_carga as carregar_banco
+from carregar.executar_carga import (
+    popular_tabelas_especificas,
+    update_collections_attributes,
+)
 from extrair import (
     extracao_cadastros,
     extracao_codigos,
@@ -12,9 +19,6 @@ from extrair import (
 )
 from extrair.extracao import carregar_xpaths, get_logger
 from transformar import transf_producao, transformacao
-from carregar.executar_carga import executar_carga as carregar_banco
-from carregar.executar_carga import popular_tabelas_especificas, update_collections_attributes
-import os
 
 # Configuração do logger
 logger = get_logger("etl_producao_full.log")
@@ -212,9 +216,18 @@ popular_tabelas = PythonOperator(
 
 # Definir dependências para cadastros, códigos e grávidas
 (
-    limpar_cadastros >> extrair_cadastros >> transformar_cadastros >> carregar_cadastros
-    >> limpar_codigos >> extrair_codigos >> transformar_codigos >> carregar_codigos
-    >> limpar_gravidas >> extrair_gravidas >> transformar_gravidas >> carregar_gravidas
+    limpar_cadastros
+    >> extrair_cadastros
+    >> transformar_cadastros
+    >> carregar_cadastros
+    >> limpar_codigos
+    >> extrair_codigos
+    >> transformar_codigos
+    >> carregar_codigos
+    >> limpar_gravidas
+    >> extrair_gravidas
+    >> transformar_gravidas
+    >> carregar_gravidas
     >> popular_tabelas
 )
 
@@ -252,9 +265,6 @@ for item in lista_site:
     # Definir dependências
     previous_task >> limpar >> extrair >> transformar >> carregar
     previous_task = carregar
-
-
-
 
 
 for item in lista_extras:
