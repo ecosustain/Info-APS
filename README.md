@@ -60,10 +60,14 @@ Para realizar uma carga completa na base de dados, siga os passos abaixo:
 
     👉 [**Link do Airflow**](http://localhost:8080)
 
-2. Clique no botão `Trigger DAG` para iniciar a carga inicial dos dados.
+2. Faça login com as seguintes credenciais:
+    - **Usuário**: `admin`
+    - **Senha**: `admin`
+
+3. Clique no botão `Trigger DAG` para iniciar a carga inicial dos dados.
     ![alt text](docs/image.png)
 
-3. Aguarde, o processo de carga pode levar algumas horas.
+4. Aguarde, o processo de carga pode levar algumas horas.
 
     
 ## Contribuição
