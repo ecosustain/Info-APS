@@ -2,9 +2,10 @@
 
 import requests
 from callbacks.utils.utils import get_code_regiao, get_ibge_code
+import os
 
-API_URL = "https://dash-saude-mongo.elsvital.dev/api/v1"
-# API_URL=os.getenv('API_URL', 'http://localhost:8010/api/v1')
+# API_URL = "https://dash-saude-mongo.elsvital.dev/api/v1"
+API_URL=os.getenv('API_URL', 'https://dash-saude-mongo.elsvital.dev/api/v1')
 
 def make_request(url):
     """Função para fazer uma requisição à API"""
