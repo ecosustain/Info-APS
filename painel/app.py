@@ -76,15 +76,10 @@ app.layout = dbc.Container(
                         ),
                     ],
                     id="loading-graphics",
+                    className="loading-content",
                     overlay_style={
                         "visibility": "visible",
                         "filter": "blur(2px)",
-                    },
-                    style={
-                        "height": "100%",
-                        "position": "fixed",
-                        "display": "flex",
-                        "align-items": "center",
                     },
                     color="#632956",
                     type="circle",

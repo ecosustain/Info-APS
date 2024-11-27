@@ -2,7 +2,7 @@
 
 import time
 
-from dash import Input, Output, State, clientside_callback
+from dash import Input, Output, no_update, clientside_callback
 
 
 def callback(app):
@@ -18,7 +18,7 @@ def callback(app):
 
             if (value == "auto") return "show"
             
-            return null
+            return dash_clientside.no_update
         }
         """,
         Output("loading-graphics", "display"),
