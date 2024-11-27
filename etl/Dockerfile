@@ -91,6 +91,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 USER root
 
+# Criar os diretórios necessários
+RUN mkdir -p /opt/airflow/data/download /opt/airflow/data/transformacao /opt/airflow/data/consolidado
+
 RUN chown -R airflow: /opt/airflow
 
 USER airflow
