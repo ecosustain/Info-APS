@@ -7,6 +7,8 @@ producao_condicao:
 producao_procedimento:
   coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[1]'
   checkbox: '//*[@id="filtrosProcedimento"]/div/div[1]/div[1]/div/button'
+  nome_arq: 'producao_procedimento'
+  collection: 'Procedimentos'
 
 producao_conduta:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[5]'
@@ -19,36 +21,52 @@ producao_conduta:
 producao_aleitamento:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[1]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[1]/div/button'
+  nome_arq: 'producao_aleitamento'
+  collection: 'Aleitamento'
 
 producao_acoes:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[2]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[2]/div/button'
+  nome_arq: 'producao_acoes'
+  collection: 'Ações'
 
 producao_vacinacao:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[4]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[4]/div/button'
+  nome_arq: 'producao_vacinacao'
+  collection: 'Vacinação'
 
 producao_racionalidade:
   coluna: '//*[@id="selectcoluna"]/optgroup[2]/option[6]'
   checkbox: '//*[@id="filtrosAtendIndividual"]/div/div/div[6]/div/button'
+  nome_arq: 'producao_racionalidade'
+  collection: 'Racionalidade'
 
 producao_consulta_odontologica:
   coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[1]'
   checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[1]/div/button'
+  nome_arq: 'producao_consulta_odontologica'
+  collection: 'Consulta Odontologica'
 
 producao_vigilancia_bucal:
   coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[2]'
   checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[2]/div/button'
+  nome_arq: 'producao_vigilancia_bucal'
+  collection: 'Vigilância Bucal'
 
 producao_procedimentos_odontologicos:
   coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[3]'
   checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[3]/div/button'
+  nome_arq: 'producao_procedimentos_odontologicos'
+  collection: 'Procedimentos Odontologicos'
 
 producao_conduta_odontologica:
   coluna: '//*[@id="selectcoluna"]/optgroup[3]/option[4]'
   checkbox: '//*[@id="filtrosAtendOdontologico"]/div/div/div[4]/div/button'
   tipo_atendimento: 'Odontológico'
   grupo: 'Conduta'
+  collection: 'Produção Conduta Odontologica'
+  nome_arq: 'producao_conduta_odontologica'
 
 producao_procedimentos_pics:
   coluna: '//*[@id="selectcoluna"]/optgroup[4]/option[2]'
@@ -57,16 +75,22 @@ producao_procedimentos_pics:
 producao_visita:
   coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[1]'
   checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[1]/div/button'
+  nome_arq: 'producao_visita'
+  collection: 'Visita'
 
 producao_desfecho_visita:
   coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[2]'
   checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[2]/div/button'
   tipo_atendimento: 'Visita'
   grupo: 'Desfecho'
+  nome_arq: 'producao_desfecho_visita'
+  collection: 'Desfecho Visita'
 
 producao_imovel:
   coluna: '//*[@id="selectcoluna"]/optgroup[5]/option[3]'
   checkbox: '//*[@id="filtrosCondutaDesfecho"]/div/div/div[3]/div/button'
+  nome_arq: 'producao_imovel'
+  collection: 'Tipo de Imovel'
 
 producao_profissionais_individual:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
@@ -81,12 +105,16 @@ producao_profissionais_odontologico:
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
   tipo_atendimento: 'Odontológico'
   grupo: 'Profissional'
+  collection: 'Produção Profissionais Odontológico'
+  nome_arq: 'producao_profissionais_odontologico'
 
 producao_profissionais_procedimentos:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[4]'
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
   tipo_atendimento: 'Procedimento'
   grupo: 'Profissional'
+  collection: 'Produção Profissionais Procedimentos'
+  nome_arq: 'producao_profissionais_procedimentos'
 
 
 producao_profissionais_visita:
@@ -94,6 +122,8 @@ producao_profissionais_visita:
   checkbox: '//*[@id="filtroEquipeProf"]/div[2]/button'
   tipo_atendimento: 'Visita'
   grupo: 'Profissional'
+  collection: 'Produção Profissionais Visita'
+  nome_arq: 'producao_profissionais_visita'
 
 producao_tipo:
   coluna: '//*[@id="selectcoluna"]/optgroup[1]/option[2]'

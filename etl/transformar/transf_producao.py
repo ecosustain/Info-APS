@@ -136,6 +136,8 @@ def concat_final_csv(name, diretorio="."):
     df["Ano"] = df["Ano"].str.replace(".", "").astype(int)
     # Adicionar as regiões
     df = add_regioes(df)
+    # Remove . das colunas
+    df.columns = df.columns.str.replace(".", "")
     # Salvar o arquivo final
     df.to_csv(f"{name}.csv", index=False)
     return df
