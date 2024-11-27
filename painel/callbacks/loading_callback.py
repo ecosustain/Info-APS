@@ -2,7 +2,7 @@
 
 import time
 
-from dash import Input, Output, no_update, clientside_callback
+from dash import Input, Output, clientside_callback, no_update
 
 
 def callback(app):

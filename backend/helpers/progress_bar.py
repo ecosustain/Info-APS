@@ -1,15 +1,17 @@
-import redis
+import os
 import uuid
 from datetime import datetime, timedelta
-import os
+
+import redis
 
 # Inicializa conexão com o Redis
 # redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 # Obtenha a URL do Redis a partir da variável de ambiente REDIS_URL
-redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
 # Configure o cliente Redis usando a URL
 redis_client = redis.StrictRedis.from_url(redis_url, decode_responses=True)
+
 
 class ProgressManager:
     def __init__(self):
@@ -19,16 +21,21 @@ class ProgressManager:
     def start_progress(self):
         # Gera um ID único para a barra de progresso e configura a estrutura de dados no Redis
         progress_id = str(uuid.uuid4())
-        timestamp = int(datetime.now().timestamp())  # Timestamp atual em segundos
+        timestamp = int(
+            datetime.now().timestamp()
+        )  # Timestamp atual em segundos
 
         # Define a chave e os campos
         key = f"progress_bar:{progress_id}"
-        self.redis.hset(key, mapping={
-            "progress_id": progress_id,
-            "progress": 0,
-            "message": "",
-            "timestamp": timestamp
-        })
+        self.redis.hset(
+            key,
+            mapping={
+                "progress_id": progress_id,
+                "progress": 0,
+                "message": "",
+                "timestamp": timestamp,
+            },
+        )
 
         return progress_id
 

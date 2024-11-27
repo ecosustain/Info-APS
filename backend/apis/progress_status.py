@@ -1,8 +1,12 @@
-from flask_restx import Resource, Namespace
+from flask import jsonify, make_response, request
+from flask_restx import Namespace, Resource
 from helpers.progress_bar import ProgressManager
-from flask import make_response, jsonify, request
 
-ns_progress_bar = Namespace("Progress Bar", description="Operações para controle da barra de progresso nas páginas")
+ns_progress_bar = Namespace(
+    "Progress Bar",
+    description="Operações para controle da barra de progresso nas páginas",
+)
+
 
 @ns_progress_bar.route("/progress/<progress_id>", strict_slashes=False)
 class ProgressBarStatus(Resource):
@@ -14,7 +18,9 @@ class ProgressBarStatus(Resource):
             progress_manager = ProgressManager()
             progress = progress_manager.get_progress(progress_id)
             response = make_response(jsonify(progress), 200)
-            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers[
+                "Cache-Control"
+            ] = "no-cache, no-store, must-revalidate"
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -32,8 +38,13 @@ class ProgressBarStart(Resource):
         try:
             progress_manager = ProgressManager()
 
-            response = make_response(jsonify({"progress_id": progress_manager.start_progress()}), 200)
-            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response = make_response(
+                jsonify({"progress_id": progress_manager.start_progress()}),
+                200,
+            )
+            response.headers[
+                "Cache-Control"
+            ] = "no-cache, no-store, must-revalidate"
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -51,8 +62,10 @@ class ProgressBarReset(Resource):
         try:
             progress_manager = ProgressManager()
             progress = progress_manager.reset_progress(progress_id)
-            response = make_response(jsonify({'progress': progress}), 200)
-            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response = make_response(jsonify({"progress": progress}), 200)
+            response.headers[
+                "Cache-Control"
+            ] = "no-cache, no-store, must-revalidate"
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response

@@ -1,8 +1,9 @@
-import pymongo
-import pandas as pd
-import os
-import yaml
 import logging
+import os
+
+import pandas as pd
+import pymongo
+import yaml
 
 with open("xpaths.yaml", "r") as file:
     xpaths = yaml.safe_load(file)
@@ -20,8 +21,18 @@ db_name = os.getenv("MONGO_DB", "sisab_v2")
 
 # Dicionário para mapear os meses em português para números
 mes_map = {
-    "JAN": "01", "FEV": "02", "MAR": "03", "ABR": "04", "MAI": "05", "JUN": "06",
-    "JUL": "07", "AGO": "08", "SET": "09", "OUT": "10", "NOV": "11", "DEZ": "12"
+    "JAN": "01",
+    "FEV": "02",
+    "MAR": "03",
+    "ABR": "04",
+    "MAI": "05",
+    "JUN": "06",
+    "JUL": "07",
+    "AGO": "08",
+    "SET": "09",
+    "OUT": "10",
+    "NOV": "11",
+    "DEZ": "12",
 }
 
 # Dicionário inverso para mapear números para meses em português
@@ -44,7 +55,9 @@ def executar_carga(producao):
     csv_path = os.path.join(final_dir, f"{nome_arq}.csv")
 
     if not os.path.exists(csv_path):
-        logger.error(f"Arquivo transformado não encontrado para o tipo: {producao}")
+        logger.error(
+            f"Arquivo transformado não encontrado para o tipo: {producao}"
+        )
         return
 
     # Lê o arquivo CSV transformado
@@ -53,17 +66,25 @@ def executar_carga(producao):
 
     # Verifica se a collection já existe no banco
     if collection_name not in db.list_collection_names():
-        logger.info(f"Collection '{collection_name}' não existe. Realizando carga completa...")
+        logger.info(
+            f"Collection '{collection_name}' não existe. Realizando carga completa..."
+        )
         # Carga completa
         data_to_insert = df.to_dict(orient="records")
         if data_to_insert:
             collection.insert_many(data_to_insert)
-            logger.info(f"Dados inseridos com sucesso na collection '{collection_name}'.")
+            logger.info(
+                f"Dados inseridos com sucesso na collection '{collection_name}'."
+            )
     else:
-        logger.info(f"Collection '{collection_name}' encontrada. Realizando carga incremental...")
+        logger.info(
+            f"Collection '{collection_name}' encontrada. Realizando carga incremental..."
+        )
         # Identifica a menor data no dataset
         if "Ano" not in df.columns or "Mes" not in df.columns:
-            logger.error("Colunas 'Ano' ou 'Mes' não encontradas no dataset. Verifique o formato do arquivo.")
+            logger.error(
+                "Colunas 'Ano' ou 'Mes' não encontradas no dataset. Verifique o formato do arquivo."
+            )
             return
 
         # Converte a coluna 'mes' para números
@@ -73,22 +94,32 @@ def executar_carga(producao):
         df = df.sort_values(by=["Ano", "mes_num"])
 
         # Identifica os últimos 3 meses no dataset
-        ultimos_3_meses = df.drop_duplicates(subset=["Ano", "mes_num"], keep="last").tail(3)
-        logger.info(f"Últimos 3 meses no dataset: {ultimos_3_meses[['Ano', 'Mes']].values.tolist()}")
+        ultimos_3_meses = df.drop_duplicates(
+            subset=["Ano", "mes_num"], keep="last"
+        ).tail(3)
+        logger.info(
+            f"Últimos 3 meses no dataset: {ultimos_3_meses[['Ano', 'Mes']].values.tolist()}"
+        )
 
         # Remove dados existentes no banco para os últimos 3 meses
         delete_conditions = []
         for _, row in ultimos_3_meses.iterrows():
-            delete_conditions.append({"Ano": row["Ano"], "Mes": mes_map_inverso[row["mes_num"]]})
+            delete_conditions.append(
+                {"Ano": row["Ano"], "Mes": mes_map_inverso[row["mes_num"]]}
+            )
 
         result = collection.delete_many({"$or": delete_conditions})
-        logger.info(f"{result.deleted_count} registros removidos da collection '{collection_name}'.")
+        logger.info(
+            f"{result.deleted_count} registros removidos da collection '{collection_name}'."
+        )
 
         # Insere os novos dados
         data_to_insert = df.to_dict(orient="records")
         if data_to_insert:
             collection.insert_many(data_to_insert)
-            logger.info(f"Novos dados inseridos com sucesso na collection '{collection_name}'.")
+            logger.info(
+                f"Novos dados inseridos com sucesso na collection '{collection_name}'."
+            )
 
     # Fecha a conexão com o MongoDB
     client.close()
@@ -99,13 +130,13 @@ def get_cities():
     # Conecta ao banco e obtém a collection
     client = pymongo.MongoClient(mongo_uri)
     db = client[db_name]
-    populacao_collection = db['População']
+    populacao_collection = db["População"]
     pipeline = [
         {
             "$group": {
                 "_id": "$Ibge",
                 "uf": {"$first": "$Uf"},
-                "cidade": {"$first": "$Municipio"}
+                "cidade": {"$first": "$Municipio"},
             }
         }
     ]
@@ -113,11 +144,7 @@ def get_cities():
 
     # Transformar os dados para o formato desejado
     cities_dados = [
-        {
-            "_id": dado["_id"],
-            "uf": dado["uf"],
-            "cidade": dado["cidade"]
-        }
+        {"_id": dado["_id"], "uf": dado["uf"], "cidade": dado["cidade"]}
         for dado in populacao_dados
     ]
     client.close()
@@ -153,7 +180,7 @@ def get_states():
         {"name": "SC", "description": "Santa Catarina"},
         {"name": "SE", "description": "Sergipe"},
         {"name": "SP", "description": "São Paulo"},
-        {"name": "TO", "description": "Tocantins"}
+        {"name": "TO", "description": "Tocantins"},
     ]
 
     return uf_data
@@ -177,12 +204,17 @@ def popular_tabelas_especificas():
 
 IGNORE_Collections = ["collection_attributes", "states", "cities"]
 
+
 def get_all_collections():
     client = pymongo.MongoClient(mongo_uri)
     db = client[db_name]
-    collections = db.list_collection_names()  # Listar as coleções do banco de dados
+    collections = (
+        db.list_collection_names()
+    )  # Listar as coleções do banco de dados
     # Filtra as coleções removendo as que estão na lista 'collections_to_remove'
-    collections_filtered = [col for col in collections if col not in IGNORE_Collections]
+    collections_filtered = [
+        col for col in collections if col not in IGNORE_Collections
+    ]
     collections_sorted = sorted(collections_filtered)
     client.close()
     return collections_sorted
@@ -212,10 +244,12 @@ def update_collection_attributes(collection_name, based_on_first=None):
     attributes_list = sorted(list(attributes_set))
 
     # Inserir ou atualizar os atributos na coleção 'collection_attributes'
-    db['collection_attributes'].update_one(
-        {'collection': collection_name},  # Filtro para a coleção específica
-        {'$set': {'attributes': attributes_list}},  # Atualização da lista de atributos
-        upsert=True  # Insere um novo documento se não encontrar a coleção
+    db["collection_attributes"].update_one(
+        {"collection": collection_name},  # Filtro para a coleção específica
+        {
+            "$set": {"attributes": attributes_list}
+        },  # Atualização da lista de atributos
+        upsert=True,  # Insere um novo documento se não encontrar a coleção
     )
     client.close()
     return attributes_list
@@ -224,13 +258,17 @@ def update_collection_attributes(collection_name, based_on_first=None):
 def update_collections_attributes(collection_name=None, based_on_first=None):
     if collection_name:
         print(collection_name)
-        attributes_list = update_collection_attributes(collection_name, based_on_first)
+        attributes_list = update_collection_attributes(
+            collection_name, based_on_first
+        )
         print(attributes_list)
     else:
         collections = get_all_collections()
         for collection_name in collections:
             print(collection_name)
-            attributes_list = update_collection_attributes(collection_name, based_on_first)
+            attributes_list = update_collection_attributes(
+                collection_name, based_on_first
+            )
             print(attributes_list)
 
 
@@ -248,8 +286,8 @@ def remove_dots_from_keys():
 
             # Verificar e renomear as chaves que contêm pontos
             for key, value in document.items():
-                if '.' in key:
-                    new_key = key.replace('.', '_')
+                if "." in key:
+                    new_key = key.replace(".", "_")
                     updated_document[new_key] = value
                     needs_update = True
                 else:
@@ -257,6 +295,12 @@ def remove_dots_from_keys():
 
             # Atualizar o documento se necessário
             if needs_update:
-                collection.update_one({'_id': document['_id']}, {'$set': updated_document, '$unset': {key: "" for key in document if '.' in key}})
+                collection.update_one(
+                    {"_id": document["_id"]},
+                    {
+                        "$set": updated_document,
+                        "$unset": {key: "" for key in document if "." in key},
+                    },
+                )
 
     print("Remoção de pontos das chaves concluída.")

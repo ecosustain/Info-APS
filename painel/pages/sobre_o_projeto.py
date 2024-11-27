@@ -51,7 +51,6 @@ def section_description(title, description):
 
 
 def iesp_people(name, function, image):
-
     return dbc.Col(
         [
             html.Img(
@@ -73,7 +72,6 @@ def iesp_people(name, function, image):
 
 
 def usp_people(name, function, image):
-
     return dbc.Col(
         [
             html.Img(
