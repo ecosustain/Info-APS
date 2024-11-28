@@ -23,6 +23,8 @@ app = dash.Dash(
         "https://use.fontawesome.com/releases/v6.4.2/css/all.css",
     ],
     use_pages=True,
+    requests_pathname_prefix="/info-aps/",
+    routes_pathname_prefix="/info-aps/",
 )
 
 # Layout da aplicação

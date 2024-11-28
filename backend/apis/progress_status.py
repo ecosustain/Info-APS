@@ -18,9 +18,9 @@ class ProgressBarStatus(Resource):
             progress_manager = ProgressManager()
             progress = progress_manager.get_progress(progress_id)
             response = make_response(jsonify(progress), 200)
-            response.headers[
-                "Cache-Control"
-            ] = "no-cache, no-store, must-revalidate"
+            response.headers["Cache-Control"] = (
+                "no-cache, no-store, must-revalidate"
+            )
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -42,9 +42,9 @@ class ProgressBarStart(Resource):
                 jsonify({"progress_id": progress_manager.start_progress()}),
                 200,
             )
-            response.headers[
-                "Cache-Control"
-            ] = "no-cache, no-store, must-revalidate"
+            response.headers["Cache-Control"] = (
+                "no-cache, no-store, must-revalidate"
+            )
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response
@@ -63,9 +63,9 @@ class ProgressBarReset(Resource):
             progress_manager = ProgressManager()
             progress = progress_manager.reset_progress(progress_id)
             response = make_response(jsonify({"progress": progress}), 200)
-            response.headers[
-                "Cache-Control"
-            ] = "no-cache, no-store, must-revalidate"
+            response.headers["Cache-Control"] = (
+                "no-cache, no-store, must-revalidate"
+            )
             response.headers["Pragma"] = "no-cache"
             response.headers["Expires"] = "0"
             return response

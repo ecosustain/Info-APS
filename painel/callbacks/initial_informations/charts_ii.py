@@ -79,7 +79,7 @@ def callback(app):
     )
     def fetch_data_atendimentos(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados no Store"""
-        if url != "/":
+        if url != "/info-aps/":
             raise dash.exceptions.PreventUpdate
         data_atendimentos = get_atendimentos(estado, regiao, municipio)
         return data_atendimentos
@@ -91,7 +91,7 @@ def callback(app):
     )
     def fetch_data_visita(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de visitas domiciliares no Store"""
-        if url != "/":
+        if url != "/info-aps/":
             raise dash.exceptions.PreventUpdate
         return get_visitas_domiciliar(estado, regiao, municipio)
 
@@ -102,7 +102,7 @@ def callback(app):
     )
     def fetch_data_odonto(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de atendimentos odontológicos no Store"""
-        if url != "/":
+        if url != "/info-aps/":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_odontologicos(estado, regiao, municipio)
 
@@ -113,7 +113,7 @@ def callback(app):
     )
     def fetch_data_enc(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de encaminhamentos no Store"""
-        if url != "/":
+        if url != "/info-aps/":
             raise dash.exceptions.PreventUpdate
         return get_encaminhamentos(estado, regiao, municipio)
 

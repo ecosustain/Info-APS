@@ -147,7 +147,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_hipertensao(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de hipertensão no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Hipertensão arterial"
@@ -159,7 +159,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_diabetes(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de diabetes no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Diabetes"
@@ -171,7 +171,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_saude_sexual(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de saúde sexual no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Saúde sexual e reprodutiva"
@@ -183,7 +183,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_saude_mental(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de saúde mental no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Saúde mental"
@@ -195,7 +195,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_puericultura(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de puericultura no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Puericultura"
@@ -208,7 +208,7 @@ def register_callbacks_programaticos(app):
     )
     def fetch_data_gravidez(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de gravidez no Store"""
-        if url != "/atendimentos-programaticos":
+        if url != "/info-aps/atendimentos-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_gravidez_json(estado, regiao, municipio)
 

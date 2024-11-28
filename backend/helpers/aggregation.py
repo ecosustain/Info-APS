@@ -178,13 +178,15 @@ def aggregation_big_numbers(
             "$unwind": "$populacao_info"
         },  # Desestrutura o array para cada combinação
         # Filtragem condicional com base nos parâmetros (regions, states, cities)
-        {"$match": {"Uf": {"$in": states}}}
-        if states
-        else {"$match": {"region": {"$in": regions}}}
-        if regions
-        else {"$match": {"Ibge": {"$in": cities}}}
-        if cities
-        else {},
+        (
+            {"$match": {"Uf": {"$in": states}}}
+            if states
+            else (
+                {"$match": {"region": {"$in": regions}}}
+                if regions
+                else {"$match": {"Ibge": {"$in": cities}}} if cities else {}
+            )
+        ),
         # Estágio $group para sumarizar os dados e calcular a média de Cadastros
         {"$group": group_stage},
     ]
