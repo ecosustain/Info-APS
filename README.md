@@ -27,12 +27,12 @@ Para instalar o projeto, siga os passos abaixo:
 
 1. Clone o repositório:
    ```sh
-   git clone https://gitlab.com/schulzdanielf/saude-basica.git
+   git clone https://github.com/ecosustain/Info-APS.git
     ```
 
 2. Acesse o diretório do projeto:
     ```sh
-    cd saude-basica
+    cd Info-APS
     ```
 
 3. Construa o container do projeto:
@@ -49,7 +49,7 @@ Para instalar o projeto, siga os passos abaixo:
 
 2. **Acesse o link do painel no navegador:**
 
-    👉 [**Link do Painel**](http://localhost:8020)
+    👉 [**Link do Painel**](http://localhost:8020/info-aps/)
 
 
 ## Carga Inicial dos Dados
