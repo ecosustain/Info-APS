@@ -41,8 +41,8 @@ services:
       - app_network
     depends_on:
       - sisab_backend
-    environment:
-      API_URL: http://sisab_backend:8010/api/v1
+    # environment:
+    #  API_URL: http://sisab_backend:8010/api/v1
 
   sisab_redis:
     build:
