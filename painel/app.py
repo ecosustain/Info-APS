@@ -15,6 +15,8 @@ from components.header import Header
 from components.sidebar_structure import SideBar
 from dash import dcc, html
 
+SITE_URL = os.getenv("SITE_URL", "/")
+
 # Inicializa a aplicação Dash
 app = dash.Dash(
     __name__,
@@ -23,8 +25,8 @@ app = dash.Dash(
         "https://use.fontawesome.com/releases/v6.4.2/css/all.css",
     ],
     use_pages=True,
-    requests_pathname_prefix="/info-aps/",
-    routes_pathname_prefix="/info-aps/",
+    requests_pathname_prefix=SITE_URL,
+    routes_pathname_prefix=SITE_URL,
 )
 
 # Layout da aplicação

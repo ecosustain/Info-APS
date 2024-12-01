@@ -1,5 +1,6 @@
 """Módulo para callbacks dos indicadores não programáticos."""
 
+import os
 import dash
 from api.api_requests import anos, get_atendimentos_individuais_problema
 from callbacks.utils.chart_plotting import get_chart_by_quarter, get_chart_by_year
@@ -14,6 +15,8 @@ from callbacks.utils.utils import get_type, get_values, store_nivel
 from dash import Input, Output, State
 
 QTD_HAB = 100000
+SITE_URL = os.getenv("SITE_URL", "/")
+
 
 # Dicionários para armazenar os históricos dos atendimentos
 hist_asma_dpoc = {}
@@ -131,7 +134,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_asma_dpoc(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de asma e DPOC no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_asma_dpoc_json(estado, regiao, municipio)
 
@@ -142,7 +145,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_dengue(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de dengue no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "DTransmissíveis - Dengue"
@@ -155,7 +158,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_tuberculose(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de tuberculose no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "DTransmissíveis - Tuberculose"
@@ -168,7 +171,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_dst(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de DST no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "Doenças transmissíveis - DST"
@@ -181,7 +184,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_hanseniase(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de hanseníase no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         return get_atendimentos_individuais_problema(
             estado, regiao, municipio, "DTransmissíveis - Hanseníase"
@@ -194,7 +197,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_cefaleia(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de cefaleia no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         data_cefaleia = get_cids_json_cefaleia(estado, regiao, municipio)
         return data_cefaleia
@@ -206,7 +209,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_tosse(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de tosse no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         data_tosse = get_cids_json_tosse(estado, regiao, municipio)
         return data_tosse
@@ -218,7 +221,7 @@ def register_callbacks_nao_programaticos(app):
     )
     def fetch_data_febres(dummy, estado, regiao, municipio, url):
         """Função para fazer a requisição à API e armazenar os dados de febres no Store"""
-        if url != "/info-aps/atendimentos-nao-programaticos":
+        if url != f"{SITE_URL}atendimentos-nao-programaticos":
             raise dash.exceptions.PreventUpdate
         data_febres = get_cids_json_febre(estado, regiao, municipio)
         return data_febres
