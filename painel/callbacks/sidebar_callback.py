@@ -11,7 +11,8 @@ def callback(app):
         clientside_callback(
             """
             function(id, value) {
-                if (id == value) {
+
+                if ("".concat("/health/primary-care", id) == value) {
                     return {"background-color": "#f8f9fa", "color": "#343A40"}
                 }
 

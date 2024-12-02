@@ -2,15 +2,13 @@
 
 from dash import Input, Output, clientside_callback
 
-
 def callback(app):
     """Função para registrar os callbacks do header."""
 
     app.clientside_callback(
         """
         function(value) {
-            console.log(value)
-            if (value == "/sobre_o_projeto") {
+            if (value == "/health/primary-care/sobre_o_projeto") {
                 return {"display": "none"}
             }
 
@@ -25,19 +23,19 @@ def callback(app):
         """
         function(value) {
             var titles_and_descriptions = {
-                "/": [
+                "/health/primary-care/": [
                     "Atendimentos totais",
                     "Atendimentos totais realizados nas unidades de atenção primária",
                 ],
-                "/atendimentos-programaticos": [
+                "/health/primary-care/atendimentos-programaticos": [
                     "Atendimentos programáticos",
                     "Atendimentos programáticos na Atenção Primária à Saúde (APS) são aqueles organizados dentro de programas estruturados para monitorar e tratar condições específicas de saúde, seguindo diretrizes e protocolos estabelecidos",
                 ],
-                "/atendimentos-nao-programaticos": [
+                "/health/primary-care/atendimentos-nao-programaticos": [
                     "Atendimentos não programáticos",
                     "Atendimentos não programáticos na Atenção Primária à Saúde (APS) referem-se a consultas e cuidados que não estão vinculados a programas específicos de saúde",
                 ],
-                "/sobre_o_projeto": [
+                "/health/primary-care/sobre_o_projeto": [
                     "Sobre o projeto",
                     "",
                 ],
