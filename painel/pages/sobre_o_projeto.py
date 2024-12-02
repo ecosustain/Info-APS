@@ -67,7 +67,7 @@ def iesp_people(name, function, image):
                 className="people-function",
             ),
         ],
-        style={"justify-items": "center"},
+        style={"justify-items": "center", "width": "fit-content", "max-width": "fit-content"},
     )
 
 
@@ -88,7 +88,7 @@ def usp_people(name, function, image):
                 className="people-function usp",
             ),
         ],
-        style={"justify-items": "center"},
+        style={"justify-items": "center", "width": "fit-content", "max-width": "fit-content"},
     )
 
 
@@ -200,11 +200,7 @@ layout = html.Div(
                                             "vinicius_pecanha.jpg",
                                         ),
                                     ],
-                                    style={
-                                        "display": "flex",
-                                        "gap": "30px",
-                                        "padding": "0px 25px",
-                                    },
+                                    style={"gap": "30px", "padding": "0px 25px", "justify-content": "space-around", "align-items": "center"},
                                 ),
                             ]
                         ),
@@ -267,7 +263,7 @@ layout = html.Div(
                                     "lucas.png",
                                 ),
                             ],
-                            style={"gap": "30px", "padding": "0px 25px"},
+                            style={"gap": "30px", "padding": "0px 25px", "justify-content": "space-around", "align-items": "center"},
                         ),
                     ]
                 ),
