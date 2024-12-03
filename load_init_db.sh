@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "Downloading backup"
-# wget -O /tmp/sisab_mongo_init_db_backup.zip https://vpublic-files.s3.us-east-1.amazonaws.com/sisab_mongo_init_db_backup.zip
+wget -O /tmp/sisab_mongo_init_db_backup.zip https://vpublic-files.s3.us-east-1.amazonaws.com/sisab_mongo_init_db_backup.zip
 
 echo "Unziping backup"
-# unzip /tmp/sisab_mongo_init_db_backup.zip -d /tmp
+unzip /tmp/sisab_mongo_init_db_backup.zip -d /tmp
 
 # rm -f /tmp/sisab_mongo_init_db_backup.zip
 
